@@ -7,6 +7,7 @@
     "build": "tsc && vite build",
     "deploy": "npm run build && gh-pages -d dist",
     "dev": "vite",
+    "postbuild": "node ./scripts/postbuild.cjs",
     "preview": "vite preview",
     "test": "vitest --reporter verbose --coverage"
   },
