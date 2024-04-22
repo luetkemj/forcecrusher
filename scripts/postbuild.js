@@ -1,6 +1,6 @@
-const fs = require('fs/promises');
-const cp = require('child_process')
-const chalk = require('chalk')
+import fs from 'fs/promises';
+import cp from 'child_process'
+import chalk from 'chalk'
 
 const gitHash = cp.execSync('git rev-parse --short HEAD').toString().trim()
 
