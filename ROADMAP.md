@@ -4,7 +4,7 @@ This is aspirational only. Expect anything and everything in this document to be
 
 100% GUARANTEED!
 
-- [ ] Setting Up
+- [x] Setting Up
 - [ ] Drawing the ‘@’ symbol and moving it around
 - [ ] The generic Entity, the render functions, and the map
 - [ ] Generating a dungeon
