@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "lodash": "4.17.21",
+    "miniplex": "2.0.0",
     "pixi.js": "7.1.0"
   }
 }
