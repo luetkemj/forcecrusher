@@ -1,9 +1,8 @@
 import "./style.css";
 import { mean } from "lodash";
 import { setupCanvas, View } from "./lib/canvas";
-import { toPosId } from "./lib/grid";
-import { World } from "miniplex";
-import { createNewWorld } from "./ecs/engine";
+import { Pos, toPosId } from "./lib/grid";
+import { getOrCreateWorld } from "./ecs/engine";
 
 export type State = {
   fps: number;
@@ -18,8 +17,7 @@ export type State = {
     controls?: View;
     cursor?: View;
   };
-  worlds: { [key: string]: World };
-  worldPos: { x: number; y: number; z: number };
+  zone: Pos;
 };
 
 // for debugging
@@ -35,8 +33,7 @@ window.skulltooth = window.skulltooth || {};
 const state: State = {
   fps: 0,
   views: {},
-  worlds: {},
-  worldPos: { x: 0, y: 0, z: 0 },
+  zone: { x: 0, y: 0, z: 0 },
 };
 
 window.skulltooth.state = state;
@@ -47,19 +44,15 @@ export const setState = (callback: Function): void => {
 
 export const getState = (): State => state;
 
-export const getWorld = (): World => {
-  const worldPosId = toPosId(getState().worldPos);
-  return getState().worlds[worldPosId]
-}
-
 const init = async () => {
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);
 
-  const worldPosId = toPosId(getState().worldPos);
+  // const worldPosId = toPosId(getState().zone);
+  getOrCreateWorld(getState().zone)
 
-  setState((state: State) => {
-    state.worlds[worldPosId] = createNewWorld();
-  });
+  // setState((state: State) => {
+  //   state.worlds[worldPosId] = createNewWorld();
+  // });
 
   new View({
     width: 12,
