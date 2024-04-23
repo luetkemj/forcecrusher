@@ -10,7 +10,7 @@ type Entity = {
   }
 }
 
-export const start = () => {
+export const createNewWorld = () => {
   const world = new World<Entity>()
 
   return world
