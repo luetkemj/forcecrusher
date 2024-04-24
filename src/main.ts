@@ -1,12 +1,31 @@
 import "./style.css";
 import { mean } from "lodash";
 import { setupCanvas, View } from "./lib/canvas";
-import { toPosId } from "./lib/grid";
-import { World } from "miniplex";
-import { createNewWorld } from "./ecs/engine";
+import { renderSystem } from "./ecs/systems/render.system";
+import { movementSystem } from './ecs/systems/movement.system';
+import { userInputSystem } from './ecs/systems/userInput.system';
+import { generateDungeon } from "./pcgn/dungeon";
+import { world } from "./ecs/engine";
+import { playerPrefab } from "./actors";
+
+export const enum Turn {
+  PLAYER = "PLAYER",
+  WORLD = "WORLD",
+}
+
+export const enum GameState {
+  GAME = "GAME",
+  GAME_OVER = "GAME_OVER",
+  INVENTORY = "INVENTORY",
+  INSPECT = "INSPECT",
+  TARGET = "TARGET",
+}
 
 export type State = {
   fps: number;
+  gameState: GameState;
+  turn: Turn,
+  userInput: KeyboardEvent | null;
   views: {
     fps?: View;
     map?: View;
@@ -18,8 +37,6 @@ export type State = {
     controls?: View;
     cursor?: View;
   };
-  worlds: { [key: string]: World };
-  worldPos: { x: number; y: number; z: number };
 };
 
 // for debugging
@@ -35,8 +52,9 @@ window.skulltooth = window.skulltooth || {};
 const state: State = {
   fps: 0,
   views: {},
-  worlds: {},
-  worldPos: { x: 0, y: 0, z: 0 },
+  userInput: null,
+  turn: Turn.PLAYER,
+  gameState: GameState.GAME,
 };
 
 window.skulltooth.state = state;
@@ -47,19 +65,8 @@ export const setState = (callback: Function): void => {
 
 export const getState = (): State => state;
 
-export const getWorld = (): World => {
-  const worldPosId = toPosId(getState().worldPos);
-  return getState().worlds[worldPosId]
-}
-
 const init = async () => {
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);
-
-  const worldPosId = toPosId(getState().worldPos);
-
-  setState((state: State) => {
-    state.worlds[worldPosId] = createNewWorld();
-  });
 
   new View({
     width: 12,
@@ -203,7 +210,24 @@ const init = async () => {
     state.views.controls = controlsView;
   });
 
+  const dungeon = generateDungeon();
+  const startPos = dungeon.rooms[0].center;
+
+  const player = world.add(playerPrefab);
+  player.position!.x = startPos.x;
+  player.position!.y = startPos.y;
+  player.position!.z = startPos.z;
+
+
+  // initial render before kicking off the game loop
+  renderSystem();
   gameLoop();
+
+  document.addEventListener("keydown", (ev) => {
+    setState((state: State) => {
+      state.userInput = ev;
+    });
+  });
 };
 
 let fps = 0;
@@ -212,6 +236,30 @@ let fpsSamples: Array<Number> = [];
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
+
+  if (getState().gameState === GameState.GAME) {
+    // systems
+    if (getState().userInput && getState().turn === Turn.PLAYER) {
+      userInputSystem();
+      movementSystem();
+      renderSystem();
+
+      if (getState().gameState === GameState.GAME) {
+        setState((state: State) => {
+          state.turn = Turn.WORLD;
+        });
+      }
+    }
+
+    if (getState().turn === Turn.WORLD) {
+      movementSystem();
+      renderSystem();
+
+      setState((state: State) => {
+        state.turn = Turn.PLAYER;
+      });
+    }
+  }
 
   // Track FPS
   {
