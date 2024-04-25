@@ -9,7 +9,7 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] The generic Entity, the render functions, and the map
 - [x] Generating a dungeon
 - [x] Field of view
-- [ ] Placing enemies and kicking them (harmlessly)
+- [x] Placing enemies and kicking them (harmlessly)
 - [ ] Doing (and taking) some damage
 - [ ] Creating the Interface
   - [ ] Legend

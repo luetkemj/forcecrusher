@@ -4,6 +4,7 @@ export enum chars {
   "owlbear" = "F",
   "player" = "@",
   "potion" = "!",
+  "rat" = "r",
   "rock" = "*",
   "wall" = "#",
 }
@@ -14,6 +15,7 @@ export enum colors {
   "owlbear" = 0xa84300,
   "player" = 0xffffff,
   "potion" = 0xdaa520,
+  "rat" = 0xd65a77,
   "rock" = 0x7f7f7f,
   "wall" = 0x808080,
 }

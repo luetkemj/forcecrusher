@@ -1,43 +1,87 @@
-import { world } from "../engine";
+import { world, Entity } from "../engine";
 import { getState } from "../../main";
+import { View } from "../../lib/canvas";
 
-const pcEntities = world.with("pc", "position", "appearance");
-const inFovEntities = world.with("position", "appearance", "inFov");
-const revealedEntities = world.with("position", "appearance", "revealed").without("inFov");
+const inFovEntities100 = world.with(
+  "position",
+  "appearance",
+  "inFov",
+  "layer100",
+);
+const inFovEntities200 = world.with(
+  "position",
+  "appearance",
+  "inFov",
+  "layer200",
+);
+const inFovEntities300 = world.with(
+  "position",
+  "appearance",
+  "inFov",
+  "layer300",
+);
+const inFovEntities400 = world.with(
+  "position",
+  "appearance",
+  "inFov",
+  "layer400",
+);
+
+const revealedEntities200 = world
+  .with("position", "appearance", "revealed", "layer200")
+  .without("inFov");
+const revealedEntities100 = world
+  .with("position", "appearance", "revealed", "layer100")
+  .without("inFov");
+const revealedEntities300 = world
+  .with("position", "appearance", "revealed", "layer300")
+  .without("inFov");
+const revealedEntities400 = world
+  .with("position", "appearance", "revealed", "layer400")
+  .without("inFov");
+
+const renderEntity = (view: View, entity: Entity, alpha: number) => {
+  const { appearance, position } = entity;
+  if (!appearance || !position) return;
+
+  const { char, tint, tileSet } = appearance;
+  const { x, y } = position;
+
+  view?.updateCell({
+    0: { char, tint: 0x00ff00, alpha: 0, tileSet: "tile", x, y },
+    1: { char, tint, alpha, tileSet, x, y },
+  });
+};
 
 export const renderSystem = () => {
   const mapView = getState().views.map;
+  if (!mapView) return;
 
-  // inFOV
-  for (const { appearance, position } of inFovEntities) {
-    const { char, tint, tileSet } = appearance;
-    const { x, y } = position;
-
-    mapView?.updateCell({
-      0: { char, tint: 0x00ff00, alpha: 0, tileSet: "tile", x, y },
-      1: { char, tint, alpha: 1, tileSet, x, y },
-    });
+  // FOV
+  for (const entity of inFovEntities100) {
+    renderEntity(mapView, entity, 1);
+  }
+  for (const entity of inFovEntities200) {
+    renderEntity(mapView, entity, 1);
+  }
+  for (const entity of inFovEntities300) {
+    renderEntity(mapView, entity, 1);
+  }
+  for (const entity of inFovEntities400) {
+    renderEntity(mapView, entity, 1);
   }
 
-  // Revealed
-  for (const { appearance, position } of revealedEntities) {
-    const { char, tint, tileSet } = appearance;
-    const { x, y } = position;
-
-    mapView?.updateCell({
-      0: { char, tint: 0x00ff00, alpha: 0, tileSet: "tile", x, y },
-      1: { char, tint, alpha: 0.35, tileSet, x, y },
-    });
+  // REVEALED
+  for (const entity of revealedEntities100) {
+    renderEntity(mapView, entity, 0.35);
   }
-
-  // Player
-  for (const { appearance, position } of pcEntities) {
-    const { char, tint, tileSet } = appearance;
-    const { x, y } = position;
-
-    mapView?.updateCell({
-      0: { char, tint: 0x00ff00, alpha: 0, tileSet: "tile", x, y },
-      1: { char, tint, alpha: 1, tileSet, x, y },
-    });
+  for (const entity of revealedEntities200) {
+    renderEntity(mapView, entity, 0.35);
+  }
+  for (const entity of revealedEntities300) {
+    renderEntity(mapView, entity, 0.35);
+  }
+  for (const entity of revealedEntities400) {
+    renderEntity(mapView, entity, 0.35);
   }
 };

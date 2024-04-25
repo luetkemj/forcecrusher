@@ -9,7 +9,7 @@ import {
 } from "../lib/grid";
 // import { getState } from "../main";
 import { world } from "../ecs/engine";
-import { wallPrefab, floorPrefab } from "../actors";
+import { wallPrefab, floorPrefab, ratPrefab } from "../actors";
 
 type Tile = {
   x: number;
@@ -149,6 +149,12 @@ export const generateDungeon = () => {
       world.add({ ...floorPrefab, position: { x, y, z } });
     }
   }
+
+  dungeon.rooms.forEach((room, index) => {
+    if (index) {
+      world.add({...ratPrefab, position: room.center})
+    }
+  })
 
   return dungeon;
 };

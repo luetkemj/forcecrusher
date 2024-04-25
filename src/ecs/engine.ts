@@ -12,6 +12,10 @@ export type Entity = {
     current: number,
   },
   inFov?: true,
+  layer100?: true,
+  layer200?: true,
+  layer300?: true,
+  layer400?: true,
   opaque?: true,
   name?: string,
   paused?: true;
