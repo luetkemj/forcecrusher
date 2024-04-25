@@ -1,8 +1,9 @@
 import "./style.css";
 import { mean } from "lodash";
 import { setupCanvas, View } from "./lib/canvas";
-import { renderSystem } from "./ecs/systems/render.system";
+import { fovSystem } from './ecs/systems/fov.system';
 import { movementSystem } from './ecs/systems/movement.system';
+import { renderSystem } from "./ecs/systems/render.system";
 import { userInputSystem } from './ecs/systems/userInput.system';
 import { generateDungeon } from "./pcgn/dungeon";
 import { world } from "./ecs/engine";
@@ -220,6 +221,7 @@ const init = async () => {
 
 
   // initial render before kicking off the game loop
+  fovSystem();
   renderSystem();
   gameLoop();
 
@@ -242,6 +244,7 @@ function gameLoop() {
     if (getState().userInput && getState().turn === Turn.PLAYER) {
       userInputSystem();
       movementSystem();
+      fovSystem();
       renderSystem();
 
       if (getState().gameState === GameState.GAME) {
@@ -253,6 +256,7 @@ function gameLoop() {
 
     if (getState().turn === Turn.WORLD) {
       movementSystem();
+      fovSystem();
       renderSystem();
 
       setState((state: State) => {
