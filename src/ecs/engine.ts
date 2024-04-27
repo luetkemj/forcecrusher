@@ -8,6 +8,7 @@ export type Entity = {
     tileSet: string;
   };
   blocking?: true,
+  dead?: true,
   health?: {
     max: number,
     current: number,

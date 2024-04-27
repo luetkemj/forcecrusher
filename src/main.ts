@@ -11,6 +11,7 @@ import { world } from "./ecs/engine";
 import { playerPrefab } from "./actors";
 import { toPosId } from "./lib/grid";
 import { logFrozenEntity } from "./lib/utils";
+import { morgueSystem } from "./ecs/systems/morgue.system";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -268,6 +269,7 @@ function gameLoop() {
     if (getState().userInput && getState().turn === Turn.PLAYER) {
       userInputSystem();
       movementSystem();
+      morgueSystem();
       fovSystem();
       renderSystem();
 
@@ -281,6 +283,7 @@ function gameLoop() {
     if (getState().turn === Turn.WORLD) {
       aiSystem();
       movementSystem();
+      morgueSystem();
       fovSystem();
       renderSystem();
 

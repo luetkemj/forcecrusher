@@ -1,4 +1,4 @@
-import { random, times } from "lodash";
+import { cloneDeep, random, times } from "lodash";
 import {
   type Pos,
   type PosId,
@@ -142,17 +142,17 @@ export const generateDungeon = () => {
   for (const tile of tiles) {
     if (tile.sprite === "WALL") {
       const { x, y, z } = tile;
-      world.add({ ...wallPrefab, position: { x, y, z } });
+      world.add({ ...cloneDeep(wallPrefab), position: { x, y, z } });
     }
     if (tile.sprite === "FLOOR") {
       const { x, y, z } = tile;
-      world.add({ ...floorPrefab, position: { x, y, z } });
+      world.add({ ...cloneDeep(floorPrefab), position: { x, y, z } });
     }
   }
 
   dungeon.rooms.forEach((room, index) => {
     if (index) {
-      world.add({...ratPrefab, position: room.center})
+      world.add({...cloneDeep(ratPrefab), position: room.center})
     }
   })
 

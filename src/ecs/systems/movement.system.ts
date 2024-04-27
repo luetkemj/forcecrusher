@@ -15,7 +15,16 @@ export const movementSystem = () => {
         blocker.position.y === tryMove.y
       ) {
         world.removeComponent(entity, "tryMove");
-        console.log('you been blocked!')
+
+        if (blocker.health) {
+          // you have attacked!
+          blocker.health.current -= 5;
+
+          console.log(`${blocker.name} attacked by ${entity.name} for 5hp`);
+        } else {
+          console.log(`${entity.name} blocked by ${blocker.name}`);
+        }
+
         blocked = true;
 
         break;

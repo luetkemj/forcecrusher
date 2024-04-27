@@ -10,14 +10,17 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] Generating a dungeon
 - [x] Field of view
 - [x] Placing enemies and kicking them (harmlessly)
-- [ ] Doing (and taking) some damage
+- [x] Doing (and taking) some damage
   - [x] Enemy pathing
   - [x] Basic AI
   - [x] health component
-  - [ ] basic combat
+  - [x] basic combat
 - [ ] Creating the Interface
   - [ ] Legend
   - [ ] Controls list
+  - [ ] Combat log
+  - [ ] Ambient log
+  - [ ] Debug menu
 - [ ] Items and Inventory
   - [ ] Item entities
   - [ ] Inventory
