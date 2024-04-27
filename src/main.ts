@@ -1,6 +1,7 @@
 import "./style.css";
 import { mean } from "lodash";
 import { setupCanvas, View } from "./lib/canvas";
+import { aiSystem } from './ecs/systems/ai.system';
 import { fovSystem } from './ecs/systems/fov.system';
 import { movementSystem } from './ecs/systems/movement.system';
 import { renderSystem } from "./ecs/systems/render.system";
@@ -255,6 +256,7 @@ function gameLoop() {
     }
 
     if (getState().turn === Turn.WORLD) {
+      aiSystem();
       movementSystem();
       fovSystem();
       renderSystem();

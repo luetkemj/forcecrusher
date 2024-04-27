@@ -11,6 +11,8 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] Field of view
 - [x] Placing enemies and kicking them (harmlessly)
 - [ ] Doing (and taking) some damage
+  - [ ] Enemy pathing
+  - [ ] Basic AI
 - [ ] Creating the Interface
   - [ ] Legend
   - [ ] Controls list

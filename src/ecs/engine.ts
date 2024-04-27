@@ -1,6 +1,7 @@
 import { World } from "miniplex";
 
 export type Entity = {
+  ai?: true,
   appearance?: {
     char: string;
     tint: number;

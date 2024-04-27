@@ -22,8 +22,10 @@
     "vitest": "1.5.0"
   },
   "dependencies": {
+    "@types/pathfinding": "0.0.9",
     "lodash": "4.17.21",
     "miniplex": "2.0.0",
+    "pathfinding": "0.4.18",
     "pixi.js": "7.1.0"
   }
 }
