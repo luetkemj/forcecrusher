@@ -2,43 +2,10 @@ import { world, Entity } from "../engine";
 import { getState } from "../../main";
 import { View } from "../../lib/canvas";
 
-const inFovEntities100 = world.with(
-  "position",
-  "appearance",
-  "inFov",
-  "layer100",
-);
-const inFovEntities200 = world.with(
-  "position",
-  "appearance",
-  "inFov",
-  "layer200",
-);
-const inFovEntities300 = world.with(
-  "position",
-  "appearance",
-  "inFov",
-  "layer300",
-);
-const inFovEntities400 = world.with(
-  "position",
-  "appearance",
-  "inFov",
-  "layer400",
-);
-
-const revealedEntities200 = world
-  .with("position", "appearance", "revealed", "layer200")
-  .without("inFov");
-const revealedEntities100 = world
-  .with("position", "appearance", "revealed", "layer100")
-  .without("inFov");
-const revealedEntities300 = world
-  .with("position", "appearance", "revealed", "layer300")
-  .without("inFov");
-const revealedEntities400 = world
-  .with("position", "appearance", "revealed", "layer400")
-  .without("inFov");
+const renderableEntities100 = world.with("position", "appearance", "layer100");
+const renderableEntities200 = world.with("position", "appearance", "layer200");
+const renderableEntities300 = world.with("position", "appearance", "layer300");
+const renderableEntities400 = world.with("position", "appearance", "layer400");
 
 const renderEntity = (view: View, entity: Entity, alpha: number) => {
   const { appearance, position } = entity;
@@ -57,31 +24,63 @@ export const renderSystem = () => {
   const mapView = getState().views.map;
   if (!mapView) return;
 
-  // FOV
-  for (const entity of inFovEntities100) {
-    renderEntity(mapView, entity, 1);
+  // render entities currently in FOV
+  for (const entity of renderableEntities100) {
+    if (entity.inFov) {
+      renderEntity(mapView, entity, 1);
+    }
   }
-  for (const entity of inFovEntities200) {
-    renderEntity(mapView, entity, 1);
+  for (const entity of renderableEntities200) {
+    if (entity.inFov) {
+      renderEntity(mapView, entity, 1);
+    }
   }
-  for (const entity of inFovEntities300) {
-    renderEntity(mapView, entity, 1);
+  for (const entity of renderableEntities300) {
+    if (entity.inFov) {
+      renderEntity(mapView, entity, 1);
+    }
   }
-  for (const entity of inFovEntities400) {
-    renderEntity(mapView, entity, 1);
+  for (const entity of renderableEntities400) {
+    if (entity.inFov) {
+      renderEntity(mapView, entity, 1);
+    }
   }
 
-  // REVEALED
-  for (const entity of revealedEntities100) {
-    renderEntity(mapView, entity, 0.35);
+  // render revealed entities not currently in FOV
+  for (const entity of renderableEntities100) {
+    if (!entity.inFov && entity.revealed) {
+      renderEntity(mapView, entity, 0.35);
+    }
   }
-  for (const entity of revealedEntities200) {
-    renderEntity(mapView, entity, 0.35);
+  for (const entity of renderableEntities200) {
+    if (!entity.inFov && entity.revealed) {
+      renderEntity(mapView, entity, 0.35);
+    }
   }
-  for (const entity of revealedEntities300) {
-    renderEntity(mapView, entity, 0.35);
+  for (const entity of renderableEntities300) {
+    if (!entity.inFov && entity.revealed) {
+      renderEntity(mapView, entity, 0.35);
+    }
   }
-  for (const entity of revealedEntities400) {
-    renderEntity(mapView, entity, 0.35);
+  for (const entity of renderableEntities400) {
+    if (!entity.inFov && entity.revealed) {
+      renderEntity(mapView, entity, 0.35);
+    }
+  }
+
+  // make this key off of a cheat menu in state - so you can just render all the things immediately instead of having to wait a frame
+  if (window.skulltooth.debug) {
+    for (const entity of renderableEntities100) {
+      renderEntity(mapView, entity, 1);
+    }
+    for (const entity of renderableEntities200) {
+      renderEntity(mapView, entity, 1);
+    }
+    for (const entity of renderableEntities300) {
+      renderEntity(mapView, entity, 1);
+    }
+    for (const entity of renderableEntities400) {
+      renderEntity(mapView, entity, 1);
+    }
   }
 };

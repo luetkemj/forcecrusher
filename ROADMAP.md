@@ -13,7 +13,7 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] Doing (and taking) some damage
   - [x] Enemy pathing
   - [x] Basic AI
-  - [ ] health component
+  - [x] health component
   - [ ] basic combat
 - [ ] Creating the Interface
   - [ ] Legend
@@ -46,4 +46,5 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] Ability to shoot things from a ranged weapon
 - [ ] color coded logs (ale-dsi/brogue-esque)
   - [ ] support writing mutiple colors to a text row
+- [ ] Game cheats/debugging menu to toggle various modes
 
