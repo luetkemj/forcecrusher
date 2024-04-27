@@ -62,6 +62,7 @@ export const ratPrefab: Entity = {
   ...renderable,
   ...being,
   ai: true,
+  pathThrough: true,
   appearance: {
     char: chars.rat,
     tint: colors.rat,

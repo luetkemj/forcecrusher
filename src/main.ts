@@ -248,6 +248,7 @@ const init = async () => {
 
       for (const entity of entities) {
         if (posId === toPosId(entity.position)) {
+          console.log(posId)
           logFrozenEntity(entity);
         }
       }

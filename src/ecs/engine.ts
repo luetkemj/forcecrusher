@@ -18,6 +18,7 @@ export type Entity = {
   layer300?: true,
   layer400?: true,
   opaque?: true,
+  pathThrough?: true,
   name?: string,
   paused?: true;
   pc?: true,

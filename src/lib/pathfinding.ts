@@ -10,7 +10,7 @@ export const aStar = (start: Pos, goal: Pos) => {
   const matrix = new PF.Grid(width, height);
 
   for (const entity of entities) {
-    if (entity.blocking) {
+    if (entity.blocking && !entity.pathThrough) {
       const { x, y } = entity.position;
       matrix.setWalkableAt(x, y, false);
     }
