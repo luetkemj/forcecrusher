@@ -1,14 +1,16 @@
 import "./style.css";
 import { mean } from "lodash";
-import { setupCanvas, View } from "./lib/canvas";
-import { aiSystem } from './ecs/systems/ai.system';
-import { fovSystem } from './ecs/systems/fov.system';
-import { movementSystem } from './ecs/systems/movement.system';
+import { pxToPosId, setupCanvas, View } from "./lib/canvas";
+import { aiSystem } from "./ecs/systems/ai.system";
+import { fovSystem } from "./ecs/systems/fov.system";
+import { movementSystem } from "./ecs/systems/movement.system";
 import { renderSystem } from "./ecs/systems/render.system";
-import { userInputSystem } from './ecs/systems/userInput.system';
+import { userInputSystem } from "./ecs/systems/userInput.system";
 import { generateDungeon } from "./pcgn/dungeon";
 import { world } from "./ecs/engine";
 import { playerPrefab } from "./actors";
+import { toPosId } from "./lib/grid";
+import { logFrozenEntity } from "./lib/utils";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -26,7 +28,7 @@ export const enum GameState {
 export type State = {
   fps: number;
   gameState: GameState;
-  turn: Turn,
+  turn: Turn;
   userInput: KeyboardEvent | null;
   views: {
     fps?: View;
@@ -46,10 +48,12 @@ declare global {
   interface Window {
     skulltooth: {
       state: State;
+      debug: boolean;
     };
   }
 }
 window.skulltooth = window.skulltooth || {};
+window.skulltooth.debug = false;
 
 const state: State = {
   fps: 0,
@@ -220,7 +224,6 @@ const init = async () => {
   player.position!.y = startPos.y;
   player.position!.z = startPos.z;
 
-
   // initial render before kicking off the game loop
   fovSystem();
   renderSystem();
@@ -230,6 +233,25 @@ const init = async () => {
     setState((state: State) => {
       state.userInput = ev;
     });
+  });
+
+  // log entities on mouseclick at position
+  document.addEventListener("mousedown", (ev: any) => {
+    const x = ev.x - state.views.map!.layers[0].x;
+    const y = ev.layerY - state.views.map!.layers[0].y;
+    const z = 0;
+
+    const posId = pxToPosId(x, y, z);
+
+    if (window.skulltooth.debug === true || import.meta.env.DEV) {
+      const entities = world.with("position");
+
+      for (const entity of entities) {
+        if (posId === toPosId(entity.position)) {
+          logFrozenEntity(entity);
+        }
+      }
+    }
   });
 };
 
