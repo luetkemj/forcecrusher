@@ -18,6 +18,7 @@ export type Entity = {
   layer200?: true,
   layer300?: true,
   layer400?: true,
+  legendable?: true,
   opaque?: true,
   pathThrough?: true,
   name?: string,

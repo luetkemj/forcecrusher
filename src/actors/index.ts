@@ -30,6 +30,7 @@ export const playerPrefab: Entity = {
     tileSet: "ascii",
   },
   health: { max: 10, current: 10 },
+  legendable: true,
   name: "player",
   pc: true,
 };
@@ -62,12 +63,13 @@ export const ratPrefab: Entity = {
   ...renderable,
   ...being,
   ai: true,
-  pathThrough: true,
   appearance: {
     char: chars.rat,
     tint: colors.rat,
     tileSet: "ascii",
   },
   health: { max: 1, current: 1 },
+  legendable: true,
   name: "rat",
+  pathThrough: true,
 };

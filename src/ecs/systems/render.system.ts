@@ -1,6 +1,7 @@
 import { world, Entity } from "../engine";
+import { distance } from "../../lib/grid";
 import { getState, GameState } from "../../main";
-import { View } from "../../lib/canvas";
+import { View, UpdateRow } from "../../lib/canvas";
 
 const concatRow = (str: string, length: number): string => {
   let newStr = str;
@@ -23,10 +24,21 @@ const getAlpha = (index: number) => {
   return 1;
 };
 
+// for rendering the map
 const renderableEntities100 = world.with("position", "appearance", "layer100");
 const renderableEntities200 = world.with("position", "appearance", "layer200");
 const renderableEntities300 = world.with("position", "appearance", "layer300");
 const renderableEntities400 = world.with("position", "appearance", "layer400");
+
+// for rendering the legend
+const entitiesInFov = world.with(
+  "inFov",
+  "legendable",
+  "position",
+  "appearance",
+  "name"
+);
+const pcEntities = world.with("pc", "position");
 
 const renderEntity = (view: View, entity: Entity, alpha: number) => {
   const { appearance, position } = entity;
@@ -102,6 +114,47 @@ export const renderSystem = () => {
     }
     for (const entity of renderableEntities400) {
       renderEntity(mapView, entity, 1);
+    }
+  }
+
+  {
+    const sensesView = getState().views.senses;
+    // render sensory perception
+    const senses = getState().senses;
+    const width = sensesView!.width - 1;
+    sensesView?.updateRows([
+      [{ string: concatRow(senses.feel, width) }],
+      [{ string: concatRow(senses.see, width) }],
+      [{ string: concatRow(senses.hear, width) }],
+      [{ string: concatRow(senses.smell, width) }],
+      [{ string: concatRow(senses.taste, width) }],
+    ]);
+  }
+
+  {
+    const legendView = getState().views.legend;
+    if (legendView) {
+      const entities = [];
+      const [player] = pcEntities;
+
+      for (const entity of entitiesInFov) {
+        entities.push(entity);
+      }
+
+      entities.sort((entity) => distance(player.position, entity.position));
+
+      legendView?.clearView();
+
+      const rows: Array<Array<UpdateRow>> = [];
+      entities.forEach((entity) => {
+        const entityChar = entity.appearance.char;
+        const entityName = entity.name;
+
+        const string = `${entityChar} ${entityName}`;
+        rows.push([{ string }]);
+      });
+
+      legendView?.updateRows(rows);
     }
   }
 

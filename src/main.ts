@@ -30,6 +30,13 @@ export type State = {
   fps: number;
   gameState: GameState;
   log: Array<string>;
+  senses: {
+    feel: string;
+    see: string;
+    hear: string;
+    smell: string;
+    taste: string;
+  };
   turn: Turn;
   userInput: KeyboardEvent | null;
   views: {
@@ -61,6 +68,13 @@ const state: State = {
   fps: 0,
   gameState: GameState.GAME,
   log: ['hello world', 'your adventure begins anew!'],
+  senses: {
+    feel: "You feel nothing.",
+    see: "You see nothing.",
+    hear: "You hear nothing.",
+    smell: "You smell nothing.",
+    taste: "You taste nothing.",
+  },
   turn: Turn.PLAYER,
   userInput: null,
   views: {},
@@ -270,6 +284,7 @@ function gameLoop() {
     if (getState().userInput && getState().turn === Turn.PLAYER) {
       userInputSystem();
       fovSystem();
+      legendSystem();
       renderSystem();
     }
   }

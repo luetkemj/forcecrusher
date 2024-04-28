@@ -15,12 +15,11 @@ This is aspirational only. Expect anything and everything in this document to be
   - [x] Basic AI
   - [x] health component
   - [x] basic combat
-- [ ] Creating the Interface
-  - [ ] Legend
-  - [ ] Controls list
-  - [ ] Combat log
-  - [ ] Ambient log
-  - [ ] Debug menu
+- [x] Creating the Interface
+  - [x] Legend
+  - [x] Controls list
+  - [x] Combat log
+  - [x] Senses log
 - [ ] Items and Inventory
   - [ ] Item entities
   - [ ] Inventory
