@@ -67,7 +67,7 @@ window.skulltooth.debug = false;
 const state: State = {
   fps: 0,
   gameState: GameState.GAME,
-  log: ['hello world', 'your adventure begins anew!'],
+  log: ["hello world", "your adventure begins anew!"],
   senses: {
     feel: "You feel nothing.",
     see: "You see nothing.",
@@ -265,7 +265,7 @@ const init = async () => {
 
       for (const entity of entities) {
         if (posId === toPosId(entity.position)) {
-          console.log(posId)
+          console.log(posId);
           logFrozenEntity(entity);
         }
       }
@@ -284,7 +284,6 @@ function gameLoop() {
     if (getState().userInput && getState().turn === Turn.PLAYER) {
       userInputSystem();
       fovSystem();
-      legendSystem();
       renderSystem();
     }
   }
