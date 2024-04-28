@@ -1,3 +1,4 @@
+import { addLog } from "../../lib/utils";
 import { world } from "../engine";
 
 const moveableEntities = world.with("position", "tryMove");
@@ -20,9 +21,13 @@ export const movementSystem = () => {
           // you have attacked!
           blocker.health.current -= 5;
 
-          console.log(`${blocker.name} attacked by ${entity.name} for 5hp`);
+          if (entity.pc) {
+            addLog(`${blocker.name} attacked by ${entity.name} for 5hp`);
+          }
         } else {
-          console.log(`${entity.name} blocked by ${blocker.name}`);
+          if (entity.pc) {
+            addLog(`${entity.name} blocked by ${blocker.name}`);
+          }
         }
 
         blocked = true;

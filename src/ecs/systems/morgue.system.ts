@@ -1,5 +1,6 @@
 import { world } from "../engine";
 import { setState, State, GameState } from "../../main";
+import { addLog } from "../../lib/utils";
 
 const livingEntities = world.with("health").without("dead");
 
@@ -17,7 +18,7 @@ export const morgueSystem = () => {
       world.addComponent(entity, "dead", true);
       world.addComponent(entity, "layer200", true);
 
-      console.log(`${entity.name} has died!`);
+      addLog(`${entity.name} has died!`);
 
       if (entity.pc) {
         setState((state: State) => (state.gameState = GameState.GAME_OVER));
