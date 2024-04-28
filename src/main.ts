@@ -29,6 +29,7 @@ export const enum GameState {
 export type State = {
   fps: number;
   gameState: GameState;
+  log: Array<string>;
   turn: Turn;
   userInput: KeyboardEvent | null;
   views: {
@@ -58,10 +59,11 @@ window.skulltooth.debug = false;
 
 const state: State = {
   fps: 0,
-  views: {},
-  userInput: null,
-  turn: Turn.PLAYER,
   gameState: GameState.GAME,
+  log: ['hello world', 'your adventure begins anew!'],
+  turn: Turn.PLAYER,
+  userInput: null,
+  views: {},
 };
 
 window.skulltooth.state = state;
@@ -263,6 +265,14 @@ let fpsSamples: Array<Number> = [];
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
+
+  if (getState().gameState === GameState.INVENTORY) {
+    if (getState().userInput && getState().turn === Turn.PLAYER) {
+      userInputSystem();
+      fovSystem();
+      renderSystem();
+    }
+  }
 
   if (getState().gameState === GameState.GAME) {
     // systems

@@ -24,6 +24,10 @@ export const userInputSystem = () => {
   const { key } = userInput;
 
   if (gameState === GameState.GAME) {
+    if (key === "i") {
+      setState((state: State) => (state.gameState = GameState.INVENTORY));
+    }
+
     if (moveKeys.includes(key)) {
       for (const entity of pcEntities) {
         if (entity?.position) {
@@ -47,6 +51,12 @@ export const userInputSystem = () => {
           }
         }
       }
+    }
+  }
+
+  if (gameState === GameState.INVENTORY) {
+    if (key === "i" || key === "Escape") {
+      setState((state: State) => (state.gameState = GameState.GAME));
     }
   }
 

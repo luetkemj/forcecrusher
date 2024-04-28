@@ -1,6 +1,27 @@
 import { world, Entity } from "../engine";
-import { getState } from "../../main";
+import { getState, GameState } from "../../main";
 import { View } from "../../lib/canvas";
+
+const concatRow = (str: string, length: number): string => {
+  let newStr = str;
+  if (newStr.length > length) {
+    const trimLength = newStr.length - (length - 3);
+    newStr = newStr
+      .substring(0, newStr.length - trimLength)
+      .trim()
+      .concat("...");
+  }
+  return newStr;
+};
+
+// create a gradiant across rows
+const getAlpha = (index: number) => {
+  if (index < 4) {
+    return (100 - (5 - index) * 7) / 100;
+  }
+
+  return 1;
+};
 
 const renderableEntities100 = world.with("position", "appearance", "layer100");
 const renderableEntities200 = world.with("position", "appearance", "layer200");
@@ -81,6 +102,38 @@ export const renderSystem = () => {
     }
     for (const entity of renderableEntities400) {
       renderEntity(mapView, entity, 1);
+    }
+  }
+
+  {
+    const logView = getState().views.log;
+    if (logView) {
+      // render log
+      const log = getState().log;
+      const messages = log.slice(Math.max(log.length - 5, 0));
+      const width = logView!.width - 1;
+
+      logView?.updateRows(
+        messages.map((message: string, index: number) => {
+          return [
+            { string: concatRow(message, width), alpha: getAlpha(index) },
+          ];
+        })
+      );
+    }
+  }
+
+  // render controls
+  const controlsView = getState().views.controls;
+  if (controlsView) {
+    {
+      let controls = "(arrows/hjkl)Move (i)Inventory";
+
+      if (getState().gameState === GameState.INVENTORY) {
+        controls = "(i/escape)Return to Game (d)Drop (c)Consume";
+      }
+
+      controlsView?.updateRows([[], [{ string: controls }]]);
     }
   }
 };
