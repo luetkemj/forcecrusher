@@ -21,7 +21,7 @@ export const movementSystem = () => {
           // you have attacked!
           blocker.health.current -= 5;
 
-          if (entity.pc) {
+          if (entity.pc || blocker.pc) {
             addLog(`${blocker.name} attacked by ${entity.name} for 5hp`);
           }
         } else {
