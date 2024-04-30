@@ -2,7 +2,7 @@ import { world } from "../engine";
 import { GameState, State, getState, setState } from "../../main";
 import { toPosId } from "../../lib/grid";
 import { isUndefined } from "lodash";
-import { addLog } from "../../lib/utils";
+import { addLog, logFrozenEntity } from "../../lib/utils";
 
 const moveKeys = [
   "ArrowLeft",
@@ -78,6 +78,40 @@ export const userInputSystem = () => {
       if (noPickUps) {
         addLog("There is nothing to pickup");
       }
+    }
+
+    if (key === "d") {
+      do {
+        if (!player.container) {
+          addLog(`You can't drop without a container to hold.`);
+          break;
+        }
+
+        // check if player has inventory
+        if (!player.container?.contents.length) {
+          addLog("You have nothing to drop");
+          break;
+        }
+
+        const tryDropEntityId = player.container.contents[0];
+        const tryDropEntity = world.entity(tryDropEntityId);
+        if (!tryDropEntity) {
+          console.log(`id: ${tryDropEntityId} does not exist.`);
+          logFrozenEntity(player);
+          break;
+        }
+
+        // add tryDrop to first item in inventory
+        const playerId = world.id(player);
+        if (isUndefined(playerId)) {
+          break;
+        }
+
+        world.addComponent(tryDropEntity, "tryDrop", {
+          dropperId: playerId,
+        });
+        break;
+      } while (true);
     }
   }
 

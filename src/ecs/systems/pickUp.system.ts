@@ -4,12 +4,10 @@ import { world } from "../engine";
 
 const pcEntities = world.with('pc');
 const entitiesBeingPickedUp = world.with("tryPickUp");
-// const entitiesBeingDropped = world.with("tryDrop");
 
-export const inventorySystem = () => {
+export const pickUpSystem = () => {
   const [player] = pcEntities
 
-  // handle pickups
   for (const entity of entitiesBeingPickedUp) {
     if (!entity.pickUp) {
       console.log(`Entity is not a pickup`);

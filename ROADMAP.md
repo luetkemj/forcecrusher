@@ -24,7 +24,7 @@ This is aspirational only. Expect anything and everything in this document to be
   - [x] Item entities
   - [x] Inventory
   - [ ] Inventory UI
-  - [ ] Pickup controls
+  - [x] Pickup controls
   - [ ] Drop controls
   - [ ] Healing potion
     - [ ] Effects system

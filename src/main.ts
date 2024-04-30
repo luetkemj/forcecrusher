@@ -3,7 +3,8 @@ import { mean } from "lodash";
 import { pxToPosId, setupCanvas, View } from "./lib/canvas";
 import { aiSystem } from "./ecs/systems/ai.system";
 import { fovSystem } from "./ecs/systems/fov.system";
-import { inventorySystem } from "./ecs/systems/inventory.system";
+import { dropSystem } from "./ecs/systems/dropSystem";
+import { pickUpSystem } from "./ecs/systems/pickUp.system";
 import { movementSystem } from "./ecs/systems/movement.system";
 import { renderSystem } from "./ecs/systems/render.system";
 import { userInputSystem } from "./ecs/systems/userInput.system";
@@ -293,7 +294,8 @@ function gameLoop() {
     // systems
     if (getState().userInput && getState().turn === Turn.PLAYER) {
       userInputSystem();
-      inventorySystem();
+      pickUpSystem();
+      dropSystem();
       movementSystem();
       morgueSystem();
       fovSystem();

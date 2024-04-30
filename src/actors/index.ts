@@ -29,7 +29,7 @@ export const playerPrefab: Entity = {
     tint: colors.player,
     tileSet: "ascii",
   },
-  health: { max: 10, current: 10 },
+  health: { max: 1000, current: 1000 },
   legendable: true,
   name: "player",
   pc: true,
