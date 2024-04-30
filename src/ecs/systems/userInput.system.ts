@@ -1,5 +1,8 @@
 import { world } from "../engine";
 import { GameState, State, getState, setState } from "../../main";
+import { toPosId } from "../../lib/grid";
+import { isUndefined } from "lodash";
+import { addLog } from "../../lib/utils";
 
 const moveKeys = [
   "ArrowLeft",
@@ -13,6 +16,7 @@ const moveKeys = [
 ];
 
 const pcEntities = world.with("pc");
+const pickUpEntities = world.with("pickUp");
 
 export const userInputSystem = () => {
   const { userInput, gameState } = getState();
@@ -22,6 +26,8 @@ export const userInputSystem = () => {
     });
 
   const { key } = userInput;
+
+  const [player] = pcEntities;
 
   if (gameState === GameState.GAME) {
     if (key === "i") {
@@ -35,21 +41,42 @@ export const userInputSystem = () => {
 
           if (key === "h" || key === "ArrowLeft") {
             const newPos = { x: x - 1, y, z };
-            world.addComponent(entity, 'tryMove', newPos)
+            world.addComponent(entity, "tryMove", newPos);
           }
           if (key === "j" || key === "ArrowDown") {
             const newPos = { x, y: y + 1, z };
-            world.addComponent(entity, 'tryMove', newPos)
+            world.addComponent(entity, "tryMove", newPos);
           }
           if (key === "k" || key === "ArrowUp") {
             const newPos = { x, y: y - 1, z };
-            world.addComponent(entity, 'tryMove', newPos)
+            world.addComponent(entity, "tryMove", newPos);
           }
           if (key === "l" || key === "ArrowRight") {
             const newPos = { x: x + 1, y, z };
-            world.addComponent(entity, 'tryMove', newPos)
+            world.addComponent(entity, "tryMove", newPos);
           }
         }
+      }
+    }
+
+    if (key === "g") {
+      // check if player is standing on a pickup
+      // if standing on a pickup - try to pick it up
+      let noPickUps = true;
+      for (const entity of pickUpEntities) {
+        if (!player.position || !entity.position) break;
+
+        if (toPosId(player.position) === toPosId(entity.position)) {
+          const playerId = world.id(player);
+          if (!isUndefined(playerId)) {
+            world.addComponent(entity, "tryPickUp", { pickerId: playerId });
+            noPickUps = false;
+          }
+        }
+      }
+
+      if (noPickUps) {
+        addLog("There is nothing to pickup");
       }
     }
   }

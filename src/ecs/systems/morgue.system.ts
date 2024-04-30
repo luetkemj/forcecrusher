@@ -16,6 +16,7 @@ export const morgueSystem = () => {
       world.removeComponent(entity, "layer300");
 
       world.addComponent(entity, "dead", true);
+      world.addComponent(entity, "pickUp", true);
       world.addComponent(entity, "layer200", true);
 
       addLog(`${entity.name} has died!`);

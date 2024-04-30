@@ -8,7 +8,14 @@ export type Entity = {
     tileSet: string;
   };
   blocking?: true,
+  container?: {
+    name: string,
+    description: string,
+    contents: Array<number>,
+    slots: number,
+  },
   dead?: true,
+  description?: string,
   health?: {
     max: number,
     current: number,
@@ -21,12 +28,14 @@ export type Entity = {
   legendable?: true,
   opaque?: true,
   pathThrough?: true,
+  pickUp?: true,
   name?: string,
   paused?: true;
   pc?: true,
   position?: { x: number; y: number; z: number };
   revealed?: true;
   tryMove?: { x: number; y: number; z: number };
+  tryPickUp?: { pickerId: number };
 };
 
 export const world = new World<Entity>();

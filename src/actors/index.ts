@@ -33,6 +33,12 @@ export const playerPrefab: Entity = {
   legendable: true,
   name: "player",
   pc: true,
+  container: {
+    name: 'Haversack',
+    description: "A simple medium sized burlap pouch with a single shoulder strap.",
+    slots: 1,
+    contents: [],
+  },
 };
 
 export const wallPrefab: Entity = {
@@ -73,3 +79,15 @@ export const ratPrefab: Entity = {
   name: "rat",
   pathThrough: true,
 };
+
+export const rock: Entity = {
+  ...renderable,
+  appearance: {
+    char: chars.rock,
+    tint: colors.rock,
+    tileSet: 'ascii',
+  },
+  legendable: true,
+  name: 'Rock',
+  description: 'A small rock for throwing',
+}
