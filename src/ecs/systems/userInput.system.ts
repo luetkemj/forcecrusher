@@ -64,13 +64,13 @@ export const userInputSystem = () => {
       // if standing on a pickup - try to pick it up
       let noPickUps = true;
       for (const entity of pickUpEntities) {
-        if (!player.position || !entity.position) break;
-
-        if (toPosId(player.position) === toPosId(entity.position)) {
-          const playerId = world.id(player);
-          if (!isUndefined(playerId)) {
-            world.addComponent(entity, "tryPickUp", { pickerId: playerId });
-            noPickUps = false;
+        if (player.position && entity.position) {
+          if (toPosId(player.position) === toPosId(entity.position)) {
+            const playerId = world.id(player);
+            if (!isUndefined(playerId)) {
+              world.addComponent(entity, "tryPickUp", { pickerId: playerId });
+              noPickUps = false;
+            }
           }
         }
       }

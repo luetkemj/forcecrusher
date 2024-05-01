@@ -158,6 +158,43 @@ export const renderSystem = () => {
     }
   }
 
+  // render inventory
+  {
+    const menuUnderlayView = getState().views.menuUnderlay;
+    const inventoryView = getState().views.inventory;
+
+    if (getState().gameState === GameState.INVENTORY) {
+      // actually render the inventory
+      // get player entity
+      const [player] = pcEntities;
+      if (!player) return;
+
+      const rows: Array<Array<UpdateRow>> = [];
+      const playerInventory = player.container?.contents || [];
+      const itemsInInventory = playerInventory.map((eId) =>
+        world.entity(eId)
+      );
+
+      itemsInInventory.forEach((item) => {
+        rows.push([
+          {},
+          {
+            string: `${item?.appearance?.char} ${item?.name}`,
+          },
+        ]);
+      });
+
+      // console.log(rows);
+      menuUnderlayView?.show();
+      inventoryView?.clearView();
+      inventoryView?.updateRows(rows);
+      inventoryView?.show();
+    } else {
+      menuUnderlayView?.hide();
+      inventoryView?.hide();
+    }
+  }
+
   {
     const logView = getState().views.log;
     if (logView) {

@@ -36,7 +36,7 @@ export const playerPrefab: Entity = {
   container: {
     name: 'Haversack',
     description: "A simple medium sized burlap pouch with a single shoulder strap.",
-    slots: 1,
+    slots: 10,
     contents: [],
   },
 };

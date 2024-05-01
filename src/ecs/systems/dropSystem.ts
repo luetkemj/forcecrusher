@@ -55,7 +55,6 @@ export const dropSystem = () => {
     world.addComponent(entity, "position", { ...position });
 
     // remove item from dropper's inventory
-    console.log(dropperEntity, entityId);
     remove(dropperEntity.container.contents, (id) => entityId === id);
     world.removeComponent(entity, "tryDrop");
 
