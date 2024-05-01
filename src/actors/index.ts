@@ -77,10 +77,11 @@ export const ratPrefab: Entity = {
   health: { max: 1, current: 1 },
   legendable: true,
   name: "rat",
+  description: "A medium-sized, long-tailed rodent",
   pathThrough: true,
 };
 
-export const rock: Entity = {
+export const rockPrefab: Entity = {
   ...renderable,
   appearance: {
     char: chars.rock,
@@ -90,4 +91,6 @@ export const rock: Entity = {
   legendable: true,
   name: 'Rock',
   description: 'A small rock for throwing',
+  layer200: true,
+  pickUp: true,
 }

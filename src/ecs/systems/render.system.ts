@@ -171,15 +171,13 @@ export const renderSystem = () => {
 
       const rows: Array<Array<UpdateRow>> = [];
       const playerInventory = player.container?.contents || [];
-      const itemsInInventory = playerInventory.map((eId) =>
-        world.entity(eId)
-      );
+      const itemsInInventory = playerInventory.map((eId) => world.entity(eId));
 
       itemsInInventory.forEach((item) => {
         rows.push([
           {},
           {
-            string: `${item?.appearance?.char} ${item?.name}`,
+            string: `${item?.appearance?.char} ${item?.name} ${item?.description}`,
           },
         ]);
       });

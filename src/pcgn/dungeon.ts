@@ -1,4 +1,4 @@
-import { cloneDeep, random, times } from "lodash";
+import { cloneDeep, random, sample, times } from "lodash";
 import {
   type Pos,
   type PosId,
@@ -7,9 +7,8 @@ import {
   rectsIntersect,
   toPosId,
 } from "../lib/grid";
-// import { getState } from "../main";
 import { world } from "../ecs/engine";
-import { wallPrefab, floorPrefab, ratPrefab } from "../actors";
+import { wallPrefab, floorPrefab, ratPrefab, rockPrefab } from "../actors";
 
 type Tile = {
   x: number;
@@ -151,8 +150,9 @@ export const generateDungeon = () => {
   }
 
   dungeon.rooms.forEach((room, index) => {
+    const spawn = sample([ratPrefab, rockPrefab]);
     if (index) {
-      world.add({...cloneDeep(ratPrefab), position: room.center})
+      world.add({...cloneDeep(spawn), position: room.center})
     }
   })
 
