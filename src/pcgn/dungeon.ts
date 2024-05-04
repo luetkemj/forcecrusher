@@ -150,7 +150,7 @@ export const generateDungeon = () => {
   }
 
   dungeon.rooms.forEach((room, index) => {
-    const spawn = sample([ratPrefab, healthPotionPrefab]);
+    const spawn = sample([ratPrefab, rockPrefab, healthPotionPrefab]);
     if (index) {
       world.add({...cloneDeep(spawn), position: room.center})
     }
