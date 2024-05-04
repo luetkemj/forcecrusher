@@ -8,7 +8,7 @@ import {
   toPosId,
 } from "../lib/grid";
 import { world } from "../ecs/engine";
-import { wallPrefab, floorPrefab, ratPrefab, rockPrefab } from "../actors";
+import { healthPotionPrefab, wallPrefab, floorPrefab, ratPrefab, rockPrefab } from "../actors";
 
 type Tile = {
   x: number;
@@ -150,7 +150,7 @@ export const generateDungeon = () => {
   }
 
   dungeon.rooms.forEach((room, index) => {
-    const spawn = sample([ratPrefab, rockPrefab]);
+    const spawn = sample([ratPrefab, healthPotionPrefab]);
     if (index) {
       world.add({...cloneDeep(spawn), position: room.center})
     }

@@ -1,7 +1,7 @@
 import { world } from "../engine";
 import { GameState, State, getState, setState } from "../../main";
 import { toPosId } from "../../lib/grid";
-import { isUndefined } from "lodash";
+import { isUndefined, remove } from "lodash";
 import { addLog, logFrozenEntity } from "../../lib/utils";
 
 const moveKeys = [
@@ -79,6 +79,12 @@ export const userInputSystem = () => {
         addLog("There is nothing to pickup");
       }
     }
+  }
+
+  if (gameState === GameState.INVENTORY) {
+    if (key === "i" || key === "Escape") {
+      setState((state: State) => (state.gameState = GameState.GAME));
+    }
 
     if (key === "d") {
       do {
@@ -113,11 +119,46 @@ export const userInputSystem = () => {
         break;
       } while (true);
     }
-  }
 
-  if (gameState === GameState.INVENTORY) {
-    if (key === "i" || key === "Escape") {
-      setState((state: State) => (state.gameState = GameState.GAME));
+    if (key === "c") {
+      do {
+        if (!player.container) {
+          addLog(`You have no container to hold consumables`);
+          break;
+        }
+
+        // check if player has inventory
+        if (!player.container?.contents.length) {
+          addLog("You have nothing to consume");
+          break;
+        }
+
+        const consumeableId = player.container.contents[0];
+        const consumable = world.entity(consumeableId);
+        if (!consumable) {
+          console.log(`id: ${consumeableId} does not exist.`);
+          logFrozenEntity(player);
+          break;
+        }
+
+        if (!consumable.consumable) {
+          addLog(`${player.name} cannot consume ${consumable.name}`);
+          break;
+        }
+
+        if (consumable.effects) {
+          player.activeEffects!.push(...consumable.effects);
+        }
+
+        // remove consumable from inventory
+        remove(player.container.contents, (id) => consumeableId === id);
+
+        // delete entity from world
+        // do I want to do that.....?
+        addLog(`${player.name} consumes ${consumable.name}`);
+        world.remove(consumable);
+        break;
+      } while (true);
     }
   }
 

@@ -26,8 +26,8 @@ This is aspirational only. Expect anything and everything in this document to be
   - [x] Inventory UI
   - [x] Pickup controls
   - [x] Drop controls
-  - [ ] Healing potion
-    - [ ] Effects system
+  - [x] Healing potion
+    - [x] Effects system
 - [ ] Ranged Weapons and Targeting
   - [ ] Cursor (inspect ui)
   - [ ] Targeting UI (for throwing)

@@ -1,9 +1,10 @@
 import "./style.css";
 import { mean } from "lodash";
 import { pxToPosId, setupCanvas, View } from "./lib/canvas";
+import { activeEffectsSystem } from "./ecs/systems/activeEffects.system";
 import { aiSystem } from "./ecs/systems/ai.system";
 import { fovSystem } from "./ecs/systems/fov.system";
-import { dropSystem } from "./ecs/systems/dropSystem";
+import { dropSystem } from "./ecs/systems/drop.system";
 import { pickUpSystem } from "./ecs/systems/pickUp.system";
 import { movementSystem } from "./ecs/systems/movement.system";
 import { renderSystem } from "./ecs/systems/render.system";
@@ -284,7 +285,9 @@ function gameLoop() {
 
   if (getState().gameState === GameState.INVENTORY) {
     if (getState().userInput && getState().turn === Turn.PLAYER) {
+      activeEffectsSystem();
       userInputSystem();
+      dropSystem();
       fovSystem();
       renderSystem();
     }
@@ -293,6 +296,7 @@ function gameLoop() {
   if (getState().gameState === GameState.GAME) {
     // systems
     if (getState().userInput && getState().turn === Turn.PLAYER) {
+      activeEffectsSystem();
       userInputSystem();
       pickUpSystem();
       dropSystem();
@@ -309,6 +313,7 @@ function gameLoop() {
     }
 
     if (getState().turn === Turn.WORLD) {
+      activeEffectsSystem();
       aiSystem();
       movementSystem();
       morgueSystem();

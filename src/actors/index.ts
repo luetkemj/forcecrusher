@@ -34,11 +34,16 @@ export const playerPrefab: Entity = {
   name: "player",
   pc: true,
   container: {
-    name: 'Haversack',
-    description: "A simple medium sized burlap pouch with a single shoulder strap.",
+    name: "Haversack",
+    description:
+      "A simple medium sized burlap pouch with a single shoulder strap.",
     slots: 10,
     contents: [],
   },
+  activeEffects: [
+    { delta: -5, component: "health" },
+    { delta: -1, component: "health" },
+  ],
 };
 
 export const wallPrefab: Entity = {
@@ -86,11 +91,27 @@ export const rockPrefab: Entity = {
   appearance: {
     char: chars.rock,
     tint: colors.rock,
-    tileSet: 'ascii',
+    tileSet: "ascii",
   },
   legendable: true,
-  name: 'Rock',
-  description: 'A small rock for throwing',
+  name: "Rock",
+  description: "A small rock for throwing",
   layer200: true,
   pickUp: true,
-}
+};
+
+export const healthPotionPrefab: Entity = {
+  ...renderable,
+  appearance: {
+    char: chars.potion,
+    tint: colors.potion,
+    tileSet: "ascii",
+  },
+  consumable: true,
+  legendable: true,
+  name: "Health Potion",
+  description: "A syrupy red liquid in a small glass vile",
+  effects: [{ component: "health", delta: 10 }],
+  layer200: true,
+  pickUp: true,
+};
