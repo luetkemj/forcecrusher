@@ -14,13 +14,14 @@ This is aspirational only. Expect anything and everything in this document to be
   - [x] Enemy pathing
   - [x] Basic AI
   - [x] health component
+  - [x] Morgue System
   - [x] basic combat
 - [x] Creating the Interface
   - [x] Legend
   - [x] Controls list
   - [x] Combat log
   - [x] Senses log
-- [ ] Items and Inventory
+- [x] Items and Inventory
   - [x] Item entities
   - [x] Inventory
   - [x] Inventory UI
@@ -32,7 +33,6 @@ This is aspirational only. Expect anything and everything in this document to be
   - [ ] Cursor (inspect ui)
   - [ ] Targeting UI (for throwing)
   - [ ] Ability to throw things to a specified location
-  - [ ] Coroner System
   - [ ] Damage System
   - [ ] Disallow throwing on and through walls
   - [ ] Thrown item cause damage
@@ -40,6 +40,9 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] Delving into the Dungeon
 - [ ] Increasing Difficulty
 - [ ] Gearing up
+
+---
+
 - [ ] Containers
 - [ ] AI for actors to use own inventory
 - [ ] Materials
