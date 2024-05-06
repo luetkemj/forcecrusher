@@ -1,21 +1,26 @@
 import "./style.css";
 import { mean } from "lodash";
+
 import { pxToPosId, setupCanvas, View } from "./lib/canvas";
+import { Pos, toPosId } from "./lib/grid";
+import { logFrozenEntity } from "./lib/utils";
+
 import { activeEffectsSystem } from "./ecs/systems/activeEffects.system";
 import { aiSystem } from "./ecs/systems/ai.system";
 import { cursorSystem } from "./ecs/systems/cursor.system";
 import { fovSystem } from "./ecs/systems/fov.system";
 import { dropSystem } from "./ecs/systems/drop.system";
-import { pickUpSystem } from "./ecs/systems/pickUp.system";
+import { morgueSystem } from "./ecs/systems/morgue.system";
 import { movementSystem } from "./ecs/systems/movement.system";
+import { pickUpSystem } from "./ecs/systems/pickUp.system";
 import { renderSystem } from "./ecs/systems/render.system";
+import { throwSystem } from "./ecs/systems/throw.system";
 import { userInputSystem } from "./ecs/systems/userInput.system";
+
 import { generateDungeon } from "./pcgn/dungeon";
+
 import { world } from "./ecs/engine";
 import { playerPrefab } from "./actors";
-import { Pos, toPosId } from "./lib/grid";
-import { logFrozenEntity } from "./lib/utils";
-import { morgueSystem } from "./ecs/systems/morgue.system";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -301,6 +306,7 @@ function gameLoop() {
       userInputSystem();
       // fovSystem();
       cursorSystem();
+      throwSystem();
       // legendSystem();
       renderSystem();
     }

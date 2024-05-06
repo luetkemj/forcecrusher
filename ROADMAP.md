@@ -32,8 +32,8 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] Ranged Weapons and Targeting
   - [x] Cursor 
   - [x] Show what is under cursor in sensory log
-  - [ ] Targeting UI (for throwing)
-  - [ ] Ability to throw things to a specified location
+  - [x] Targeting UI (for throwing)
+  - [x] Ability to throw things to a specified location
   - [ ] Damage System
   - [ ] Disallow throwing on and through walls
   - [ ] Thrown item cause damage

@@ -256,6 +256,10 @@ export const renderSystem = () => {
         controls = "(L/escape)Return to Game (arrows/hjkl)Move cursor";
       }
 
+      if (getState().gameState === GameState.TARGET) {
+        controls = "(t/escape)Return to Inventory (arrows/hjkl)Move cursor (enter)Throw item";
+      }
+
       if (getState().gameState === GameState.INVENTORY) {
         controls = "(i/escape)Return to Game (d)Drop (c)Consume";
       }

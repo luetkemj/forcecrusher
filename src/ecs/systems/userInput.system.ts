@@ -36,7 +36,9 @@ export const userInputSystem = () => {
 
     if (key === "L") {
       setState((state: State) => (state.gameState = GameState.INSPECT));
-      setState((state: State) => (state.cursor = [player.position, player.position]));
+      setState(
+        (state: State) => (state.cursor = [player.position, player.position]),
+      );
     }
 
     if (moveKeys.includes(key)) {
@@ -93,8 +95,29 @@ export const userInputSystem = () => {
       }
     }
     if (gameState === GameState.TARGET) {
-      if (key === "Escape") {
+      if (key === "t" || key === "Escape") {
         setState((state: State) => (state.gameState = GameState.INVENTORY));
+      }
+
+      if (key === "Enter") {
+        // get first item in inventory and add a tryThrow component
+        // with a throwerId and targetPosition
+        const entityId = player.container?.contents[0];
+        if (entityId) {
+          const entity = world.entity(entityId);
+
+          if (entity) {
+            const playerId = world.id(player);
+            if (!isUndefined(playerId)) {
+              world.addComponent(entity, "tryThrow", {
+                throwerId: playerId,
+              });
+            }
+          }
+        }
+
+        // how to switch back to game and update turn??
+        // setState((state: State) => (state.gameState = GameState.GAME));
       }
     }
 
@@ -213,6 +236,16 @@ export const userInputSystem = () => {
         world.remove(consumable);
         break;
       } while (true);
+    }
+
+    if (key === "t") {
+      // if items in inventory - enter target mode
+      if (player.container?.contents.length) {
+        setState((state: State) => {
+          state.gameState = GameState.TARGET;
+          state.cursor = [player.position, player.position];
+        });
+      }
     }
   }
 

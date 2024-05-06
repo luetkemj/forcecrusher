@@ -50,6 +50,7 @@ export type Entity = {
   tryDrop?: { dropperId: number };
   tryMove?: { x: number; y: number; z: number };
   tryPickUp?: { pickerId: number };
+  tryThrow?: { throwerId: number };
 };
 
 export const world = new World<Entity>();
