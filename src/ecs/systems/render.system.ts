@@ -211,11 +211,50 @@ export const renderSystem = () => {
     }
   }
 
+  // render cursor for inspection/targeting
+  {
+    const [pos0, pos1] = getState().cursor;
+    const cursorProps = {
+      char: "",
+      tint: 0x00ff77,
+      tileSet: "tile",
+      alpha: 0,
+      x: pos0.x,
+      y: pos0.y,
+    };
+    if (
+      getState().gameState === GameState.INSPECT ||
+      getState().gameState === GameState.TARGET
+    ) {
+      // clear last cursor
+      mapView?.updateCell({
+        2: { ...cursorProps, alpha: 0, x: pos0.x, y: pos0.y },
+      });
+      // draw new cursor
+      mapView?.updateCell({
+        2: { ...cursorProps, alpha: 0.25, x: pos1.x, y: pos1.y },
+      });
+    } else {
+      // hide cursor
+      mapView?.updateCell({
+        2: { ...cursorProps, alpha: 0, x: pos1.x, y: pos1.y },
+      });
+    }
+  }
+  
   // render controls
   const controlsView = getState().views.controls;
   if (controlsView) {
     {
-      let controls = "(arrows/hjkl)Move (i)Inventory";
+      let controls = "";
+
+      if (getState().gameState === GameState.GAME) {
+        controls = "(arrows/hjkl)Move (i)Inventory (L)Look";
+      }
+
+      if (getState().gameState === GameState.INSPECT) {
+        controls = "(L/escape)Return to Game (arrows/hjkl)Move cursor";
+      }
 
       if (getState().gameState === GameState.INVENTORY) {
         controls = "(i/escape)Return to Game (d)Drop (c)Consume";

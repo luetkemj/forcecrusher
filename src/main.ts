@@ -3,6 +3,7 @@ import { mean } from "lodash";
 import { pxToPosId, setupCanvas, View } from "./lib/canvas";
 import { activeEffectsSystem } from "./ecs/systems/activeEffects.system";
 import { aiSystem } from "./ecs/systems/ai.system";
+import { cursorSystem } from "./ecs/systems/cursor.system";
 import { fovSystem } from "./ecs/systems/fov.system";
 import { dropSystem } from "./ecs/systems/drop.system";
 import { pickUpSystem } from "./ecs/systems/pickUp.system";
@@ -12,7 +13,7 @@ import { userInputSystem } from "./ecs/systems/userInput.system";
 import { generateDungeon } from "./pcgn/dungeon";
 import { world } from "./ecs/engine";
 import { playerPrefab } from "./actors";
-import { toPosId } from "./lib/grid";
+import { Pos, toPosId } from "./lib/grid";
 import { logFrozenEntity } from "./lib/utils";
 import { morgueSystem } from "./ecs/systems/morgue.system";
 
@@ -30,6 +31,7 @@ export const enum GameState {
 }
 
 export type State = {
+  cursor: [Pos, Pos];
   fps: number;
   gameState: GameState;
   log: Array<string>;
@@ -68,6 +70,10 @@ window.skulltooth = window.skulltooth || {};
 window.skulltooth.debug = false;
 
 const state: State = {
+  cursor: [
+    { x: 0, y: 0, z: 0 },
+    { x: 0, y: 0, z: 0 },
+  ],
   fps: 0,
   gameState: GameState.GAME,
   log: ["hello world", "your adventure begins anew!"],
@@ -249,7 +255,11 @@ const init = async () => {
   renderSystem();
   gameLoop();
 
+  const metaKeys = ["Shift", "Meta", "Control", "Alt"];
   document.addEventListener("keydown", (ev) => {
+    // ignore metaKeys
+    if (metaKeys.includes(ev.key)) return;
+
     setState((state: State) => {
       state.userInput = ev;
     });
@@ -282,6 +292,19 @@ let fpsSamples: Array<Number> = [];
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
+
+  if (
+    getState().gameState === GameState.INSPECT ||
+    getState().gameState === GameState.TARGET
+  ) {
+    if (getState().userInput && getState().turn === Turn.PLAYER) {
+      userInputSystem();
+      // fovSystem();
+      cursorSystem();
+      // legendSystem();
+      renderSystem();
+    }
+  }
 
   if (getState().gameState === GameState.INVENTORY) {
     if (getState().userInput && getState().turn === Turn.PLAYER) {

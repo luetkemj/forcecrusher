@@ -42,7 +42,7 @@ export type Entity = {
   opaque?: true;
   pathThrough?: true;
   pickUp?: true;
-  name?: string;
+  name: string;
   paused?: true;
   pc?: true;
   position?: { x: number; y: number; z: number };

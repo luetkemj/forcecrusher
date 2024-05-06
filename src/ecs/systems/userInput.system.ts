@@ -2,7 +2,7 @@ import { world } from "../engine";
 import { GameState, State, getState, setState } from "../../main";
 import { toPosId } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
-import { addLog, logFrozenEntity } from "../../lib/utils";
+import { addLog, logFrozenEntity, outOfBounds } from "../../lib/utils";
 
 const moveKeys = [
   "ArrowLeft",
@@ -15,7 +15,7 @@ const moveKeys = [
   "l",
 ];
 
-const pcEntities = world.with("pc");
+const pcEntities = world.with("pc", "position");
 const pickUpEntities = world.with("pickUp");
 
 export const userInputSystem = () => {
@@ -32,6 +32,11 @@ export const userInputSystem = () => {
   if (gameState === GameState.GAME) {
     if (key === "i") {
       setState((state: State) => (state.gameState = GameState.INVENTORY));
+    }
+
+    if (key === "L") {
+      setState((state: State) => (state.gameState = GameState.INSPECT));
+      setState((state: State) => (state.cursor = [player.position, player.position]));
     }
 
     if (moveKeys.includes(key)) {
@@ -77,6 +82,55 @@ export const userInputSystem = () => {
 
       if (noPickUps) {
         addLog("There is nothing to pickup");
+      }
+    }
+  }
+
+  if (gameState === GameState.INSPECT || gameState === GameState.TARGET) {
+    if (gameState === GameState.INSPECT) {
+      if (key === "L" || key === "Escape") {
+        setState((state: State) => (state.gameState = GameState.GAME));
+      }
+    }
+    if (gameState === GameState.TARGET) {
+      if (key === "Escape") {
+        setState((state: State) => (state.gameState = GameState.INVENTORY));
+      }
+    }
+
+    if (moveKeys.includes(key)) {
+      if (player.position) {
+        const oldPos = getState().cursor[1];
+        const { x, y, z } = oldPos;
+
+        if (key === "h" || key === "ArrowLeft") {
+          const newPos = { x: x - 1, y, z };
+          if (outOfBounds(newPos)) return;
+          setState((state: State) => {
+            state.cursor = [oldPos, newPos];
+          });
+        }
+        if (key === "j" || key === "ArrowDown") {
+          const newPos = { x, y: y + 1, z };
+          if (outOfBounds(newPos)) return;
+          setState((state: State) => {
+            state.cursor = [oldPos, newPos];
+          });
+        }
+        if (key === "k" || key === "ArrowUp") {
+          const newPos = { x, y: y - 1, z };
+          if (outOfBounds(newPos)) return;
+          setState((state: State) => {
+            state.cursor = [oldPos, newPos];
+          });
+        }
+        if (key === "l" || key === "ArrowRight") {
+          const newPos = { x: x + 1, y, z };
+          if (outOfBounds(newPos)) return;
+          setState((state: State) => {
+            state.cursor = [oldPos, newPos];
+          });
+        }
       }
     }
   }

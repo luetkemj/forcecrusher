@@ -30,7 +30,8 @@ This is aspirational only. Expect anything and everything in this document to be
   - [x] Healing potion
     - [x] Effects system
 - [ ] Ranged Weapons and Targeting
-  - [ ] Cursor (inspect ui)
+  - [x] Cursor 
+  - [x] Show what is under cursor in sensory log
   - [ ] Targeting UI (for throwing)
   - [ ] Ability to throw things to a specified location
   - [ ] Damage System
