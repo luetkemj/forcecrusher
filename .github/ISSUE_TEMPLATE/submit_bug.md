@@ -1,6 +1,6 @@
-name: Bug Report
+name: Bug Reporter
 description: File a bug report.
-title: "[Bug]: "
+title: "[Bug Reporter]: "
 labels: ["bug", "triage"]
 projects: ["octo-org/1", "octo-org/44"]
 assignees:
