@@ -13,12 +13,14 @@ const renderable: Entity = {
 
 const tile: Entity = {
   layer100: true,
+  name: "tile",
 };
 
 const being: Entity = {
   health: { max: 1, current: 1 },
   blocking: true,
   layer300: true,
+  name: "being",
 };
 
 export const playerPrefab: Entity = {

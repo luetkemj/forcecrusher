@@ -10,7 +10,7 @@ export enum chars {
 }
 
 export enum colors {
- "default" = 0x00ff77,
+  "default" = 0x00ff77,
   "floor" = 0x333333,
   "owlbear" = 0xa84300,
   "player" = 0xffffff,
