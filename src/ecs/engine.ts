@@ -61,19 +61,27 @@ class GameWorld {
   }
 
   load() {
-    const loadData = localStorage.getItem("gameSaveData");
+    const data = localStorage.getItem("savegame");
+    if (!data) return;
 
-    if (loadData) {
-      const data = JSON.parse(loadData);
-      this._world = new World<Entity>(data);
-      console.log("loaded");
-      console.log(this._world.entities);
+    // Clear existing entities
+    for (const entity of [...this.world.entities]) {
+      this.world.remove(entity);
     }
+
+    const entities = JSON.parse(data);
+
+    for (const entityData of entities) {
+      this.world.add(entityData);
+    }
+
+    console.log("loaded", entities);
   }
 
   save() {
-    const saveData = JSON.stringify(this._world.entities);
-    localStorage.setItem("gameSaveData", saveData);
+    // Extract pure data from all entities
+    const entities = [...this.world.entities].map((entity) => ({ ...entity }));
+    localStorage.setItem("savegame", JSON.stringify(entities));
     console.log("saved");
   }
 }
