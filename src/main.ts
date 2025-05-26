@@ -298,16 +298,19 @@ let fpsSamples: Array<Number> = [];
 function gameLoop() {
   requestAnimationFrame(gameLoop);
 
-  if (
-    getState().gameState === GameState.INSPECT ||
-    getState().gameState === GameState.TARGET
-  ) {
+  if (getState().gameState === GameState.INSPECT) {
     if (getState().userInput && getState().turn === Turn.PLAYER) {
       userInputSystem();
-      // fovSystem();
+      cursorSystem();
+      renderSystem();
+    }
+  }
+
+  if (getState().gameState === GameState.TARGET) {
+    if (getState().userInput && getState().turn === Turn.PLAYER) {
+      userInputSystem();
       cursorSystem();
       throwSystem();
-      // legendSystem();
       renderSystem();
     }
   }
@@ -343,9 +346,9 @@ function gameLoop() {
 
     if (getState().turn === Turn.WORLD) {
       activeEffectsSystem();
+      morgueSystem();
       aiSystem();
       movementSystem();
-      morgueSystem();
       fovSystem();
       renderSystem();
 

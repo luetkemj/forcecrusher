@@ -34,11 +34,11 @@ This is aspirational only. Expect anything and everything in this document to be
   - [x] Show what is under cursor in sensory log
   - [x] Targeting UI (for throwing)
   - [x] Ability to throw things to a specified location
-  - [ ] Damage System
-  - [ ] Disallow throwing on and through walls
-  - [ ] Thrown item cause damage
+  - [x] Disallow throwing on and through walls
+  - [x] Thrown item cause damage
 - [ ] Saving and loading
 - [ ] Delving into the Dungeon
+- [ ] Damage System
 - [ ] Increasing Difficulty
 - [ ] Gearing up
 

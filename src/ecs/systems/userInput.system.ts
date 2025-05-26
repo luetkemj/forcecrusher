@@ -1,5 +1,5 @@
 import { world } from "../engine";
-import { GameState, State, getState, setState } from "../../main";
+import { GameState, State, Turn, getState, setState } from "../../main";
 import { toPosId } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
 import { addLog, logFrozenEntity, outOfBounds } from "../../lib/utils";
@@ -116,8 +116,10 @@ export const userInputSystem = () => {
           }
         }
 
-        // how to switch back to game and update turn??
-        // setState((state: State) => (state.gameState = GameState.GAME));
+        setState((state: State) => {
+          state.turn = Turn.WORLD;
+          state.gameState = GameState.GAME;
+        });
       }
     }
 

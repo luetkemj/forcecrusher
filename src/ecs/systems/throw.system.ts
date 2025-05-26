@@ -44,12 +44,12 @@ export const throwSystem = () => {
 
       // get throwline
       const throwLine = line(pos0, pos1);
-      console.log(throwLine);
 
-      // loop through throwLine
-      for (const blocker of blockingEntities) {
-        for (let i = 0; i < tail(throwLine).length; i++) {
-          const value = tail(throwLine)[i];
+      // check for blocker along throwline
+      for (let i = 0; i < tail(throwLine).length; i++) {
+        const value = tail(throwLine)[i];
+
+        for (const blocker of blockingEntities) {
           if (isSamePosition(blocker.position, value)) {
             blocked = true;
             hitEntity = blocker;
@@ -63,25 +63,32 @@ export const throwSystem = () => {
     }
 
     if (blocked) {
-      console.log({
-        blocked,
-        hitEntity,
-        restingPosition,
-      });
+      // put entity to be thrown on at cursor location
+      const position = restingPosition;
+      if (position) {
+        world.addComponent(thrownEntity, "position", { ...position });
+      }
+
+      if (hitEntity?.health) {
+        hitEntity.health.current -= 5;
+        addLog(
+          `${throwerEntity.name} throws ${thrownEntity.name} at ${hitEntity?.name} for 5 damage!`,
+        );
+      } else {
+        addLog(
+          `${throwerEntity.name} throws ${thrownEntity.name} at ${hitEntity?.name}`,
+        );
+      }
     } else {
       // put entity to be thrown on at cursor location
       const position = getState().cursor[1];
-
-      // if we throw items that already have a position (kicking) this won't work cause addComponent doesn't overwrite existing components
       world.addComponent(thrownEntity, "position", { ...position });
 
-      // remove item from dropper's inventory
-      remove(throwerEntity.container.contents, (id) => thrownId === id);
-      world.removeComponent(thrownEntity, "tryThrow");
-
       addLog(`${throwerEntity.name} throws ${thrownEntity.name}`);
-
-      console.log("butter");
     }
+
+    // remove item from dropper's inventory
+    remove(throwerEntity.container.contents, (id) => thrownId === id);
+    world.removeComponent(thrownEntity, "tryThrow");
   }
 };
