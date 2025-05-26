@@ -49,7 +49,7 @@ export type Entity = {
   pc?: true;
   position?: { x: number; y: number; z: number };
   revealed?: true;
-  tryDrop?: { dropperId: number };
+  tryDrop?: { dropperId: string };
   tryMove?: { x: number; y: number; z: number };
   tryPickUp?: { pickerId: string };
   tryThrow?: { throwerId: string };
