@@ -16,7 +16,7 @@ export const pickUpSystem = () => {
     }
 
     const { pickerId } = entity.tryPickUp;
-    const pickerEntity = gameWorld.world.entity(pickerId);
+    const pickerEntity = gameWorld.entityById.get(pickerId);
     if (!pickerEntity) {
       console.log(`pickerId ${pickerId} does not exist`);
       break;
@@ -47,7 +47,7 @@ export const pickUpSystem = () => {
       break;
     }
 
-    const pickupId = gameWorld.world.id(entity);
+    const pickupId = entity.id;
     if (isUndefined(pickupId)) {
       console.log(`pickupId ${pickupId} does not exist`);
 

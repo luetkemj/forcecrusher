@@ -11,9 +11,9 @@ export const throwSystem = () => {
   for (const entity of tryThrowEntities) {
     // get thrower entity
     const { throwerId } = entity.tryThrow;
-    const thrownId = gameWorld.world.id(entity);
+    const thrownId = entity.id;
 
-    const throwerEntity = gameWorld.world.entity(throwerId);
+    const throwerEntity = gameWorld.entityById.get(throwerId);
     const thrownEntity = entity;
 
     // error checks

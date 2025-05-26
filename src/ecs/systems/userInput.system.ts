@@ -80,10 +80,10 @@ export const userInputSystem = () => {
       for (const entity of pickUpEntities) {
         if (player.position && entity.position) {
           if (toPosId(player.position) === toPosId(entity.position)) {
-            const playerId = gameWorld.world.id(player);
-            if (!isUndefined(playerId)) {
+            const { id } = player;
+            if (!isUndefined(id)) {
               gameWorld.world.addComponent(entity, "tryPickUp", {
-                pickerId: playerId,
+                pickerId: id,
               });
               noPickUps = false;
             }
@@ -113,10 +113,10 @@ export const userInputSystem = () => {
         // with a throwerId and targetPosition
         const entityId = player.container?.contents[0];
         if (entityId) {
-          const entity = gameWorld.world.entity(entityId);
+          const entity = gameWorld.entityById.get(entityId);
 
           if (entity) {
-            const playerId = gameWorld.world.id(player);
+            const playerId = player.id;
             if (!isUndefined(playerId)) {
               gameWorld.world.addComponent(entity, "tryThrow", {
                 throwerId: playerId,
@@ -188,7 +188,7 @@ export const userInputSystem = () => {
         }
 
         const tryDropEntityId = player.container.contents[0];
-        const tryDropEntity = gameWorld.world.entity(tryDropEntityId);
+        const tryDropEntity = gameWorld.entityById.get(tryDropEntityId);
         if (!tryDropEntity) {
           console.log(`id: ${tryDropEntityId} does not exist.`);
           logFrozenEntity(player);
@@ -196,7 +196,7 @@ export const userInputSystem = () => {
         }
 
         // add tryDrop to first item in inventory
-        const playerId = gameWorld.world.id(player);
+        const playerId = player.id;
         if (isUndefined(playerId)) {
           break;
         }
@@ -222,7 +222,7 @@ export const userInputSystem = () => {
         }
 
         const consumeableId = player.container.contents[0];
-        const consumable = gameWorld.world.entity(consumeableId);
+        const consumable = gameWorld.entityById.get(consumeableId);
         if (!consumable) {
           console.log(`id: ${consumeableId} does not exist.`);
           logFrozenEntity(player);

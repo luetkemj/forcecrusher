@@ -192,8 +192,8 @@ export const renderSystem = () => {
 
       const rows: Array<Array<UpdateRow>> = [];
       const playerInventory = player.container?.contents || [];
-      const itemsInInventory = playerInventory.map((eId) =>
-        gameWorld.world.entity(eId),
+      const itemsInInventory = playerInventory.map((id) =>
+        gameWorld.entityById.get(id),
       );
 
       itemsInInventory.forEach((item) => {
@@ -286,7 +286,7 @@ export const renderSystem = () => {
       }
 
       if (getState().gameState === GameState.INVENTORY) {
-        controls = "(i/escape)Return to Game (d)Drop (c)Consume";
+        controls = "(i/escape)Return to Game (d)Drop (c)Consume (t)Throw";
       }
 
       controlsView?.updateRows([[], [{ string: controls }]]);

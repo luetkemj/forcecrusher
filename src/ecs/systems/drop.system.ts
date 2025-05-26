@@ -7,9 +7,9 @@ const tryDropEntities = gameWorld.world.with("tryDrop");
 export const dropSystem = () => {
   for (const entity of tryDropEntities) {
     // get dropper entity
-    const { dropperId } = entity.tryDrop;
+    const dropperId = entity.tryDrop.dropperId;
 
-    const dropperEntity = gameWorld.world.entity(dropperId);
+    const dropperEntity = gameWorld.entityById.get(dropperId);
 
     if (!dropperEntity) {
       console.log(`dropperId: ${dropperId} does not exist`);
@@ -20,7 +20,7 @@ export const dropSystem = () => {
     }
 
     // confirm item to be dropped is actually in dropper's inventory
-    const entityId = gameWorld.world.id(entity);
+    const entityId = entity.id;
 
     if (!entityId) {
       console.log(`Entity does not have an id.`);
@@ -43,7 +43,7 @@ export const dropSystem = () => {
     const { position } = dropperEntity;
     if (!position) {
       console.log(
-        `${dropperEntity.name} has not position and cannot drop ${entity.name}`,
+        `${dropperEntity.name} has no position and cannot drop ${entity.name}`,
       );
       logFrozenEntity(dropperEntity);
       logFrozenEntity(entity);

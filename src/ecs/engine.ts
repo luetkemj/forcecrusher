@@ -24,7 +24,7 @@ export type Entity = {
   container?: {
     name: string;
     description: string;
-    contents: Array<number>;
+    contents: Array<string>;
     slots: number;
   };
   dead?: true;
@@ -51,8 +51,8 @@ export type Entity = {
   revealed?: true;
   tryDrop?: { dropperId: number };
   tryMove?: { x: number; y: number; z: number };
-  tryPickUp?: { pickerId: number };
-  tryThrow?: { throwerId: number };
+  tryPickUp?: { pickerId: string };
+  tryThrow?: { throwerId: string };
 };
 
 class GameWorld {
