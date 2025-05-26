@@ -1,4 +1,5 @@
 import { World } from "miniplex";
+import { type State, getState, setState } from "../main";
 
 // components with a max, current shape such that they are effectable
 type Effectables = {
@@ -69,19 +70,24 @@ class GameWorld {
       this.world.remove(entity);
     }
 
-    const entities = JSON.parse(data);
+    const { entities, log } = JSON.parse(data);
+
+    setState((state: State) => (state.log = log));
 
     for (const entityData of entities) {
       this.world.add(entityData);
     }
 
-    console.log("loaded", entities);
+    console.log("loaded");
   }
 
   save() {
     // Extract pure data from all entities
     const entities = [...this.world.entities].map((entity) => ({ ...entity }));
-    localStorage.setItem("savegame", JSON.stringify(entities));
+    const { log } = getState();
+
+    localStorage.setItem("savegame", JSON.stringify({ entities, log }));
+
     console.log("saved");
   }
 }

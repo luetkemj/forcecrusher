@@ -219,6 +219,7 @@ export const renderSystem = () => {
   {
     const logView = getState().views.log;
     if (logView) {
+      logView.clearView();
       // render log
       const log = getState().log;
       const messages = log.slice(Math.max(log.length - 5, 0));
