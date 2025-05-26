@@ -64,7 +64,7 @@ const renderEntity = (view: View, entity: Entity, alpha: number) => {
   const { x, y } = position;
 
   view?.updateCell({
-    0: { char, tint: 0x00ff00, alpha: 0, tileSet: "tile", x, y },
+    0: { char, tint: 0x000000, alpha: 0, tileSet: "tile", x, y },
     1: { char, tint, alpha, tileSet, x, y },
   });
 };
@@ -76,7 +76,7 @@ export const renderSystem = () => {
   // TODO:
   // clear the map before each render (this is only necessary for loading a game
   // could def find a better place for this.
-  mapView.clearView;
+  mapView.clearView();
 
   // render entities currently in FOV
   for (const entity of renderableEntities100) {
