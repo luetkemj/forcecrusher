@@ -34,6 +34,7 @@ export type Entity = {
     max: number;
     current: number;
   };
+  id?: string;
   inFov?: true;
   layer100?: true;
   layer200?: true;
@@ -57,8 +58,14 @@ export type Entity = {
 class GameWorld {
   private _world = new World<Entity>();
 
+  private _entityById = new Map<string, Entity>();
+
   get world() {
     return this._world;
+  }
+
+  get entityById() {
+    return this._entityById;
   }
 
   load() {
@@ -93,3 +100,18 @@ class GameWorld {
 }
 
 export const gameWorld = new GameWorld();
+
+gameWorld.world.onEntityAdded.subscribe((entity: Entity) => {
+  let uuid = self.crypto.randomUUID();
+  gameWorld.world.addComponent(entity, "id", uuid);
+
+  if (entity.id) {
+    gameWorld.entityById.set(entity.id, entity);
+  }
+});
+
+gameWorld.world.onEntityRemoved.subscribe((entity: Entity) => {
+  if (entity.id) {
+    gameWorld.entityById.delete(entity.id);
+  }
+});
