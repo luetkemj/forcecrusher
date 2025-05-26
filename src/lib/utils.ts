@@ -1,6 +1,6 @@
 import { Entity } from "../ecs/engine";
 import { getState, setState, State } from "../main";
-import {Pos} from './grid';
+import { Pos } from "./grid";
 
 export const logFrozenEntity = (entity: Entity) => {
   console.log(JSON.parse(JSON.stringify(entity)));
@@ -14,4 +14,15 @@ export const outOfBounds = (pos: Pos) => {
   const { x, y } = pos;
   const { width, height } = getState().views.map!;
   return x < 0 || y < 0 || x >= width || y >= height;
+};
+
+export const isSamePosition = (blocker: Pos, blockee: Pos) => {
+  if (
+    blocker.x === blockee.x &&
+    blocker.y === blockee.y &&
+    blocker.z === blockee.z
+  ) {
+    return true;
+  }
+  return false;
 };
