@@ -4,18 +4,16 @@ import { addLog, logFrozenEntity, isSamePosition } from "../../lib/utils";
 import { Entity, gameWorld } from "../engine";
 import { line, Pos } from "../../lib/grid";
 
-const world = gameWorld.world;
-
-const tryThrowEntities = world.with("tryThrow");
-const blockingEntities = world.with("blocking", "position");
+const tryThrowEntities = gameWorld.world.with("tryThrow");
+const blockingEntities = gameWorld.world.with("blocking", "position");
 
 export const throwSystem = () => {
   for (const entity of tryThrowEntities) {
     // get thrower entity
     const { throwerId } = entity.tryThrow;
-    const thrownId = world.id(entity);
+    const thrownId = gameWorld.world.id(entity);
 
-    const throwerEntity = world.entity(throwerId);
+    const throwerEntity = gameWorld.world.entity(throwerId);
     const thrownEntity = entity;
 
     // error checks
@@ -23,7 +21,7 @@ export const throwSystem = () => {
       console.log(`dropperId: ${throwerId} does not exist`);
       logFrozenEntity(thrownEntity);
 
-      world.removeComponent(thrownEntity, "tryThrow");
+      gameWorld.world.removeComponent(thrownEntity, "tryThrow");
       break;
     }
 
@@ -32,7 +30,7 @@ export const throwSystem = () => {
       logFrozenEntity(thrownEntity);
       logFrozenEntity(throwerEntity);
 
-      world.removeComponent(thrownEntity, "tryThrow");
+      gameWorld.world.removeComponent(thrownEntity, "tryThrow");
       break;
     }
 
@@ -68,7 +66,7 @@ export const throwSystem = () => {
       // put entity to be thrown on at cursor location
       const position = restingPosition;
       if (position) {
-        world.addComponent(thrownEntity, "position", { ...position });
+        gameWorld.world.addComponent(thrownEntity, "position", { ...position });
       }
 
       if (hitEntity?.health) {
@@ -84,13 +82,13 @@ export const throwSystem = () => {
     } else {
       // put entity to be thrown on at cursor location
       const position = getState().cursor[1];
-      world.addComponent(thrownEntity, "position", { ...position });
+      gameWorld.world.addComponent(thrownEntity, "position", { ...position });
 
       addLog(`${throwerEntity.name} throws ${thrownEntity.name}`);
     }
 
     // remove item from dropper's inventory
     remove(throwerEntity.container.contents, (id) => thrownId === id);
-    world.removeComponent(thrownEntity, "tryThrow");
+    gameWorld.world.removeComponent(thrownEntity, "tryThrow");
   }
 };

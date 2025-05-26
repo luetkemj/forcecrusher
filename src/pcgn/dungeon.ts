@@ -16,8 +16,6 @@ import {
   rockPrefab,
 } from "../actors";
 
-const world = gameWorld.world;
-
 type Tile = {
   x: number;
   y: number;
@@ -149,18 +147,18 @@ export const generateDungeon = () => {
   for (const tile of tiles) {
     if (tile.sprite === "WALL") {
       const { x, y, z } = tile;
-      world.add({ ...cloneDeep(wallPrefab), position: { x, y, z } });
+      gameWorld.world.add({ ...cloneDeep(wallPrefab), position: { x, y, z } });
     }
     if (tile.sprite === "FLOOR") {
       const { x, y, z } = tile;
-      world.add({ ...cloneDeep(floorPrefab), position: { x, y, z } });
+      gameWorld.world.add({ ...cloneDeep(floorPrefab), position: { x, y, z } });
     }
   }
 
   dungeon.rooms.forEach((room, index) => {
     const spawn = sample([ratPrefab, rockPrefab, healthPotionPrefab]);
     if (index) {
-      world.add({ ...cloneDeep(spawn), position: room.center });
+      gameWorld.world.add({ ...cloneDeep(spawn), position: room.center });
     }
   });
 

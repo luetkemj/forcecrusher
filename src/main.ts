@@ -22,8 +22,6 @@ import { generateDungeon } from "./pcgn/dungeon";
 import { gameWorld } from "./ecs/engine";
 import { playerPrefab } from "./actors";
 
-const world = gameWorld.world;
-
 export const enum Turn {
   PLAYER = "PLAYER",
   WORLD = "WORLD",
@@ -252,7 +250,7 @@ const init = async () => {
   const dungeon = generateDungeon();
   const startPos = dungeon.rooms[0].center;
 
-  const player = world.add(playerPrefab);
+  const player = gameWorld.world.add(playerPrefab);
   player.position!.x = startPos.x;
   player.position!.y = startPos.y;
   player.position!.z = startPos.z;
@@ -281,7 +279,7 @@ const init = async () => {
     const posId = pxToPosId(x, y, z);
 
     if (window.skulltooth.debug === true || import.meta.env.DEV) {
-      const entities = world.with("position");
+      const entities = gameWorld.world.with("position");
 
       for (const entity of entities) {
         if (posId === toPosId(entity.position)) {

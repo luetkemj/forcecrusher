@@ -2,33 +2,31 @@ import { remove } from "lodash";
 import { addLog, logFrozenEntity } from "../../lib/utils";
 import { gameWorld } from "../engine";
 
-const world = gameWorld.world;
-
-const tryDropEntities = world.with("tryDrop");
+const tryDropEntities = gameWorld.world.with("tryDrop");
 
 export const dropSystem = () => {
   for (const entity of tryDropEntities) {
     // get dropper entity
     const { dropperId } = entity.tryDrop;
 
-    const dropperEntity = world.entity(dropperId);
+    const dropperEntity = gameWorld.world.entity(dropperId);
 
     if (!dropperEntity) {
       console.log(`dropperId: ${dropperId} does not exist`);
       logFrozenEntity(entity);
 
-      world.removeComponent(entity, "tryDrop");
+      gameWorld.world.removeComponent(entity, "tryDrop");
       break;
     }
 
     // confirm item to be dropped is actually in dropper's inventory
-    const entityId = world.id(entity);
+    const entityId = gameWorld.world.id(entity);
 
     if (!entityId) {
       console.log(`Entity does not have an id.`);
       logFrozenEntity(entity);
 
-      world.removeComponent(entity, "tryDrop");
+      gameWorld.world.removeComponent(entity, "tryDrop");
       break;
     }
 
@@ -37,7 +35,7 @@ export const dropSystem = () => {
       logFrozenEntity(dropperEntity);
       logFrozenEntity(entity);
 
-      world.removeComponent(entity, "tryDrop");
+      gameWorld.world.removeComponent(entity, "tryDrop");
       break;
     }
 
@@ -50,15 +48,15 @@ export const dropSystem = () => {
       logFrozenEntity(dropperEntity);
       logFrozenEntity(entity);
 
-      world.removeComponent(entity, "tryDrop");
+      gameWorld.world.removeComponent(entity, "tryDrop");
       break;
     }
 
-    world.addComponent(entity, "position", { ...position });
+    gameWorld.world.addComponent(entity, "position", { ...position });
 
     // remove item from dropper's inventory
     remove(dropperEntity.container.contents, (id) => entityId === id);
-    world.removeComponent(entity, "tryDrop");
+    gameWorld.world.removeComponent(entity, "tryDrop");
 
     addLog(`${dropperEntity.name} drops ${entity.name}`);
   }

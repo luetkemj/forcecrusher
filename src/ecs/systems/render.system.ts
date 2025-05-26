@@ -3,8 +3,6 @@ import { distance } from "../../lib/grid";
 import { getState, GameState } from "../../main";
 import { View, UpdateRow } from "../../lib/canvas";
 
-const world = gameWorld.world;
-
 const concatRow = (str: string, length: number): string => {
   let newStr = str;
   if (newStr.length > length) {
@@ -27,20 +25,36 @@ const getAlpha = (index: number) => {
 };
 
 // for rendering the map
-const renderableEntities100 = world.with("position", "appearance", "layer100");
-const renderableEntities200 = world.with("position", "appearance", "layer200");
-const renderableEntities300 = world.with("position", "appearance", "layer300");
-const renderableEntities400 = world.with("position", "appearance", "layer400");
+const renderableEntities100 = gameWorld.world.with(
+  "position",
+  "appearance",
+  "layer100",
+);
+const renderableEntities200 = gameWorld.world.with(
+  "position",
+  "appearance",
+  "layer200",
+);
+const renderableEntities300 = gameWorld.world.with(
+  "position",
+  "appearance",
+  "layer300",
+);
+const renderableEntities400 = gameWorld.world.with(
+  "position",
+  "appearance",
+  "layer400",
+);
 
 // for rendering the legend
-const entitiesInFov = world.with(
+const entitiesInFov = gameWorld.world.with(
   "inFov",
   "legendable",
   "position",
   "appearance",
   "name",
 );
-const pcEntities = world.with("pc", "position");
+const pcEntities = gameWorld.world.with("pc", "position");
 
 const renderEntity = (view: View, entity: Entity, alpha: number) => {
   const { appearance, position } = entity;
@@ -173,7 +187,9 @@ export const renderSystem = () => {
 
       const rows: Array<Array<UpdateRow>> = [];
       const playerInventory = player.container?.contents || [];
-      const itemsInInventory = playerInventory.map((eId) => world.entity(eId));
+      const itemsInInventory = playerInventory.map((eId) =>
+        gameWorld.world.entity(eId),
+      );
 
       itemsInInventory.forEach((item) => {
         rows.push([

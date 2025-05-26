@@ -1,10 +1,8 @@
 import { addLog } from "../../lib/utils";
 import { gameWorld } from "../engine";
 
-const world = gameWorld.world;
-
-const moveableEntities = world.with("position", "tryMove");
-const blockingEntities = world.with("blocking", "position");
+const moveableEntities = gameWorld.world.with("position", "tryMove");
+const blockingEntities = gameWorld.world.with("blocking", "position");
 
 export const movementSystem = () => {
   for (const entity of moveableEntities) {
@@ -17,7 +15,7 @@ export const movementSystem = () => {
         blocker.position.x === tryMove.x &&
         blocker.position.y === tryMove.y
       ) {
-        world.removeComponent(entity, "tryMove");
+        gameWorld.world.removeComponent(entity, "tryMove");
 
         if (blocker.health) {
           // you have attacked!
@@ -43,7 +41,7 @@ export const movementSystem = () => {
       position.y = tryMove.y;
       position.z = tryMove.z;
 
-      world.removeComponent(entity, "tryMove");
+      gameWorld.world.removeComponent(entity, "tryMove");
     }
   }
 };

@@ -3,9 +3,6 @@ import { GameState, State, Turn, getState, setState } from "../../main";
 import { toPosId } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
 import { addLog, logFrozenEntity, outOfBounds } from "../../lib/utils";
-import { stringifyWorld } from "../serializer";
-
-const world = gameWorld.world;
 
 const moveKeys = [
   "ArrowLeft",
@@ -18,8 +15,8 @@ const moveKeys = [
   "l",
 ];
 
-const pcEntities = world.with("pc", "position");
-const pickUpEntities = world.with("pickUp");
+const pcEntities = gameWorld.world.with("pc", "position");
+const pickUpEntities = gameWorld.world.with("pickUp");
 
 export const userInputSystem = () => {
   const { userInput, gameState } = getState();
@@ -58,19 +55,19 @@ export const userInputSystem = () => {
 
           if (key === "h" || key === "ArrowLeft") {
             const newPos = { x: x - 1, y, z };
-            world.addComponent(entity, "tryMove", newPos);
+            gameWorld.world.addComponent(entity, "tryMove", newPos);
           }
           if (key === "j" || key === "ArrowDown") {
             const newPos = { x, y: y + 1, z };
-            world.addComponent(entity, "tryMove", newPos);
+            gameWorld.world.addComponent(entity, "tryMove", newPos);
           }
           if (key === "k" || key === "ArrowUp") {
             const newPos = { x, y: y - 1, z };
-            world.addComponent(entity, "tryMove", newPos);
+            gameWorld.world.addComponent(entity, "tryMove", newPos);
           }
           if (key === "l" || key === "ArrowRight") {
             const newPos = { x: x + 1, y, z };
-            world.addComponent(entity, "tryMove", newPos);
+            gameWorld.world.addComponent(entity, "tryMove", newPos);
           }
         }
       }
@@ -83,9 +80,11 @@ export const userInputSystem = () => {
       for (const entity of pickUpEntities) {
         if (player.position && entity.position) {
           if (toPosId(player.position) === toPosId(entity.position)) {
-            const playerId = world.id(player);
+            const playerId = gameWorld.world.id(player);
             if (!isUndefined(playerId)) {
-              world.addComponent(entity, "tryPickUp", { pickerId: playerId });
+              gameWorld.world.addComponent(entity, "tryPickUp", {
+                pickerId: playerId,
+              });
               noPickUps = false;
             }
           }
@@ -114,12 +113,12 @@ export const userInputSystem = () => {
         // with a throwerId and targetPosition
         const entityId = player.container?.contents[0];
         if (entityId) {
-          const entity = world.entity(entityId);
+          const entity = gameWorld.world.entity(entityId);
 
           if (entity) {
-            const playerId = world.id(player);
+            const playerId = gameWorld.world.id(player);
             if (!isUndefined(playerId)) {
-              world.addComponent(entity, "tryThrow", {
+              gameWorld.world.addComponent(entity, "tryThrow", {
                 throwerId: playerId,
               });
             }
@@ -189,7 +188,7 @@ export const userInputSystem = () => {
         }
 
         const tryDropEntityId = player.container.contents[0];
-        const tryDropEntity = world.entity(tryDropEntityId);
+        const tryDropEntity = gameWorld.world.entity(tryDropEntityId);
         if (!tryDropEntity) {
           console.log(`id: ${tryDropEntityId} does not exist.`);
           logFrozenEntity(player);
@@ -197,12 +196,12 @@ export const userInputSystem = () => {
         }
 
         // add tryDrop to first item in inventory
-        const playerId = world.id(player);
+        const playerId = gameWorld.world.id(player);
         if (isUndefined(playerId)) {
           break;
         }
 
-        world.addComponent(tryDropEntity, "tryDrop", {
+        gameWorld.world.addComponent(tryDropEntity, "tryDrop", {
           dropperId: playerId,
         });
         break;
@@ -223,7 +222,7 @@ export const userInputSystem = () => {
         }
 
         const consumeableId = player.container.contents[0];
-        const consumable = world.entity(consumeableId);
+        const consumable = gameWorld.world.entity(consumeableId);
         if (!consumable) {
           console.log(`id: ${consumeableId} does not exist.`);
           logFrozenEntity(player);
@@ -245,7 +244,7 @@ export const userInputSystem = () => {
         // delete entity from world
         // do I want to do that.....?
         addLog(`${player.name} consumes ${consumable.name}`);
-        world.remove(consumable);
+        gameWorld.world.remove(consumable);
         break;
       } while (true);
     }

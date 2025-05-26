@@ -3,9 +3,7 @@ import { type Pos } from "./grid";
 import { getState } from "../main";
 import { gameWorld } from "../ecs/engine";
 
-const world = gameWorld.world;
-
-const entities = world.with("position");
+const entities = gameWorld.world.with("position");
 
 export const aStar = (start: Pos, goal: Pos) => {
   const { width, height } = getState().views.map!;
