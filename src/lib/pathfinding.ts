@@ -1,7 +1,9 @@
 import PF from "pathfinding";
 import { type Pos } from "./grid";
 import { getState } from "../main";
-import { world } from "../ecs/engine";
+import { gameWorld } from "../ecs/engine";
+
+const world = gameWorld.world;
 
 const entities = world.with("position");
 

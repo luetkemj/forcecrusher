@@ -19,8 +19,10 @@ import { userInputSystem } from "./ecs/systems/userInput.system";
 
 import { generateDungeon } from "./pcgn/dungeon";
 
-import { world } from "./ecs/engine";
+import { gameWorld } from "./ecs/engine";
 import { playerPrefab } from "./actors";
+
+const world = gameWorld.world;
 
 export const enum Turn {
   PLAYER = "PLAYER",

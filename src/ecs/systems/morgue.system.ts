@@ -1,6 +1,8 @@
-import { world } from "../engine";
+import { gameWorld } from "../engine";
 import { setState, State, GameState } from "../../main";
 import { addLog } from "../../lib/utils";
+
+const world = gameWorld.world;
 
 const livingEntities = world.with("health").without("dead");
 

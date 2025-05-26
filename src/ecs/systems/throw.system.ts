@@ -1,8 +1,10 @@
 import { remove, tail } from "lodash";
 import { getState } from "../../main";
 import { addLog, logFrozenEntity, isSamePosition } from "../../lib/utils";
-import { Entity, world } from "../engine";
+import { Entity, gameWorld } from "../engine";
 import { line, Pos } from "../../lib/grid";
+
+const world = gameWorld.world;
 
 const tryThrowEntities = world.with("tryThrow");
 const blockingEntities = world.with("blocking", "position");

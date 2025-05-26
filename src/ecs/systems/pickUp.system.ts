@@ -1,12 +1,14 @@
 import { isUndefined } from "lodash";
 import { addLog, logFrozenEntity } from "../../lib/utils";
-import { world } from "../engine";
+import { gameWorld } from "../engine";
 
-const pcEntities = world.with('pc');
+const world = gameWorld.world;
+
+const pcEntities = world.with("pc");
 const entitiesBeingPickedUp = world.with("tryPickUp");
 
 export const pickUpSystem = () => {
-  const [player] = pcEntities
+  const [player] = pcEntities;
 
   for (const entity of entitiesBeingPickedUp) {
     if (!entity.pickUp) {
@@ -31,7 +33,7 @@ export const pickUpSystem = () => {
         addLog(`You have nowhere to put that.`);
       }
 
-      world.removeComponent(entity, 'tryPickUp')
+      world.removeComponent(entity, "tryPickUp");
       break;
     }
 
@@ -43,7 +45,7 @@ export const pickUpSystem = () => {
         addLog(`You have no room in your ${player?.container?.name}.`);
       }
 
-      world.removeComponent(entity, 'tryPickUp')
+      world.removeComponent(entity, "tryPickUp");
       break;
     }
 
@@ -51,17 +53,17 @@ export const pickUpSystem = () => {
     if (isUndefined(pickupId)) {
       console.log(`pickupId ${pickupId} does not exist`);
 
-      world.removeComponent(entity, 'tryPickUp')
+      world.removeComponent(entity, "tryPickUp");
       break;
     }
 
     // put pickUp in container
     container.contents.push(pickupId);
-    world.removeComponent(entity, 'tryPickUp')
-    world.removeComponent(entity, 'position')
+    world.removeComponent(entity, "tryPickUp");
+    world.removeComponent(entity, "position");
 
     addLog(
-      `${pickerEntity.name} puts ${entity.name} in ${pickerEntity?.container?.name}`
+      `${pickerEntity.name} puts ${entity.name} in ${pickerEntity?.container?.name}`,
     );
   }
 };

@@ -1,6 +1,8 @@
-import { world } from "../engine";
+import { gameWorld } from "../engine";
 import { getState, setState, State } from "../../main";
 import { toPosId } from "../../lib/grid";
+
+const world = gameWorld.world;
 
 const inspectableEntities = world.with("revealed", "position");
 

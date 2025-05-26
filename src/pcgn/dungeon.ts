@@ -7,8 +7,16 @@ import {
   rectsIntersect,
   toPosId,
 } from "../lib/grid";
-import { world } from "../ecs/engine";
-import { healthPotionPrefab, wallPrefab, floorPrefab, ratPrefab, rockPrefab } from "../actors";
+import { gameWorld } from "../ecs/engine";
+import {
+  healthPotionPrefab,
+  wallPrefab,
+  floorPrefab,
+  ratPrefab,
+  rockPrefab,
+} from "../actors";
+
+const world = gameWorld.world;
 
 type Tile = {
   x: number;
@@ -152,9 +160,9 @@ export const generateDungeon = () => {
   dungeon.rooms.forEach((room, index) => {
     const spawn = sample([ratPrefab, rockPrefab, healthPotionPrefab]);
     if (index) {
-      world.add({...cloneDeep(spawn), position: room.center})
+      world.add({ ...cloneDeep(spawn), position: room.center });
     }
-  })
+  });
 
   return dungeon;
 };

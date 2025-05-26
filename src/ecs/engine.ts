@@ -19,7 +19,7 @@ export type Entity = {
     tileSet: string;
   };
   blocking?: true;
-  consumable?: true,
+  consumable?: true;
   container?: {
     name: string;
     description: string;
@@ -53,4 +53,29 @@ export type Entity = {
   tryThrow?: { throwerId: number };
 };
 
-export const world = new World<Entity>();
+class GameWorld {
+  private _world = new World<Entity>();
+
+  get world() {
+    return this._world;
+  }
+
+  load() {
+    const loadData = localStorage.getItem("gameSaveData");
+
+    if (loadData) {
+      const data = JSON.parse(loadData);
+      this._world = new World<Entity>(data);
+      console.log("loaded");
+      console.log(this._world.entities);
+    }
+  }
+
+  save() {
+    const saveData = JSON.stringify(this._world.entities);
+    localStorage.setItem("gameSaveData", saveData);
+    console.log("saved");
+  }
+}
+
+export const gameWorld = new GameWorld();

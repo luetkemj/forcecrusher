@@ -1,6 +1,8 @@
-import { world } from "../engine";
+import { gameWorld } from "../engine";
 import createFOV from "../../lib/fov";
 import { toPosId } from "../../lib/grid";
+
+const world = gameWorld.world;
 
 const inFovEntities = world.with("inFov", "position");
 const opaqueEntities = world.with("opaque", "position");

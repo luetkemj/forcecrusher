@@ -1,8 +1,11 @@
-import { world } from "../engine";
+import { gameWorld } from "../engine";
 import { GameState, State, Turn, getState, setState } from "../../main";
 import { toPosId } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
 import { addLog, logFrozenEntity, outOfBounds } from "../../lib/utils";
+import { stringifyWorld } from "../serializer";
+
+const world = gameWorld.world;
 
 const moveKeys = [
   "ArrowLeft",
@@ -30,6 +33,13 @@ export const userInputSystem = () => {
   const [player] = pcEntities;
 
   if (gameState === GameState.GAME) {
+    if (key === "1") {
+      gameWorld.save();
+    }
+    if (key === "2") {
+      gameWorld.load();
+    }
+
     if (key === "i") {
       setState((state: State) => (state.gameState = GameState.INVENTORY));
     }

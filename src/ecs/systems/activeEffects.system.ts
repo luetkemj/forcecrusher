@@ -1,4 +1,6 @@
-import { world } from "../engine";
+import { gameWorld } from "../engine";
+
+const world = gameWorld.world;
 
 const activeEffectEntities = world.with("activeEffects");
 

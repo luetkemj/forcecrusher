@@ -1,5 +1,7 @@
-import { world } from "../engine";
+import { gameWorld } from "../engine";
 import { aStar } from "../../lib/pathfinding";
+
+const world = gameWorld.world;
 
 const pcQuery = world.with("pc", "position");
 const aiEntities = world.with("ai", "position");
@@ -21,6 +23,6 @@ export const aiSystem = () => {
       };
 
       world.addComponent(entity, "tryMove", newPos);
-    } 
+    }
   }
 };

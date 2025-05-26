@@ -1,5 +1,7 @@
 import { addLog } from "../../lib/utils";
-import { world } from "../engine";
+import { gameWorld } from "../engine";
+
+const world = gameWorld.world;
 
 const moveableEntities = world.with("position", "tryMove");
 const blockingEntities = world.with("blocking", "position");

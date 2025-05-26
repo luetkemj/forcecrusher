@@ -1,6 +1,8 @@
 import { remove } from "lodash";
 import { addLog, logFrozenEntity } from "../../lib/utils";
-import { world } from "../engine";
+import { gameWorld } from "../engine";
+
+const world = gameWorld.world;
 
 const tryDropEntities = world.with("tryDrop");
 
@@ -43,7 +45,7 @@ export const dropSystem = () => {
     const { position } = dropperEntity;
     if (!position) {
       console.log(
-        `${dropperEntity.name} has not position and cannot drop ${entity.name}`
+        `${dropperEntity.name} has not position and cannot drop ${entity.name}`,
       );
       logFrozenEntity(dropperEntity);
       logFrozenEntity(entity);

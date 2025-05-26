@@ -1,7 +1,9 @@
-import { world, Entity } from "../engine";
+import { gameWorld, Entity } from "../engine";
 import { distance } from "../../lib/grid";
 import { getState, GameState } from "../../main";
 import { View, UpdateRow } from "../../lib/canvas";
+
+const world = gameWorld.world;
 
 const concatRow = (str: string, length: number): string => {
   let newStr = str;
@@ -36,7 +38,7 @@ const entitiesInFov = world.with(
   "legendable",
   "position",
   "appearance",
-  "name"
+  "name",
 );
 const pcEntities = world.with("pc", "position");
 
@@ -206,7 +208,7 @@ export const renderSystem = () => {
           return [
             { string: concatRow(message, width), alpha: getAlpha(index) },
           ];
-        })
+        }),
       );
     }
   }
@@ -241,7 +243,7 @@ export const renderSystem = () => {
       });
     }
   }
-  
+
   // render controls
   const controlsView = getState().views.controls;
   if (controlsView) {
@@ -257,7 +259,8 @@ export const renderSystem = () => {
       }
 
       if (getState().gameState === GameState.TARGET) {
-        controls = "(t/escape)Return to Inventory (arrows/hjkl)Move cursor (enter)Throw item";
+        controls =
+          "(t/escape)Return to Inventory (arrows/hjkl)Move cursor (enter)Throw item";
       }
 
       if (getState().gameState === GameState.INVENTORY) {
