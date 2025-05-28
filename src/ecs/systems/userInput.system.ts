@@ -32,6 +32,7 @@ export const userInputSystem = () => {
   if (gameState === GameState.GAME) {
     if (key === "1") {
       gameWorld.save();
+      gameWorld.saveGameData();
     }
     if (key === "2") {
       gameWorld.load();

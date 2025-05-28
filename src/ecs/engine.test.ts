@@ -84,11 +84,11 @@ describe("state utils", () => {
   beforeEach(() => {
     state = {
       log: ["one", "two", "three"],
-      currentMapId: "0,0,0",
+      zoneId: "0,0,0",
       playerId: "123abc",
       version: 1,
     };
-    serializedState = `{"log":["one","two","three"],"currentMapId":"0,0,0","playerId":"123abc","version":1}`;
+    serializedState = `{"log":["one","two","three"],"zoneId":"0,0,0","playerId":"123abc","version":1}`;
   });
 
   describe("serializeState", () => {

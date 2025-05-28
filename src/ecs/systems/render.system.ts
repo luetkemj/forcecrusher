@@ -68,6 +68,7 @@ export const renderSystem = () => {
     "appearance",
     "name",
   );
+
   const pcEntities = gameWorld.world.with("pc", "position");
   const mapView = getState().views.map;
   if (!mapView) return;

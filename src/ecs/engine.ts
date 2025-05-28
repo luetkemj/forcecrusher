@@ -61,12 +61,18 @@ class GameWorld {
 
   private _entityById = new Map<string, Entity>();
 
+  private _zones = new Map<string, Set<string>>();
+
   get world() {
     return this._world;
   }
 
   get registry() {
     return this._entityById;
+  }
+
+  get zones() {
+    return this._zones;
   }
 
   load() {
@@ -98,6 +104,33 @@ class GameWorld {
 
     console.log("saved");
   }
+
+  saveZone(zoneId: string) {
+    // create zone if doesn't exist
+    if (!this.zones.has(zoneId)) {
+      this.zones.set(zoneId, new Set());
+    }
+    // wipe old data
+    this.zones.get(zoneId)?.clear();
+    // add new data
+    for (const entity of gameWorld.world.entities) {
+      this.zones.get(zoneId)?.add(entity.id);
+    }
+  }
+
+  saveGameData() {
+    const { log, zoneId, playerId, version } = getState();
+
+    this.saveZone(zoneId);
+
+    const saveData = {
+      registry: prepRegistryForSerialization(this.registry),
+      zones: prepZonesForSerialization(this.zones),
+      state: { log, zoneId, playerId, version },
+    };
+
+    localStorage.setItem("gameData", JSON.stringify(saveData));
+  }
 }
 
 export const gameWorld = new GameWorld();
@@ -117,13 +150,16 @@ gameWorld.world.onEntityAdded.subscribe((entity: Entity) => {
 type Registry = Map<string, Entity>;
 
 // save utils
-export const serializeRegistry = (registry: Registry) => {
+const prepRegistryForSerialization = (registry: Registry) => {
   const obj: Record<string, Entity> = {};
   for (let [key, value] of registry) {
     obj[key] = value;
   }
+  return obj;
+};
 
-  return JSON.stringify(obj);
+export const serializeRegistry = (registry: Registry) => {
+  return JSON.stringify(prepRegistryForSerialization(registry));
 };
 
 export const deserializeRegistry = (registryData: string) => {
@@ -137,10 +173,14 @@ export const deserializeRegistry = (registryData: string) => {
 
 type Zones = Map<string, Set<string>>;
 
+const prepZonesForSerialization = (zones: Zones) => {
+  return Array.from(zones.entries()).map(([key, set]) => [
+    key,
+    Array.from(set),
+  ]);
+};
 export function serializeZones(zones: Zones): string {
-  return JSON.stringify(
-    Array.from(zones.entries()).map(([key, set]) => [key, Array.from(set)]),
-  );
+  return JSON.stringify(prepZonesForSerialization(zones));
 }
 
 export function deserializeZones(serialized: string): Zones {
@@ -148,18 +188,18 @@ export function deserializeZones(serialized: string): Zones {
   return new Map(parsed.map(([key, arr]) => [key, new Set(arr)]));
 }
 
-type State = {
+type SaveState = {
   log: Array<string>;
-  currentMapId: string;
+  zoneId: string;
   playerId: string;
   version: number;
 };
 
-export function serializeState(state: State): string {
+export function serializeState(state: SaveState): string {
   return JSON.stringify(state);
 }
 
-export function deserializeState(serialized: string): State {
+export function deserializeState(serialized: string): SaveState {
   return JSON.parse(serialized);
 }
 

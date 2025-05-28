@@ -89,8 +89,8 @@ saveZone()
 - store all entity ids in engine.world to current mapId in DB
 
 saveGame()
-- save entire registry in db
 - saveZone()
+- save zones, registry, and saveState to db
 
 loadZone()
 - Save current map
