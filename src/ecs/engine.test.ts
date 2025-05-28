@@ -4,6 +4,8 @@ import {
   deserializeRegistry,
   serializeZones,
   deserializeZones,
+  serializeState,
+  deserializeState,
   type Entity,
 } from "./engine";
 
@@ -71,6 +73,33 @@ describe("zone utils", () => {
   describe("deserializeZones", () => {
     test("should work", () => {
       expect(deserializeZones(serializedZones)).toEqual(zones);
+    });
+  });
+});
+
+describe("state utils", () => {
+  let state: any;
+  let serializedState: any;
+
+  beforeEach(() => {
+    state = {
+      log: ["one", "two", "three"],
+      currentMapId: "0,0,0",
+      playerId: "123abc",
+      version: 1,
+    };
+    serializedState = `{"log":["one","two","three"],"currentMapId":"0,0,0","playerId":"123abc","version":1}`;
+  });
+
+  describe("serializeState", () => {
+    test("should work", () => {
+      expect(serializeState(state)).toBe(serializedState);
+    });
+  });
+
+  describe("deserializeState", () => {
+    test("should work", () => {
+      expect(deserializeState(serializedState)).toEqual(state);
     });
   });
 });

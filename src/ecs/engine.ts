@@ -114,7 +114,7 @@ gameWorld.world.onEntityAdded.subscribe((entity: Entity) => {
   }
 });
 
-export type Registry = Map<string, Entity>;
+type Registry = Map<string, Entity>;
 
 // save utils
 export const serializeRegistry = (registry: Registry) => {
@@ -135,7 +135,7 @@ export const deserializeRegistry = (registryData: string) => {
   return registry(obj);
 };
 
-export type Zones = Map<string, Set<string>>;
+type Zones = Map<string, Set<string>>;
 
 export function serializeZones(zones: Zones): string {
   return JSON.stringify(
@@ -148,10 +148,26 @@ export function deserializeZones(serialized: string): Zones {
   return new Map(parsed.map(([key, arr]) => [key, new Set(arr)]));
 }
 
+type State = {
+  log: Array<string>;
+  currentMapId: string;
+  playerId: string;
+  version: number;
+};
+
+export function serializeState(state: State): string {
+  return JSON.stringify(state);
+}
+
+export function deserializeState(serialized: string): State {
+  return JSON.parse(serialized);
+}
+
 // saveGameData = {
 //   registry: Map<EntityId, EntityData>,
 //   zones: Map<MapId, Set<EntityId>>,
-//   gameState: {
+//   state: {
+//     log: array<string>
 //     currentMapId: string,
 //     playerId: string,
 //     version: number,
