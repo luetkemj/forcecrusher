@@ -260,6 +260,9 @@ const init = async () => {
   player.position!.x = startPos.x;
   player.position!.y = startPos.y;
   player.position!.z = startPos.z;
+  setState((state: State) => {
+    state.playerId = player.id;
+  });
 
   // initial render before kicking off the game loop
   fovSystem();
