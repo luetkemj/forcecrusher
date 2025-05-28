@@ -34,7 +34,7 @@ export type Entity = {
     max: number;
     current: number;
   };
-  id?: string;
+  id: string;
   inFov?: true;
   layer100?: true;
   layer200?: true;
@@ -53,6 +53,8 @@ export type Entity = {
   tryMove?: { x: number; y: number; z: number };
   tryPickUp?: { pickerId: string };
   tryThrow?: { throwerId: string };
+  version: number;
+  zoneId: string;
 };
 
 class GameWorld {
@@ -103,7 +105,10 @@ export const gameWorld = new GameWorld();
 
 gameWorld.world.onEntityAdded.subscribe((entity: Entity) => {
   let uuid = self.crypto.randomUUID();
-  gameWorld.world.addComponent(entity, "id", uuid);
+
+  if (!entity.id) {
+    entity.id = uuid;
+  }
 
   if (entity.id) {
     gameWorld.entityById.set(entity.id, entity);

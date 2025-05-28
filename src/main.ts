@@ -60,6 +60,9 @@ export type State = {
     controls?: View;
     cursor?: View;
   };
+  zoneId: string;
+  playerId: string;
+  version: number;
 };
 
 // for debugging
@@ -92,6 +95,9 @@ const state: State = {
   turn: Turn.PLAYER,
   userInput: null,
   views: {},
+  zoneId: "0,0,0",
+  playerId: "",
+  version: 1,
 };
 
 window.skulltooth.state = state;
