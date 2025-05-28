@@ -24,38 +24,6 @@ const getAlpha = (index: number) => {
   return 1;
 };
 
-// for rendering the map
-const renderableEntities100 = gameWorld.world.with(
-  "position",
-  "appearance",
-  "layer100",
-);
-const renderableEntities200 = gameWorld.world.with(
-  "position",
-  "appearance",
-  "layer200",
-);
-const renderableEntities300 = gameWorld.world.with(
-  "position",
-  "appearance",
-  "layer300",
-);
-const renderableEntities400 = gameWorld.world.with(
-  "position",
-  "appearance",
-  "layer400",
-);
-
-// for rendering the legend
-const entitiesInFov = gameWorld.world.with(
-  "inFov",
-  "legendable",
-  "position",
-  "appearance",
-  "name",
-);
-const pcEntities = gameWorld.world.with("pc", "position");
-
 const renderEntity = (view: View, entity: Entity, alpha: number) => {
   const { appearance, position } = entity;
   if (!appearance || !position) return;
@@ -70,6 +38,37 @@ const renderEntity = (view: View, entity: Entity, alpha: number) => {
 };
 
 export const renderSystem = () => {
+  // for rendering the map
+  const renderableEntities100 = gameWorld.world.with(
+    "position",
+    "appearance",
+    "layer100",
+  );
+  const renderableEntities200 = gameWorld.world.with(
+    "position",
+    "appearance",
+    "layer200",
+  );
+  const renderableEntities300 = gameWorld.world.with(
+    "position",
+    "appearance",
+    "layer300",
+  );
+  const renderableEntities400 = gameWorld.world.with(
+    "position",
+    "appearance",
+    "layer400",
+  );
+
+  // for rendering the legend
+  const entitiesInFov = gameWorld.world.with(
+    "inFov",
+    "legendable",
+    "position",
+    "appearance",
+    "name",
+  );
+  const pcEntities = gameWorld.world.with("pc", "position");
   const mapView = getState().views.map;
   if (!mapView) return;
 

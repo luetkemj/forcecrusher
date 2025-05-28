@@ -2,9 +2,8 @@ import { remove } from "lodash";
 import { addLog, logFrozenEntity } from "../../lib/utils";
 import { gameWorld } from "../engine";
 
-const tryDropEntities = gameWorld.world.with("tryDrop");
-
 export const dropSystem = () => {
+  const tryDropEntities = gameWorld.world.with("tryDrop");
   for (const entity of tryDropEntities) {
     // get dropper entity
     const dropperId = entity.tryDrop.dropperId;

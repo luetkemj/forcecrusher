@@ -15,10 +15,10 @@ const moveKeys = [
   "l",
 ];
 
-const pcEntities = gameWorld.world.with("pc", "position");
-const pickUpEntities = gameWorld.world.with("pickUp");
-
 export const userInputSystem = () => {
+  const pcEntities = gameWorld.world.with("pc", "position");
+  const pickUpEntities = gameWorld.world.with("pickUp");
+
   const { userInput, gameState } = getState();
   if (!userInput)
     return setState((state: State) => {

@@ -2,10 +2,10 @@ import { isUndefined } from "lodash";
 import { addLog, logFrozenEntity } from "../../lib/utils";
 import { gameWorld } from "../engine";
 
-const pcEntities = gameWorld.world.with("pc");
-const entitiesBeingPickedUp = gameWorld.world.with("tryPickUp");
-
 export const pickUpSystem = () => {
+  const pcEntities = gameWorld.world.with("pc");
+  const entitiesBeingPickedUp = gameWorld.world.with("tryPickUp");
+
   const [player] = pcEntities;
 
   for (const entity of entitiesBeingPickedUp) {

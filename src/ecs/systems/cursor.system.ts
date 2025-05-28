@@ -2,9 +2,8 @@ import { gameWorld } from "../engine";
 import { getState, setState, State } from "../../main";
 import { toPosId } from "../../lib/grid";
 
-const inspectableEntities = gameWorld.world.with("revealed", "position");
-
 export const cursorSystem = () => {
+  const inspectableEntities = gameWorld.world.with("revealed", "position");
   const cursorPosId = toPosId(getState().cursor[1]);
 
   const layer100 = [];
