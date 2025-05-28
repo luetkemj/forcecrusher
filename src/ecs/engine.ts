@@ -114,9 +114,34 @@ gameWorld.world.onEntityAdded.subscribe((entity: Entity) => {
   }
 });
 
-// TODO: remove this, we don't want to delete entities from the registry
-gameWorld.world.onEntityRemoved.subscribe((entity: Entity) => {
-  if (entity.id) {
-    gameWorld.registry.delete(entity.id);
+export type Registry = Map<string, Entity>;
+
+// save utils
+export const serializeRegistry = (registry: Registry) => {
+  const obj: Record<string, Entity> = {};
+  for (let [key, value] of registry) {
+    obj[key] = value;
   }
-});
+
+  return JSON.stringify(obj);
+};
+
+export const parseRegistry = (registryData: string) => {
+  const obj = JSON.parse(registryData);
+
+  const registry = (obj: Record<string, Entity>) =>
+    new Map(Object.entries(obj));
+
+  return registry(obj);
+};
+
+// saveGameData = {
+//   registry: Map<EntityId, EntityData>,
+//   zones: Map<MapId, Set<EntityId>>,
+//   gameState: {
+//     currentMapId: string,
+//     playerId: string,
+//     version: number,
+//     // maybe: questState, timers, etc.
+//   }
+// }
