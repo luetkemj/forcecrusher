@@ -3,7 +3,6 @@ import { colors, chars } from "./graphics";
 
 const base: Entity = {
   id: "",
-  zoneId: "",
   version: 1,
   name: "base",
 };

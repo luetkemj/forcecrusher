@@ -54,7 +54,6 @@ export type Entity = {
   tryPickUp?: { pickerId: string };
   tryThrow?: { throwerId: string };
   version: number;
-  zoneId: string;
 };
 
 class GameWorld {
