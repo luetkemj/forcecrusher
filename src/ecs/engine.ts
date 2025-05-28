@@ -110,6 +110,7 @@ gameWorld.world.onEntityAdded.subscribe((entity: Entity) => {
   }
 });
 
+// TODO: remove this, we don't want to delete entities from the registry
 gameWorld.world.onEntityRemoved.subscribe((entity: Entity) => {
   if (entity.id) {
     gameWorld.entityById.delete(entity.id);
