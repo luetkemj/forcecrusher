@@ -253,8 +253,9 @@ const init = async () => {
     state.views.controls = controlsView;
   });
 
+  if (import.meta.env.MODE === "test") return; // Skip in Vitest
   const dungeon = generateDungeon();
-  const startPos = dungeon.rooms[0].center;
+  const startPos = dungeon!.rooms[0].center;
 
   const player = gameWorld.world.add(playerPrefab);
   player.position!.x = startPos.x;

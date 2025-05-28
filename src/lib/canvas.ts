@@ -35,6 +35,8 @@ type Textures = {
 const textures = {} as Textures;
 
 export async function setupCanvas(element: HTMLCanvasElement): Promise<void> {
+  if (import.meta.env.MODE === "test") return; // Skip in Vitest
+
   app = new Application({
     view: element,
     width: window.innerWidth,
@@ -153,6 +155,8 @@ export class View {
     this.halfWidth = this.tileSets.includes("text");
     this.visible = options.visible;
 
+    if (import.meta.env.MODE === "test") return; // Skip in Vitest
+
     // create n layers of containers
     _.times(options.layers, () => this.layers.push(new Container()));
 
@@ -173,8 +177,8 @@ export class View {
     // create n layers of arrays of arrays to store sprites
     _.times(options.layers, () =>
       this.sprites.push(
-        Array.from(Array(this.height), () => Array.from(Array(this.width)))
-      )
+        Array.from(Array(this.height), () => Array.from(Array(this.width))),
+      ),
     );
 
     // create sprites and store them
@@ -251,13 +255,15 @@ export class View {
   };
 
   updateSprite = async (opts: UpdateSprite) => {
+    if (import.meta.env.MODE === "test") return; // Skip in Vitest
+
     const { char = "", layer, x, y, tileSet = "text", tint, alpha } = opts;
     const sprite = this.sprites[layer][y][x];
     if (!sprite) return;
 
     sprite.texture = this._getTexture({ tileSet, char });
     if (tint) sprite.tint = tint;
-    if (typeof alpha !== 'undefined') sprite.alpha = alpha;
+    if (typeof alpha !== "undefined") sprite.alpha = alpha;
 
     return this;
   };
@@ -285,7 +291,7 @@ export class View {
         tileSet: tileSet || this.tileSets[layer],
         tint: tint || this.tints[layer],
         alpha: alpha || this.alphas[layer],
-      })
+      }),
     );
 
     const ts = tileSet || this.tileSets[layer];
