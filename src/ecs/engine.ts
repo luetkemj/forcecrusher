@@ -126,7 +126,7 @@ export const serializeRegistry = (registry: Registry) => {
   return JSON.stringify(obj);
 };
 
-export const parseRegistry = (registryData: string) => {
+export const deserializeRegistry = (registryData: string) => {
   const obj = JSON.parse(registryData);
 
   const registry = (obj: Record<string, Entity>) =>
@@ -134,6 +134,19 @@ export const parseRegistry = (registryData: string) => {
 
   return registry(obj);
 };
+
+export type Zones = Map<string, Set<string>>;
+
+export function serializeZones(zones: Zones): string {
+  return JSON.stringify(
+    Array.from(zones.entries()).map(([key, set]) => [key, Array.from(set)]),
+  );
+}
+
+export function deserializeZones(serialized: string): Zones {
+  const parsed = JSON.parse(serialized) as [string, string[]][];
+  return new Map(parsed.map(([key, arr]) => [key, new Set(arr)]));
+}
 
 // saveGameData = {
 //   registry: Map<EntityId, EntityData>,
