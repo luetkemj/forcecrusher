@@ -16,7 +16,7 @@ export const pickUpSystem = () => {
     }
 
     const { pickerId } = entity.tryPickUp;
-    const pickerEntity = gameWorld.entityById.get(pickerId);
+    const pickerEntity = gameWorld.registry.get(pickerId);
     if (!pickerEntity) {
       console.log(`pickerId ${pickerId} does not exist`);
       break;

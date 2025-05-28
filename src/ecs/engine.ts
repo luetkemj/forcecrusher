@@ -66,7 +66,7 @@ class GameWorld {
     return this._world;
   }
 
-  get entityById() {
+  get registry() {
     return this._entityById;
   }
 
@@ -111,13 +111,13 @@ gameWorld.world.onEntityAdded.subscribe((entity: Entity) => {
   }
 
   if (entity.id) {
-    gameWorld.entityById.set(entity.id, entity);
+    gameWorld.registry.set(entity.id, entity);
   }
 });
 
 // TODO: remove this, we don't want to delete entities from the registry
 gameWorld.world.onEntityRemoved.subscribe((entity: Entity) => {
   if (entity.id) {
-    gameWorld.entityById.delete(entity.id);
+    gameWorld.registry.delete(entity.id);
   }
 });

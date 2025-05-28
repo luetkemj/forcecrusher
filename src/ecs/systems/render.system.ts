@@ -193,7 +193,7 @@ export const renderSystem = () => {
       const rows: Array<Array<UpdateRow>> = [];
       const playerInventory = player.container?.contents || [];
       const itemsInInventory = playerInventory.map((id) =>
-        gameWorld.entityById.get(id),
+        gameWorld.registry.get(id),
       );
 
       itemsInInventory.forEach((item) => {

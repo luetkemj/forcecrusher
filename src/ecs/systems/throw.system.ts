@@ -13,7 +13,7 @@ export const throwSystem = () => {
     const { throwerId } = entity.tryThrow;
     const thrownId = entity.id;
 
-    const throwerEntity = gameWorld.entityById.get(throwerId);
+    const throwerEntity = gameWorld.registry.get(throwerId);
     const thrownEntity = entity;
 
     // error checks

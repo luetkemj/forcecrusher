@@ -113,7 +113,7 @@ export const userInputSystem = () => {
         // with a throwerId and targetPosition
         const entityId = player.container?.contents[0];
         if (entityId) {
-          const entity = gameWorld.entityById.get(entityId);
+          const entity = gameWorld.registry.get(entityId);
 
           if (entity) {
             const playerId = player.id;
@@ -188,7 +188,7 @@ export const userInputSystem = () => {
         }
 
         const tryDropEntityId = player.container.contents[0];
-        const tryDropEntity = gameWorld.entityById.get(tryDropEntityId);
+        const tryDropEntity = gameWorld.registry.get(tryDropEntityId);
         if (!tryDropEntity) {
           console.log(`id: ${tryDropEntityId} does not exist.`);
           logFrozenEntity(player);
@@ -222,7 +222,7 @@ export const userInputSystem = () => {
         }
 
         const consumeableId = player.container.contents[0];
-        const consumable = gameWorld.entityById.get(consumeableId);
+        const consumable = gameWorld.registry.get(consumeableId);
         if (!consumable) {
           console.log(`id: ${consumeableId} does not exist.`);
           logFrozenEntity(player);

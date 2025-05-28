@@ -9,7 +9,7 @@ export const dropSystem = () => {
     // get dropper entity
     const dropperId = entity.tryDrop.dropperId;
 
-    const dropperEntity = gameWorld.entityById.get(dropperId);
+    const dropperEntity = gameWorld.registry.get(dropperId);
 
     if (!dropperEntity) {
       console.log(`dropperId: ${dropperId} does not exist`);
