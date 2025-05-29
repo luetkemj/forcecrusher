@@ -1,5 +1,6 @@
 import { World } from "miniplex";
 import { type State, getState, setState } from "../main";
+import { generateDungeon } from "../pcgn/dungeon";
 
 // components with a max, current shape such that they are effectable
 type Effectables = {
@@ -75,6 +76,14 @@ class GameWorld {
     return this._zones;
   }
 
+  clearEntities(disallowList: Array<string> = []) {
+    for (const entity of [...this.world.entities]) {
+      if (!disallowList.includes(entity.id)) {
+        this.world.remove(entity);
+      }
+    }
+  }
+
   saveZone(zoneId: string) {
     // create zone if doesn't exist
     if (!this.zones.has(zoneId)) {
@@ -102,6 +111,42 @@ class GameWorld {
     localStorage.setItem("gameData", JSON.stringify(saveData));
   }
 
+  // TODO: change zone function
+  // need to check if zoneId exists
+  // if yes, we load it and insert the player into it (along with inventory)
+  // if no, we need to generate a new zone first
+  changeZone(zoneId: string) {
+    // get all ids for player and their inventory - all entities that will change zone
+    const { playerId } = getState();
+    const playerEntity = this.registry.get(playerId);
+    const inventoryIds = playerEntity?.container?.contents || [];
+
+    const migratingEIds = [playerId, ...inventoryIds];
+
+    // clear all entities in preparation to regenerate them all from new zone
+    this.clearEntities(migratingEIds);
+
+    console.log(this.zones);
+
+    if (this.zones.has(zoneId)) {
+      console.log(`200: zone ${zoneId} found`);
+    } else {
+      console.log(`404: zone ${zoneId} not found`);
+      // generate new zone
+      const dungeon = generateDungeon();
+      const startPos = dungeon!.rooms[0].center;
+
+      const player = gameWorld.registry.get(playerId);
+      if (player) {
+        player.position!.x = startPos.x;
+        player.position!.y = startPos.y;
+        player.position!.z = startPos.z;
+      }
+    }
+
+    setState((state: State) => (state.zoneId = zoneId));
+  }
+
   loadGameData() {
     const data = localStorage.getItem("gameData");
     if (!data) return;
@@ -111,28 +156,36 @@ class GameWorld {
     // Clear existing data
     this.registry.clear();
     this.zones.clear();
-    for (const entity of [...this.world.entities]) {
-      this.world.remove(entity);
-    }
+    this.clearEntities();
 
-    // TODO: this loads ALL entities in to the world - we want all entities in register, but NOT all in world.
-    // Loading the zone itself should clear all the entities and only create those for the zone in another step
-    // create new entities - registry will be filled automatically
+    // NOTE: this loads ALL entities in to the world - we want all entities in register, but NOT all in world.
+    //
+    // load registry
     for (const entity of Object.values(registry) as Entity[]) {
       this.world.add(entity);
     }
 
-    // populate zones
+    // load zones
     for (const [key, value] of zones as [string, Set<string>][]) {
       this.zones.set(key, new Set(value));
     }
 
-    // TODO: function to clear all entities in world but those we care about (player and inventory)
-    // And then load everything else into state. (mind doubling entities - if an inventory item or player exists in both)
-    // load current zone
-    //
-
-    // update state
+    // NOTE:
+    // we just loaded all entities into the world in order to fully populate the registry
+    // however we only want entities from the current zone loaded into the world
+    // so we clear all entities and then reload just the current zone
+    // so we have a full registry and a limited world.
+    this.clearEntities();
+    const zone = this.zones.get(state.zoneId);
+    if (zone) {
+      for (const eId of zone) {
+        const entity = this.registry.get(eId);
+        if (entity) {
+          this.world.add(entity);
+        }
+      }
+    }
+    // load state
     const { log, zoneId, playerId, version } = state;
     setState((state: State) => {
       state.log = log;

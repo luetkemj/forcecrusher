@@ -254,6 +254,7 @@ const init = async () => {
   });
 
   if (import.meta.env.MODE === "test") return; // Skip in Vitest
+  // create world
   const dungeon = generateDungeon();
   const startPos = dungeon!.rooms[0].center;
 

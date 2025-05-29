@@ -92,9 +92,9 @@ saveGame()
 - saveZone()
 - save zones, registry, and saveState to db
 
-loadZone()
-- Save current map
-- Does mapId exist?
+loadZone(zoneId)
+- Save current zone
+- Does zoneId exist?
     - NO
         - store ids of any entities that must move to new map
         - clear engine.world
@@ -103,7 +103,7 @@ loadZone()
         - update location of player entity
         - update current mapId
     - YES
-        - get ids from mapId
+        - get ids from zoneId
         - generate entities in engine.world from entities in registry
         - update current mapId
 
@@ -112,6 +112,10 @@ loadGame()
 - get current mapId
 - loadZone()
 
+
+loadzone - load a zone with character from that zone
+createzone - generate a new zone and place character into it
+changezone - create/load zone and place character into it
 
 saveGameData:
 - registry: Map<eId, Entity()>

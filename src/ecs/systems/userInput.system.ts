@@ -1,6 +1,6 @@
 import { gameWorld } from "../engine";
 import { GameState, State, Turn, getState, setState } from "../../main";
-import { toPosId } from "../../lib/grid";
+import { toPos, toPosId } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
 import { addLog, logFrozenEntity, outOfBounds } from "../../lib/utils";
 
@@ -13,6 +13,7 @@ const moveKeys = [
   "j",
   "k",
   "l",
+  ">",
 ];
 
 export const userInputSystem = () => {
@@ -35,6 +36,22 @@ export const userInputSystem = () => {
     }
     if (key === "2") {
       gameWorld.loadGameData();
+    }
+
+    if (key === ">") {
+      const { zoneId } = getState();
+      const zonePos = toPos(zoneId);
+      const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
+      const targetZoneId = toPosId(targetZonePos);
+      gameWorld.changeZone(targetZoneId);
+    }
+
+    if (key === "<") {
+      const { zoneId } = getState();
+      const zonePos = toPos(zoneId);
+      const targetZonePos = { ...zonePos, z: zonePos.z + 1 };
+      const targetZoneId = toPosId(targetZonePos);
+      gameWorld.changeZone(targetZoneId);
     }
 
     if (key === "i") {
