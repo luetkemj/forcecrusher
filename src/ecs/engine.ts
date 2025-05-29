@@ -168,19 +168,6 @@ const prepRegistryForSerialization = (registry: Registry) => {
   return obj;
 };
 
-export const serializeRegistry = (registry: Registry) => {
-  return JSON.stringify(prepRegistryForSerialization(registry));
-};
-
-export const deserializeRegistry = (registryData: string) => {
-  const obj = JSON.parse(registryData);
-
-  const registry = (obj: Record<string, Entity>) =>
-    new Map(Object.entries(obj));
-
-  return registry(obj);
-};
-
 type Zones = Map<string, Set<string>>;
 
 const prepZonesForSerialization = (zones: Zones) => {
@@ -189,38 +176,3 @@ const prepZonesForSerialization = (zones: Zones) => {
     Array.from(set),
   ]);
 };
-export function serializeZones(zones: Zones): string {
-  return JSON.stringify(prepZonesForSerialization(zones));
-}
-
-export function deserializeZones(serialized: string): Zones {
-  const parsed = JSON.parse(serialized) as [string, string[]][];
-  return new Map(parsed.map(([key, arr]) => [key, new Set(arr)]));
-}
-
-type SaveState = {
-  log: Array<string>;
-  zoneId: string;
-  playerId: string;
-  version: number;
-};
-
-export function serializeState(state: SaveState): string {
-  return JSON.stringify(state);
-}
-
-export function deserializeState(serialized: string): SaveState {
-  return JSON.parse(serialized);
-}
-
-// saveGameData = {
-//   registry: Map<EntityId, EntityData>,
-//   zones: Map<MapId, Set<EntityId>>,
-//   state: {
-//     log: array<string>
-//     currentMapId: string,
-//     playerId: string,
-//     version: number,
-//     // maybe: questState, timers, etc.
-//   }
-// }
