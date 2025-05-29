@@ -73,8 +73,7 @@ export const renderSystem = () => {
   const mapView = getState().views.map;
   if (!mapView) return;
 
-  // TODO:
-  // clear the map before each render (this is only necessary for loading a game
+  // TODO: clear the map before each render (this is only necessary for loading a game
   // could def find a better place for this.
   mapView.clearView();
 

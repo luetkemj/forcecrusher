@@ -145,6 +145,7 @@ class GameWorld {
     }
 
     setState((state: State) => (state.zoneId = zoneId));
+    this.saveZone(zoneId);
   }
 
   loadGameData() {
@@ -170,8 +171,7 @@ class GameWorld {
       this.zones.set(key, new Set(value));
     }
 
-    // NOTE:
-    // we just loaded all entities into the world in order to fully populate the registry
+    // NOTE: we just loaded all entities into the world in order to fully populate the registry
     // however we only want entities from the current zone loaded into the world
     // so we clear all entities and then reload just the current zone
     // so we have a full registry and a limited world.

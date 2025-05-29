@@ -266,6 +266,8 @@ const init = async () => {
     state.playerId = player.id;
   });
 
+  gameWorld.saveZone(getState().zoneId);
+
   // initial render before kicking off the game loop
   fovSystem();
   renderSystem();
