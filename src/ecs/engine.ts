@@ -75,36 +75,6 @@ class GameWorld {
     return this._zones;
   }
 
-  load() {
-    const data = localStorage.getItem("savegame");
-    if (!data) return;
-
-    // Clear existing entities
-    for (const entity of [...this.world.entities]) {
-      this.world.remove(entity);
-    }
-
-    const { entities, log } = JSON.parse(data);
-
-    setState((state: State) => (state.log = log));
-
-    for (const entityData of entities) {
-      this.world.add(entityData);
-    }
-
-    console.log("loaded");
-  }
-
-  save() {
-    // Extract pure data from all entities
-    const entities = [...this.world.entities].map((entity) => ({ ...entity }));
-    const { log } = getState();
-
-    localStorage.setItem("savegame", JSON.stringify({ entities, log }));
-
-    console.log("saved");
-  }
-
   saveZone(zoneId: string) {
     // create zone if doesn't exist
     if (!this.zones.has(zoneId)) {
@@ -130,6 +100,46 @@ class GameWorld {
     };
 
     localStorage.setItem("gameData", JSON.stringify(saveData));
+  }
+
+  loadGameData() {
+    const data = localStorage.getItem("gameData");
+    if (!data) return;
+
+    const { registry, state, zones } = JSON.parse(data);
+
+    // Clear existing data
+    this.registry.clear();
+    this.zones.clear();
+    for (const entity of [...this.world.entities]) {
+      this.world.remove(entity);
+    }
+
+    // TODO: this loads ALL entities in to the world - we want all entities in register, but NOT all in world.
+    // Loading the zone itself should clear all the entities and only create those for the zone in another step
+    // create new entities - registry will be filled automatically
+    for (const entity of Object.values(registry) as Entity[]) {
+      this.world.add(entity);
+    }
+
+    // populate zones
+    for (const [key, value] of zones as [string, Set<string>][]) {
+      this.zones.set(key, new Set(value));
+    }
+
+    // TODO: function to clear all entities in world but those we care about (player and inventory)
+    // And then load everything else into state. (mind doubling entities - if an inventory item or player exists in both)
+    // load current zone
+    //
+
+    // update state
+    const { log, zoneId, playerId, version } = state;
+    setState((state: State) => {
+      state.log = log;
+      state.zoneId = zoneId;
+      state.playerId = playerId;
+      state.version = version;
+    });
   }
 }
 
