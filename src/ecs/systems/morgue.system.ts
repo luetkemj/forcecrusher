@@ -2,9 +2,9 @@ import { gameWorld } from "../engine";
 import { setState, State, GameState } from "../../main";
 import { addLog } from "../../lib/utils";
 
-const livingEntities = gameWorld.world.with("health").without("dead");
-
 export const morgueSystem = () => {
+  const livingEntities = gameWorld.world.with("health").without("dead");
+
   for (const entity of livingEntities) {
     if (entity.health.current <= 0) {
       if (entity.appearance) {

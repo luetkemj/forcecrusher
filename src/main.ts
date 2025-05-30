@@ -60,6 +60,9 @@ export type State = {
     controls?: View;
     cursor?: View;
   };
+  zoneId: string;
+  playerId: string;
+  version: number;
 };
 
 // for debugging
@@ -92,6 +95,9 @@ const state: State = {
   turn: Turn.PLAYER,
   userInput: null,
   views: {},
+  zoneId: "0,0,0",
+  playerId: "",
+  version: 1,
 };
 
 window.skulltooth.state = state;
@@ -247,13 +253,20 @@ const init = async () => {
     state.views.controls = controlsView;
   });
 
+  if (import.meta.env.MODE === "test") return; // Skip in Vitest
+  // create world
   const dungeon = generateDungeon();
-  const startPos = dungeon.rooms[0].center;
+  const startPos = dungeon!.rooms[0].center;
 
   const player = gameWorld.world.add(playerPrefab);
   player.position!.x = startPos.x;
   player.position!.y = startPos.y;
   player.position!.z = startPos.z;
+  setState((state: State) => {
+    state.playerId = player.id;
+  });
+
+  gameWorld.saveZone(getState().zoneId);
 
   // initial render before kicking off the game loop
   fovSystem();

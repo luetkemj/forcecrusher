@@ -3,9 +3,9 @@ import { type Pos } from "./grid";
 import { getState } from "../main";
 import { gameWorld } from "../ecs/engine";
 
-const entities = gameWorld.world.with("position");
-
 export const aStar = (start: Pos, goal: Pos) => {
+  const entities = gameWorld.world.with("position");
+
   const { width, height } = getState().views.map!;
   const matrix = new PF.Grid(width, height);
 

@@ -4,16 +4,15 @@ import { addLog, logFrozenEntity, isSamePosition } from "../../lib/utils";
 import { Entity, gameWorld } from "../engine";
 import { line, Pos } from "../../lib/grid";
 
-const tryThrowEntities = gameWorld.world.with("tryThrow");
-const blockingEntities = gameWorld.world.with("blocking", "position");
-
 export const throwSystem = () => {
+  const tryThrowEntities = gameWorld.world.with("tryThrow");
+  const blockingEntities = gameWorld.world.with("blocking", "position");
   for (const entity of tryThrowEntities) {
     // get thrower entity
     const { throwerId } = entity.tryThrow;
     const thrownId = entity.id;
 
-    const throwerEntity = gameWorld.entityById.get(throwerId);
+    const throwerEntity = gameWorld.registry.get(throwerId);
     const thrownEntity = entity;
 
     // error checks

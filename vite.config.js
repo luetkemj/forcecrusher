@@ -1,4 +1,7 @@
 // vite.config.js
 export default {
-    base: "/forcecrusher/",
+  base: "/forcecrusher/",
+  test: {
+    environment: "jsdom",
+  },
 };

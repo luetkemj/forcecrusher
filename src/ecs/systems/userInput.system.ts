@@ -1,6 +1,6 @@
-import { gameWorld } from "../engine";
+import { gameWorld, ChangeZoneDirections } from "../engine";
 import { GameState, State, Turn, getState, setState } from "../../main";
-import { toPosId } from "../../lib/grid";
+import { toPos, toPosId, isAtSamePosition } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
 import { addLog, logFrozenEntity, outOfBounds } from "../../lib/utils";
 
@@ -13,12 +13,16 @@ const moveKeys = [
   "j",
   "k",
   "l",
+  ">",
 ];
 
-const pcEntities = gameWorld.world.with("pc", "position");
-const pickUpEntities = gameWorld.world.with("pickUp");
-
 export const userInputSystem = () => {
+  // WARN: should these be inside here? Moved for testing purposes but feels bad...
+  const pcEntities = gameWorld.world.with("pc", "position");
+  const pickUpEntities = gameWorld.world.with("pickUp");
+  const [stairsUpEntity] = gameWorld.world.with("stairsUp", "position");
+  const [stairsDownEntity] = gameWorld.world.with("stairsDown", "position");
+
   const { userInput, gameState } = getState();
   if (!userInput)
     return setState((state: State) => {
@@ -31,10 +35,30 @@ export const userInputSystem = () => {
 
   if (gameState === GameState.GAME) {
     if (key === "1") {
-      gameWorld.save();
+      gameWorld.saveGameData();
     }
     if (key === "2") {
-      gameWorld.load();
+      gameWorld.loadGameData();
+    }
+
+    if (key === ">") {
+      if (isAtSamePosition(player.position, stairsDownEntity.position)) {
+        const { zoneId } = getState();
+        const zonePos = toPos(zoneId);
+        const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
+        const targetZoneId = toPosId(targetZonePos);
+        gameWorld.changeZone(targetZoneId, ChangeZoneDirections.down);
+      }
+    }
+
+    if (key === "<") {
+      if (isAtSamePosition(player.position, stairsUpEntity.position)) {
+        const { zoneId } = getState();
+        const zonePos = toPos(zoneId);
+        const targetZonePos = { ...zonePos, z: zonePos.z + 1 };
+        const targetZoneId = toPosId(targetZonePos);
+        gameWorld.changeZone(targetZoneId, ChangeZoneDirections.up);
+      }
     }
 
     if (key === "i") {
@@ -113,7 +137,7 @@ export const userInputSystem = () => {
         // with a throwerId and targetPosition
         const entityId = player.container?.contents[0];
         if (entityId) {
-          const entity = gameWorld.entityById.get(entityId);
+          const entity = gameWorld.registry.get(entityId);
 
           if (entity) {
             const playerId = player.id;
@@ -188,7 +212,7 @@ export const userInputSystem = () => {
         }
 
         const tryDropEntityId = player.container.contents[0];
-        const tryDropEntity = gameWorld.entityById.get(tryDropEntityId);
+        const tryDropEntity = gameWorld.registry.get(tryDropEntityId);
         if (!tryDropEntity) {
           console.log(`id: ${tryDropEntityId} does not exist.`);
           logFrozenEntity(player);
@@ -222,7 +246,7 @@ export const userInputSystem = () => {
         }
 
         const consumeableId = player.container.contents[0];
-        const consumable = gameWorld.entityById.get(consumeableId);
+        const consumable = gameWorld.registry.get(consumeableId);
         if (!consumable) {
           console.log(`id: ${consumeableId} does not exist.`);
           logFrozenEntity(player);

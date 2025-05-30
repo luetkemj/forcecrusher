@@ -1,22 +1,31 @@
 import { Entity } from "../ecs/engine";
 import { colors, chars } from "./graphics";
 
+const base: Entity = {
+  id: "",
+  version: 1,
+  name: "base",
+};
+
 const renderable: Entity = {
+  ...base,
   appearance: {
     char: chars.default,
     tint: colors.default,
     tileSet: "ascii",
   },
   position: { x: 0, y: 0, z: 0 },
-  name: "default",
+  name: "renderable",
 };
 
 const tile: Entity = {
+  ...base,
   layer100: true,
   name: "tile",
 };
 
 const being: Entity = {
+  ...base,
   health: { max: 1, current: 1 },
   blocking: true,
   layer300: true,
@@ -49,6 +58,7 @@ export const playerPrefab: Entity = {
 };
 
 export const wallPrefab: Entity = {
+  ...base,
   ...renderable,
   ...tile,
   appearance: {
@@ -62,6 +72,7 @@ export const wallPrefab: Entity = {
 };
 
 export const floorPrefab: Entity = {
+  ...base,
   ...renderable,
   ...tile,
   appearance: {
@@ -72,7 +83,40 @@ export const floorPrefab: Entity = {
   name: "floor",
 };
 
+export const stairsDownPrefab: Entity = {
+  ...base,
+  ...renderable,
+  ...tile,
+  appearance: {
+    char: chars.stairsDown,
+    tint: colors.stairsDown,
+    tileSet: "ascii",
+  },
+  name: "stairs down",
+  stairsDown: true,
+  legendable: true,
+  description: "Stairs leading down",
+  layer200: true,
+};
+
+export const stairsUpPrefab: Entity = {
+  ...base,
+  ...renderable,
+  ...tile,
+  appearance: {
+    char: chars.stairsUp,
+    tint: colors.stairsUp,
+    tileSet: "ascii",
+  },
+  name: "stairs up",
+  stairsUp: true,
+  legendable: true,
+  description: "Stairs leading up",
+  layer200: true,
+};
+
 export const ratPrefab: Entity = {
+  ...base,
   ...renderable,
   ...being,
   ai: true,
@@ -89,6 +133,7 @@ export const ratPrefab: Entity = {
 };
 
 export const rockPrefab: Entity = {
+  ...base,
   ...renderable,
   appearance: {
     char: chars.rock,
@@ -103,6 +148,7 @@ export const rockPrefab: Entity = {
 };
 
 export const healthPotionPrefab: Entity = {
+  ...base,
   ...renderable,
   appearance: {
     char: chars.potion,
