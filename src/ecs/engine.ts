@@ -124,12 +124,35 @@ class GameWorld {
     const migratingEIds = [playerId, ...inventoryIds];
 
     // clear all entities in preparation to regenerate them all from new zone
+    // first argument is a disallow list - so we are NOT clearing the migratingEIds
     this.clearEntities(migratingEIds);
 
     console.log(this.zones);
 
     if (this.zones.has(zoneId)) {
       console.log(`200: zone ${zoneId} found`);
+      // query for finding non blocking space
+      const nonBlockingEntities = gameWorld.world
+        .with("position")
+        .without("blocking");
+      // get zone
+      const zone = this.zones.get(zoneId);
+
+      if (!zone) return;
+      // add all entities from zoneIds
+      for (const eId of zone) {
+        const entity = this.registry.get(eId);
+        if (!entity) return;
+        this.world.add(entity);
+      }
+
+      for (const entity of nonBlockingEntities) {
+        if (entity) {
+          if (!playerEntity) return;
+          playerEntity.position = { ...entity.position };
+          break;
+        }
+      }
     } else {
       console.log(`404: zone ${zoneId} not found`);
       // generate new zone

@@ -17,6 +17,7 @@ const moveKeys = [
 ];
 
 export const userInputSystem = () => {
+  // WARN: should these be inside here? Moved for testing purposes but feels bad...
   const pcEntities = gameWorld.world.with("pc", "position");
   const pickUpEntities = gameWorld.world.with("pickUp");
 
