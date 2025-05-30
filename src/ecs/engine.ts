@@ -50,6 +50,8 @@ export type Entity = {
   pc?: true;
   position?: { x: number; y: number; z: number };
   revealed?: true;
+  stairsDown?: true;
+  stairsUp?: true;
   tryDrop?: { dropperId: string };
   tryMove?: { x: number; y: number; z: number };
   tryPickUp?: { pickerId: string };

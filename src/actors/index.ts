@@ -83,6 +83,36 @@ export const floorPrefab: Entity = {
   name: "floor",
 };
 
+export const stairsDownPrefab: Entity = {
+  ...base,
+  ...renderable,
+  ...tile,
+  appearance: {
+    char: chars.stairsDown,
+    tint: colors.stairsDown,
+    tileSet: "ascii",
+  },
+  name: "stairs down",
+  stairsDown: true,
+  legendable: true,
+  description: "Stairs leading down",
+};
+
+export const stairsUpPrefab: Entity = {
+  ...base,
+  ...renderable,
+  ...tile,
+  appearance: {
+    char: chars.stairsUp,
+    tint: colors.stairsUp,
+    tileSet: "ascii",
+  },
+  name: "stairs up",
+  stairsUp: true,
+  legendable: true,
+  description: "Stairs leading up",
+};
+
 export const ratPrefab: Entity = {
   ...base,
   ...renderable,

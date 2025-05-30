@@ -14,6 +14,8 @@ import {
   floorPrefab,
   ratPrefab,
   rockPrefab,
+  stairsUpPrefab,
+  stairsDownPrefab,
 } from "../actors";
 
 type Tile = {
@@ -161,6 +163,20 @@ export const generateDungeon = () => {
     const spawn = sample([ratPrefab, rockPrefab, healthPotionPrefab]);
     if (index) {
       gameWorld.world.add({ ...cloneDeep(spawn), position: room.center });
+    }
+    if (index === 1) {
+      const { x, y, z } = sample(room.tiles) || { x: 0, y: 0, z: 0 };
+      gameWorld.world.add({
+        ...cloneDeep(stairsUpPrefab),
+        position: { x, y, z },
+      });
+    }
+    if (index === 2) {
+      const { x, y, z } = sample(room.tiles) || { x: 0, y: 0, z: 0 };
+      gameWorld.world.add({
+        ...cloneDeep(stairsDownPrefab),
+        position: { x, y, z },
+      });
     }
   });
 
