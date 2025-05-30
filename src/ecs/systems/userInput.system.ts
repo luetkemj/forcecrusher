@@ -1,6 +1,6 @@
 import { gameWorld, ChangeZoneDirections } from "../engine";
 import { GameState, State, Turn, getState, setState } from "../../main";
-import { toPos, toPosId } from "../../lib/grid";
+import { toPos, toPosId, isAtSamePosition } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
 import { addLog, logFrozenEntity, outOfBounds } from "../../lib/utils";
 
@@ -20,6 +20,8 @@ export const userInputSystem = () => {
   // WARN: should these be inside here? Moved for testing purposes but feels bad...
   const pcEntities = gameWorld.world.with("pc", "position");
   const pickUpEntities = gameWorld.world.with("pickUp");
+  const [stairsUpEntity] = gameWorld.world.with("stairsUp", "position");
+  const [stairsDownEntity] = gameWorld.world.with("stairsDown", "position");
 
   const { userInput, gameState } = getState();
   if (!userInput)
@@ -40,19 +42,23 @@ export const userInputSystem = () => {
     }
 
     if (key === ">") {
-      const { zoneId } = getState();
-      const zonePos = toPos(zoneId);
-      const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
-      const targetZoneId = toPosId(targetZonePos);
-      gameWorld.changeZone(targetZoneId, ChangeZoneDirections.down);
+      if (isAtSamePosition(player.position, stairsDownEntity.position)) {
+        const { zoneId } = getState();
+        const zonePos = toPos(zoneId);
+        const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
+        const targetZoneId = toPosId(targetZonePos);
+        gameWorld.changeZone(targetZoneId, ChangeZoneDirections.down);
+      }
     }
 
     if (key === "<") {
-      const { zoneId } = getState();
-      const zonePos = toPos(zoneId);
-      const targetZonePos = { ...zonePos, z: zonePos.z + 1 };
-      const targetZoneId = toPosId(targetZonePos);
-      gameWorld.changeZone(targetZoneId, ChangeZoneDirections.up);
+      if (isAtSamePosition(player.position, stairsUpEntity.position)) {
+        const { zoneId } = getState();
+        const zonePos = toPos(zoneId);
+        const targetZonePos = { ...zonePos, z: zonePos.z + 1 };
+        const targetZoneId = toPosId(targetZonePos);
+        gameWorld.changeZone(targetZoneId, ChangeZoneDirections.up);
+      }
     }
 
     if (key === "i") {

@@ -37,7 +37,7 @@ This is aspirational only. Expect anything and everything in this document to be
   - [x] Disallow throwing on and through walls
   - [x] Thrown item cause damage
 - [x] Saving and loading
-- [ ] Delving into the Dungeon
+- [x] Delving into the Dungeon
 - [ ] Damage System
 - [ ] Increasing Difficulty
 - [ ] Gearing up
