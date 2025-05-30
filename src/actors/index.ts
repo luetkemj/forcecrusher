@@ -96,6 +96,7 @@ export const stairsDownPrefab: Entity = {
   stairsDown: true,
   legendable: true,
   description: "Stairs leading down",
+  layer200: true,
 };
 
 export const stairsUpPrefab: Entity = {
@@ -111,6 +112,7 @@ export const stairsUpPrefab: Entity = {
   stairsUp: true,
   legendable: true,
   description: "Stairs leading up",
+  layer200: true,
 };
 
 export const ratPrefab: Entity = {

@@ -1,4 +1,4 @@
-import { gameWorld } from "../engine";
+import { gameWorld, ChangeZoneDirections } from "../engine";
 import { GameState, State, Turn, getState, setState } from "../../main";
 import { toPos, toPosId } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
@@ -44,7 +44,7 @@ export const userInputSystem = () => {
       const zonePos = toPos(zoneId);
       const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
       const targetZoneId = toPosId(targetZonePos);
-      gameWorld.changeZone(targetZoneId);
+      gameWorld.changeZone(targetZoneId, ChangeZoneDirections.down);
     }
 
     if (key === "<") {
@@ -52,7 +52,7 @@ export const userInputSystem = () => {
       const zonePos = toPos(zoneId);
       const targetZonePos = { ...zonePos, z: zonePos.z + 1 };
       const targetZoneId = toPosId(targetZonePos);
-      gameWorld.changeZone(targetZoneId);
+      gameWorld.changeZone(targetZoneId, ChangeZoneDirections.up);
     }
 
     if (key === "i") {

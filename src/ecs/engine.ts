@@ -59,6 +59,11 @@ export type Entity = {
   version: number;
 };
 
+export enum ChangeZoneDirections {
+  up = "up",
+  down = "down",
+}
+
 class GameWorld {
   private _world = new World<Entity>();
 
@@ -113,26 +118,22 @@ class GameWorld {
     localStorage.setItem("gameData", JSON.stringify(saveData));
   }
 
-  // TODO: change zone function
-  // need to check if zoneId exists
-  // if yes, we load it and insert the player into it (along with inventory)
-  // if no, we need to generate a new zone first
-  changeZone(zoneId: string) {
+  changeZone(zoneId: string, direction: ChangeZoneDirections) {
     // get all ids for player and their inventory - all entities that will change zone
     const { playerId } = getState();
     const playerEntity = this.registry.get(playerId);
     const inventoryIds = playerEntity?.container?.contents || [];
-
     const migratingEIds = [playerId, ...inventoryIds];
+
+    getStairsEntity(direction);
 
     // clear all entities in preparation to regenerate them all from new zone
     // first argument is a disallow list - so we are NOT clearing the migratingEIds
     this.clearEntities(migratingEIds);
 
-    console.log(this.zones);
-
     if (this.zones.has(zoneId)) {
-      console.log(`200: zone ${zoneId} found`);
+      // zone found - load zone
+      //
       // query for finding non blocking space
       const nonBlockingEntities = gameWorld.world
         .with("position")
@@ -151,21 +152,28 @@ class GameWorld {
       for (const entity of nonBlockingEntities) {
         if (entity) {
           if (!playerEntity) return;
-          playerEntity.position = { ...entity.position };
+
+          const stairsEntities = getStairsEntity(direction);
+          if (!stairsEntities) return;
+
+          for (const stairsEntity of stairsEntities) {
+            playerEntity.position = { ...stairsEntity.position };
+          }
           break;
         }
       }
     } else {
-      console.log(`404: zone ${zoneId} not found`);
-      // generate new zone
-      const dungeon = generateDungeon();
-      const startPos = dungeon!.rooms[0].center;
+      // Zone not found: generate new zone
+      generateDungeon();
 
-      const player = gameWorld.registry.get(playerId);
-      if (player) {
-        player.position!.x = startPos.x;
-        player.position!.y = startPos.y;
-        player.position!.z = startPos.z;
+      const playerEntity = gameWorld.registry.get(playerId);
+      if (playerEntity) {
+        const stairsEntities = getStairsEntity(direction);
+        if (!stairsEntities) return;
+
+        for (const stairsEntity of stairsEntities) {
+          playerEntity.position = { ...stairsEntity.position };
+        }
       }
     }
 
@@ -253,4 +261,16 @@ const prepZonesForSerialization = (zones: Zones) => {
     key,
     Array.from(set),
   ]);
+};
+
+const getStairsEntity = (direction: ChangeZoneDirections) => {
+  const stairsUp = gameWorld.world.with("stairsUp", "position");
+  const stairsDown = gameWorld.world.with("stairsDown", "position");
+
+  if (direction === "up") {
+    return stairsDown;
+  }
+  if (direction === "down") {
+    return stairsUp;
+  }
 };
