@@ -18,8 +18,8 @@ const moveKeys = [
 
 const pcEntities = gameWorld.world.with("pc", "position");
 const pickUpEntities = gameWorld.world.with("pickUp");
-const [stairsUpEntity] = gameWorld.world.with("stairsUp", "position");
-const [stairsDownEntity] = gameWorld.world.with("stairsDown", "position");
+const stairsUpEntities = gameWorld.world.with("stairsUp", "position");
+const stairsDownEntities = gameWorld.world.with("stairsDown", "position");
 
 export const userInputSystem = () => {
   const { userInput, gameState } = getState();
@@ -41,6 +41,7 @@ export const userInputSystem = () => {
     }
 
     if (key === ">") {
+      const [stairsDownEntity] = stairsDownEntities;
       if (isAtSamePosition(player.position, stairsDownEntity.position)) {
         const { zoneId } = getState();
         const zonePos = toPos(zoneId);
@@ -51,6 +52,7 @@ export const userInputSystem = () => {
     }
 
     if (key === "<") {
+      const [stairsUpEntity] = stairsUpEntities;
       if (isAtSamePosition(player.position, stairsUpEntity.position)) {
         const { zoneId } = getState();
         const zonePos = toPos(zoneId);

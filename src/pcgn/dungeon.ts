@@ -135,8 +135,6 @@ export const buildDungeon = (props: DungeonProps): Dungeon => {
 };
 
 export const generateDungeon = () => {
-  if (import.meta.env.MODE === "test") return; // Skip in Vitest
-
   const dungeon = buildDungeon({
     pos: { x: 0, y: 0, z: 0 },
     width: 74,
