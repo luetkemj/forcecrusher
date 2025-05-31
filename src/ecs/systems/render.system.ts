@@ -178,6 +178,16 @@ export const renderSystem = () => {
     }
   }
 
+  // right side views
+  {
+    const zoneView = getState().views.zone;
+    const zoneId = getState().zoneId;
+    if (zoneView) {
+      zoneView?.clearView();
+      zoneView?.updateRows([[{ string: `Zone: ${zoneId}` }]]);
+    }
+  }
+
   // render inventory
   {
     const menuUnderlayView = getState().views.menuUnderlay;

@@ -46,7 +46,7 @@ export type Entity = {
   pathThrough?: true;
   pickUp?: true;
   name: string;
-  paused?: true;
+  paused?: true; // TODO: is this used anywhere?
   pc?: true;
   position?: { x: number; y: number; z: number };
   revealed?: true;

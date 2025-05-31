@@ -59,6 +59,7 @@ export type State = {
     menuUnderlay?: View;
     controls?: View;
     cursor?: View;
+    zone?: View;
   };
   zoneId: string;
   playerId: string;
@@ -202,6 +203,18 @@ const init = async () => {
     visible: true,
   }).updateRows([[{ string: "TAG: GITHASH" }]]);
 
+  const zoneView = new View({
+    width: 12,
+    height: 1,
+    x: 174,
+    y: 0,
+    layers: 1,
+    tileSets: ["text"],
+    tints: [0xdddddd],
+    alphas: [1],
+    visible: true,
+  }).updateRows([[{ string: `Zone: ${getState().zoneId}` }]]);
+
   // keyboard controls
   const controlsView = new View({
     width: 148,
@@ -251,6 +264,7 @@ const init = async () => {
     state.views.inventory = inventoryView;
     state.views.menuUnderlay = menuUnderlayView;
     state.views.controls = controlsView;
+    state.views.zone = zoneView;
   });
 
   if (import.meta.env.MODE === "test") return; // Skip in Vitest
