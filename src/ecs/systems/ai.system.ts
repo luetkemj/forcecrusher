@@ -1,9 +1,10 @@
 import { gameWorld } from "../engine";
 import { aStar } from "../../lib/pathfinding";
 
+const pcQuery = gameWorld.world.with("pc", "position");
+const aiEntities = gameWorld.world.with("ai", "position");
+
 export const aiSystem = () => {
-  const pcQuery = gameWorld.world.with("pc", "position");
-  const aiEntities = gameWorld.world.with("ai", "position");
   const [player] = pcQuery.entities;
 
   for (const entity of aiEntities) {

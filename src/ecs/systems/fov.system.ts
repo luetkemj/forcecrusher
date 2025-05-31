@@ -2,11 +2,12 @@ import { gameWorld } from "../engine";
 import createFOV from "../../lib/fov";
 import { toPosId } from "../../lib/grid";
 
+const inFovEntities = gameWorld.world.with("inFov", "position");
+const opaqueEntities = gameWorld.world.with("opaque", "position");
+const playerEntities = gameWorld.world.with("pc", "position");
+const renderableEntities = gameWorld.world.with("appearance", "position");
+
 export const fovSystem = () => {
-  const inFovEntities = gameWorld.world.with("inFov", "position");
-  const opaqueEntities = gameWorld.world.with("opaque", "position");
-  const playerEntities = gameWorld.world.with("pc", "position");
-  const renderableEntities = gameWorld.world.with("appearance", "position");
   let player;
 
   for (const entity of playerEntities) {

@@ -16,13 +16,12 @@ const moveKeys = [
   ">",
 ];
 
-export const userInputSystem = () => {
-  // WARN: should these be inside here? Moved for testing purposes but feels bad...
-  const pcEntities = gameWorld.world.with("pc", "position");
-  const pickUpEntities = gameWorld.world.with("pickUp");
-  const [stairsUpEntity] = gameWorld.world.with("stairsUp", "position");
-  const [stairsDownEntity] = gameWorld.world.with("stairsDown", "position");
+const pcEntities = gameWorld.world.with("pc", "position");
+const pickUpEntities = gameWorld.world.with("pickUp");
+const [stairsUpEntity] = gameWorld.world.with("stairsUp", "position");
+const [stairsDownEntity] = gameWorld.world.with("stairsDown", "position");
 
+export const userInputSystem = () => {
   const { userInput, gameState } = getState();
   if (!userInput)
     return setState((state: State) => {

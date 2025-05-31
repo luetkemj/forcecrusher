@@ -1,10 +1,10 @@
 import { addLog } from "../../lib/utils";
 import { gameWorld } from "../engine";
 
-export const movementSystem = () => {
-  const moveableEntities = gameWorld.world.with("position", "tryMove");
-  const blockingEntities = gameWorld.world.with("blocking", "position");
+const moveableEntities = gameWorld.world.with("position", "tryMove");
+const blockingEntities = gameWorld.world.with("blocking", "position");
 
+export const movementSystem = () => {
   for (const entity of moveableEntities) {
     const { position, tryMove } = entity;
 

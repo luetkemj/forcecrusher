@@ -1,8 +1,8 @@
 import { gameWorld } from "../engine";
 
-export const activeEffectsSystem = () => {
-  const activeEffectEntities = gameWorld.world.with("activeEffects");
+const activeEffectEntities = gameWorld.world.with("activeEffects");
 
+export const activeEffectsSystem = () => {
   for (const entity of activeEffectEntities) {
     const { activeEffects } = entity;
     activeEffects.forEach((effect) => {
