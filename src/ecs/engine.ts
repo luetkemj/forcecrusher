@@ -20,8 +20,11 @@ export type Entity = {
     tint: number;
     tileSet: string;
   };
+  armorClass?: number;
   blocking?: true;
+  charisma?: number;
   consumable?: true;
+  constitution?: number;
   container?: {
     name: string;
     description: string;
@@ -30,6 +33,7 @@ export type Entity = {
   };
   dead?: true;
   description?: string;
+  dexterity?: number;
   effects?: Array<Effect>;
   health?: {
     max: number;
@@ -37,6 +41,7 @@ export type Entity = {
   };
   id: string;
   inFov?: true;
+  intelligence?: number;
   layer100?: true;
   layer200?: true;
   layer300?: true;
@@ -52,11 +57,13 @@ export type Entity = {
   revealed?: true;
   stairsDown?: true;
   stairsUp?: true;
+  strength?: number;
   tryDrop?: { dropperId: string };
   tryMove?: { x: number; y: number; z: number };
   tryPickUp?: { pickerId: string };
   tryThrow?: { throwerId: string };
   version: number;
+  wisdom?: number;
 };
 
 export enum ChangeZoneDirections {

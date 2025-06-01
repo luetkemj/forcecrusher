@@ -30,6 +30,13 @@ const being: Entity = {
   blocking: true,
   layer300: true,
   name: "being",
+  armorClass: 10,
+  strength: 10,
+  dexterity: 10,
+  constitution: 10,
+  intelligence: 10,
+  wisdom: 10,
+  charisma: 10,
 };
 
 export const playerPrefab: Entity = {
@@ -51,10 +58,14 @@ export const playerPrefab: Entity = {
     slots: 10,
     contents: [],
   },
-  activeEffects: [
-    { delta: -5, component: "health" },
-    { delta: -1, component: "health" },
-  ],
+  armorClass: 16,
+  strength: 16,
+  dexterity: 10,
+  constitution: 16,
+  intelligence: 8,
+  wisdom: 14,
+  charisma: 10,
+  activeEffects: [],
 };
 
 export const wallPrefab: Entity = {
@@ -125,11 +136,18 @@ export const ratPrefab: Entity = {
     tint: colors.rat,
     tileSet: "ascii",
   },
-  health: { max: 1, current: 1 },
   legendable: true,
   name: "rat",
   description: "A medium-sized, long-tailed rodent",
   pathThrough: true,
+  health: { max: 1, current: 1 },
+  armorClass: 13,
+  strength: 2,
+  dexterity: 11,
+  constitution: 9,
+  intelligence: 2,
+  wisdom: 10,
+  charisma: 4,
 };
 
 export const rockPrefab: Entity = {

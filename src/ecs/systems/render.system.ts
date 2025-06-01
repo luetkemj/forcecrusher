@@ -178,16 +178,6 @@ export const renderSystem = () => {
     }
   }
 
-  // right side views
-  {
-    const zoneView = getState().views.zone;
-    const zoneId = getState().zoneId;
-    if (zoneView) {
-      zoneView?.clearView();
-      zoneView?.updateRows([[{ string: `Zone: ${zoneId}` }]]);
-    }
-  }
-
   // render inventory
   {
     const menuUnderlayView = getState().views.menuUnderlay;
@@ -199,20 +189,44 @@ export const renderSystem = () => {
       const [player] = pcEntities;
       if (!player) return;
 
-      const rows: Array<Array<UpdateRow>> = [];
+      // const rows: Array<Array<UpdateRow>> = [];
       const playerInventory = player.container?.contents || [];
       const itemsInInventory = playerInventory.map((id) =>
         gameWorld.registry.get(id),
       );
 
-      itemsInInventory.forEach((item) => {
-        rows.push([
+      const rows = [
+        [{}, { string: "Inventory" }],
+        [],
+        [
+          {},
+          {
+            string: `${player.container?.name} [${player.container?.contents.length}/${player.container?.slots}]`,
+          },
+        ],
+        [
+          {},
+          {
+            string: `${player.container?.description}`,
+          },
+        ],
+        [],
+        ...itemsInInventory.map((item) => [
           {},
           {
             string: `${item?.appearance?.char} ${item?.name} ${item?.description}`,
           },
-        ]);
-      });
+        ]),
+      ];
+
+      // itemsInInventory.forEach((item) => {
+      //   rows.push([
+      //     {},
+      //     {
+      //       string: `${item?.appearance?.char} ${item?.name} ${item?.description}`,
+      //     },
+      //   ]);
+      // });
 
       // console.log(rows);
       menuUnderlayView?.show();
@@ -273,6 +287,30 @@ export const renderSystem = () => {
         2: { ...cursorProps, alpha: 0, x: pos1.x, y: pos1.y },
       });
     }
+  }
+
+  const hudView = getState().views.hud;
+  const [player] = pcEntities;
+  if (hudView) {
+    const rows = [
+      [{ string: `Forcecrusher` }],
+      [],
+      [{ string: `Zone: ${getState().zoneId}` }],
+      [],
+      [{ string: `LV: 1` }],
+      [{ string: `HP: ${player?.health?.current}/${player?.health?.max}` }],
+      [],
+      [{ string: `AC: ${player?.armorClass}` }],
+      [{ string: `ST: ${player?.strength}` }],
+      [{ string: `DX: ${player?.dexterity}` }],
+      [{ string: `CN: ${player?.constitution}` }],
+      [{ string: `IN: ${player?.intelligence}` }],
+      [{ string: `WI: ${player?.wisdom}` }],
+      [{ string: `CH: ${player?.charisma}` }],
+    ];
+
+    hudView?.clearView();
+    hudView?.updateRows(rows);
   }
 
   // render controls

@@ -59,7 +59,7 @@ export type State = {
     menuUnderlay?: View;
     controls?: View;
     cursor?: View;
-    zone?: View;
+    hud?: View;
   };
   zoneId: string;
   playerId: string;
@@ -203,9 +203,9 @@ const init = async () => {
     visible: true,
   }).updateRows([[{ string: "TAG: GITHASH" }]]);
 
-  const zoneView = new View({
-    width: 12,
-    height: 1,
+  const hudView = new View({
+    width: 26,
+    height: 46,
     x: 174,
     y: 0,
     layers: 1,
@@ -213,7 +213,7 @@ const init = async () => {
     tints: [0xdddddd],
     alphas: [1],
     visible: true,
-  }).updateRows([[{ string: `Zone: ${getState().zoneId}` }]]);
+  });
 
   // keyboard controls
   const controlsView = new View({
@@ -264,7 +264,7 @@ const init = async () => {
     state.views.inventory = inventoryView;
     state.views.menuUnderlay = menuUnderlayView;
     state.views.controls = controlsView;
-    state.views.zone = zoneView;
+    state.views.hud = hudView;
   });
 
   // create world
