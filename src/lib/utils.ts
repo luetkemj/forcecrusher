@@ -28,9 +28,10 @@ export const isSamePosition = (blocker: Pos, blockee: Pos) => {
   return false;
 };
 
-export const d4 = random(1, 4);
-export const d8 = random(1, 8);
-export const d10 = random(1, 10);
-export const d12 = random(1, 12);
-export const d20 = random(1, 20);
-export const d100 = random(1, 100);
+export const d4 = () => random(1, 4);
+export const d6 = () => random(1, 6);
+export const d8 = () => random(1, 8);
+export const d10 = () => random(1, 10);
+export const d12 = () => random(1, 12);
+export const d20 = () => random(1, 20);
+export const d100 = () => random(1, 100);

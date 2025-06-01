@@ -1,32 +1,28 @@
 import { addLog } from "../../lib/utils";
 import { gameWorld } from "../engine";
+import { meleeAttack } from "../../lib/combat";
 
 const moveableEntities = gameWorld.world.with("position", "tryMove");
 const blockingEntities = gameWorld.world.with("blocking", "position");
 
 export const movementSystem = () => {
-  for (const entity of moveableEntities) {
-    const { position, tryMove } = entity;
+  for (const movingEntity of moveableEntities) {
+    const { position, tryMove } = movingEntity;
 
     let blocked = false;
 
-    for (const blocker of blockingEntities) {
+    for (const blockingEntity of blockingEntities) {
       if (
-        blocker.position.x === tryMove.x &&
-        blocker.position.y === tryMove.y
+        blockingEntity.position.x === tryMove.x &&
+        blockingEntity.position.y === tryMove.y
       ) {
-        gameWorld.world.removeComponent(entity, "tryMove");
+        gameWorld.world.removeComponent(movingEntity, "tryMove");
 
-        if (blocker.health) {
-          // you have attacked!
-          blocker.health.current -= 5;
-
-          if (entity.pc || blocker.pc) {
-            addLog(`${blocker.name} attacked by ${entity.name} for 5hp`);
-          }
+        if (blockingEntity.health) {
+          meleeAttack(movingEntity, blockingEntity);
         } else {
-          if (entity.pc) {
-            addLog(`${entity.name} blocked by ${blocker.name}`);
+          if (movingEntity.pc) {
+            addLog(`${movingEntity.name} blocked by ${blockingEntity.name}`);
           }
         }
 
@@ -41,7 +37,7 @@ export const movementSystem = () => {
       position.y = tryMove.y;
       position.z = tryMove.z;
 
-      gameWorld.world.removeComponent(entity, "tryMove");
+      gameWorld.world.removeComponent(movingEntity, "tryMove");
     }
   }
 };
