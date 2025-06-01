@@ -3,6 +3,7 @@ import { getState } from "../../main";
 import { addLog, logFrozenEntity, isSamePosition } from "../../lib/utils";
 import { Entity, gameWorld } from "../engine";
 import { line, Pos } from "../../lib/grid";
+import { rangeAttack } from "../../lib/combat";
 
 const tryThrowEntities = gameWorld.world.with("tryThrow");
 const blockingEntities = gameWorld.world.with("blocking", "position");
@@ -70,14 +71,7 @@ export const throwSystem = () => {
       }
 
       if (hitEntity?.health) {
-        hitEntity.health.current -= 5;
-        addLog(
-          `${throwerEntity.name} throws ${thrownEntity.name} at ${hitEntity?.name} for 5 damage!`,
-        );
-      } else {
-        addLog(
-          `${throwerEntity.name} throws ${thrownEntity.name} at ${hitEntity?.name}`,
-        );
+        rangeAttack(throwerEntity, hitEntity, thrownEntity);
       }
     } else {
       // put entity to be thrown on at cursor location
