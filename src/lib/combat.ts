@@ -17,7 +17,7 @@ export function meleeAttack(attacker: Entity, target: Entity) {
 
   if (attackRoll >= armorClass) {
     // NOTE: HIT
-    let damage = calcDamage(attacker);
+    let damage = calcDamage(attacker, false);
     if (isCrit) damage *= 2;
 
     target.health.current -= damage;
