@@ -38,7 +38,7 @@ This is aspirational only. Expect anything and everything in this document to be
   - [x] Thrown item cause damage
 - [x] Saving and loading
 - [x] Delving into the Dungeon
-- [ ] Damage System
+- [x] Damage System
 - [ ] Increasing Difficulty
 - [ ] Gearing up
 
