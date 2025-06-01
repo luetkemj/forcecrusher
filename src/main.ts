@@ -268,7 +268,7 @@ const init = async () => {
   });
 
   // create world
-  const dungeon = generateDungeon();
+  const dungeon = generateDungeon(getState().zoneId);
   if (!dungeon) return;
   const startPos = dungeon.rooms[0].center;
 

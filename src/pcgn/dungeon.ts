@@ -6,6 +6,7 @@ import {
   rectangle,
   rectsIntersect,
   toPosId,
+  toPos,
 } from "../lib/grid";
 import { gameWorld } from "../ecs/engine";
 import {
@@ -16,6 +17,7 @@ import {
   rockPrefab,
   stairsUpPrefab,
   stairsDownPrefab,
+  skeletonPrefab,
 } from "../actors";
 
 type Tile = {
@@ -134,7 +136,11 @@ export const buildDungeon = (props: DungeonProps): Dungeon => {
   return dungeon;
 };
 
-export const generateDungeon = () => {
+export const generateDungeon = (zoneId: string) => {
+  const { z } = toPos(zoneId);
+
+  const depth = Math.abs(z);
+
   const dungeon = buildDungeon({
     pos: { x: 0, y: 0, z: 0 },
     width: 74,
@@ -157,8 +163,27 @@ export const generateDungeon = () => {
     }
   }
 
+  // get all open tiles (floor)
+  const openTiles = Object.values(dungeon.tiles).filter(
+    (tile) => tile.sprite === "FLOOR",
+  );
+  // randomly place enemies on open tiles
+  times(3 + depth, () => {
+    const openTile = sample(openTiles);
+    const spawn = sample([ratPrefab, skeletonPrefab]);
+    if (!openTile || !spawn) return;
+
+    gameWorld.world.add({
+      ...cloneDeep(spawn),
+      position: { x: openTile.x, y: openTile.y, z: openTile.z },
+    });
+  });
+
+  // increase number of enemies as you get deeper
+
   dungeon.rooms.forEach((room, index) => {
-    const spawn = sample([ratPrefab, rockPrefab, healthPotionPrefab]);
+    console.log(room);
+    const spawn = sample([rockPrefab, healthPotionPrefab]);
     if (index) {
       gameWorld.world.add({ ...cloneDeep(spawn), position: room.center });
     }

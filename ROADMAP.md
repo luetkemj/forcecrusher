@@ -39,7 +39,7 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] Saving and loading
 - [x] Delving into the Dungeon
 - [x] Damage System
-- [ ] Increasing Difficulty
+- [x] Increasing Difficulty
 - [ ] Gearing up
 
 ---

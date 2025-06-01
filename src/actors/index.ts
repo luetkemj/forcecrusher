@@ -138,7 +138,8 @@ export const ratPrefab: Entity = {
   },
   legendable: true,
   name: "rat",
-  description: "A medium-sized, long-tailed rodent",
+  description:
+    "A filthy, disease-ridden rodent with glowing eyes and a hungry squeak.",
   pathThrough: true,
   health: { max: 1, current: 1 },
   armorClass: 13,
@@ -148,6 +149,31 @@ export const ratPrefab: Entity = {
   intelligence: 2,
   wisdom: 10,
   charisma: 4,
+};
+
+export const skeletonPrefab: Entity = {
+  ...base,
+  ...renderable,
+  ...being,
+  ai: true,
+  appearance: {
+    char: chars.skeleton,
+    tint: colors.skeleton,
+    tileSet: "ascii",
+  },
+  legendable: true,
+  name: "skeleton",
+  description:
+    "A brittle warrior from another age, still fighting long after death forgot it.",
+  pathThrough: true,
+  health: { max: 13, current: 13 },
+  armorClass: 13,
+  strength: 10,
+  dexterity: 14,
+  constitution: 15,
+  intelligence: 6,
+  wisdom: 8,
+  charisma: 5,
 };
 
 export const rockPrefab: Entity = {

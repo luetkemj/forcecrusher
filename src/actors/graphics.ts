@@ -6,6 +6,7 @@ export enum chars {
   "potion" = "!",
   "rat" = "r",
   "rock" = "*",
+  "skeleton" = "s",
   "stairsDown" = ">",
   "stairsUp" = "<",
   "wall" = "#",
@@ -19,6 +20,7 @@ export enum colors {
   "potion" = 0xdaa520, // #daa520
   "rat" = 0xd65a77, // #d65a77
   "rock" = 0x7f7f7f, // #7f7f7f
+  "skeleton" = 0xfde5a4, // #fde5a4
   "stairsDown" = 0xdaa520, // #daa520
   "stairsUp" = 0xdaa520, // #daa520
   "wall" = 0x808080, // #808080
