@@ -13,12 +13,12 @@ import {
   healthPotionPrefab,
   wallPrefab,
   floorPrefab,
-  ratPrefab,
   rockPrefab,
   stairsUpPrefab,
   stairsDownPrefab,
-  skeletonPrefab,
 } from "../actors";
+import { d100 } from "../lib/utils";
+import { spawnSkeleton, spawnRat } from "./monsters";
 
 type Tile = {
   x: number;
@@ -168,21 +168,22 @@ export const generateDungeon = (zoneId: string) => {
     (tile) => tile.sprite === "FLOOR",
   );
   // randomly place enemies on open tiles
-  times(3 + depth, () => {
+  times(10 + depth, () => {
     const openTile = sample(openTiles);
-    const spawn = sample([ratPrefab, skeletonPrefab]);
-    if (!openTile || !spawn) return;
+    if (!openTile) return;
+    const position = { x: openTile.x, y: openTile.y, z: openTile.z };
+    const percentile = d100();
 
-    gameWorld.world.add({
-      ...cloneDeep(spawn),
-      position: { x: openTile.x, y: openTile.y, z: openTile.z },
-    });
+    if (percentile < 30) {
+      spawnSkeleton(position);
+    } else {
+      spawnRat(position);
+    }
   });
 
   // increase number of enemies as you get deeper
 
   dungeon.rooms.forEach((room, index) => {
-    console.log(room);
     const spawn = sample([rockPrefab, healthPotionPrefab]);
     if (index) {
       gameWorld.world.add({ ...cloneDeep(spawn), position: room.center });

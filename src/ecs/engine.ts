@@ -1,4 +1,5 @@
 import { World } from "miniplex";
+import { DamageType, WeaponClass, WeaponType } from "./enums";
 import { type State, getState, setState } from "../main";
 import { generateDungeon } from "../pcgn/dungeon";
 
@@ -31,6 +32,8 @@ export type Entity = {
     contents: Array<string>;
     slots: number;
   };
+  damageType?: DamageType;
+  damageRoll?: string;
   dead?: true;
   description?: string;
   dexterity?: number;
@@ -63,6 +66,13 @@ export type Entity = {
   tryPickUp?: { pickerId: string };
   tryThrow?: { throwerId: string };
   version: number;
+  weaponClass?: WeaponClass;
+  weaponSlot?: {
+    name: string;
+    contents: Array<string>;
+    slots: number;
+  };
+  weaponType?: WeaponType;
   wisdom?: number;
 };
 

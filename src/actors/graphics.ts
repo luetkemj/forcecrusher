@@ -10,6 +10,7 @@ export enum chars {
   "stairsDown" = ">",
   "stairsUp" = "<",
   "wall" = "#",
+  "weapon" = ")",
 }
 
 export enum colors {
@@ -24,4 +25,5 @@ export enum colors {
   "stairsDown" = 0xdaa520, // #daa520
   "stairsUp" = 0xdaa520, // #daa520
   "wall" = 0x808080, // #808080
+  "weapon" = 0xdaa520, // #daa520
 }
