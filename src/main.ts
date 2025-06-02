@@ -20,7 +20,7 @@ import { userInputSystem } from "./ecs/systems/userInput.system";
 import { generateDungeon } from "./pcgn/dungeon";
 
 import { gameWorld } from "./ecs/engine";
-import { playerPrefab } from "./actors";
+import { spawn } from "./actors";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -271,11 +271,8 @@ const init = async () => {
   const dungeon = generateDungeon(getState().zoneId);
   if (!dungeon) return;
   const startPos = dungeon.rooms[0].center;
+  const player = spawn("player", { position: startPos });
 
-  const player = gameWorld.world.add(playerPrefab);
-  player.position!.x = startPos.x;
-  player.position!.y = startPos.y;
-  player.position!.z = startPos.z;
   setState((state: State) => {
     state.playerId = player.id;
   });

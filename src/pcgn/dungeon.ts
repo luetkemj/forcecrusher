@@ -1,4 +1,4 @@
-import { cloneDeep, random, sample, times } from "lodash";
+import { random, sample, times } from "lodash";
 import {
   type Pos,
   type PosId,
@@ -8,15 +8,7 @@ import {
   toPosId,
   toPos,
 } from "../lib/grid";
-import { gameWorld } from "../ecs/engine";
-import {
-  healthPotionPrefab,
-  wallPrefab,
-  floorPrefab,
-  rockPrefab,
-  stairsUpPrefab,
-  stairsDownPrefab,
-} from "../actors";
+import { spawn } from "../actors";
 import { spawnSkeleton, spawnRat } from "./monsters";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 
@@ -155,11 +147,11 @@ export const generateDungeon = (zoneId: string) => {
   for (const tile of tiles) {
     if (tile.sprite === "WALL") {
       const { x, y, z } = tile;
-      gameWorld.world.add({ ...cloneDeep(wallPrefab), position: { x, y, z } });
+      spawn("wall", { position: { x, y, z } });
     }
     if (tile.sprite === "FLOOR") {
       const { x, y, z } = tile;
-      gameWorld.world.add({ ...cloneDeep(floorPrefab), position: { x, y, z } });
+      spawn("floor", { position: { x, y, z } });
     }
   }
 
@@ -184,23 +176,17 @@ export const generateDungeon = (zoneId: string) => {
   // increase number of enemies as you get deeper
 
   dungeon.rooms.forEach((room, index) => {
-    const spawn = sample([rockPrefab, healthPotionPrefab]);
     if (index) {
-      gameWorld.world.add({ ...cloneDeep(spawn), position: room.center });
+      spawn("rock", { position: room.center });
+      spawn("healthPotion", { position: room.center });
     }
     if (index === 1) {
       const { x, y, z } = sample(room.tiles) || { x: 0, y: 0, z: 0 };
-      gameWorld.world.add({
-        ...cloneDeep(stairsUpPrefab),
-        position: { x, y, z },
-      });
+      spawn("stairsUp", { position: { x, y, z } });
     }
     if (index === 2) {
       const { x, y, z } = sample(room.tiles) || { x: 0, y: 0, z: 0 };
-      gameWorld.world.add({
-        ...cloneDeep(stairsDownPrefab),
-        position: { x, y, z },
-      });
+      spawn("stairsDown", { position: { x, y, z } });
     }
   });
 
