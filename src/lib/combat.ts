@@ -1,14 +1,17 @@
-import { type Entity } from "../ecs/engine";
-import { addLog, d6, d20 } from "./utils";
+import { type Entity, gameWorld } from "../ecs/engine";
+import { addLog } from "./utils";
+import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 
 export function meleeAttack(attacker: Entity, target: Entity) {
   let playerInCombat = false;
   if (attacker.pc || target.pc) {
     playerInCombat = true;
   }
-  // roll attack
-  const attackRoll = d20();
 
+  const weapon = getWeapon(attacker);
+
+  // roll attack
+  const attackRoll = new DiceRoll("d20").total;
   const isCrit = attackRoll === 20;
 
   const { armorClass } = target;
@@ -23,7 +26,11 @@ export function meleeAttack(attacker: Entity, target: Entity) {
     target.health.current -= damage;
 
     if (playerInCombat) {
-      let log = `${attacker.name} hits ${target.name} for ${damage} hp!`;
+      let log = `${attacker.name} hits ${target.name}`;
+      if (weapon) {
+        log += ` with ${weapon.name}`;
+      }
+      log += ` for ${damage} hp!`;
       if (isCrit) log = `Critical! ${log}`;
       addLog(log);
     }
@@ -41,7 +48,7 @@ export function rangeAttack(attacker: Entity, target: Entity, missile: Entity) {
     playerInCombat = true;
   }
   // roll attack
-  const attackRoll = d20();
+  const attackRoll = new DiceRoll("d20").total;
 
   const isCrit = attackRoll === 20;
 
@@ -69,17 +76,46 @@ export function rangeAttack(attacker: Entity, target: Entity, missile: Entity) {
   }
 }
 
-// TODO: take damage dice as arg
+// TODO: should this return an ability if no weapon? Rats should bite...
+// it needs to be deterministic
+function getWeapon(entity: Entity) {
+  const weaponId = entity.weaponSlot?.contents[0];
+  if (weaponId) {
+    return gameWorld.registry.get(weaponId);
+  }
+  return false;
+}
+
 // TODO: take weapon as arg - weapon will have damage type, melee/ranged, finesse, and damage dice etc
 function calcDamage(attacker: Entity, ranged: boolean) {
-  let damage = d6();
-  if (ranged) {
-    if (attacker.dexterity) {
-      damage += calcModifier(attacker.dexterity);
+  let damage = 0;
+  const weapon = getWeapon(attacker);
+
+  if (weapon) {
+    const damageRoll = weapon?.damageRoll;
+    if (damageRoll) {
+      damage += new DiceRoll(damageRoll).total;
     }
-  } else {
-    if (attacker.strength) {
-      damage += calcModifier(attacker.strength);
+    if (ranged) {
+      if (attacker.dexterity) {
+        damage += calcModifier(attacker.dexterity);
+      }
+    } else {
+      if (attacker.strength) {
+        damage += calcModifier(attacker.strength);
+      }
+    }
+  }
+
+  if (!weapon) {
+    if (ranged) {
+      if (attacker.dexterity) {
+        damage += calcModifier(attacker.dexterity);
+      }
+    } else {
+      if (attacker.strength) {
+        damage += calcModifier(attacker.strength);
+      }
     }
   }
 

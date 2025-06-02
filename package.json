@@ -23,6 +23,7 @@
     "vitest": "1.5.0"
   },
   "dependencies": {
+    "@dice-roller/rpg-dice-roller": "5.5.1",
     "@types/pathfinding": "0.0.9",
     "lodash": "4.17.21",
     "miniplex": "2.0.0",
