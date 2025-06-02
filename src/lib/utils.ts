@@ -1,4 +1,4 @@
-import { Entity } from "../ecs/engine";
+import { Entity, gameWorld } from "../ecs/engine";
 import { getState, setState, State } from "../main";
 import { Pos } from "./grid";
 
@@ -24,5 +24,35 @@ export const isSamePosition = (blocker: Pos, blockee: Pos) => {
   ) {
     return true;
   }
+  return false;
+};
+
+export const equip = (equipper: Entity, equipment: Entity) => {
+  if (equipper.weaponSlot?.contents) {
+    // if something is already equipped, put in inventory or drop
+    const equippedId = equipper.weaponSlot.contents[0];
+    if (equippedId) {
+      // try to put in inventory (check if has container and container has room)
+      if (
+        equipper.container &&
+        equipper.container.contents.length < equipper.container.slots
+      ) {
+        equipper.container.contents.push(equippedId);
+      } else {
+        // if no inventory or no room just drop it.
+        const equippedEntity = gameWorld.registry.get(equippedId);
+
+        if (equippedEntity && equipper.position) {
+          equippedEntity.position = { ...equipper.position };
+        }
+      }
+    }
+
+    // equip item
+    equipper.weaponSlot.contents[0] = equipment.id;
+    gameWorld.world.removeComponent(equipment, "position");
+    return true;
+  }
+
   return false;
 };

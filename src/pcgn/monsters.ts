@@ -1,3 +1,4 @@
+import { equip } from "../lib/utils";
 import { spawn } from "../actors";
 import { type Pos } from "../lib/grid";
 
@@ -8,12 +9,12 @@ export const spawnRat = (position: Pos) => {
 };
 
 export const spawnSkeleton = (position: Pos) => {
-  const weapon = spawn("shortsword");
   const skeleton = spawn("skeleton", { position });
+  const weapon = spawn("shortsword");
+  const weapon2 = spawn("shortsword");
 
-  if (weapon.id) {
-    skeleton.weaponSlot?.contents.push(weapon.id);
-  }
+  equip(skeleton, weapon);
+  equip(skeleton, weapon2);
 
   return skeleton;
 };
