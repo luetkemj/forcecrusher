@@ -2,6 +2,7 @@ import { gameWorld, Entity } from "../engine";
 import { distance } from "../../lib/grid";
 import { getState, GameState } from "../../main";
 import { View, UpdateRow } from "../../lib/canvas";
+import { getWielding } from "../../lib/utils";
 
 const concatRow = (str: string, length: number): string => {
   let newStr = str;
@@ -219,16 +220,6 @@ export const renderSystem = () => {
         ]),
       ];
 
-      // itemsInInventory.forEach((item) => {
-      //   rows.push([
-      //     {},
-      //     {
-      //       string: `${item?.appearance?.char} ${item?.name} ${item?.description}`,
-      //     },
-      //   ]);
-      // });
-
-      // console.log(rows);
       menuUnderlayView?.show();
       inventoryView?.clearView();
       inventoryView?.updateRows(rows);
@@ -291,6 +282,11 @@ export const renderSystem = () => {
 
   const hudView = getState().views.hud;
   const [player] = pcEntities;
+  let weapon = "unarmed";
+  const wielding = getWielding(player);
+  if (wielding) {
+    weapon = wielding.name;
+  }
   if (hudView) {
     const rows = [
       [{ string: `Forcecrusher` }],
@@ -299,6 +295,9 @@ export const renderSystem = () => {
       [],
       [{ string: `LV: 1` }],
       [{ string: `HP: ${player?.health?.current}/${player?.health?.max}` }],
+      [],
+      [{ string: `): ${weapon}` }],
+      [{ string: `]: unarmored` }],
       [],
       [{ string: `AC: ${player?.armorClass}` }],
       [{ string: `ST: ${player?.strength}` }],

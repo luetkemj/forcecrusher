@@ -39,6 +39,7 @@ export const userInputSystem = () => {
     if (key === "2") {
       gameWorld.loadGameData();
     }
+
     // NOTE: Cheats
     if (key === "Escape") {
       window.skulltooth.debug = true;

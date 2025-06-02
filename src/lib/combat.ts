@@ -93,16 +93,20 @@ function calcDamage(attacker: Entity, ranged: boolean) {
 
   if (weapon) {
     const damageRoll = weapon?.damageRoll;
+
     if (damageRoll) {
-      damage += new DiceRoll(damageRoll).total;
+      const roll = new DiceRoll(damageRoll).total;
+      damage += roll;
     }
     if (ranged) {
       if (attacker.dexterity) {
-        damage += calcModifier(attacker.dexterity);
+        const mod = calcModifier(attacker.dexterity);
+        damage += mod;
       }
     } else {
       if (attacker.strength) {
-        damage += calcModifier(attacker.strength);
+        const mod = calcModifier(attacker.strength);
+        damage += mod;
       }
     }
   }

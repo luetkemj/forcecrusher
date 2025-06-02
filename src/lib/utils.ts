@@ -27,7 +27,7 @@ export const isSamePosition = (blocker: Pos, blockee: Pos) => {
   return false;
 };
 
-export const equip = (equipper: Entity, equipment: Entity) => {
+export const wield = (equipper: Entity, equipment: Entity) => {
   if (equipper.weaponSlot?.contents) {
     // if something is already equipped, put in inventory or drop
     const equippedId = equipper.weaponSlot.contents[0];
@@ -52,6 +52,20 @@ export const equip = (equipper: Entity, equipment: Entity) => {
     equipper.weaponSlot.contents[0] = equipment.id;
     gameWorld.world.removeComponent(equipment, "position");
     return true;
+  }
+
+  return false;
+};
+
+export const getWielding = (entity: Entity) => {
+  if (entity.weaponSlot?.contents) {
+    // if something is already equipped, put in inventory or drop
+    const equippedId = entity.weaponSlot.contents[0];
+    if (equippedId) {
+      const weilding = gameWorld.registry.get(equippedId);
+
+      if (weilding) return weilding;
+    }
   }
 
   return false;

@@ -20,7 +20,7 @@ import { userInputSystem } from "./ecs/systems/userInput.system";
 import { generateDungeon } from "./pcgn/dungeon";
 
 import { gameWorld } from "./ecs/engine";
-import { spawn } from "./actors";
+import { spawnPlayer } from "./pcgn/player";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -271,7 +271,7 @@ const init = async () => {
   const dungeon = generateDungeon(getState().zoneId);
   if (!dungeon) return;
   const startPos = dungeon.rooms[0].center;
-  const player = spawn("player", { position: startPos });
+  const player = spawnPlayer(startPos);
 
   setState((state: State) => {
     state.playerId = player.id;
