@@ -17,8 +17,8 @@ import {
   stairsUpPrefab,
   stairsDownPrefab,
 } from "../actors";
-import { d100 } from "../lib/utils";
 import { spawnSkeleton, spawnRat } from "./monsters";
+import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 
 type Tile = {
   x: number;
@@ -172,7 +172,7 @@ export const generateDungeon = (zoneId: string) => {
     const openTile = sample(openTiles);
     if (!openTile) return;
     const position = { x: openTile.x, y: openTile.y, z: openTile.z };
-    const percentile = d100();
+    const percentile = new DiceRoll("d100").total;
 
     if (percentile < 30) {
       spawnSkeleton(position);
