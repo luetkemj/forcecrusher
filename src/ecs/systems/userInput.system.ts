@@ -2,7 +2,7 @@ import { gameWorld, ChangeZoneDirections } from "../engine";
 import { GameState, State, Turn, getState, setState } from "../../main";
 import { toPos, toPosId, isAtSamePosition } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
-import { addLog, logFrozenEntity, outOfBounds } from "../../lib/utils";
+import { addLog, logFrozenEntity, outOfBounds, unWield } from "../../lib/utils";
 
 const moveKeys = [
   "ArrowLeft",
@@ -65,6 +65,10 @@ export const userInputSystem = () => {
         const targetZoneId = toPosId(targetZonePos);
         gameWorld.changeZone(targetZoneId, ChangeZoneDirections.up);
       }
+    }
+
+    if (key === "w") {
+      unWield(player);
     }
 
     if (key === "i") {

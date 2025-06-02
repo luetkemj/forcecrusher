@@ -27,7 +27,24 @@ export const isSamePosition = (blocker: Pos, blockee: Pos) => {
   return false;
 };
 
+export const isWielding = (equipper: Entity) => {
+  if (equipper?.weaponSlot?.contents[0]) return true;
+  return false;
+};
+
 export const wield = (equipper: Entity, equipment: Entity) => {
+  if (isWielding(equipper)) {
+    unWield(equipper);
+  }
+
+  // equip item
+  if (equipper.weaponSlot?.contents) {
+    equipper.weaponSlot.contents[0] = equipment.id;
+    gameWorld.world.removeComponent(equipment, "position");
+  }
+};
+
+export const unWield = (equipper: Entity) => {
   if (equipper.weaponSlot?.contents) {
     // if something is already equipped, put in inventory or drop
     const equippedId = equipper.weaponSlot.contents[0];
@@ -43,14 +60,17 @@ export const wield = (equipper: Entity, equipment: Entity) => {
         const equippedEntity = gameWorld.registry.get(equippedId);
 
         if (equippedEntity && equipper.position) {
-          equippedEntity.position = { ...equipper.position };
+          gameWorld.world.addComponent(equippedEntity, "position", {
+            ...equipper.position,
+          });
         }
       }
     }
+    // clear weapon slot
+    if (equipper.weaponSlot?.contents) {
+      equipper.weaponSlot.contents = [];
+    }
 
-    // equip item
-    equipper.weaponSlot.contents[0] = equipment.id;
-    gameWorld.world.removeComponent(equipment, "position");
     return true;
   }
 
