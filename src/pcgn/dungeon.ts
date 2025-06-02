@@ -176,9 +176,13 @@ export const generateDungeon = (zoneId: string) => {
   // increase number of enemies as you get deeper
 
   dungeon.rooms.forEach((room, index) => {
+    const percentile = new DiceRoll("d100").total;
     if (index) {
-      spawn("rock", { position: room.center });
-      spawn("healthPotion", { position: room.center });
+      if (percentile >= 50) {
+        spawn("rock", { position: room.center });
+      } else {
+        spawn("healthPotion", { position: room.center });
+      }
     }
     if (index === 1) {
       const { x, y, z } = sample(room.tiles) || { x: 0, y: 0, z: 0 };

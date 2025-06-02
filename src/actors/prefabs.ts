@@ -181,7 +181,6 @@ export const shortswordPrefab: Entity = {
     "An unadorned steel shortsword. It won’t impress, but it gets the job done.",
   layer200: true,
   pickUp: true,
-
   damageType: DamageType.Piercing,
   damageRoll: "1d6+2",
   weaponClass: WeaponClass.Martial,
