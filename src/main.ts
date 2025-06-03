@@ -40,6 +40,7 @@ export type State = {
   fps: number;
   gameState: GameState;
   log: Array<string>;
+  inventoryActiveIndex: number;
   senses: {
     feel: string;
     see: string;
@@ -86,6 +87,7 @@ const state: State = {
   fps: 0,
   gameState: GameState.GAME,
   log: ["hello world", "your adventure begins anew!"],
+  inventoryActiveIndex: 0,
   senses: {
     feel: "You feel nothing.",
     see: "You see nothing.",
@@ -341,8 +343,8 @@ function gameLoop() {
 
   if (getState().gameState === GameState.INVENTORY) {
     if (getState().userInput && getState().turn === Turn.PLAYER) {
-      activeEffectsSystem();
       userInputSystem();
+      activeEffectsSystem();
       dropSystem();
       fovSystem();
       renderSystem();

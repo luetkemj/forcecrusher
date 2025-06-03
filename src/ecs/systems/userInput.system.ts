@@ -1,7 +1,7 @@
 import { gameWorld, ChangeZoneDirections } from "../engine";
 import { GameState, State, Turn, getState, setState } from "../../main";
 import { toPos, toPosId, isAtSamePosition } from "../../lib/grid";
-import { isUndefined, remove } from "lodash";
+import { isUndefined, remove, set } from "lodash";
 import { addLog, logFrozenEntity, outOfBounds, unWield } from "../../lib/utils";
 
 const moveKeys = [
@@ -73,6 +73,7 @@ export const userInputSystem = () => {
 
     if (key === "i") {
       setState((state: State) => (state.gameState = GameState.INVENTORY));
+      setState((state: State) => (state.inventoryActiveIndex = 0));
     }
 
     if (key === "L") {
@@ -203,11 +204,42 @@ export const userInputSystem = () => {
     }
   }
 
+  // NOTE: Inventory
   if (gameState === GameState.INVENTORY) {
     if (key === "i" || key === "Escape") {
       setState((state: State) => (state.gameState = GameState.GAME));
     }
 
+    const activeItemEId =
+      player.container?.contents[getState().inventoryActiveIndex];
+
+    // NOTE: inventory navigation
+    const inventoryLength = player.container?.contents.length || 0;
+    const currentIndex = getState().inventoryActiveIndex;
+
+    if (key === "j" || key === "ArrowDown") {
+      if (currentIndex < inventoryLength - 1) {
+        setState(
+          (state: State) => (state.inventoryActiveIndex = currentIndex + 1),
+        );
+      } else {
+        setState((state: State) => (state.inventoryActiveIndex = 0));
+      }
+    }
+
+    if (key === "k" || key === "ArrowUp") {
+      if (currentIndex > 0) {
+        setState(
+          (state: State) => (state.inventoryActiveIndex = currentIndex - 1),
+        );
+      } else {
+        setState(
+          (state: State) => (state.inventoryActiveIndex = inventoryLength - 1),
+        );
+      }
+    }
+
+    // NOTE: Drop
     if (key === "d") {
       do {
         if (!player.container) {
@@ -216,15 +248,14 @@ export const userInputSystem = () => {
         }
 
         // check if player has inventory
-        if (!player.container?.contents.length) {
+        if (!activeItemEId) {
           addLog("You have nothing to drop");
           break;
         }
 
-        const tryDropEntityId = player.container.contents[0];
-        const tryDropEntity = gameWorld.registry.get(tryDropEntityId);
+        const tryDropEntity = gameWorld.registry.get(activeItemEId);
         if (!tryDropEntity) {
-          console.log(`id: ${tryDropEntityId} does not exist.`);
+          console.log(`id: ${activeItemEId} does not exist.`);
           logFrozenEntity(player);
           break;
         }
@@ -240,8 +271,13 @@ export const userInputSystem = () => {
         });
         break;
       } while (true);
+
+      if (currentIndex === inventoryLength - 1) {
+        setState((state: State) => (state.inventoryActiveIndex -= 1));
+      }
     }
 
+    // NOTE: Consume
     if (key === "c") {
       do {
         if (!player.container) {
@@ -250,15 +286,14 @@ export const userInputSystem = () => {
         }
 
         // check if player has inventory
-        if (!player.container?.contents.length) {
+        if (!activeItemEId) {
           addLog("You have nothing to consume");
           break;
         }
 
-        const consumeableId = player.container.contents[0];
-        const consumable = gameWorld.registry.get(consumeableId);
+        const consumable = gameWorld.registry.get(activeItemEId);
         if (!consumable) {
-          console.log(`id: ${consumeableId} does not exist.`);
+          console.log(`id: ${activeItemEId} does not exist.`);
           logFrozenEntity(player);
           break;
         }
@@ -273,16 +308,22 @@ export const userInputSystem = () => {
         }
 
         // remove consumable from inventory
-        remove(player.container.contents, (id) => consumeableId === id);
+        remove(player.container.contents, (id) => activeItemEId === id);
 
+        // NOTE:
         // delete entity from world
         // do I want to do that.....?
         addLog(`${player.name} consumes ${consumable.name}`);
         gameWorld.world.remove(consumable);
         break;
       } while (true);
+
+      if (currentIndex === inventoryLength - 1) {
+        setState((state: State) => (state.inventoryActiveIndex -= 1));
+      }
     }
 
+    // NOTE: Target
     if (key === "t") {
       // if items in inventory - enter target mode
       if (player.container?.contents.length) {

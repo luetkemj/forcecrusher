@@ -195,6 +195,7 @@ export const renderSystem = () => {
       const itemsInInventory = playerInventory.map((id) =>
         gameWorld.registry.get(id),
       );
+      const activeIndex = getState().inventoryActiveIndex;
 
       const rows = [
         [{}, { string: "Inventory" }],
@@ -212,10 +213,10 @@ export const renderSystem = () => {
           },
         ],
         [],
-        ...itemsInInventory.map((item) => [
+        ...itemsInInventory.map((item, index) => [
           {},
           {
-            string: `${item?.appearance?.char} ${item?.name} ${item?.description}`,
+            string: `${activeIndex === index ? "*" : " "} ${item?.appearance?.char} ${item?.name} ${item?.description}`,
           },
         ]),
       ];
@@ -332,7 +333,8 @@ export const renderSystem = () => {
       }
 
       if (getState().gameState === GameState.INVENTORY) {
-        controls = "(i/escape)Return to Game (d)Drop (c)Consume (t)Throw";
+        controls =
+          "(i/escape)Return to Game (c)Consume (d)Drop (e)Equip (r)Remove (t)Throw";
       }
 
       controlsView?.updateRows([[], [{ string: controls }]]);
