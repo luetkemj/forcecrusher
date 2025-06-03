@@ -1,7 +1,7 @@
 import { gameWorld, ChangeZoneDirections } from "../engine";
 import { GameState, State, Turn, getState, setState } from "../../main";
 import { toPos, toPosId, isAtSamePosition } from "../../lib/grid";
-import { isUndefined, remove, set } from "lodash";
+import { isUndefined, remove } from "lodash";
 import { addLog, logFrozenEntity, outOfBounds, unWield } from "../../lib/utils";
 
 const moveKeys = [
