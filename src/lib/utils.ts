@@ -37,6 +37,20 @@ export const isWielding = (equipper: Entity) => {
   return false;
 };
 
+export const getWielding = (entity: Entity) => {
+  if (entity.weaponSlot?.contents) {
+    // if something is already equipped, put in inventory or drop
+    const equippedId = entity.weaponSlot.contents[0];
+    if (equippedId) {
+      const weilding = gameWorld.registry.get(equippedId);
+
+      if (weilding) return weilding;
+    }
+  }
+
+  return false;
+};
+
 export const wield = (equipper: Entity, equipment: Entity) => {
   if (isWielding(equipper)) {
     unWield(equipper);
@@ -90,15 +104,73 @@ export const unWield = (equipper: Entity) => {
   return false;
 };
 
-export const getWielding = (entity: Entity) => {
-  if (entity.weaponSlot?.contents) {
-    // if something is already equipped, put in inventory or drop
-    const equippedId = entity.weaponSlot.contents[0];
-    if (equippedId) {
-      const weilding = gameWorld.registry.get(equippedId);
+export const isWearing = (equipper: Entity) => {
+  if (equipper?.armorSlot?.contents[0]) return true;
+  return false;
+};
 
-      if (weilding) return weilding;
+export const getWearing = (entity: Entity) => {
+  if (entity.armorSlot?.contents) {
+    // if something is already equipped, put in inventory or drop
+    const equippedId = entity.armorSlot.contents[0];
+    if (equippedId) {
+      const wearing = gameWorld.registry.get(equippedId);
+
+      if (wearing) return wearing;
     }
+  }
+
+  return false;
+};
+
+export const wear = (equipper: Entity, equipment: Entity) => {
+  if (isWearing(equipper)) {
+    unWear(equipper);
+  }
+
+  // equip item
+  if (equipper.armorSlot?.contents) {
+    equipper.armorSlot.contents[0] = equipment.id;
+    gameWorld.world.removeComponent(equipment, "position");
+
+    // remove from inventory
+    if (equipper.container?.contents) {
+      pull(equipper.container?.contents, equipment.id);
+    }
+  }
+};
+
+export const unWear = (equipper: Entity) => {
+  if (equipper.armorSlot?.contents) {
+    // if something is already equipped, put in inventory or drop
+    const equippedId = equipper.armorSlot.contents[0];
+    if (equippedId) {
+      // try to put in inventory (check if has container and container has room)
+      if (
+        equipper.container &&
+        equipper.container.contents.length < equipper.container.slots
+      ) {
+        // check if eId is already in inventory and don't push if it is
+        if (!equipper.container.contents.includes(equippedId)) {
+          equipper.container.contents.push(equippedId);
+        }
+      } else {
+        // if no inventory or no room just drop it.
+        const equippedEntity = gameWorld.registry.get(equippedId);
+
+        if (equippedEntity && equipper.position) {
+          gameWorld.world.addComponent(equippedEntity, "position", {
+            ...equipper.position,
+          });
+        }
+      }
+    }
+    // clear weapon slot
+    if (equipper.armorSlot?.contents) {
+      equipper.armorSlot.contents = [];
+    }
+
+    return true;
   }
 
   return false;

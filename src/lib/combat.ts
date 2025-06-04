@@ -1,29 +1,25 @@
 import { type Entity, gameWorld } from "../ecs/engine";
-import { addLog, getModifier } from "./utils";
+import { addLog, getModifier, isWearing, getWearing } from "./utils";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 
 export function getArmorClass(entity: Entity) {
-  const { baseArmorClass = 10, armorSlot, dexterity } = entity;
-  let armorClass = 0;
-  let dexMod = 0;
-  let armorAC = 0;
+  const { baseArmorClass = 10, dexterity } = entity;
+  let dexMod = dexterity ? getModifier(dexterity) : 0;
 
-  armorClass = baseArmorClass;
-
-  if (dexterity) {
-    dexMod = getModifier(dexterity);
-  }
-
-  // check for armor
-  if (armorSlot && armorSlot?.contents[0]) {
-    const armor = gameWorld.registry.get(armorSlot.contents[0]);
-    armorAC = armor?.armorClass || 0;
-    if (armor?.armorClassMod === "dexterity") {
-      armorAC += dexMod;
+  // if wearing armor
+  if (!isWearing(entity)) {
+    return baseArmorClass + dexMod;
+  } else {
+    const armor = getWearing(entity);
+    if (armor) {
+      const armorClass = armor.armorClass || 0;
+      if (armor.armorClassMod === "dexterity") {
+        return armorClass + dexMod;
+      } else {
+        return armorClass;
+      }
     }
   }
-
-  return armorClass + armorAC;
 }
 
 export function meleeAttack(attacker: Entity, target: Entity) {
@@ -38,7 +34,7 @@ export function meleeAttack(attacker: Entity, target: Entity) {
   const attackRoll = new DiceRoll("d20").total;
   const isCrit = attackRoll === 20;
 
-  const armorClass = getArmorClass(target);
+  const armorClass = getArmorClass(target) || 0;
 
   if (!target.health) return;
 
@@ -76,7 +72,7 @@ export function rangeAttack(attacker: Entity, target: Entity, missile: Entity) {
 
   const isCrit = attackRoll === 20;
 
-  const armorClass = getArmorClass(target);
+  const armorClass = getArmorClass(target) || 0;
 
   if (!target.health) return;
 

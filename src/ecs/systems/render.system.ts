@@ -2,7 +2,7 @@ import { gameWorld, Entity } from "../engine";
 import { distance } from "../../lib/grid";
 import { getState, GameState } from "../../main";
 import { View, UpdateRow } from "../../lib/canvas";
-import { getWielding } from "../../lib/utils";
+import { getWielding, getWearing } from "../../lib/utils";
 import { getArmorClass } from "../../lib/combat";
 
 const concatRow = (str: string, length: number): string => {
@@ -201,6 +201,7 @@ export const renderSystem = () => {
 
       const wieldingEId = player.weaponSlot?.contents[0] || "";
       const wieldedEntity = gameWorld.registry.get(wieldingEId);
+      const armor = getWearing(player);
 
       const rows = [
         [{}, { string: "Inventory" }],
@@ -241,13 +242,13 @@ export const renderSystem = () => {
         [
           {},
           {
-            string: `Wearing [${player.weaponSlot?.contents.length}/${player.weaponSlot?.slots}]`,
+            string: `Wearing [${player.armorSlot?.contents.length}/${player.armorSlot?.slots}]`,
           },
         ],
         [
           {},
           {
-            string: `  ${wieldedEntity?.appearance?.char} ${wieldedEntity?.name} ${wieldedEntity?.description}`,
+            string: `  ${armor && armor?.appearance?.char} ${armor && armor?.name} ${armor && armor?.description}`,
           },
         ],
       ];
@@ -319,6 +320,12 @@ export const renderSystem = () => {
   if (wielding) {
     weapon = wielding.name;
   }
+
+  let armor = "unarmored";
+  const wearing = getWearing(player);
+  if (wearing) {
+    armor = wearing.name;
+  }
   if (hudView) {
     const rows = [
       [{ string: `Forcecrusher` }],
@@ -329,7 +336,7 @@ export const renderSystem = () => {
       [{ string: `HP: ${player?.health?.current}/${player?.health?.max}` }],
       [],
       [{ string: `): ${weapon}` }],
-      [{ string: `]: unarmored` }],
+      [{ string: `]: ${armor}` }],
       [],
       [{ string: `AC: ${getArmorClass(player)}` }],
       [{ string: `ST: ${player?.strength}` }],

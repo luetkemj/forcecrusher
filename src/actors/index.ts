@@ -1,15 +1,18 @@
 import { cloneDeep } from "lodash";
 import { gameWorld, type Entity } from "../ecs/engine";
-import { playerPrefab } from "./prefabs";
-import { ratPrefab } from "./prefabs";
-import { skeletonPrefab } from "./prefabs";
-import { healthPotionPrefab } from "./prefabs";
-import { rockPrefab } from "./prefabs";
-import { shortswordPrefab } from "./prefabs";
-import { stairsDownPrefab } from "./prefabs";
-import { stairsUpPrefab } from "./prefabs";
-import { wallPrefab } from "./prefabs";
-import { floorPrefab } from "./prefabs";
+import {
+  floorPrefab,
+  healthPotionPrefab,
+  leatherArmor,
+  playerPrefab,
+  ratPrefab,
+  rockPrefab,
+  skeletonPrefab,
+  shortswordPrefab,
+  stairsDownPrefab,
+  stairsUpPrefab,
+  wallPrefab,
+} from "./prefabs";
 
 const prefabs = {
   // NOTE: Player
@@ -27,6 +30,9 @@ const prefabs = {
 
   // NOTE: Weapons
   shortsword: shortswordPrefab,
+
+  // NOTE: Armor
+  leatherArmor: leatherArmor,
 
   // NOTE: Interactive Structures
   stairsDown: stairsDownPrefab,

@@ -207,8 +207,7 @@ export const leatherArmor: Entity = {
   },
   legendable: true,
   name: "Leather Armor",
-  description:
-    "An unadorned steel shortsword. It won’t impress, but it gets the job done.",
+  description: "Basic but reliable, bearing the wear of many fights.",
   layer200: true,
   pickUp: true,
   armorClass: 11,
