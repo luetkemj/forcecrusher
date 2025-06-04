@@ -61,7 +61,7 @@ export const playerPrefab: Entity = {
     slots: 10,
     contents: [],
   },
-  armorClass: 16,
+  armorClass: 10,
   strength: 16,
   dexterity: 10,
   constitution: 16,
@@ -71,6 +71,11 @@ export const playerPrefab: Entity = {
   activeEffects: [],
   weaponSlot: {
     name: "Weapon",
+    contents: [],
+    slots: 1,
+  },
+  armorSlot: {
+    name: "Armor",
     contents: [],
     slots: 1,
   },
@@ -93,7 +98,7 @@ export const ratPrefab: Entity = {
     "A filthy, disease-ridden rodent with glowing eyes and a hungry squeak.",
   pathThrough: true,
   health: { max: 1, current: 1 },
-  armorClass: 13,
+  armorClass: 10,
   strength: 2,
   dexterity: 11,
   constitution: 9,
@@ -118,7 +123,7 @@ export const skeletonPrefab: Entity = {
     "A brittle warrior from another age, still fighting long after death forgot it.",
   pathThrough: true,
   health: { max: 13, current: 13 },
-  armorClass: 13,
+  armorClass: 10,
   strength: 10,
   dexterity: 14,
   constitution: 15,
@@ -127,6 +132,11 @@ export const skeletonPrefab: Entity = {
   charisma: 5,
   weaponSlot: {
     name: "Weapon",
+    contents: [],
+    slots: 1,
+  },
+  armorSlot: {
+    name: "Armor",
     contents: [],
     slots: 1,
   },
@@ -185,6 +195,24 @@ export const shortswordPrefab: Entity = {
   damageRoll: "1d6+2",
   weaponClass: WeaponClass.Martial,
   weaponType: WeaponType.Melee,
+};
+
+export const leatherArmor: Entity = {
+  ...base,
+  ...renderable,
+  appearance: {
+    char: chars.armor,
+    tint: colors.armor,
+    tileSet: "ascii",
+  },
+  legendable: true,
+  name: "Leather Armor",
+  description:
+    "An unadorned steel shortsword. It won’t impress, but it gets the job done.",
+  layer200: true,
+  pickUp: true,
+  armorClass: 11,
+  armorClassMod: "dexterity",
 };
 
 // NOTE: Interactive Structures

@@ -22,6 +22,12 @@ export type Entity = {
     tileSet: string;
   };
   armorClass?: number;
+  armorClassMod?: string;
+  armorSlot?: {
+    name: string;
+    contents: Array<string>;
+    slots: number;
+  };
   blocking?: true;
   charisma?: number;
   consumable?: true;

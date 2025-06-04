@@ -1,4 +1,5 @@
 export enum chars {
+  "armor" = "]",
   "default" = "?",
   "floor" = "•",
   "owlbear" = "F",
@@ -14,6 +15,7 @@ export enum chars {
 }
 
 export enum colors {
+  "armor" = 0xdaa520, // #daa520
   "default" = 0x00ff77, // #00ff77
   "floor" = 0x333333, // #333333
   "owlbear" = 0xa84300, // #a84300
