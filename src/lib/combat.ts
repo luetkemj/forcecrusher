@@ -1,6 +1,30 @@
 import { type Entity, gameWorld } from "../ecs/engine";
-import { addLog } from "./utils";
+import { addLog, getModifier } from "./utils";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
+
+export function getArmorClass(entity: Entity) {
+  const { baseArmorClass = 10, armorSlot, dexterity } = entity;
+  let armorClass = 0;
+  let dexMod = 0;
+  let armorAC = 0;
+
+  armorClass = baseArmorClass;
+
+  if (dexterity) {
+    dexMod = getModifier(dexterity);
+  }
+
+  // check for armor
+  if (armorSlot && armorSlot?.contents[0]) {
+    const armor = gameWorld.registry.get(armorSlot.contents[0]);
+    armorAC = armor?.armorClass || 0;
+    if (armor?.armorClassMod === "dexterity") {
+      armorAC += dexMod;
+    }
+  }
+
+  return armorClass + armorAC;
+}
 
 export function meleeAttack(attacker: Entity, target: Entity) {
   let playerInCombat = false;
@@ -14,9 +38,9 @@ export function meleeAttack(attacker: Entity, target: Entity) {
   const attackRoll = new DiceRoll("d20").total;
   const isCrit = attackRoll === 20;
 
-  const { armorClass } = target;
+  const armorClass = getArmorClass(target);
 
-  if (!armorClass || !target.health) return;
+  if (!target.health) return;
 
   if (attackRoll >= armorClass) {
     // NOTE: HIT
@@ -52,9 +76,9 @@ export function rangeAttack(attacker: Entity, target: Entity, missile: Entity) {
 
   const isCrit = attackRoll === 20;
 
-  const { armorClass } = target;
+  const armorClass = getArmorClass(target);
 
-  if (!armorClass || !target.health) return;
+  if (!target.health) return;
 
   if (attackRoll >= armorClass) {
     // NOTE: HIT
@@ -100,12 +124,12 @@ function calcDamage(attacker: Entity, ranged: boolean) {
     }
     if (ranged) {
       if (attacker.dexterity) {
-        const mod = calcModifier(attacker.dexterity);
+        const mod = getModifier(attacker.dexterity);
         damage += mod;
       }
     } else {
       if (attacker.strength) {
-        const mod = calcModifier(attacker.strength);
+        const mod = getModifier(attacker.strength);
         damage += mod;
       }
     }
@@ -114,18 +138,14 @@ function calcDamage(attacker: Entity, ranged: boolean) {
   if (!weapon) {
     if (ranged) {
       if (attacker.dexterity) {
-        damage += calcModifier(attacker.dexterity);
+        damage += getModifier(attacker.dexterity);
       }
     } else {
       if (attacker.strength) {
-        damage += calcModifier(attacker.strength);
+        damage += getModifier(attacker.strength);
       }
     }
   }
 
   return Math.max(0, damage);
-}
-
-function calcModifier(skill: number) {
-  return Math.floor((skill - 10) / 2);
 }

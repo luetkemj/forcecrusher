@@ -28,6 +28,10 @@ export const isSamePosition = (blocker: Pos, blockee: Pos) => {
   return false;
 };
 
+export const getModifier = (skill: number) => {
+  return Math.floor((skill - 10) / 2);
+};
+
 export const isWielding = (equipper: Entity) => {
   if (equipper?.weaponSlot?.contents[0]) return true;
   return false;

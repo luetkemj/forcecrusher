@@ -3,6 +3,7 @@ import { distance } from "../../lib/grid";
 import { getState, GameState } from "../../main";
 import { View, UpdateRow } from "../../lib/canvas";
 import { getWielding } from "../../lib/utils";
+import { getArmorClass } from "../../lib/combat";
 
 const concatRow = (str: string, length: number): string => {
   let newStr = str;
@@ -170,8 +171,9 @@ export const renderSystem = () => {
       entities.forEach((entity) => {
         const entityChar = entity.appearance.char;
         const entityName = entity.name;
+        const armorClass = getArmorClass(entity);
 
-        const string = `${entityChar} ${entityName}`;
+        const string = `${entityChar} ${entityName} AC: ${armorClass}`;
         rows.push([{ string }]);
       });
 
@@ -329,7 +331,7 @@ export const renderSystem = () => {
       [{ string: `): ${weapon}` }],
       [{ string: `]: unarmored` }],
       [],
-      [{ string: `AC: ${player?.armorClass}` }],
+      [{ string: `AC: ${getArmorClass(player)}` }],
       [{ string: `ST: ${player?.strength}` }],
       [{ string: `DX: ${player?.dexterity}` }],
       [{ string: `CN: ${player?.constitution}` }],
