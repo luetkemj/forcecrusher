@@ -1,6 +1,7 @@
 import { Entity, gameWorld } from "../ecs/engine";
 import { getState, setState, State } from "../main";
 import { Pos } from "./grid";
+import { pull } from "lodash";
 
 export const logFrozenEntity = (entity: Entity) => {
   console.log(JSON.parse(JSON.stringify(entity)));
@@ -41,6 +42,11 @@ export const wield = (equipper: Entity, equipment: Entity) => {
   if (equipper.weaponSlot?.contents) {
     equipper.weaponSlot.contents[0] = equipment.id;
     gameWorld.world.removeComponent(equipment, "position");
+
+    // remove from inventory
+    if (equipper.container?.contents) {
+      pull(equipper.container?.contents, equipment.id);
+    }
   }
 };
 
@@ -54,7 +60,10 @@ export const unWield = (equipper: Entity) => {
         equipper.container &&
         equipper.container.contents.length < equipper.container.slots
       ) {
-        equipper.container.contents.push(equippedId);
+        // check if eId is already in inventory and don't push if it is
+        if (!equipper.container.contents.includes(equippedId)) {
+          equipper.container.contents.push(equippedId);
+        }
       } else {
         // if no inventory or no room just drop it.
         const equippedEntity = gameWorld.registry.get(equippedId);

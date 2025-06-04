@@ -2,7 +2,13 @@ import { gameWorld, ChangeZoneDirections } from "../engine";
 import { GameState, State, Turn, getState, setState } from "../../main";
 import { toPos, toPosId, isAtSamePosition } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
-import { addLog, logFrozenEntity, outOfBounds, unWield } from "../../lib/utils";
+import {
+  addLog,
+  logFrozenEntity,
+  outOfBounds,
+  unWield,
+  wield,
+} from "../../lib/utils";
 
 const moveKeys = [
   "ArrowLeft",
@@ -211,7 +217,8 @@ export const userInputSystem = () => {
     }
 
     const activeItemEId =
-      player.container?.contents[getState().inventoryActiveIndex];
+      player.container?.contents[getState().inventoryActiveIndex] || "";
+    const activeItemEntity = gameWorld.registry.get(activeItemEId);
 
     // NOTE: inventory navigation
     const inventoryLength = player.container?.contents.length || 0;
@@ -236,44 +243,6 @@ export const userInputSystem = () => {
         setState(
           (state: State) => (state.inventoryActiveIndex = inventoryLength - 1),
         );
-      }
-    }
-
-    // NOTE: Drop
-    if (key === "d") {
-      do {
-        if (!player.container) {
-          addLog(`You can't drop without a container to hold.`);
-          break;
-        }
-
-        // check if player has inventory
-        if (!activeItemEId) {
-          addLog("You have nothing to drop");
-          break;
-        }
-
-        const tryDropEntity = gameWorld.registry.get(activeItemEId);
-        if (!tryDropEntity) {
-          console.log(`id: ${activeItemEId} does not exist.`);
-          logFrozenEntity(player);
-          break;
-        }
-
-        // add tryDrop to first item in inventory
-        const playerId = player.id;
-        if (isUndefined(playerId)) {
-          break;
-        }
-
-        gameWorld.world.addComponent(tryDropEntity, "tryDrop", {
-          dropperId: playerId,
-        });
-        break;
-      } while (true);
-
-      if (currentIndex === inventoryLength - 1) {
-        setState((state: State) => (state.inventoryActiveIndex -= 1));
       }
     }
 
@@ -320,6 +289,52 @@ export const userInputSystem = () => {
 
       if (currentIndex === inventoryLength - 1) {
         setState((state: State) => (state.inventoryActiveIndex -= 1));
+      }
+    }
+
+    // NOTE: Drop
+    if (key === "d") {
+      do {
+        if (!player.container) {
+          addLog(`You can't drop without a container to hold.`);
+          break;
+        }
+
+        // check if player has inventory
+        if (!activeItemEId) {
+          addLog("You have nothing to drop");
+          break;
+        }
+
+        const tryDropEntity = gameWorld.registry.get(activeItemEId);
+        if (!tryDropEntity) {
+          console.log(`id: ${activeItemEId} does not exist.`);
+          logFrozenEntity(player);
+          break;
+        }
+
+        // add tryDrop to first item in inventory
+        const playerId = player.id;
+        if (isUndefined(playerId)) {
+          break;
+        }
+
+        gameWorld.world.addComponent(tryDropEntity, "tryDrop", {
+          dropperId: playerId,
+        });
+        break;
+      } while (true);
+
+      if (currentIndex === inventoryLength - 1) {
+        setState((state: State) => (state.inventoryActiveIndex -= 1));
+      }
+    }
+
+    // NOTE: Equip
+    if (key === "e") {
+      // if items in inventory - enter target mode
+      if (activeItemEntity) {
+        wield(player, activeItemEntity);
       }
     }
 

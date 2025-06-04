@@ -197,6 +197,9 @@ export const renderSystem = () => {
       );
       const activeIndex = getState().inventoryActiveIndex;
 
+      const wieldingEId = player.weaponSlot?.contents[0] || "";
+      const wieldedEntity = gameWorld.registry.get(wieldingEId);
+
       const rows = [
         [{}, { string: "Inventory" }],
         [],
@@ -219,6 +222,32 @@ export const renderSystem = () => {
             string: `${activeIndex === index ? "*" : " "} ${item?.appearance?.char} ${item?.name} ${item?.description}`,
           },
         ]),
+        [],
+        [
+          {},
+          {
+            string: `Wielding [${player.weaponSlot?.contents.length}/${player.weaponSlot?.slots}]`,
+          },
+        ],
+        [
+          {},
+          {
+            string: `  ${wieldedEntity?.appearance?.char} ${wieldedEntity?.name} ${wieldedEntity?.description}`,
+          },
+        ],
+        [],
+        [
+          {},
+          {
+            string: `Wearing [${player.weaponSlot?.contents.length}/${player.weaponSlot?.slots}]`,
+          },
+        ],
+        [
+          {},
+          {
+            string: `  ${wieldedEntity?.appearance?.char} ${wieldedEntity?.name} ${wieldedEntity?.description}`,
+          },
+        ],
       ];
 
       menuUnderlayView?.show();
