@@ -8,6 +8,8 @@ import {
   outOfBounds,
   unWield,
   wield,
+  wear,
+  unWear,
 } from "../../lib/utils";
 
 const moveKeys = [
@@ -71,10 +73,6 @@ export const userInputSystem = () => {
         const targetZoneId = toPosId(targetZonePos);
         gameWorld.changeZone(targetZoneId, ChangeZoneDirections.up);
       }
-    }
-
-    if (key === "w") {
-      unWield(player);
     }
 
     if (key === "i") {
@@ -330,11 +328,30 @@ export const userInputSystem = () => {
       }
     }
 
-    // NOTE: Equip
-    if (key === "e") {
-      // if items in inventory - enter target mode
+    // NOTE: Wield
+    if (key === "w") {
       if (activeItemEntity) {
         wield(player, activeItemEntity);
+      }
+    }
+
+    // NOTE: Wear
+    if (key === "W") {
+      if (activeItemEntity) {
+        wear(player, activeItemEntity);
+      }
+    }
+
+    // NOTE: Remove
+    if (key === "r") {
+      if (activeItemEId) {
+        if (player.armorSlot?.contents[0] === activeItemEId) {
+          unWear(player);
+        }
+
+        if (player.weaponSlot?.contents[0] === activeItemEId) {
+          unWield(player);
+        }
       }
     }
 

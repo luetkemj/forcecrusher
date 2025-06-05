@@ -15,7 +15,7 @@ export const toPos = (posId: PosId): Pos => {
 export const insideCircle = (
   center: Pos,
   radius: number,
-  candidate: Pos
+  candidate: Pos,
 ): Boolean => {
   const dx = center.x - candidate.x;
   const dy = center.y - candidate.y;
@@ -118,7 +118,7 @@ interface RectangleProps {
 
 export const rectangle = (
   rectangleProps: RectangleProps,
-  tileProps: any
+  tileProps: any,
 ): Rectangle => {
   const { x, y, z, width, height, hasWalls } = rectangleProps;
 
@@ -176,7 +176,7 @@ type RectDimensions = {
 
 export const isOnRectEdge = (
   pos: Pos,
-  rectDimensions: RectDimensions
+  rectDimensions: RectDimensions,
 ): boolean => {
   const { width, height, mapX, mapY } = rectDimensions;
 
@@ -219,7 +219,7 @@ export const getNeighbors = (
   pos: Pos,
   dir: string,
   boundary: Dimensions,
-  asIds: boolean
+  asIds: boolean,
 ): Array<Pos> | Array<string> => {
   let direction: Points = [];
   if (dir === "cardinal") direction = [...CARDINAL];
@@ -298,11 +298,11 @@ type Direction = {
   y: number;
 };
 
-export const getDirection = (posA: Pos, posB: Pos):Direction => {
+export const getDirection = (posA: Pos, posB: Pos): Direction => {
   const { x: ax, y: ay } = posA;
   const { x: bx, y: by } = posB;
 
-  let dir = '';
+  let dir = "";
 
   if (ax - bx === -1 && ay - by === -1) dir = "NW";
   if (ax - bx === 1 && ay - by === -1) dir = "NE";
@@ -321,7 +321,7 @@ export const getDirection = (posA: Pos, posB: Pos):Direction => {
 
 // is this right? wonder if maybe it should be reversed...
 // you go from point a to point b... right?
-export const getVelocity = (posA:Pos, posB:Pos):Point => {
+export const getVelocity = (posA: Pos, posB: Pos): Point => {
   const { x: ax, y: ay } = posA;
   const { x: bx, y: by } = posB;
 

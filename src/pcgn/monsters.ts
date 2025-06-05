@@ -16,7 +16,5 @@ export const spawnSkeleton = (position: Pos) => {
   wield(skeleton, weapon);
   wear(skeleton, armor);
 
-  console.log({ skeleton, armor, weapon });
-
   return skeleton;
 };

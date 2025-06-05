@@ -3,7 +3,7 @@ import { distance } from "../../lib/grid";
 import { getState, GameState } from "../../main";
 import { View, UpdateRow } from "../../lib/canvas";
 import { getWielding, getWearing } from "../../lib/utils";
-import { getArmorClass } from "../../lib/combat";
+import { calcAverageDamage, getArmorClass } from "../../lib/combat";
 
 const concatRow = (str: string, length: number): string => {
   let newStr = str;
@@ -172,8 +172,9 @@ export const renderSystem = () => {
         const entityChar = entity.appearance.char;
         const entityName = entity.name;
         const armorClass = getArmorClass(entity);
+        const averageDamage = calcAverageDamage(entity);
 
-        const string = `${entityChar} ${entityName} AC: ${armorClass}`;
+        const string = `${entityChar} ${entityName} [${armorClass}](${averageDamage})`;
         rows.push([{ string }]);
       });
 
@@ -212,13 +213,6 @@ export const renderSystem = () => {
             string: `${player.container?.name} [${player.container?.contents.length}/${player.container?.slots}]`,
           },
         ],
-        [
-          {},
-          {
-            string: `${player.container?.description}`,
-          },
-        ],
-        [],
         ...itemsInInventory.map((item, index) => [
           {},
           {
@@ -335,10 +329,12 @@ export const renderSystem = () => {
       [{ string: `LV: 1` }],
       [{ string: `HP: ${player?.health?.current}/${player?.health?.max}` }],
       [],
-      [{ string: `): ${weapon}` }],
-      [{ string: `]: ${armor}` }],
+      [{ string: `): ${weapon} (${calcAverageDamage(player)})` }],
+      [{ string: `]: ${armor} [${getArmorClass(player)}]` }],
       [],
       [{ string: `AC: ${getArmorClass(player)}` }],
+      [{ string: `DM: ${calcAverageDamage(player)}` }],
+      [],
       [{ string: `ST: ${player?.strength}` }],
       [{ string: `DX: ${player?.dexterity}` }],
       [{ string: `CN: ${player?.constitution}` }],
@@ -372,7 +368,7 @@ export const renderSystem = () => {
 
       if (getState().gameState === GameState.INVENTORY) {
         controls =
-          "(i/escape)Return to Game (c)Consume (d)Drop (e)Equip (r)Remove (t)Throw";
+          "(i/escape)Return to Game (c)Consume (d)Drop (t)Throw (W)Wear (w)Wield (r)Remove";
       }
 
       controlsView?.updateRows([[], [{ string: controls }]]);

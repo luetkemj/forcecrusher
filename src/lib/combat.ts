@@ -2,6 +2,13 @@ import { type Entity, gameWorld } from "../ecs/engine";
 import { addLog, getModifier, isWearing, getWearing } from "./utils";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 
+export function getAverageRoll(notation: String) {
+  const nRolls = 500;
+  const r1k = Array(nRolls).fill(notation).join(",");
+  const roll = new DiceRoll(`{${r1k}}`);
+  return Math.round(roll.averageTotal / nRolls);
+}
+
 export function getArmorClass(entity: Entity) {
   const { baseArmorClass = 10, dexterity } = entity;
   let dexMod = dexterity ? getModifier(dexterity) : 0;
@@ -12,7 +19,7 @@ export function getArmorClass(entity: Entity) {
   } else {
     const armor = getWearing(entity);
     if (armor) {
-      const armorClass = armor.armorClass || 0;
+      const armorClass = armor.armorClass || 10;
       if (armor.armorClassMod === "dexterity") {
         return armorClass + dexMod;
       } else {
@@ -144,4 +151,22 @@ function calcDamage(attacker: Entity, ranged: boolean) {
   }
 
   return Math.max(0, damage);
+}
+
+export function calcAverageDamage(attacker: Entity) {
+  const weapon = getWeapon(attacker);
+
+  if (!attacker.strength) return 0;
+
+  const strengthMod = getModifier(attacker.strength);
+
+  // unarmed
+  if (!weapon) return strengthMod + 1;
+
+  // TODO: add things like proficiency and other bonuses
+  // armed
+  if (weapon) {
+    const notation = `${weapon.damageRoll}+${strengthMod}`;
+    return getAverageRoll(notation);
+  }
 }
