@@ -28,6 +28,7 @@ export type Entity = {
     contents: Array<string>;
     slots: number;
   };
+  averageDamage?: number;
   baseArmorClass?: number;
   blocking?: true;
   charisma?: number;

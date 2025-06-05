@@ -119,12 +119,12 @@ function calcDamage(attacker: Entity, ranged: boolean) {
   const weapon = getWeapon(attacker);
 
   if (weapon) {
-    const damageRoll = weapon?.damageRoll;
+    // if no damageRoll it's improvised
+    const damageRoll = weapon.damageRoll || "1d4";
 
-    if (damageRoll) {
-      const roll = new DiceRoll(damageRoll).total;
-      damage += roll;
-    }
+    const roll = new DiceRoll(damageRoll).total;
+    damage += roll;
+
     if (ranged) {
       if (attacker.dexterity) {
         const mod = getModifier(attacker.dexterity);
@@ -166,7 +166,9 @@ export function calcAverageDamage(attacker: Entity) {
   // TODO: add things like proficiency and other bonuses
   // armed
   if (weapon) {
-    const notation = `${weapon.damageRoll}+${strengthMod}`;
+    // if no damageRoll, it's an improvised weapon
+    const damageRoll = weapon.damageRoll || "1d4";
+    const notation = `${damageRoll}+${strengthMod}`;
     return getAverageRoll(notation);
   }
 }

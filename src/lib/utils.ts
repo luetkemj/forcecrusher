@@ -1,5 +1,6 @@
 import { Entity, gameWorld } from "../ecs/engine";
 import { getState, setState, State } from "../main";
+import { calcAverageDamage } from "./combat";
 import { Pos } from "./grid";
 import { pull } from "lodash";
 
@@ -66,6 +67,8 @@ export const wield = (equipper: Entity, equipment: Entity) => {
       pull(equipper.container?.contents, equipment.id);
     }
   }
+
+  equipper.averageDamage = calcAverageDamage(equipper);
 };
 
 export const unWield = (equipper: Entity) => {
@@ -97,6 +100,8 @@ export const unWield = (equipper: Entity) => {
     if (equipper.weaponSlot?.contents) {
       equipper.weaponSlot.contents = [];
     }
+    // recalc average damage
+    equipper.averageDamage = calcAverageDamage(equipper);
 
     return true;
   }

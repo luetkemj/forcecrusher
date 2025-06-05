@@ -33,6 +33,7 @@ const being: Entity = {
   layer300: true,
   name: "being",
   baseArmorClass: 10,
+  averageDamage: 0,
   strength: 10,
   dexterity: 10,
   constitution: 10,

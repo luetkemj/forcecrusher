@@ -172,7 +172,7 @@ export const renderSystem = () => {
         const entityChar = entity.appearance.char;
         const entityName = entity.name;
         const armorClass = getArmorClass(entity);
-        const averageDamage = calcAverageDamage(entity);
+        const averageDamage = entity.averageDamage;
 
         const string = `${entityChar} ${entityName} [${armorClass}](${averageDamage})`;
         rows.push([{ string }]);
@@ -329,11 +329,11 @@ export const renderSystem = () => {
       [{ string: `LV: 1` }],
       [{ string: `HP: ${player?.health?.current}/${player?.health?.max}` }],
       [],
-      [{ string: `): ${weapon} (${calcAverageDamage(player)})` }],
+      [{ string: `): ${weapon} (${player.averageDamage})` }],
       [{ string: `]: ${armor} [${getArmorClass(player)}]` }],
       [],
       [{ string: `AC: ${getArmorClass(player)}` }],
-      [{ string: `DM: ${calcAverageDamage(player)}` }],
+      [{ string: `DM: ${player.averageDamage}` }],
       [],
       [{ string: `ST: ${player?.strength}` }],
       [{ string: `DX: ${player?.dexterity}` }],
