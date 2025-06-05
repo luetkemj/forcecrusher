@@ -1,6 +1,7 @@
 import { wield, wear } from "../lib/utils";
 import { spawn } from "../actors";
 import { type Pos } from "../lib/grid";
+import { calcAverageDamage } from "../lib/combat";
 
 export const spawnPlayer = (position: Pos) => {
   const player = spawn("player", { position });
@@ -9,6 +10,9 @@ export const spawnPlayer = (position: Pos) => {
 
   wield(player, weapon);
   wear(player, armor);
+
+  calcAverageDamage(player, weapon);
+  calcAverageDamage(player, armor);
 
   return player;
 };

@@ -153,12 +153,12 @@ function calcDamage(attacker: Entity, ranged: boolean) {
   return Math.max(0, damage);
 }
 
-export function calcAverageDamage(attacker: Entity) {
-  const weapon = getWeapon(attacker);
+export function calcAverageDamage(entity: Entity, aWeapon?: Entity) {
+  const weapon = aWeapon || getWeapon(entity);
 
-  if (!attacker.strength) return 0;
+  if (!entity.strength) return 0;
 
-  const strengthMod = getModifier(attacker.strength);
+  const strengthMod = getModifier(entity.strength);
 
   // unarmed
   if (!weapon) return strengthMod + 1;
