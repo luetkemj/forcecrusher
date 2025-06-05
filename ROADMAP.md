@@ -40,10 +40,23 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] Delving into the Dungeon
 - [x] Damage System
 - [x] Increasing Difficulty
-- [ ] Gearing up
+- [x] Gearing up
 
 ---
 
+- [ ] Show AC and average damage for weapons and armor on the ground (corpses count as weapons & armor)
+    - showing for corpses, but not for items, armor, or weapons. Need to calc it on spawn (so I need spawn functions, or to do that in the spawn function?) - added to spawn but still not showing on weapons and armor.
+
+- [ ] you can "wear" a health potion?? seems like that shouldn't be possible. Do we need wearable and wieldable Or just go with it? It's no better then not wearing any armor...
+- [ ] unarmed attacks (create bites and claws, punching)
+- [ ] creature multiattacks
+- [ ] creature behavior, like swarming, pack tactics, retreat, hunting, sleeping, etc
+- [ ] Leveling up
+- [ ] Proficiency Bonuses
+- [ ] Weapon types (ranged, melee, martial, finess, heavy, light etc)
+- [ ] Spells
+- [ ] Wands
+- [ ] Rings
 - [ ] Containers
 - [ ] AI for actors to use own inventory
 - [ ] Materials
@@ -54,7 +67,7 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] color coded logs (ale-dsi/brogue-esque)
   - [ ] support writing mutiple colors to a text row
 - [ ] Game cheats/debugging menu to toggle various modes
-
+- [ ] save to indexDB (local storage collapses after 6 levels)
 
 
 ## Inventory notes
