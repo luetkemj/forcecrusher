@@ -106,6 +106,24 @@ export const ratPrefab: Entity = {
   intelligence: 2,
   wisdom: 10,
   charisma: 4,
+  attacks: [
+    {
+      name: "Bite",
+      verb: "bites",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d1",
+      damageType: DamageType.Piercing,
+    },
+    {
+      name: "Claw",
+      verb: "claws",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d1",
+      damageType: DamageType.Slashing,
+    },
+  ],
 };
 
 export const skeletonPrefab: Entity = {
@@ -192,10 +210,36 @@ export const shortswordPrefab: Entity = {
     "An unadorned steel shortsword. It won’t impress, but it gets the job done.",
   layer200: true,
   pickUp: true,
-  damageType: DamageType.Piercing,
-  damageRoll: "1d6+2",
   weaponClass: WeaponClass.Martial,
-  weaponType: WeaponType.Melee,
+  attacks: [
+    {
+      name: "Stab",
+      verb: "stabs",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d6+2",
+      damageType: DamageType.Piercing,
+      useModifier: true,
+    },
+    {
+      name: "Slash",
+      verb: "slashes",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d6+2",
+      damageType: DamageType.Slashing,
+      useModifier: true,
+    },
+    {
+      name: "Bash",
+      verb: "bashes",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d4+2",
+      damageType: DamageType.Bludgeoning,
+      useModifier: true,
+    },
+  ],
 };
 
 export const leatherArmor: Entity = {

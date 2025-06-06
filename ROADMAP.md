@@ -45,6 +45,9 @@ This is aspirational only. Expect anything and everything in this document to be
 ---
 
 - [ ] unarmed attacks (create bites and claws, punching)
+- [ ] more weapons
+- [ ] more armor
+- [ ] more enemies
 - [ ] creature multiattacks
 - [ ] creature behavior, like swarming, pack tactics, retreat, hunting, sleeping, etc
 - [ ] Leveling up
@@ -65,10 +68,8 @@ This is aspirational only. Expect anything and everything in this document to be
   - [ ] support writing mutiple colors to a text row
 - [ ] Game cheats/debugging menu to toggle various modes
 - [ ] save to indexDB (local storage collapses after 6 levels)
+- [ ] inventory select armor/weapons so they can be removed
 
-
-- [ ] Show AC and average damage for weapons and armor on the ground (corpses count as weapons & armor)
-    - showing for corpses, but not for items, armor, or weapons. Need to calc it on spawn (so I need spawn functions, or to do that in the spawn function?) - added to spawn but still not showing on weapons and armor.
 
 ## Inventory notes
 

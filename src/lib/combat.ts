@@ -1,4 +1,5 @@
-import { type Entity, gameWorld } from "../ecs/engine";
+import { type Entity, type Attack, gameWorld } from "../ecs/engine";
+import { sample } from "lodash";
 import { addLog, getModifier, isWearing, getWearing } from "./utils";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 
@@ -36,8 +37,15 @@ export function meleeAttack(attacker: Entity, target: Entity) {
   }
 
   const weapon = getWeapon(attacker);
+  let attack = getAttack(attacker);
+
+  if (!attack) {
+    console.log(`${attacker.name} has no means of attack`);
+    return;
+  }
 
   // roll attack
+  // TODO: should this have any toHit bonuses?
   const attackRoll = new DiceRoll("d20").total;
   const isCrit = attackRoll === 20;
 
@@ -47,17 +55,17 @@ export function meleeAttack(attacker: Entity, target: Entity) {
 
   if (attackRoll >= armorClass) {
     // NOTE: HIT
-    let damage = calcDamage(attacker, false);
+    let damage = calcAttackDamage(attacker, attack);
     if (isCrit) damage *= 2;
 
     target.health.current -= damage;
 
     if (playerInCombat) {
-      let log = `${attacker.name} hits ${target.name}`;
+      let log = `${attacker.name} ${attack.verb} ${target.name}`;
       if (weapon) {
         log += ` with ${weapon.name}`;
       }
-      log += ` for ${damage} hp!`;
+      log += ` for ${damage}hp!`;
       if (isCrit) log = `Critical! ${log}`;
       addLog(log);
     }
@@ -103,8 +111,6 @@ export function rangeAttack(attacker: Entity, target: Entity, missile: Entity) {
   }
 }
 
-// TODO: should this return an ability if no weapon? Rats should bite...
-// it needs to be deterministic
 function getWeapon(entity: Entity) {
   const weaponId = entity.weaponSlot?.contents[0];
   if (weaponId) {
@@ -113,7 +119,39 @@ function getWeapon(entity: Entity) {
   return false;
 }
 
+function getAttack(entity: Entity) {
+  const weapon = getWeapon(entity);
+  let attack;
+  if (weapon) {
+    attack = sample(weapon.attacks);
+  } else {
+    attack = sample(entity.attacks);
+  }
+
+  return attack || false;
+}
+
 // TODO: take weapon as arg - weapon will have damage type, melee/ranged, finesse, and damage dice etc
+function calcAttackDamage(attacker: Entity, attack: Attack) {
+  let damage = new DiceRoll(attack.damageRoll).total;
+
+  if (attack.attackType === "melee") {
+    if (attack.useModifier && attacker.strength) {
+      const mod = getModifier(attacker.strength);
+      damage += mod;
+    }
+  }
+
+  if (attack.attackType === "ranged") {
+    if (attacker.dexterity) {
+      const mod = getModifier(attacker.dexterity);
+      damage += mod;
+    }
+  }
+
+  return Math.max(0, damage);
+}
+
 function calcDamage(attacker: Entity, ranged: boolean) {
   let damage = 0;
   const weapon = getWeapon(attacker);

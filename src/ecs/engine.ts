@@ -13,6 +13,17 @@ type Effect = {
   component: keyof Effectables;
 };
 
+export type Attack = {
+  name: string;
+  toHit: number;
+  attackType: "melee" | "ranged";
+  damageRoll: string;
+  damageType: DamageType;
+  useModifier?: true;
+  verb: string;
+  // TODO: add effects to attacks, like poison
+};
+
 export type Entity = {
   activeEffects?: Array<Effect>;
   ai?: true;
@@ -28,6 +39,8 @@ export type Entity = {
     contents: Array<string>;
     slots: number;
   };
+  attack?: Attack;
+  attacks?: Array<Attack>;
   averageDamage?: number;
   baseArmorClass?: number;
   blocking?: true;
