@@ -7,6 +7,7 @@ import { logFrozenEntity } from "./lib/utils";
 
 import { activeEffectsSystem } from "./ecs/systems/activeEffects.system";
 import { aiSystem } from "./ecs/systems/ai.system";
+import { attackSystem } from "./ecs/systems/attack.system";
 import { cursorSystem } from "./ecs/systems/cursor.system";
 import { fovSystem } from "./ecs/systems/fov.system";
 import { dropSystem } from "./ecs/systems/drop.system";
@@ -359,6 +360,7 @@ function gameLoop() {
       pickUpSystem();
       dropSystem();
       movementSystem();
+      attackSystem();
       morgueSystem();
       fovSystem();
       renderSystem();
@@ -375,6 +377,7 @@ function gameLoop() {
       morgueSystem();
       aiSystem();
       movementSystem();
+      attackSystem();
       fovSystem();
       renderSystem();
 

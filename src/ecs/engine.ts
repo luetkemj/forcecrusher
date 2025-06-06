@@ -41,6 +41,7 @@ export type Entity = {
   };
   attack?: Attack;
   attacks?: Array<Attack>;
+  attackTarget?: Entity;
   averageDamage?: number;
   baseArmorClass?: number;
   blocking?: true;

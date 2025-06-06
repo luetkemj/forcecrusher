@@ -1,6 +1,5 @@
 import { addLog } from "../../lib/utils";
 import { gameWorld } from "../engine";
-import { meleeAttack } from "../../lib/combat";
 
 const moveableEntities = gameWorld.world.with("position", "tryMove");
 const blockingEntities = gameWorld.world.with("blocking", "position");
@@ -19,7 +18,12 @@ export const movementSystem = () => {
         gameWorld.world.removeComponent(movingEntity, "tryMove");
 
         if (blockingEntity.health) {
-          meleeAttack(movingEntity, blockingEntity);
+          // meleeAttack(movingEntity, blockingEntity);
+          gameWorld.world.addComponent(
+            movingEntity,
+            "attackTarget",
+            blockingEntity,
+          );
         } else {
           if (movingEntity.pc) {
             addLog(`${movingEntity.name} blocked by ${blockingEntity.name}`);
