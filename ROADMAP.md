@@ -44,10 +44,6 @@ This is aspirational only. Expect anything and everything in this document to be
 
 ---
 
-- [ ] Show AC and average damage for weapons and armor on the ground (corpses count as weapons & armor)
-    - showing for corpses, but not for items, armor, or weapons. Need to calc it on spawn (so I need spawn functions, or to do that in the spawn function?) - added to spawn but still not showing on weapons and armor.
-
-- [ ] you can "wear" a health potion?? seems like that shouldn't be possible. Do we need wearable and wieldable Or just go with it? It's no better then not wearing any armor...
 - [ ] unarmed attacks (create bites and claws, punching)
 - [ ] creature multiattacks
 - [ ] creature behavior, like swarming, pack tactics, retreat, hunting, sleeping, etc
@@ -59,6 +55,7 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] Rings
 - [ ] Containers
 - [ ] AI for actors to use own inventory
+- [ ] you can "wear" a health potion?? seems like that shouldn't be possible. Do we need wearable and wieldable Or just go with it? It's no better then not wearing any armor...
 - [ ] Materials
 - [ ] Sensory System
 - [ ] Overworld map with multiple dungeons to explore
@@ -69,6 +66,9 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] Game cheats/debugging menu to toggle various modes
 - [ ] save to indexDB (local storage collapses after 6 levels)
 
+
+- [ ] Show AC and average damage for weapons and armor on the ground (corpses count as weapons & armor)
+    - showing for corpses, but not for items, armor, or weapons. Need to calc it on spawn (so I need spawn functions, or to do that in the spawn function?) - added to spawn but still not showing on weapons and armor.
 
 ## Inventory notes
 
