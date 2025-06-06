@@ -22,8 +22,6 @@ import { generateDungeon } from "./pcgn/dungeon";
 import { gameWorld } from "./ecs/engine";
 import { spawnPlayer } from "./pcgn/player";
 
-import { getAverageRoll } from "./lib/combat";
-
 export const enum Turn {
   PLAYER = "PLAYER",
   WORLD = "WORLD",
