@@ -17,7 +17,9 @@ import { createMovementSystem } from "./ecs/systems/movement.system";
 import { createPickUpSystem } from "./ecs/systems/pickUp.system";
 import { createRenderSystem } from "./ecs/systems/render.system";
 import { createThrowSystem } from "./ecs/systems/throw.system";
-import { userInputSystem } from "./ecs/systems/userInput.system";
+import {
+  createUserInputSystem,
+} from "./ecs/systems/userInput.system";
 
 import { generateDungeon } from "./pcgn/dungeon";
 
@@ -125,6 +127,13 @@ const movementSystem = createMovementSystem(gameWorld.world);
 const pickUpSystem = createPickUpSystem(gameWorld.world, gameWorld.registry);
 const renderSystem = createRenderSystem(gameWorld.world, gameWorld.registry);
 const throwSystem = createThrowSystem(gameWorld.world, gameWorld.registry);
+const userInputSystem = createUserInputSystem(
+  gameWorld.world,
+  gameWorld.registry,
+  gameWorld.saveGameData,
+  gameWorld.loadGameData,
+  gameWorld.changeZone,
+);
 
 const init = async () => {
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);
