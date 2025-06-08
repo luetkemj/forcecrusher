@@ -3,7 +3,7 @@ import { IGameWorld } from "../engine";
 export const createActiveEffectsSystem = (world: IGameWorld["world"]) => {
   const activeEffectsQuery = world.with("activeEffects");
 
-  return function activeEffects() {
+  return function system() {
     for (const entity of activeEffectsQuery) {
       const { activeEffects } = entity;
       activeEffects.forEach((effect) => {

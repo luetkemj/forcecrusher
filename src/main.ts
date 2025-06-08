@@ -9,6 +9,7 @@ import { createActiveEffectsSystem } from "./ecs/systems/activeEffects.system";
 import { createAiSystem } from "./ecs/systems/ai.system";
 import { createAttackSystem } from "./ecs/systems/attack.system";
 import { createCursorSystem } from "./ecs/systems/cursor.system";
+import { createDamageSystem } from "./ecs/systems/damage.system";
 import { fovSystem } from "./ecs/systems/fov.system";
 import { dropSystem } from "./ecs/systems/drop.system";
 import { morgueSystem } from "./ecs/systems/morgue.system";
@@ -22,7 +23,6 @@ import { generateDungeon } from "./pcgn/dungeon";
 
 import { gameWorld } from "./ecs/engine";
 import { spawnPlayer } from "./pcgn/player";
-import { damageSystem } from "./ecs/systems/damage.system";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -117,6 +117,7 @@ const activeEffectsSystem = createActiveEffectsSystem(gameWorld.world);
 const aiSystem = createAiSystem(gameWorld.world);
 const attackSystem = createAttackSystem(gameWorld.world, gameWorld.registry);
 const cursorSystem = createCursorSystem(gameWorld.world);
+const damageSystem = createDamageSystem(gameWorld.world, gameWorld.registry);
 
 const init = async () => {
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);
