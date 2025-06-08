@@ -1,37 +1,39 @@
-import { gameWorld } from "../engine";
+import { IGameWorld } from "../engine";
 import createFOV from "../../lib/fov";
 import { toPosId } from "../../lib/grid";
 
-const inFovEntities = gameWorld.world.with("inFov", "position");
-const opaqueEntities = gameWorld.world.with("opaque", "position");
-const playerEntities = gameWorld.world.with("pc", "position");
-const renderableEntities = gameWorld.world.with("appearance", "position");
+export const createFovSystem = (world: IGameWorld["world"]) => {
+  const inFovQuery = world.with("inFov", "position");
+  const opaqueQuery = world.with("opaque", "position");
+  const playerQuery = world.with("pc", "position");
+  const renderableQuery = world.with("appearance", "position");
 
-export const fovSystem = () => {
-  let player;
+  return function system() {
+    let player;
 
-  for (const entity of playerEntities) {
-    player = entity;
-  }
-
-  if (!player) return;
-
-  const FOV = createFOV(
-    opaqueEntities,
-    74, // map width
-    39, // map height
-    player.position,
-    10,
-  );
-
-  for (const entity of inFovEntities) {
-    gameWorld.world.removeComponent(entity, "inFov");
-  }
-
-  for (const entity of renderableEntities) {
-    if (FOV.fov.has(toPosId(entity.position))) {
-      gameWorld.world.addComponent(entity, "inFov", true);
-      gameWorld.world.addComponent(entity, "revealed", true);
+    for (const entity of playerQuery) {
+      player = entity;
     }
-  }
+
+    if (!player) return;
+
+    const FOV = createFOV(
+      opaqueQuery,
+      74, // map width
+      39, // map height
+      player.position,
+      10,
+    );
+
+    for (const entity of inFovQuery) {
+      world.removeComponent(entity, "inFov");
+    }
+
+    for (const entity of renderableQuery) {
+      if (FOV.fov.has(toPosId(entity.position))) {
+        world.addComponent(entity, "inFov", true);
+        world.addComponent(entity, "revealed", true);
+      }
+    }
+  };
 };

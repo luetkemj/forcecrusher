@@ -11,9 +11,9 @@ import { createAttackSystem } from "./ecs/systems/attack.system";
 import { createCursorSystem } from "./ecs/systems/cursor.system";
 import { createDamageSystem } from "./ecs/systems/damage.system";
 import { createDropSystem } from "./ecs/systems/drop.system";
-import { fovSystem } from "./ecs/systems/fov.system";
-import { morgueSystem } from "./ecs/systems/morgue.system";
-import { movementSystem } from "./ecs/systems/movement.system";
+import { createFovSystem } from "./ecs/systems/fov.system";
+import { createMorgueSystem } from "./ecs/systems/morgue.system";
+import { createMovementSystem } from "./ecs/systems/movement.system";
 import { pickUpSystem } from "./ecs/systems/pickUp.system";
 import { renderSystem } from "./ecs/systems/render.system";
 import { throwSystem } from "./ecs/systems/throw.system";
@@ -119,6 +119,9 @@ const attackSystem = createAttackSystem(gameWorld.world, gameWorld.registry);
 const cursorSystem = createCursorSystem(gameWorld.world);
 const damageSystem = createDamageSystem(gameWorld.world, gameWorld.registry);
 const dropSystem = createDropSystem(gameWorld.world, gameWorld.registry);
+const fovSystem = createFovSystem(gameWorld.world);
+const morgueSystem = createMorgueSystem(gameWorld.world);
+const movementSystem = createMovementSystem(gameWorld.world);
 
 const init = async () => {
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);
