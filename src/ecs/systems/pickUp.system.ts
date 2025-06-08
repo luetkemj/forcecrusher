@@ -1,67 +1,72 @@
 import { isUndefined } from "lodash";
 import { addLog, logFrozenEntity } from "../../lib/utils";
-import { gameWorld } from "../engine";
+import { IGameWorld } from "../engine";
 
-const pcEntities = gameWorld.world.with("pc");
-const entitiesBeingPickedUp = gameWorld.world.with("tryPickUp");
+export const createPickUpSystem = (
+  world: IGameWorld["world"],
+  registry: IGameWorld["registry"],
+) => {
+  const pcQuery = world.with("pc");
+  const pickUpQuery = world.with("tryPickUp");
 
-export const pickUpSystem = () => {
-  const [player] = pcEntities;
+  return function system() {
+    const [player] = pcQuery;
 
-  for (const entity of entitiesBeingPickedUp) {
-    if (!entity.pickUp) {
-      console.log(`Entity is not a pickup`);
-      logFrozenEntity(entity);
-      break;
-    }
-
-    const { pickerId } = entity.tryPickUp;
-    const pickerEntity = gameWorld.registry.get(pickerId);
-    if (!pickerEntity) {
-      console.log(`pickerId ${pickerId} does not exist`);
-      break;
-    }
-
-    const { container } = pickerEntity;
-    if (!container) {
-      console.log(`Picker has no container`);
-      logFrozenEntity(pickerEntity);
-
-      if (pickerEntity === player) {
-        addLog(`You have nowhere to put that.`);
+    for (const entity of pickUpQuery) {
+      if (!entity.pickUp) {
+        console.log(`Entity is not a pickup`);
+        logFrozenEntity(entity);
+        break;
       }
 
-      gameWorld.world.removeComponent(entity, "tryPickUp");
-      break;
-    }
-
-    if (container.contents.length >= container.slots) {
-      console.log(`Picker has no room in container`);
-      logFrozenEntity(pickerEntity);
-
-      if (pickerEntity === player) {
-        addLog(`You have no room in your ${player?.container?.name}.`);
+      const { pickerId } = entity.tryPickUp;
+      const pickerEntity = registry.get(pickerId);
+      if (!pickerEntity) {
+        console.log(`pickerId ${pickerId} does not exist`);
+        break;
       }
 
-      gameWorld.world.removeComponent(entity, "tryPickUp");
-      break;
+      const { container } = pickerEntity;
+      if (!container) {
+        console.log(`Picker has no container`);
+        logFrozenEntity(pickerEntity);
+
+        if (pickerEntity === player) {
+          addLog(`You have nowhere to put that.`);
+        }
+
+        world.removeComponent(entity, "tryPickUp");
+        break;
+      }
+
+      if (container.contents.length >= container.slots) {
+        console.log(`Picker has no room in container`);
+        logFrozenEntity(pickerEntity);
+
+        if (pickerEntity === player) {
+          addLog(`You have no room in your ${player?.container?.name}.`);
+        }
+
+        world.removeComponent(entity, "tryPickUp");
+        break;
+      }
+
+      const pickupId = entity.id;
+      if (isUndefined(pickupId)) {
+        console.log(`pickupId ${pickupId} does not exist`);
+
+        world.removeComponent(entity, "tryPickUp");
+        break;
+      }
+
+      // put pickUp in container
+      container.contents.push(pickupId);
+      world.removeComponent(entity, "tryPickUp");
+      world.removeComponent(entity, "position");
+
+      addLog(
+        `${pickerEntity.name} puts ${entity.name} in ${pickerEntity?.container?.name}`,
+      );
     }
-
-    const pickupId = entity.id;
-    if (isUndefined(pickupId)) {
-      console.log(`pickupId ${pickupId} does not exist`);
-
-      gameWorld.world.removeComponent(entity, "tryPickUp");
-      break;
-    }
-
-    // put pickUp in container
-    container.contents.push(pickupId);
-    gameWorld.world.removeComponent(entity, "tryPickUp");
-    gameWorld.world.removeComponent(entity, "position");
-
-    addLog(
-      `${pickerEntity.name} puts ${entity.name} in ${pickerEntity?.container?.name}`,
-    );
-  }
+  };
 };
