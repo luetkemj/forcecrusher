@@ -16,7 +16,7 @@ import { createMorgueSystem } from "./ecs/systems/morgue.system";
 import { createMovementSystem } from "./ecs/systems/movement.system";
 import { createPickUpSystem } from "./ecs/systems/pickUp.system";
 import { createRenderSystem } from "./ecs/systems/render.system";
-import { throwSystem } from "./ecs/systems/throw.system";
+import { createThrowSystem } from "./ecs/systems/throw.system";
 import { userInputSystem } from "./ecs/systems/userInput.system";
 
 import { generateDungeon } from "./pcgn/dungeon";
@@ -124,6 +124,7 @@ const morgueSystem = createMorgueSystem(gameWorld.world);
 const movementSystem = createMovementSystem(gameWorld.world);
 const pickUpSystem = createPickUpSystem(gameWorld.world, gameWorld.registry);
 const renderSystem = createRenderSystem(gameWorld.world, gameWorld.registry);
+const throwSystem = createThrowSystem(gameWorld.world, gameWorld.registry);
 
 const init = async () => {
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);

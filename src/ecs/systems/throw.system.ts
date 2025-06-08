@@ -1,88 +1,97 @@
 import { remove, tail } from "lodash";
 import { getState } from "../../main";
 import { addLog, logFrozenEntity, isSamePosition } from "../../lib/utils";
-import { Entity, gameWorld } from "../engine";
+import { IGameWorld, Entity } from "../engine";
 import { line, Pos } from "../../lib/grid";
 import { rangeAttack } from "../../lib/combat";
 
-const tryThrowEntities = gameWorld.world.with("tryThrow");
-const blockingEntities = gameWorld.world.with("blocking", "position");
+import {} from "../engine";
 
-export const throwSystem = () => {
-  for (const entity of tryThrowEntities) {
-    // get thrower entity
-    const { throwerId } = entity.tryThrow;
-    const thrownId = entity.id;
+export const createThrowSystem = (
+  world: IGameWorld["world"],
+  registry: IGameWorld["registry"],
+) => {
+  const tryThrowQuery = world.with("tryThrow");
+  const blockingQuery = world.with("blocking", "position");
 
-    const throwerEntity = gameWorld.registry.get(throwerId);
-    const thrownEntity = entity;
+  return function system() {
+    for (const entity of tryThrowQuery) {
+      // get thrower entity
+      const { throwerId } = entity.tryThrow;
+      const thrownId = entity.id;
 
-    // error checks
-    if (!throwerEntity) {
-      console.log(`dropperId: ${throwerId} does not exist`);
-      logFrozenEntity(thrownEntity);
+      const throwerEntity = registry.get(throwerId);
+      const thrownEntity = entity;
 
-      gameWorld.world.removeComponent(thrownEntity, "tryThrow");
-      break;
-    }
+      // error checks
+      if (!throwerEntity) {
+        console.log(`dropperId: ${throwerId} does not exist`);
+        logFrozenEntity(thrownEntity);
 
-    if (!throwerEntity.container) {
-      console.log(`thrower: ${throwerId} has no container`);
-      logFrozenEntity(thrownEntity);
-      logFrozenEntity(throwerEntity);
+        world.removeComponent(thrownEntity, "tryThrow");
+        break;
+      }
 
-      gameWorld.world.removeComponent(thrownEntity, "tryThrow");
-      break;
-    }
+      if (!throwerEntity.container) {
+        console.log(`thrower: ${throwerId} has no container`);
+        logFrozenEntity(thrownEntity);
+        logFrozenEntity(throwerEntity);
 
-    let hitEntity: Entity | undefined;
-    let restingPosition: Pos | undefined;
-    let blocked = false;
+        world.removeComponent(thrownEntity, "tryThrow");
+        break;
+      }
 
-    if (throwerEntity.position) {
-      const pos0 = throwerEntity.position;
-      const pos1 = getState().cursor[1];
+      let hitEntity: Entity | undefined;
+      let restingPosition: Pos | undefined;
+      let blocked = false;
 
-      // get throwline
-      const throwLine = line(pos0, pos1);
+      if (throwerEntity.position) {
+        const pos0 = throwerEntity.position;
+        const pos1 = getState().cursor[1];
 
-      // check for blocker along throwline
-      for (let i = 0; i < tail(throwLine).length; i++) {
-        const value = tail(throwLine)[i];
+        // get throwline
+        const throwLine = line(pos0, pos1);
 
-        for (const blocker of blockingEntities) {
-          if (isSamePosition(blocker.position, value)) {
-            blocked = true;
-            hitEntity = blocker;
-            restingPosition = throwLine[i];
-            break;
+        // check for blocker along throwline
+        for (let i = 0; i < tail(throwLine).length; i++) {
+          const value = tail(throwLine)[i];
+
+          for (const blocker of blockingQuery) {
+            if (isSamePosition(blocker.position, value)) {
+              blocked = true;
+              hitEntity = blocker;
+              restingPosition = throwLine[i];
+              break;
+            }
           }
+
+          if (blocked) break;
+        }
+      }
+
+      if (blocked) {
+        // put entity to be thrown on at cursor location
+        const position = restingPosition;
+        if (position) {
+          world.addComponent(thrownEntity, "position", {
+            ...position,
+          });
         }
 
-        if (blocked) break;
+        if (hitEntity?.health) {
+          rangeAttack(throwerEntity, hitEntity, thrownEntity);
+        }
+      } else {
+        // put entity to be thrown on at cursor location
+        const position = getState().cursor[1];
+        world.addComponent(thrownEntity, "position", { ...position });
+
+        addLog(`${throwerEntity.name} throws ${thrownEntity.name}`);
       }
+
+      // remove item from dropper's inventory
+      remove(throwerEntity.container.contents, (id) => thrownId === id);
+      world.removeComponent(thrownEntity, "tryThrow");
     }
-
-    if (blocked) {
-      // put entity to be thrown on at cursor location
-      const position = restingPosition;
-      if (position) {
-        gameWorld.world.addComponent(thrownEntity, "position", { ...position });
-      }
-
-      if (hitEntity?.health) {
-        rangeAttack(throwerEntity, hitEntity, thrownEntity);
-      }
-    } else {
-      // put entity to be thrown on at cursor location
-      const position = getState().cursor[1];
-      gameWorld.world.addComponent(thrownEntity, "position", { ...position });
-
-      addLog(`${throwerEntity.name} throws ${thrownEntity.name}`);
-    }
-
-    // remove item from dropper's inventory
-    remove(throwerEntity.container.contents, (id) => thrownId === id);
-    gameWorld.world.removeComponent(thrownEntity, "tryThrow");
-  }
+  };
 };
