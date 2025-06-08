@@ -1,18 +1,20 @@
-import { gameWorld } from "../engine";
+import type { IGameWorld } from "../engine";
 
-const activeEffectEntities = gameWorld.world.with("activeEffects");
+export const createActiveEffectsSystem = (world: IGameWorld["world"]) => {
+  const activeEffectsQuery = world.with("activeEffects");
 
-export const activeEffectsSystem = () => {
-  for (const entity of activeEffectEntities) {
-    const { activeEffects } = entity;
-    activeEffects.forEach((effect) => {
-      const component = entity[effect.component];
+  return function activeEffects() {
+    for (const entity of activeEffectsQuery) {
+      const { activeEffects } = entity;
+      activeEffects.forEach((effect) => {
+        const component = entity[effect.component];
 
-      if (component) {
-        component.current += effect.delta;
-      }
-    });
+        if (component) {
+          component.current += effect.delta;
+        }
+      });
 
-    activeEffects.splice(0, activeEffects.length);
-  }
+      activeEffects.splice(0, activeEffects.length);
+    }
+  };
 };
