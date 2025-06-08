@@ -6,7 +6,7 @@ import { Pos, toPosId } from "./lib/grid";
 import { logFrozenEntity } from "./lib/utils";
 
 import { createActiveEffectsSystem } from "./ecs/systems/activeEffects.system";
-import { aiSystem } from "./ecs/systems/ai.system";
+import { createAiSystem } from "./ecs/systems/ai.system";
 import { attackSystem } from "./ecs/systems/attack.system";
 import { cursorSystem } from "./ecs/systems/cursor.system";
 import { fovSystem } from "./ecs/systems/fov.system";
@@ -114,6 +114,7 @@ export const setState = (callback: Function): void => {
 export const getState = (): State => state;
 
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld.world);
+const aiSystem = createAiSystem(gameWorld.world);
 
 const init = async () => {
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);
