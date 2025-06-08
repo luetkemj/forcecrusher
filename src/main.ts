@@ -8,7 +8,7 @@ import { logFrozenEntity } from "./lib/utils";
 import { createActiveEffectsSystem } from "./ecs/systems/activeEffects.system";
 import { createAiSystem } from "./ecs/systems/ai.system";
 import { createAttackSystem } from "./ecs/systems/attack.system";
-import { cursorSystem } from "./ecs/systems/cursor.system";
+import { createCursorSystem } from "./ecs/systems/cursor.system";
 import { fovSystem } from "./ecs/systems/fov.system";
 import { dropSystem } from "./ecs/systems/drop.system";
 import { morgueSystem } from "./ecs/systems/morgue.system";
@@ -116,6 +116,7 @@ export const getState = (): State => state;
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld.world);
 const aiSystem = createAiSystem(gameWorld.world);
 const attackSystem = createAttackSystem(gameWorld.world, gameWorld.registry);
+const cursorSystem = createCursorSystem(gameWorld.world);
 
 const init = async () => {
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);

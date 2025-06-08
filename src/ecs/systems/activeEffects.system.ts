@@ -1,4 +1,4 @@
-import type { IGameWorld } from "../engine";
+import { IGameWorld } from "../engine";
 
 export const createActiveEffectsSystem = (world: IGameWorld["world"]) => {
   const activeEffectsQuery = world.with("activeEffects");
