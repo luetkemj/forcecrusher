@@ -6,7 +6,7 @@ export const createAiSystem = (world: IGameWorld["world"]) => {
   const aiQuery = world.with("ai", "position");
   const positionQuery = world.with("position");
 
-  return function ai() {
+  return function system() {
     const [player] = pcQuery.entities;
 
     for (const entity of aiQuery) {

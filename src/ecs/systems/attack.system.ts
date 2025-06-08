@@ -15,7 +15,7 @@ export const createAttackSystem = (
 ) => {
   const attackQuery = world.with("attackTarget");
 
-  return function attack() {
+  return function system() {
     for (const attacker of attackQuery) {
       const target = attacker.attackTarget;
 
