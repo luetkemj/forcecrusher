@@ -3,6 +3,17 @@ import { DamageType, WeaponClass, WeaponType } from "./enums";
 import { type State, getState, setState } from "../main";
 import { generateDungeon } from "../pcgn/dungeon";
 
+export interface IGameWorld {
+  world: World<Entity>;
+  registry: Map<string, Entity>;
+  zones: Map<string, Set<string>>;
+  clearEntities(disallowList?: Array<string>): void;
+  saveZone(zoneId: string): void;
+  saveGameData(): void;
+  changeZone(zoneId: string, direction: ChangeZoneDirections): void;
+  loadGameData(): void;
+}
+
 // components with a max, current shape such that they are effectable
 type Effectables = {
   health?: Entity["health"];
