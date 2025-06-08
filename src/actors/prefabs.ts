@@ -1,5 +1,5 @@
 import { type Entity } from "../ecs/engine";
-import { DamageType, WeaponClass, WeaponType } from "../ecs/enums";
+import { DamageType, WeaponClass } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
 // NOTE: generics
