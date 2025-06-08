@@ -1,13 +1,17 @@
 export enum DamageType {
-  Piercing = "piercing",
-  Slashing = "slashing",
+  Acid = "acid",
   Bludgeoning = "bludgeoning",
-  Fire = "fire",
   Cold = "cold",
+  Fire = "fire",
+  Force = "force",
   Lightning = "lightning",
-  Poison = "poison",
   Necrotic = "necrotic",
+  Piercing = "piercing",
+  Poison = "poison",
+  Psychic = "psychic",
   Radiant = "radiant",
+  Slashing = "slashing",
+  Thunder = "thunder",
 }
 
 export enum WeaponClass {

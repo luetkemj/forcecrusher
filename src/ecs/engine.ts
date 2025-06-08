@@ -21,7 +21,23 @@ export type Attack = {
   damageType: DamageType;
   useModifier?: true;
   verb: string;
+  magical: boolean;
   // TODO: add effects to attacks, like poison
+};
+
+type DamageAmount = {
+  type: DamageType;
+  amount: number;
+  mod: number;
+};
+
+export type Damage = {
+  attacker: string;
+  attack: Attack;
+  target: string;
+  weapon?: string;
+  critical: boolean;
+  damageAmounts: Array<DamageAmount>;
 };
 
 export type Entity = {
@@ -54,6 +70,7 @@ export type Entity = {
     contents: Array<string>;
     slots: number;
   };
+  damages?: Array<Damage>;
   damageType?: DamageType;
   damageRoll?: string;
   dead?: true;
@@ -65,6 +82,7 @@ export type Entity = {
     current: number;
   };
   id: string;
+  immunities?: Array<DamageType>;
   inFov?: true;
   intelligence?: number;
   layer100?: true;
@@ -79,6 +97,7 @@ export type Entity = {
   paused?: true; // TODO: is this used anywhere?
   pc?: true;
   position?: { x: number; y: number; z: number };
+  resistances?: Array<DamageType>;
   revealed?: true;
   stairsDown?: true;
   stairsUp?: true;
@@ -88,6 +107,7 @@ export type Entity = {
   tryPickUp?: { pickerId: string };
   tryThrow?: { throwerId: string };
   version: number;
+  vulnerabilities?: Array<DamageType>;
   weaponClass?: WeaponClass;
   weaponSlot?: {
     name: string;

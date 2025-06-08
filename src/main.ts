@@ -22,6 +22,7 @@ import { generateDungeon } from "./pcgn/dungeon";
 
 import { gameWorld } from "./ecs/engine";
 import { spawnPlayer } from "./pcgn/player";
+import { damageSystem } from "./ecs/systems/damage.system";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -361,6 +362,7 @@ function gameLoop() {
       dropSystem();
       movementSystem();
       attackSystem();
+      damageSystem();
       morgueSystem();
       fovSystem();
       renderSystem();
@@ -378,6 +380,7 @@ function gameLoop() {
       aiSystem();
       movementSystem();
       attackSystem();
+      damageSystem();
       fovSystem();
       renderSystem();
 

@@ -80,6 +80,7 @@ export const playerPrefab: Entity = {
     contents: [],
     slots: 1,
   },
+  damages: [],
 };
 
 // NOTE: Actors / Creatures
@@ -106,6 +107,9 @@ export const ratPrefab: Entity = {
   intelligence: 2,
   wisdom: 10,
   charisma: 4,
+  immunities: [],
+  resistances: [],
+  vulnerabilities: [],
   attacks: [
     {
       name: "Bite",
@@ -114,6 +118,7 @@ export const ratPrefab: Entity = {
       attackType: "melee",
       damageRoll: "1d1",
       damageType: DamageType.Piercing,
+      magical: false,
     },
     {
       name: "Claw",
@@ -122,8 +127,10 @@ export const ratPrefab: Entity = {
       attackType: "melee",
       damageRoll: "1d1",
       damageType: DamageType.Slashing,
+      magical: false,
     },
   ],
+  damages: [],
 };
 
 export const skeletonPrefab: Entity = {
@@ -149,6 +156,9 @@ export const skeletonPrefab: Entity = {
   intelligence: 6,
   wisdom: 8,
   charisma: 5,
+  immunities: [DamageType.Poison],
+  resistances: [DamageType.Piercing],
+  vulnerabilities: [DamageType.Bludgeoning],
   weaponSlot: {
     name: "Weapon",
     contents: [],
@@ -159,6 +169,7 @@ export const skeletonPrefab: Entity = {
     contents: [],
     slots: 1,
   },
+  damages: [],
 };
 
 // NOTE: Potions
@@ -220,6 +231,7 @@ export const shortswordPrefab: Entity = {
       damageRoll: "1d6+2",
       damageType: DamageType.Piercing,
       useModifier: true,
+      magical: false,
     },
     {
       name: "Slash",
@@ -229,6 +241,7 @@ export const shortswordPrefab: Entity = {
       damageRoll: "1d6+2",
       damageType: DamageType.Slashing,
       useModifier: true,
+      magical: false,
     },
     {
       name: "Bash",
@@ -238,6 +251,7 @@ export const shortswordPrefab: Entity = {
       damageRoll: "1d4+2",
       damageType: DamageType.Bludgeoning,
       useModifier: true,
+      magical: false,
     },
   ],
 };
