@@ -1,31 +1,31 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, beforeEach } from "vitest";
+import type { Entity, IGameWorld } from "../engine";
 
-import type { Entity } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
 import { createActiveEffectsSystem } from "./activeEffects.system";
 
 describe("activeEffects.system", () => {
-  test("when effect adds health", () => {
-    const gameWorld = setupTestGameWorld();
-
-    const entity: Entity = {
+  let gameWorld: IGameWorld;
+  let entity: Entity;
+  beforeEach(() => {
+    gameWorld = setupTestGameWorld();
+    entity = {
       id: "1",
       name: "Orc",
       version: 1,
       health: { max: 10, current: 5 },
-      activeEffects: [
-        {
-          delta: 5,
-          component: "health",
-        },
-      ],
+      activeEffects: [],
     };
-
     gameWorld.world.add(entity);
+  });
 
-    const system = createActiveEffectsSystem(gameWorld.world);
+  test("when effect adds health", () => {
+    entity.activeEffects?.push({
+      delta: 5,
+      component: "health",
+    });
 
-    system();
+    createActiveEffectsSystem(gameWorld.world)();
 
     const affectedEntity = gameWorld.world.entities[0];
 
@@ -33,56 +33,61 @@ describe("activeEffects.system", () => {
   });
 
   test("when effect reduces health", () => {
-    const gameWorld = setupTestGameWorld();
+    entity.activeEffects?.push({
+      delta: -3,
+      component: "health",
+    });
 
-    const entity: Entity = {
-      id: "1",
-      name: "Orc",
-      version: 1,
-      health: { max: 10, current: 5 },
-      activeEffects: [
-        {
-          delta: -3,
-          component: "health",
-        },
-      ],
-    };
-
-    gameWorld.world.add(entity);
-
-    const system = createActiveEffectsSystem(gameWorld.world);
-
-    system();
+    createActiveEffectsSystem(gameWorld.world)();
 
     const affectedEntity = gameWorld.world.entities[0];
 
     expect(affectedEntity.health?.current).toBe(2);
   });
 
-  test("when affect adds more than max", () => {
-    const gameWorld = setupTestGameWorld();
+  test("when effect adds more than max", () => {
+    entity.activeEffects?.push({
+      delta: 10,
+      component: "health",
+    });
 
-    const entity: Entity = {
-      id: "1",
-      name: "Orc",
-      version: 1,
-      health: { max: 10, current: 5 },
-      activeEffects: [
-        {
-          delta: 10,
-          component: "health",
-        },
-      ],
-    };
-
-    gameWorld.world.add(entity);
-
-    const system = createActiveEffectsSystem(gameWorld.world);
-
-    system();
+    createActiveEffectsSystem(gameWorld.world)();
 
     const affectedEntity = gameWorld.world.entities[0];
 
     expect(affectedEntity.health?.current).toBe(10);
+    expect(affectedEntity.activeEffects?.length).toBe(0);
+  });
+
+  test("when effect reduces below 0", () => {
+    entity.activeEffects?.push({
+      delta: -10,
+      component: "health",
+    });
+
+    createActiveEffectsSystem(gameWorld.world)();
+
+    const affectedEntity = gameWorld.world.entities[0];
+
+    expect(affectedEntity.health?.current).toBe(-5);
+    expect(affectedEntity.activeEffects?.length).toBe(0);
+  });
+
+  test("when there are multiple effects", () => {
+    entity.activeEffects?.push({
+      delta: -10,
+      component: "health",
+    });
+    entity.activeEffects?.push({
+      delta: 10,
+      component: "health",
+    });
+
+    createActiveEffectsSystem(gameWorld.world)();
+
+    const affectedEntity = gameWorld.world.entities[0];
+
+    expect(affectedEntity.health?.current).toBe(5);
+    expect(affectedEntity.activeEffects?.length).toBe(0);
   });
 });
