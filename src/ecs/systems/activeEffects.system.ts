@@ -10,7 +10,11 @@ export const createActiveEffectsSystem = (world: IGameWorld["world"]) => {
         const component = entity[effect.component];
 
         if (component) {
-          component.current += effect.delta;
+          if (component.current + effect.delta > component.max) {
+            component.current = component.max;
+          } else {
+            component.current += effect.delta;
+          }
         }
       });
 
