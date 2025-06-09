@@ -1,4 +1,4 @@
-import { vitest, describe, test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 
 import type { Entity } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
