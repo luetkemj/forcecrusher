@@ -1,6 +1,6 @@
 import { IGameWorld, Entity } from "../engine";
 import { distance } from "../../lib/grid";
-import { getState, GameState } from "../../main";
+import { getState, GameState } from "../gameState";
 import { View, UpdateRow } from "../../lib/canvas";
 import { getWielding, getWearing } from "../../lib/utils";
 import { getArmorClass } from "../../lib/combat";

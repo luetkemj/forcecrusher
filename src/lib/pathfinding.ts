@@ -1,6 +1,6 @@
 import PF from "pathfinding";
 import { type Pos } from "./grid";
-import { getState } from "../main";
+import { getState } from "../ecs/gameState";
 import { Entity } from "../ecs/engine";
 
 export const aStar = (start: Pos, goal: Pos, entities: Array<Entity>) => {

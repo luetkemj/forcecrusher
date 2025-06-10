@@ -2,7 +2,7 @@ import "./style.css";
 import { mean } from "lodash";
 
 import { pxToPosId, setupCanvas, View } from "./lib/canvas";
-import { Pos, toPosId } from "./lib/grid";
+import { toPosId } from "./lib/grid";
 import { logFrozenEntity } from "./lib/utils";
 
 import { createActiveEffectsSystem } from "./ecs/systems/activeEffects.system";
@@ -17,59 +17,19 @@ import { createMovementSystem } from "./ecs/systems/movement.system";
 import { createPickUpSystem } from "./ecs/systems/pickUp.system";
 import { createRenderSystem } from "./ecs/systems/render.system";
 import { createThrowSystem } from "./ecs/systems/throw.system";
-import {
-  createUserInputSystem,
-} from "./ecs/systems/userInput.system";
+import { createUserInputSystem } from "./ecs/systems/userInput.system";
 
 import { generateDungeon } from "./pcgn/dungeon";
 
 import { gameWorld } from "./ecs/engine";
 import { spawnPlayer } from "./pcgn/player";
-
-export const enum Turn {
-  PLAYER = "PLAYER",
-  WORLD = "WORLD",
-}
-
-export const enum GameState {
-  GAME = "GAME",
-  GAME_OVER = "GAME_OVER",
-  INVENTORY = "INVENTORY",
-  INSPECT = "INSPECT",
-  TARGET = "TARGET",
-}
-
-export type State = {
-  cursor: [Pos, Pos];
-  fps: number;
-  gameState: GameState;
-  log: Array<string>;
-  inventoryActiveIndex: number;
-  senses: {
-    feel: string;
-    see: string;
-    hear: string;
-    smell: string;
-    taste: string;
-  };
-  turn: Turn;
-  userInput: KeyboardEvent | null;
-  views: {
-    fps?: View;
-    map?: View;
-    log?: View;
-    senses?: View;
-    legend?: View;
-    inventory?: View;
-    menuUnderlay?: View;
-    controls?: View;
-    cursor?: View;
-    hud?: View;
-  };
-  zoneId: string;
-  playerId: string;
-  version: number;
-};
+import {
+  type State,
+  GameState,
+  Turn,
+  getState,
+  setState,
+} from "./ecs/gameState";
 
 // for debugging
 declare global {
@@ -83,37 +43,7 @@ declare global {
 window.skulltooth = window.skulltooth || {};
 window.skulltooth.debug = false;
 
-const state: State = {
-  cursor: [
-    { x: 0, y: 0, z: 0 },
-    { x: 0, y: 0, z: 0 },
-  ],
-  fps: 0,
-  gameState: GameState.GAME,
-  log: ["hello world", "your adventure begins anew!"],
-  inventoryActiveIndex: 0,
-  senses: {
-    feel: "You feel nothing.",
-    see: "You see nothing.",
-    hear: "You hear nothing.",
-    smell: "You smell nothing.",
-    taste: "You taste nothing.",
-  },
-  turn: Turn.PLAYER,
-  userInput: null,
-  views: {},
-  zoneId: "0,0,0",
-  playerId: "",
-  version: 1,
-};
-
-window.skulltooth.state = state;
-
-export const setState = (callback: Function): void => {
-  callback(state);
-};
-
-export const getState = (): State => state;
+window.skulltooth.state = getState();
 
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld.world);
 const aiSystem = createAiSystem(gameWorld.world);
@@ -322,8 +252,8 @@ const init = async () => {
 
   // log entities on mouseclick at position
   document.addEventListener("mousedown", (ev: any) => {
-    const x = ev.x - state.views.map!.layers[0].x;
-    const y = ev.layerY - state.views.map!.layers[0].y;
+    const x = ev.x - getState().views.map!.layers[0].x;
+    const y = ev.layerY - getState().views.map!.layers[0].y;
     const z = 0;
 
     const posId = pxToPosId(x, y, z);

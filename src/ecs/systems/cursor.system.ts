@@ -1,5 +1,5 @@
 import { IGameWorld } from "../engine";
-import { getState, setState, State } from "../../main";
+import { getState, setState, State } from "../gameState";
 import { toPosId } from "../../lib/grid";
 
 export const createCursorSystem = (world: IGameWorld["world"]) => {

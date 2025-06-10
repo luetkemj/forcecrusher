@@ -1,6 +1,6 @@
 import { World } from "miniplex";
 import { DamageType, WeaponClass, WeaponType } from "./enums";
-import { type State, getState, setState } from "../main";
+import { type State, getState, setState } from "./gameState";
 import { generateDungeon } from "../pcgn/dungeon";
 
 export interface IGameWorld {
@@ -135,6 +135,13 @@ export enum ChangeZoneDirections {
 }
 
 class GameWorld {
+  constructor() {
+    this.saveGameData = this.saveGameData.bind(this);
+    this.loadGameData = this.loadGameData.bind(this);
+    this.saveZone = this.saveZone.bind(this);
+    this.changeZone = this.changeZone.bind(this);
+    // bind other methods if needed
+  }
   private _world = new World<Entity>();
 
   private _entityById = new Map<string, Entity>();

@@ -1,5 +1,5 @@
 import { IGameWorld, ChangeZoneDirections } from "../engine";
-import { GameState, State, Turn, getState, setState } from "../../main";
+import { GameState, State, Turn, getState, setState } from "../gameState";
 import { toPos, toPosId, isAtSamePosition } from "../../lib/grid";
 import { isUndefined, remove } from "lodash";
 import {

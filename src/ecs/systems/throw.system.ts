@@ -1,5 +1,5 @@
 import { remove, tail } from "lodash";
-import { getState } from "../../main";
+import { getState } from "../gameState";
 import { addLog, logFrozenEntity, isSamePosition } from "../../lib/utils";
 import { IGameWorld, Entity } from "../engine";
 import { line, Pos } from "../../lib/grid";

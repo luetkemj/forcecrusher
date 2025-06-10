@@ -1,5 +1,5 @@
 import { Entity, gameWorld } from "../ecs/engine";
-import { getState, setState, State } from "../main";
+import { getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos } from "./grid";
 import { pull } from "lodash";

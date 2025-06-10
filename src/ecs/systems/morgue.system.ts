@@ -1,5 +1,5 @@
 import { IGameWorld } from "../engine";
-import { setState, State, GameState } from "../../main";
+import { setState, State, GameState } from "../gameState";
 import { addLog } from "../../lib/utils";
 
 export const createMorgueSystem = (world: IGameWorld["world"]) => {
