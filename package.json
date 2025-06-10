@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "npm run quality && vite build",
     "deploy": "npm run build && gh-pages -d dist",
     "dev": "vite",
     "postbuild": "node ./scripts/postbuild.js",
     "preview": "vite preview",
+    "quality": "tsc && vitest run --reporter verbose --coverage",
     "test": "vitest --reporter verbose --coverage"
   },
   "devDependencies": {
