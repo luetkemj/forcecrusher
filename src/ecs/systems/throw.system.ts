@@ -73,9 +73,7 @@ export const createThrowSystem = (
         // put entity to be thrown on at cursor location
         const position = restingPosition;
         if (position) {
-          world.addComponent(thrownEntity, "position", {
-            ...position,
-          });
+          thrownEntity.position = { ...position };
         }
 
         if (hitEntity?.health) {
@@ -84,7 +82,8 @@ export const createThrowSystem = (
       } else {
         // put entity to be thrown on at cursor location
         const position = getState().cursor[1];
-        world.addComponent(thrownEntity, "position", { ...position });
+        thrownEntity.position = { ...position };
+        logFrozenEntity(thrownEntity);
 
         addLog(`${throwerEntity.name} throws ${thrownEntity.name}`);
       }
