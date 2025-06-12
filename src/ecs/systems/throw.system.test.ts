@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, vi, afterEach } from "vitest";
+import { describe, test, expect, beforeEach, afterEach } from "vitest";
 import type { Entity, IGameWorld } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
 import { createThrowSystem } from "./throw.system";
