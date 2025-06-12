@@ -44,6 +44,8 @@ This is aspirational only. Expect anything and everything in this document to be
 
 ---
 
+- [ ] dead enemies drop gear
+- [ ] weildable and wearable components so you can only use certain things BUT allow crafting out of materials to build the rat armor or skeleton armor.
 - [ ] unarmed attacks (create bites and claws, punching)
 - [ ] more weapons
 - [ ] more armor
@@ -69,6 +71,9 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] Game cheats/debugging menu to toggle various modes
 - [ ] save to indexDB (local storage collapses after 6 levels)
 - [ ] inventory select armor/weapons so they can be removed
+
+## Crafting notes
+Can only craft at a workbench, workbenches are rare enough that you have to be careful what you save - you can't save it all for new gear or potions.
 
 
 ## Inventory notes

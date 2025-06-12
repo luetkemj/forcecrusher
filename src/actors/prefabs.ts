@@ -42,6 +42,19 @@ const being: Entity = {
   charisma: 10,
 };
 
+const baseWeapon: Entity = {
+  ...base,
+  ...renderable,
+  appearance: {
+    char: chars.weapon,
+    tint: colors.weapon,
+    tileSet: "ascii",
+  },
+  legendable: true,
+  layer200: true,
+  pickUp: true,
+};
+
 // NOTE: Player
 export const playerPrefab: Entity = {
   ...renderable,
@@ -208,19 +221,10 @@ export const rockPrefab: Entity = {
 
 // NOTE: Weapons
 export const shortswordPrefab: Entity = {
-  ...base,
-  ...renderable,
-  appearance: {
-    char: chars.weapon,
-    tint: colors.weapon,
-    tileSet: "ascii",
-  },
-  legendable: true,
+  ...baseWeapon,
   name: "Shortsword",
   description:
     "An unadorned steel shortsword. It won’t impress, but it gets the job done.",
-  layer200: true,
-  pickUp: true,
   weaponClass: WeaponClass.Martial,
   attacks: [
     {
@@ -250,6 +254,64 @@ export const shortswordPrefab: Entity = {
       attackType: "melee",
       damageRoll: "1d4+2",
       damageType: DamageType.Bludgeoning,
+      useModifier: true,
+      magical: false,
+    },
+  ],
+};
+
+// simple melee weapons
+export const clubPrefab: Entity = {
+  ...baseWeapon,
+  name: "Club",
+  description: "A crude bludgeon, little more than a knotted branch.",
+  weaponClass: WeaponClass.Simple,
+  attacks: [
+    {
+      name: "Smash",
+      verb: "smashes",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d4",
+      damageType: DamageType.Bludgeoning,
+      useModifier: true,
+      magical: false,
+    },
+  ],
+};
+
+export const daggerPrefab: Entity = {
+  ...baseWeapon,
+  name: "Dagger",
+  description: "A rusted dagger with a chipped edge and a dark past.",
+  weaponClass: WeaponClass.Simple,
+  attacks: [
+    {
+      name: "Pummel",
+      verb: "pummels",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d4",
+      damageType: DamageType.Bludgeoning,
+      magical: false,
+    },
+    {
+      name: "Stab",
+      verb: "stabs",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d4",
+      damageType: DamageType.Piercing,
+      useModifier: true,
+      magical: false,
+    },
+    {
+      name: "Slash",
+      verb: "slashes",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d4",
+      damageType: DamageType.Slashing,
       useModifier: true,
       magical: false,
     },

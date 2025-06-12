@@ -9,6 +9,8 @@ import {
   rockPrefab,
   skeletonPrefab,
   shortswordPrefab,
+  clubPrefab,
+  daggerPrefab,
   stairsDownPrefab,
   stairsUpPrefab,
   wallPrefab,
@@ -30,6 +32,8 @@ const prefabs = {
 
   // NOTE: Weapons
   shortsword: shortswordPrefab,
+  club: clubPrefab,
+  dagger: daggerPrefab,
 
   // NOTE: Armor
   leatherArmor: leatherArmor,
