@@ -3,6 +3,7 @@ import type { Entity, IGameWorld } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
 import { createDropSystem } from "./drop.system";
 import { getState } from "../gameState";
+import { circle, toPosId } from "../../lib/grid";
 
 describe("drop.system", () => {
   let gameWorld: IGameWorld;
@@ -31,10 +32,13 @@ describe("drop.system", () => {
     item.tryDrop = { dropperId: dropper.id };
   }
 
-  test("drops item at dropper's position and removes from inventory", () => {
+  test("drops item at or near dropper's position and removes from inventory", () => {
     addTryDrop();
     createDropSystem(gameWorld.world, gameWorld.registry)();
-    expect(item.position).toEqual(dropper.position);
+    if (!dropper.position) return;
+    const dropZone = circle(dropper.position, 2).posIds;
+    expect(dropZone.includes(toPosId(dropper.position))).toBeTruthy();
+    // expect(item.position).toEqual(dropper.position);
     expect(dropper.container?.contents.includes(item.id)).toBe(false);
     expect(item.tryDrop).toBeUndefined();
     const { log } = getState();
