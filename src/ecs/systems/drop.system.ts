@@ -1,5 +1,6 @@
-import { remove } from "lodash";
+import { remove, sample } from "lodash";
 import { addLog, logFrozenEntity } from "../../lib/utils";
+import { circle, toPos, toPosId } from "../../lib/grid";
 import { IGameWorld } from "../engine";
 
 export const createDropSystem = (
@@ -7,6 +8,8 @@ export const createDropSystem = (
   registry: IGameWorld["registry"],
 ) => {
   const dropQuery = world.with("tryDrop");
+  const pickUpQuery = world.with("position", "pickUp");
+  const blockingQuery = world.with("position", "blocking");
 
   return function system() {
     for (const entity of dropQuery) {
@@ -43,7 +46,7 @@ export const createDropSystem = (
         break;
       }
 
-      // put entity to be dropped on ground at dropper's current location
+      // put entity to be dropped on ground next to dropper's current location in an empty spot if possible
       const { position } = dropperEntity;
       if (!position) {
         console.log(
@@ -56,7 +59,24 @@ export const createDropSystem = (
         break;
       }
 
-      world.addComponent(entity, "position", { ...position });
+      // get open locations adjacent to position
+      const possibleLocations = new Set(circle(position, 2).posIds);
+      for (const pickUpEntity of pickUpQuery) {
+        possibleLocations.delete(toPosId(pickUpEntity.position));
+      }
+      for (const blockingEntity of blockingQuery) {
+        possibleLocations.delete(toPosId(blockingEntity.position));
+      }
+
+      // find an open location and drop item at first found
+      if (possibleLocations.size) {
+        const posId = sample([...possibleLocations]);
+        if (!posId) return;
+        world.addComponent(entity, "position", { ...toPos(posId) });
+      } else {
+        // if no open loc, just drop at current location
+        world.addComponent(entity, "position", { ...position });
+      }
 
       // remove item from dropper's inventory
       remove(dropperEntity.container.contents, (id) => entityId === id);
