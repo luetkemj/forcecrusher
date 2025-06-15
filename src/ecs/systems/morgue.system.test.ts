@@ -7,6 +7,7 @@ import { getState, GameState } from "../gameState";
 describe("morgue.system", () => {
   let gameWorld: IGameWorld;
   let entity: Entity;
+  let item: Entity;
   beforeEach(() => {
     gameWorld = setupTestGameWorld();
     entity = {
@@ -15,8 +16,16 @@ describe("morgue.system", () => {
       version: 1,
       health: { max: 10, current: 1 },
       appearance: { char: "S", tint: 0xffffff, tileSet: "default" },
+      container: { name: "Bag", description: "", contents: [], slots: 5 },
     };
+    item = {
+      id: "item",
+      name: "Rock",
+      version: 1,
+    };
+    entity.container?.contents.push(item.id);
     gameWorld.world.add(entity);
+    gameWorld.world.add(item);
   });
 
   test("marks entity as dead and changes components when health <= 0", () => {
@@ -29,6 +38,12 @@ describe("morgue.system", () => {
     expect(entity.pickUp).toBe(true);
     const { log } = getState();
     expect(log[log.length - 1]).toBe("Skeleton has died!");
+  });
+
+  test("drops inventory on death", () => {
+    entity.health && (entity.health.current = 0);
+    createMorgueSystem(gameWorld.world, gameWorld.registry)();
+    expect(item.tryDrop).toBeDefined();
   });
 
   test("sets game over if player dies", () => {

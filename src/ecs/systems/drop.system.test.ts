@@ -38,7 +38,6 @@ describe("drop.system", () => {
     if (!dropper.position) return;
     const dropZone = circle(dropper.position, 2).posIds;
     expect(dropZone.includes(toPosId(dropper.position))).toBeTruthy();
-    // expect(item.position).toEqual(dropper.position);
     expect(dropper.container?.contents.includes(item.id)).toBe(false);
     expect(item.tryDrop).toBeUndefined();
     const { log } = getState();
