@@ -1,6 +1,6 @@
 import { IGameWorld } from "../engine";
 import { setState, State, GameState } from "../gameState";
-import { addLog } from "../../lib/utils";
+import { addLog, unWield, unWear } from "../../lib/utils";
 
 export const createMorgueSystem = (
   world: IGameWorld["world"],
@@ -22,6 +22,9 @@ export const createMorgueSystem = (
         world.addComponent(entity, "dead", true);
         world.addComponent(entity, "pickUp", true);
         world.addComponent(entity, "layer200", true);
+
+        unWield(entity);
+        unWear(entity);
 
         // drop inventory
         if (entity.container?.contents) {
