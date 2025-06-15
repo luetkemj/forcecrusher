@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "analyze-bundle": "npx vite-bundle-analyzer",
     "build": "npm run quality && vite build",
     "deploy": "npm run build && gh-pages -d dist",
     "dev": "vite",
@@ -22,6 +23,7 @@
     "prettier": "3.2.5",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vite-bundle-analyzer": "0.22.3",
     "vitest": "1.5.0"
   },
   "dependencies": {
