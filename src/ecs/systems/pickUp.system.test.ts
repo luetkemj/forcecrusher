@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeEach } from "vitest";
+import { describe, test, expect, afterEach, beforeEach } from "vitest";
 import type { Entity, IGameWorld } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
 import { createPickUpSystem } from "./pickUp.system";
-import { getState } from "../gameState";
+import { getState, setState, State } from "../gameState";
 
 describe("pickUp.system", () => {
   let gameWorld: IGameWorld;
@@ -26,6 +26,12 @@ describe("pickUp.system", () => {
     };
     gameWorld.world.add(player);
     gameWorld.world.add(item);
+  });
+
+  afterEach(() => {
+    setState((state: State) => {
+      state.log = [];
+    });
   });
 
   function addTryPickUp(pickerId = player.id) {

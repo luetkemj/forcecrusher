@@ -8,8 +8,36 @@ export const logFrozenEntity = (entity: Entity) => {
   console.log(JSON.parse(JSON.stringify(entity)));
 };
 
-export const addLog = (message: string) => {
-  setState((state: State) => state.log.push(message));
+export const addLog = (newLog: string) => {
+  const logs = getState().log;
+
+  if (logs.length === 0) {
+    setState((state: State) => state.log.push(newLog));
+    return;
+  }
+
+  const lastLog = logs[logs.length - 1];
+
+  // Check if last log already ends with a count
+  const countMatch = lastLog.match(/^(.*)\s\(x(\d+)\)$/);
+  if (countMatch) {
+    const [_, baseLog, countStr] = countMatch;
+    if (baseLog === newLog) {
+      const newCount = parseInt(countStr) + 1;
+      setState(
+        (state: State) =>
+          (state.log[logs.length - 1] = `${baseLog} (x${newCount})`),
+      );
+      return;
+    }
+  }
+
+  // No count yet, but new log matches last log
+  if (lastLog === newLog) {
+    setState((state: State) => (state.log[logs.length - 1] = `${newLog} (x2)`));
+  } else {
+    setState((state: State) => state.log.push(newLog));
+  }
 };
 
 export const outOfBounds = (pos: Pos) => {
