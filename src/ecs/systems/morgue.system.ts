@@ -2,7 +2,10 @@ import { IGameWorld } from "../engine";
 import { setState, State, GameState } from "../gameState";
 import { addLog } from "../../lib/utils";
 
-export const createMorgueSystem = (world: IGameWorld["world"]) => {
+export const createMorgueSystem = (
+  world: IGameWorld["world"],
+  registry: IGameWorld["registry"],
+) => {
   const livingQuery = world.with("health").without("dead");
 
   return function system() {
@@ -19,6 +22,16 @@ export const createMorgueSystem = (world: IGameWorld["world"]) => {
         world.addComponent(entity, "dead", true);
         world.addComponent(entity, "pickUp", true);
         world.addComponent(entity, "layer200", true);
+
+        // drop inventory
+        if (entity.container?.contents) {
+          for (const eId of entity.container.contents) {
+            const item = registry.get(eId);
+            if (item) {
+              world.addComponent(item, "tryDrop", { dropperId: entity.id });
+            }
+          }
+        }
 
         addLog(`${entity.name} has died!`);
 

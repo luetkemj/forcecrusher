@@ -52,7 +52,7 @@ const cursorSystem = createCursorSystem(gameWorld.world);
 const damageSystem = createDamageSystem(gameWorld.world, gameWorld.registry);
 const dropSystem = createDropSystem(gameWorld.world, gameWorld.registry);
 const fovSystem = createFovSystem(gameWorld.world);
-const morgueSystem = createMorgueSystem(gameWorld.world);
+const morgueSystem = createMorgueSystem(gameWorld.world, gameWorld.registry);
 const movementSystem = createMovementSystem(gameWorld.world);
 const pickUpSystem = createPickUpSystem(gameWorld.world, gameWorld.registry);
 const renderSystem = createRenderSystem(gameWorld.world, gameWorld.registry);
@@ -311,11 +311,11 @@ function gameLoop() {
       activeEffectsSystem();
       userInputSystem();
       pickUpSystem();
-      dropSystem();
       movementSystem();
       attackSystem();
       damageSystem();
       morgueSystem();
+      dropSystem();
       fovSystem();
       renderSystem();
 
@@ -333,6 +333,7 @@ function gameLoop() {
       movementSystem();
       attackSystem();
       damageSystem();
+      dropSystem();
       fovSystem();
       renderSystem();
 

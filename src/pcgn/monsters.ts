@@ -1,3 +1,4 @@
+import { times } from "lodash";
 import { wield, wear } from "../lib/utils";
 import { calcAverageDamage } from "../lib/combat";
 import { spawn } from "../actors";
@@ -14,6 +15,12 @@ export const spawnSkeleton = (position: Pos) => {
   const skeleton = spawn("skeleton", { position });
   const weapon = spawn("shortsword");
   const armor = spawn("leatherArmor");
+  times(1, () =>
+    spawn("healthPotion", {
+      position,
+      tryPickUp: { pickerId: skeleton.id },
+    }),
+  );
 
   wield(skeleton, weapon);
   wear(skeleton, armor);
