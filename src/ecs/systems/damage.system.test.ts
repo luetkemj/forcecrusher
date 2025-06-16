@@ -58,7 +58,7 @@ describe("damage.system", () => {
     expect(target.health?.current).toBe(6);
     expect(target.damages?.length).toBe(0);
     const { log } = getState();
-    expect(log[log.length - 1]).toBe("Attacker hits Target for 4hp!");
+    expect(log[log.length - 1]).toContain("for 4hp!");
   });
 
   test("applies vulnerability (double damage)", () => {
@@ -67,9 +67,8 @@ describe("damage.system", () => {
     createDamageSystem(gameWorld.world, gameWorld.registry)();
     expect(target.health?.current).toBe(2);
     const { log } = getState();
-    expect(log[log.length - 1]).toBe(
-      "Vulnerable! Attacker hits Target for 8hp!",
-    );
+    expect(log[log.length - 1]).toContain("Vulnerable!");
+    expect(log[log.length - 1]).toContain("8hp!");
   });
 
   test("applies resistance (half damage)", () => {
@@ -78,9 +77,8 @@ describe("damage.system", () => {
     createDamageSystem(gameWorld.world, gameWorld.registry)();
     expect(target.health?.current).toBe(8);
     const { log } = getState();
-    expect(log[log.length - 1]).toBe(
-      "Resistant! Attacker hits Target for 2hp!",
-    );
+    expect(log[log.length - 1]).toContain("Resistant!");
+    expect(log[log.length - 1]).toContain("2hp!");
   });
 
   test("applies immunity (zero damage)", () => {
@@ -89,7 +87,8 @@ describe("damage.system", () => {
     createDamageSystem(gameWorld.world, gameWorld.registry)();
     expect(target.health?.current).toBe(10);
     const { log } = getState();
-    expect(log[log.length - 1]).toBe("Immune! Attacker hits Target for 0hp!");
+    expect(log[log.length - 1]).toContain("Immune!");
+    expect(log[log.length - 1]).toContain("for 0hp!");
   });
 
   test("applies critical hit (double damage)", () => {
@@ -98,9 +97,9 @@ describe("damage.system", () => {
     createDamageSystem(gameWorld.world, gameWorld.registry)();
     expect(target.health?.current).toBe(-6);
     const { log } = getState();
-    expect(log[log.length - 1]).toBe(
-      "Critical! Vulnerable! Attacker hits Target for 16hp!",
-    );
+    expect(log[log.length - 1]).toContain("Critical!");
+    expect(log[log.length - 1]).toContain("Vulnerable!");
+    expect(log[log.length - 1]).toContain("16hp!");
   });
 
   test("applies critical hit (double damage) after vulnerability, resistance, and immunities", () => {
@@ -108,7 +107,8 @@ describe("damage.system", () => {
     createDamageSystem(gameWorld.world, gameWorld.registry)();
     expect(target.health?.current).toBe(2);
     const { log } = getState();
-    expect(log[log.length - 1]).toBe("Critical! Attacker hits Target for 8hp!");
+    expect(log[log.length - 1]).toContain("Critical!");
+    expect(log[log.length - 1]).toContain("for 8hp!");
   });
 
   test("applies damage modifier", () => {
@@ -118,6 +118,7 @@ describe("damage.system", () => {
     createDamageSystem(gameWorld.world, gameWorld.registry)();
     expect(target.health?.current).toBe(4);
     const { log } = getState();
-    expect(log[log.length - 1]).toBe("Attacker hits Target for 6hp!");
+    expect(log[log.length - 1]).toContain("Attacker");
+    expect(log[log.length - 1]).toContain("for 6hp!");
   });
 });

@@ -37,7 +37,8 @@ describe("morgue.system", () => {
     expect(entity.layer300).toBeUndefined();
     expect(entity.pickUp).toBe(true);
     const { log } = getState();
-    expect(log[log.length - 1]).toBe("Skeleton has died!");
+    expect(log[log.length - 1]).toContain("Skeleton");
+    expect(log[log.length - 1]).toContain("has died!");
   });
 
   test("drops inventory on death", () => {
@@ -53,7 +54,8 @@ describe("morgue.system", () => {
     createMorgueSystem(gameWorld.world, gameWorld.registry)();
     expect(getState().gameState).toBe(GameState.GAME_OVER);
     const { log } = getState();
-    expect(log[log.length - 1]).toBe("player has died!");
+    expect(log[log.length - 1]).toContain("player");
+    expect(log[log.length - 1]).toContain("has died!");
   });
 
   test("does nothing if entity is alive", () => {

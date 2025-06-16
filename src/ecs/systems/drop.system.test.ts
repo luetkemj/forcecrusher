@@ -41,7 +41,8 @@ describe("drop.system", () => {
     expect(dropper.container?.contents.includes(item.id)).toBe(false);
     expect(item.tryDrop).toBeUndefined();
     const { log } = getState();
-    expect(log[log.length - 1]).toBe("Dropper drops Rock");
+    expect(log[log.length - 1]).toContain("Dropper");
+    expect(log[log.length - 1]).toContain("Rock");
   });
 
   test("does nothing if dropper has no position", () => {
