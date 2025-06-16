@@ -1,5 +1,5 @@
 import { isUndefined } from "lodash";
-import { addLog, logFrozenEntity } from "../../lib/utils";
+import { addLog, colorTag, logFrozenEntity } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
 export const createPickUpSystem = (
@@ -64,8 +64,10 @@ export const createPickUpSystem = (
       world.removeComponent(entity, "tryPickUp");
       world.removeComponent(entity, "position");
 
+      const pickerTint = pickerEntity.appearance?.tint || 0x00ff00;
+      const pickedTint = entity.appearance?.tint || 0x00ff00;
       addLog(
-        `${pickerEntity.name} puts ${entity.name} in ${pickerEntity?.container?.name}`,
+        `${colorTag(pickerTint)}${pickerEntity.name}§purple§ puts ${colorTag(pickedTint)}${entity.name}§purple§ in ${pickerEntity?.container?.name}`,
       );
     }
   };

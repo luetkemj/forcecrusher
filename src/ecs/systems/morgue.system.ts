@@ -1,6 +1,6 @@
 import { IGameWorld } from "../engine";
 import { setState, State, GameState } from "../gameState";
-import { addLog, unWield, unWear } from "../../lib/utils";
+import { addLog, unWield, unWear, colorTag } from "../../lib/utils";
 
 export const createMorgueSystem = (
   world: IGameWorld["world"],
@@ -36,7 +36,8 @@ export const createMorgueSystem = (
           }
         }
 
-        addLog(`${entity.name} has died!`);
+        const entityTint = entity.appearance?.tint || 0x00ff00;
+        addLog(`${colorTag(entityTint)}${entity.name}§purple§ has died!`);
 
         if (entity.pc) {
           setState((state: State) => (state.gameState = GameState.GAME_OVER));

@@ -1,5 +1,5 @@
 import { remove, sample } from "lodash";
-import { addLog, logFrozenEntity } from "../../lib/utils";
+import { colorTag, addLog, logFrozenEntity } from "../../lib/utils";
 import { circle, toPos, toPosId } from "../../lib/grid";
 import { IGameWorld } from "../engine";
 
@@ -82,7 +82,9 @@ export const createDropSystem = (
       remove(dropperEntity.container.contents, (id) => entityId === id);
       world.removeComponent(entity, "tryDrop");
 
-      addLog(`${dropperEntity.name} drops ${entity.name}`);
+      const dropperTint = dropperEntity.appearance?.tint || 0x00ff00;
+      const droppedTint = entity.appearance?.tint || 0x00ff00;
+      addLog(`${colorTag(dropperTint)}${dropperEntity.name}§purple§ drops ${colorTag(droppedTint)}${entity.name}`);
     }
   };
 };

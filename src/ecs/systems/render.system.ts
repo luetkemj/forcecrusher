@@ -2,7 +2,7 @@ import { IGameWorld, Entity } from "../engine";
 import { distance } from "../../lib/grid";
 import { getState, GameState } from "../gameState";
 import { View, UpdateRow } from "../../lib/canvas";
-import { getWielding, getWearing } from "../../lib/utils";
+import { colorTag, getWielding, getWearing } from "../../lib/utils";
 import { getArmorClass } from "../../lib/combat";
 
 export const createRenderSystem = (
@@ -23,10 +23,6 @@ export const createRenderSystem = (
     "name",
   );
   const pcQuery = world.with("pc", "position");
-
-  function colorTag(color: number) {
-    return `§#${color.toString(16).padStart(6, "0")}§`;
-  }
 
   return function system() {
     const mapView = getState().views.map;
@@ -377,7 +373,7 @@ export const createRenderSystem = (
         }
 
         if (getState().gameState === GameState.LOG_HISTORY) {
-          controls = "(H/escape)Return to Game (arrows/hjkl)Move cursor";
+          controls = "(H/escape)Return to Game (arrows/jk)Scroll history";
         }
 
         controlsView?.updateRows([[], [{ string: controls }]], true);
@@ -386,6 +382,9 @@ export const createRenderSystem = (
   };
 };
 
+// NOTE:
+// this in now a NOOP
+// TODO: update this to remove colorTags
 const concatRow = (str: string, length: number): string => {
   let newStr = str;
   if (newStr.length > length) {
@@ -395,7 +394,7 @@ const concatRow = (str: string, length: number): string => {
       .trim()
       .concat("...");
   }
-  return newStr;
+  return str;
 };
 
 // create a gradiant across rows

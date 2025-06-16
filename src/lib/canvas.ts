@@ -74,7 +74,7 @@ const getTileTexture = (): Texture => {
 const namedColors: Record<string, number> = {
   red: 0xff0000,
   green: 0x00ff00,
-  purple: 0x6A6FB1,
+  purple: 0x6a6fb1,
   blue: 0x0000ff,
   yellow: 0xffff00,
   cyan: 0x00ffff,

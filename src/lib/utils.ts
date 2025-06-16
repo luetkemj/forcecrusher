@@ -4,6 +4,10 @@ import { calcAverageDamage } from "./combat";
 import { Pos } from "./grid";
 import { pull } from "lodash";
 
+export const colorTag = (color: number) => {
+  return `§#${color.toString(16).padStart(6, "0")}§`;
+};
+
 export const logFrozenEntity = (entity: Entity) => {
   console.log(JSON.parse(JSON.stringify(entity)));
 };

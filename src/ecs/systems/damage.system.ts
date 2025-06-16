@@ -1,4 +1,4 @@
-import { addLog, getWearing } from "../../lib/utils";
+import { addLog, colorTag, getWearing } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 import { DamageType } from "../enums";
 
@@ -99,17 +99,20 @@ export const createDamageSystem = (
         }
 
         // only log if player is in on the attack
+        let infoColorTag = attacker.pc ? '§purple§' : '§red§';
         if (attacker.pc || target.pc) {
-          let log = attacker.pc ? '§purple§' : '§red§'; 
-          log += `${attacker.name} ${attack.verb} ${target.name}`;
+          const attackerTint = attacker.appearance?.tint || 0xff00ff;
+          const targetTint = target.appearance?.tint || 0xff00ff;
+          const weaponTint = weapon?.appearance?.tint || 0xff00ff;
+          let log = `${colorTag(attackerTint)}${attacker.name}${infoColorTag} ${attack.verb} ${colorTag(targetTint)}${target.name}${infoColorTag}`;
           if (weapon) {
-            log += ` with ${weapon.name}`;
+            log += ` with ${colorTag(weaponTint)}${weapon.name}${infoColorTag}`;
           }
           log += ` for ${computedDamage}hp!`;
-          if (vulnerable) log = `Vulnerable! ${log}`;
-          if (resistant) log = `Resistant! ${log}`;
-          if (immune) log = `Immune! ${log}`;
-          if (damage.critical) log = `Critical! ${log}`;
+          if (vulnerable) log = `${infoColorTag}Vulnerable! ${log}`;
+          if (resistant) log = `${infoColorTag}Resistant! ${log}`;
+          if (immune) log = `${infoColorTag}Immune! ${log}`;
+          if (damage.critical) log = `${infoColorTag}Critical! ${log}`;
           addLog(log);
         }
       }
