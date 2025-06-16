@@ -48,7 +48,10 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] unarmed attacks (create bites and claws, punching)
 - [x] view entire log
 - [x] Dedupe and count identical messages
-- [ ] multi color logs
+- [x] multi color logs
+- [x] color coded logs (ale-dsi/brogue-esque)
+  - [x] support writing mutiple colors to a text row
+- [ ] doors from skrimshank
 - [ ] morgue file (game over screen)
 - [ ] money
 - [ ] points(?)
@@ -74,11 +77,12 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] Overworld map with multiple dungeons to explore
 - [ ] Crafting
 - [ ] Ability to shoot things from a ranged weapon
-- [ ] color coded logs (ale-dsi/brogue-esque)
-  - [ ] support writing mutiple colors to a text row
 - [ ] Game cheats/debugging menu to toggle various modes
 - [ ] save to indexDB (local storage collapses after 6 levels)
 - [ ] inventory select armor/weapons so they can be removed
+- [ ] dykstra maps
+- [ ] lightsources from skrimshank
+- [ ] map gen from shank
 
 ## Crafting notes
 Can only craft at a workbench, workbenches are rare enough that you have to be careful what you save - you can't save it all for new gear or potions.
