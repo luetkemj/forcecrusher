@@ -12,6 +12,7 @@ export const enum GameState {
   INVENTORY = "INVENTORY",
   INSPECT = "INSPECT",
   TARGET = "TARGET",
+  LOG_HISTORY = "LOG_HISTORY",
 }
 
 export type State = {
@@ -19,6 +20,7 @@ export type State = {
   fps: number;
   gameState: GameState;
   log: Array<string>;
+  logActiveIndex: number;
   inventoryActiveIndex: number;
   senses: {
     feel: string;
@@ -40,6 +42,7 @@ export type State = {
     controls?: View;
     cursor?: View;
     hud?: View;
+    logHistory?: View;
   };
   zoneId: string;
   playerId: string;
@@ -54,6 +57,7 @@ const state: State = {
   fps: 0,
   gameState: GameState.GAME,
   log: ["hello world", "your adventure begins anew!"],
+  logActiveIndex: 0,
   inventoryActiveIndex: 0,
   senses: {
     feel: "You feel nothing.",

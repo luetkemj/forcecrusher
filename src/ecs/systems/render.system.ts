@@ -133,76 +133,126 @@ export const createRenderSystem = (
       }
     }
 
-    // render inventory
     {
+      // NOTE: MENUS
       const menuUnderlayView = getState().views.menuUnderlay;
-      const inventoryView = getState().views.inventory;
-
-      if (getState().gameState === GameState.INVENTORY) {
-        // actually render the inventory
-        // get player entity
-        const [player] = pcQuery;
-        if (!player) return;
-
-        // const rows: Array<Array<UpdateRow>> = [];
-        const playerInventory = player.container?.contents || [];
-        const itemsInInventory = playerInventory.map((id) => registry.get(id));
-        const activeIndex = getState().inventoryActiveIndex;
-
-        const wieldingEId = player.weaponSlot?.contents[0] || "";
-        const wieldedEntity = registry.get(wieldingEId);
-        const armor = getWearing(player);
-
-        const rows = [
-          [{}, { string: "Inventory" }],
-          [],
-          [
-            {},
-            {
-              string: `${player.container?.name} [${player.container?.contents.length}/${player.container?.slots}]`,
-            },
-          ],
-          ...itemsInInventory.map((item, index) => [
-            {},
-            {
-              string: `${activeIndex === index ? "*" : " "} ${item?.appearance?.char} ${item?.name} ${item?.description}`,
-            },
-          ]),
-          [],
-          [
-            {},
-            {
-              string: `Wielding [${player.weaponSlot?.contents.length}/${player.weaponSlot?.slots}]`,
-            },
-          ],
-          [
-            {},
-            {
-              string: `  ${wieldedEntity?.appearance?.char} ${wieldedEntity?.name} ${wieldedEntity?.description}`,
-            },
-          ],
-          [],
-          [
-            {},
-            {
-              string: `Wearing [${player.armorSlot?.contents.length}/${player.armorSlot?.slots}]`,
-            },
-          ],
-          [
-            {},
-            {
-              string: `  ${armor && armor?.appearance?.char} ${armor && armor?.name} ${armor && armor?.description}`,
-            },
-          ],
-        ];
-
+      if (
+        [GameState.LOG_HISTORY, GameState.INVENTORY].includes(
+          getState().gameState,
+        )
+      ) {
         menuUnderlayView?.show();
-        inventoryView?.clearView();
-        inventoryView?.updateRows(rows);
-        inventoryView?.show();
       } else {
         menuUnderlayView?.hide();
-        inventoryView?.hide();
+      }
+
+      // render history
+      {
+        const historyView = getState().views.logHistory;
+        
+        const sliceStart = getState().logActiveIndex;
+        const sliceEnd = sliceStart + 39;
+
+        const getStartRow = () => {
+          if (sliceStart === 0) return [{ string: '---'}]
+          return [{string: '...'}]
+        }
+        const getEndRow = () => {
+          if (sliceEnd === getState().log.length) return [{ string: '---'}]
+          return [{string: '...'}]
+        }
+
+
+        if (getState().gameState === GameState.LOG_HISTORY) {
+          const rows = [
+            [{ string: "History" }],
+            [],
+            getStartRow(),
+            ...getState()
+              .log.slice(sliceStart, sliceEnd)
+              .map((entry) => [{ string: entry }]),
+            getEndRow(),
+            [],
+          ];
+
+          historyView?.clearView();
+          historyView?.updateRows(rows);
+          historyView?.show();
+        } else {
+          historyView?.hide();
+        }
+      }
+
+      // render inventory
+      {
+        const inventoryView = getState().views.inventory;
+
+        if (getState().gameState === GameState.INVENTORY) {
+          // actually render the inventory
+          // get player entity
+          const [player] = pcQuery;
+          if (!player) return;
+
+          // const rows: Array<Array<UpdateRow>> = [];
+          const playerInventory = player.container?.contents || [];
+          const itemsInInventory = playerInventory.map((id) =>
+            registry.get(id),
+          );
+          const activeIndex = getState().inventoryActiveIndex;
+
+          const wieldingEId = player.weaponSlot?.contents[0] || "";
+          const wieldedEntity = registry.get(wieldingEId);
+          const armor = getWearing(player);
+
+          const rows = [
+            [{}, { string: "Inventory" }],
+            [],
+            [
+              {},
+              {
+                string: `${player.container?.name} [${player.container?.contents.length}/${player.container?.slots}]`,
+              },
+            ],
+            ...itemsInInventory.map((item, index) => [
+              {},
+              {
+                string: `${activeIndex === index ? "*" : " "} ${item?.appearance?.char} ${item?.name} ${item?.description}`,
+              },
+            ]),
+            [],
+            [
+              {},
+              {
+                string: `Wielding [${player.weaponSlot?.contents.length}/${player.weaponSlot?.slots}]`,
+              },
+            ],
+            [
+              {},
+              {
+                string: `  ${wieldedEntity?.appearance?.char} ${wieldedEntity?.name} ${wieldedEntity?.description}`,
+              },
+            ],
+            [],
+            [
+              {},
+              {
+                string: `Wearing [${player.armorSlot?.contents.length}/${player.armorSlot?.slots}]`,
+              },
+            ],
+            [
+              {},
+              {
+                string: `  ${armor && armor?.appearance?.char} ${armor && armor?.name} ${armor && armor?.description}`,
+              },
+            ],
+          ];
+
+          inventoryView?.clearView();
+          inventoryView?.updateRows(rows);
+          inventoryView?.show();
+        } else {
+          inventoryView?.hide();
+        }
       }
     }
 
@@ -303,7 +353,7 @@ export const createRenderSystem = (
         let controls = "";
 
         if (getState().gameState === GameState.GAME) {
-          controls = "(arrows/hjkl)Move (i)Inventory (L)Look";
+          controls = "(arrows/hjkl)Move (g)Get (H)History (i)Inventory (L)Look";
         }
 
         if (getState().gameState === GameState.INSPECT) {
@@ -318,6 +368,10 @@ export const createRenderSystem = (
         if (getState().gameState === GameState.INVENTORY) {
           controls =
             "(i/escape)Return to Game (c)Consume (d)Drop (t)Throw (W)Wear (w)Wield (r)Remove";
+        }
+
+        if (getState().gameState === GameState.LOG_HISTORY) {
+          controls = "(H/escape)Return to Game (arrows/hjkl)Move cursor";
         }
 
         controlsView?.updateRows([[], [{ string: controls }]]);

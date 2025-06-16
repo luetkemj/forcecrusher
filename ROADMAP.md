@@ -46,8 +46,13 @@ This is aspirational only. Expect anything and everything in this document to be
 
 - [x] dead enemies drop gear
 - [x] unarmed attacks (create bites and claws, punching)
-- [ ] view entire log
+- [x] view entire log
 - [x] Dedupe and count identical messages
+- [ ] multi color logs
+- [ ] morgue file (game over screen)
+- [ ] money
+- [ ] points(?)
+- [ ] high scores list
 - [ ] more descriptive attacks (You smash the rat with the butt of your dagger)
 - [ ] weildable and wearable components so you can only use certain things BUT allow crafting out of materials to build the rat armor or skeleton armor.
 - [ ] more weapons

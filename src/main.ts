@@ -211,6 +211,18 @@ const init = async () => {
     visible: false,
   });
 
+  const logHistoryView = new View({
+    width: 148,
+    height: 44,
+    x: 26,
+    y: 0,
+    layers: 1,
+    tileSets: ["text"],
+    tints: [0xffffff],
+    alphas: [1],
+    visible: false,
+  });
+
   setState((state: State) => {
     state.views.fps = fpsView;
     state.views.map = mapView;
@@ -221,6 +233,7 @@ const init = async () => {
     state.views.menuUnderlay = menuUnderlayView;
     state.views.controls = controlsView;
     state.views.hud = hudView;
+    state.views.logHistory = logHistoryView;
   });
 
   // create world
@@ -301,6 +314,13 @@ function gameLoop() {
       activeEffectsSystem();
       dropSystem();
       fovSystem();
+      renderSystem();
+    }
+  }
+
+  if (getState().gameState === GameState.LOG_HISTORY) {
+    if (getState().userInput && getState().turn === Turn.PLAYER) {
+      userInputSystem();
       renderSystem();
     }
   }

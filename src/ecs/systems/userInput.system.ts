@@ -93,6 +93,15 @@ export const createUserInputSystem = (
         );
       }
 
+      if (key === "H") {
+        setState((state: State) => (state.gameState = GameState.LOG_HISTORY));
+        let index = getState().log.length - 39;
+
+        if (index <= 0) index = 0;
+
+        setState((state: State) => (state.logActiveIndex = index));
+      }
+
       if (moveKeys.includes(key)) {
         for (const entity of pcQuery) {
           if (entity?.position) {
@@ -211,6 +220,27 @@ export const createUserInputSystem = (
             });
           }
         }
+      }
+    }
+
+    // NOTE: History
+    if (gameState === GameState.LOG_HISTORY) {
+      if (key === "H" || key === "Escape") {
+        setState((state: State) => (state.gameState = GameState.GAME));
+      }
+
+      if (key === "j" || key === "ArrowDown") {
+        const { logActiveIndex, log } = getState();
+        const newLogActiveIndex =
+          logActiveIndex === log.length - 39 ? log.length - 39 : logActiveIndex + 1;
+        setState((state: State) => (state.logActiveIndex = newLogActiveIndex));
+      }
+
+      if (key === "k" || key === "ArrowUp") {
+        const { logActiveIndex } = getState();
+        const newLogActiveIndex =
+          logActiveIndex === 0 ? 0 : logActiveIndex - 1;
+        setState((state: State) => (state.logActiveIndex = newLogActiveIndex));
       }
     }
 
