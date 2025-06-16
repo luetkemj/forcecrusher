@@ -68,26 +68,11 @@ const userInputSystem = createUserInputSystem(
 const init = async () => {
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);
 
-  new View({
-    width: 12,
-    height: 2,
-    x: 0,
-    y: 0,
-    layers: 2,
-    tileSets: ["tile", "text"],
-    tints: [0xffffff, 0xff0077],
-    alphas: [1, 1],
-    visible: true,
-  }).updateRows([
-    [{}, { string: "skulltooth 2" }],
-    [{ tint: 0xff0077 }, { string: "forcecrusher", tint: 0xffffff }],
-  ]);
-
   const legendView = new View({
     width: 25,
-    height: 42,
+    height: 44,
     x: 0,
-    y: 2,
+    y: 0,
     layers: 1,
     tileSets: ["text"],
     tints: [0xff0077],
@@ -142,7 +127,7 @@ const init = async () => {
     y: 44,
     layers: 1,
     tileSets: ["text"],
-    tints: [0xdddddd],
+    tints: [0x333333],
     alphas: [1],
     visible: true,
   }).updateRows([[{ string: "FPS: calc..." }]]);
@@ -154,7 +139,7 @@ const init = async () => {
     y: 45,
     layers: 1,
     tileSets: ["text"],
-    tints: [0xffffff],
+    tints: [0x333333],
     alphas: [1],
     visible: true,
   }).updateRows([[{ string: "TAG: GITHASH" }]]);
@@ -179,7 +164,7 @@ const init = async () => {
     y: 44,
     layers: 1,
     tileSets: ["text"],
-    tints: [0xeeeeee],
+    tints: [0x999999],
     alphas: [1],
     visible: true,
   });

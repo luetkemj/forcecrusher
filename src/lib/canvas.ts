@@ -71,6 +71,60 @@ const getTileTexture = (): Texture => {
   return textures.tile;
 };
 
+const namedColors: Record<string, number> = {
+  red: 0xff0000,
+  green: 0x00ff00,
+  purple: 0x6A6FB1,
+  blue: 0x0000ff,
+  yellow: 0xffff00,
+  cyan: 0x00ffff,
+  magenta: 0xff00ff,
+  white: 0xffffff,
+  black: 0x000000,
+  gray: 0x888888,
+};
+
+const parseTaggedColors = (str: string, defaultTint: number = 0xffffff) => {
+  const chars: string[] = [];
+  const tints: number[] = [];
+
+  let currentTint = defaultTint;
+
+  const tagRegex = /§(#[0-9a-fA-F]{6}|[a-zA-Z]+|reset)§/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = tagRegex.exec(str))) {
+    const tagStart = match.index;
+    const tag = match[1];
+
+    // Push characters before tag
+    for (let i = lastIndex; i < tagStart; i++) {
+      chars.push(str[i]);
+      tints.push(currentTint);
+    }
+
+    // Update tint
+    if (tag === "reset") {
+      currentTint = defaultTint;
+    } else if (tag.startsWith("#")) {
+      currentTint = parseInt(tag.slice(1), 16);
+    } else if (namedColors[tag.toLowerCase()]) {
+      currentTint = namedColors[tag.toLowerCase()];
+    }
+
+    lastIndex = tagRegex.lastIndex;
+  }
+
+  // Push remaining characters
+  for (let i = lastIndex; i < str.length; i++) {
+    chars.push(str[i]);
+    tints.push(currentTint);
+  }
+
+  return { chars, tints };
+};
+
 interface ViewOptions {
   width: number;
   height: number;
@@ -118,6 +172,9 @@ export interface UpdateRow {
   tileSet?: string;
   tint?: number;
   alpha?: number;
+  colors?: Array<number>;
+  alphas?: Array<number>;
+  parseTags?: boolean;
 }
 
 type Layer = {
@@ -266,19 +323,19 @@ export class View {
     return this;
   };
 
-  updateRows = (opts: Array<Array<UpdateRow>>) => {
+  updateRows = (opts: Array<Array<UpdateRow>>, parseTags = false) => {
     opts.forEach((rows, rowIndex) => {
       rows.forEach((rowLayer, layerIndex) => {
         // clear row before writing to it
         this.clearRow(layerIndex, rowIndex);
-        this.updateRow({ ...rowLayer, layer: layerIndex, y: rowIndex });
+        this.updateRow({ ...rowLayer, layer: layerIndex, y: rowIndex, parseTags });
       });
     });
 
     return this;
   };
 
-  updateRow = (opts: UpdateRow) => {
+  updateRowBg = (opts: UpdateRow) => {
     const { string = "", layer = 0, x, y, tileSet, tint, alpha } = opts;
     [...string].forEach((char, index) =>
       this.updateSprite({
@@ -304,6 +361,48 @@ export class View {
           alpha: alpha || this.alphas[layer],
         });
       });
+
+    return this;
+  };
+
+  updateRow = (opts: UpdateRow) => {
+    const {
+      string = "",
+      layer = 0,
+      x = 0,
+      y = 0,
+      tileSet,
+      tint,
+      alpha,
+      colors,
+      alphas,
+      parseTags = false,
+    } = opts;
+
+    const ts = tileSet || this.tileSets[layer];
+    let chars: string[] = [];
+    let tints: number[] = [];
+
+    if (parseTags) {
+      const result = parseTaggedColors(string, tint ?? this.tints[layer]);
+      chars = result.chars;
+      tints = result.tints;
+    } else {
+      chars = [...string];
+      tints = colors ?? chars.map(() => tint ?? this.tints[layer]);
+    }
+
+    chars.forEach((char, index) => {
+      this.updateSprite({
+        char,
+        layer,
+        x: x + index,
+        y,
+        tileSet: ts,
+        tint: tints[index],
+        alpha: alphas?.[index] ?? alpha ?? this.alphas[layer],
+      });
+    });
 
     return this;
   };

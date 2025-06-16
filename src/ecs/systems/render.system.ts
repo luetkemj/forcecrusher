@@ -24,6 +24,10 @@ export const createRenderSystem = (
   );
   const pcQuery = world.with("pc", "position");
 
+  function colorTag(color: number) {
+    return `§#${color.toString(16).padStart(6, "0")}§`;
+  }
+
   return function system() {
     const mapView = getState().views.map;
     if (!mapView) return;
@@ -123,13 +127,14 @@ export const createRenderSystem = (
         const rows: Array<Array<UpdateRow>> = [];
         entities.forEach((entity) => {
           const entityChar = entity.appearance.char;
+          const entityTint = entity.appearance.tint;
           const entityName = entity.name;
 
-          const string = `${entityChar} ${entityName}`;
+          const string = `${colorTag(entityTint)}${entityChar} ${entityName}`;
           rows.push([{ string }]);
         });
 
-        legendView?.updateRows(rows);
+        legendView?.updateRows(rows, true);
       }
     }
 
@@ -149,19 +154,18 @@ export const createRenderSystem = (
       // render history
       {
         const historyView = getState().views.logHistory;
-        
+
         const sliceStart = getState().logActiveIndex;
         const sliceEnd = sliceStart + 39;
 
         const getStartRow = () => {
-          if (sliceStart === 0) return [{ string: '---'}]
-          return [{string: '...'}]
-        }
+          if (sliceStart === 0) return [{ string: "---" }];
+          return [{ string: "..." }];
+        };
         const getEndRow = () => {
-          if (sliceEnd === getState().log.length) return [{ string: '---'}]
-          return [{string: '...'}]
-        }
-
+          if (sliceEnd === getState().log.length) return [{ string: "---" }];
+          return [{ string: "..." }];
+        };
 
         if (getState().gameState === GameState.LOG_HISTORY) {
           const rows = [
@@ -176,7 +180,7 @@ export const createRenderSystem = (
           ];
 
           historyView?.clearView();
-          historyView?.updateRows(rows);
+          historyView?.updateRows(rows, true);
           historyView?.show();
         } else {
           historyView?.hide();
@@ -271,6 +275,7 @@ export const createRenderSystem = (
               { string: concatRow(message, width), alpha: getAlpha(index) },
             ];
           }),
+          true,
         );
       }
     }
@@ -353,7 +358,8 @@ export const createRenderSystem = (
         let controls = "";
 
         if (getState().gameState === GameState.GAME) {
-          controls = "(arrows/hjkl)Move (g)Get (H)History (i)Inventory (L)Look";
+          controls =
+            "(§purple§arrows/hjkl§reset§)Move (§purple§g§reset§)Get (§purple§H§reset§)History (§purple§i§reset§)Inventory (§purple§L§reset§)Look";
         }
 
         if (getState().gameState === GameState.INSPECT) {
@@ -374,7 +380,7 @@ export const createRenderSystem = (
           controls = "(H/escape)Return to Game (arrows/hjkl)Move cursor";
         }
 
-        controlsView?.updateRows([[], [{ string: controls }]]);
+        controlsView?.updateRows([[], [{ string: controls }]], true);
       }
     }
   };

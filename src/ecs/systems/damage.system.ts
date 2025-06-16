@@ -100,7 +100,8 @@ export const createDamageSystem = (
 
         // only log if player is in on the attack
         if (attacker.pc || target.pc) {
-          let log = `${attacker.name} ${attack.verb} ${target.name}`;
+          let log = attacker.pc ? '§purple§' : '§red§'; 
+          log += `${attacker.name} ${attack.verb} ${target.name}`;
           if (weapon) {
             log += ` with ${weapon.name}`;
           }
