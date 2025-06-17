@@ -2,7 +2,7 @@ import { IGameWorld, Entity } from "../engine";
 import { distance } from "../../lib/grid";
 import { getState, GameState } from "../gameState";
 import { View, UpdateRow } from "../../lib/canvas";
-import { colorTag, getWielding, getWearing } from "../../lib/utils";
+import { colorTag, getWielding, getWearing, em } from "../../lib/utils";
 import { getArmorClass } from "../../lib/combat";
 
 export const createRenderSystem = (
@@ -354,26 +354,23 @@ export const createRenderSystem = (
         let controls = "";
 
         if (getState().gameState === GameState.GAME) {
-          controls =
-            "(§purple§arrows/hjkl§reset§)Move (§purple§g§reset§)Get (§purple§H§reset§)History (§purple§i§reset§)Inventory (§purple§L§reset§)Look";
+          controls = `(${em("arrows/hjkl")})Move (${em("g")})Get (${em("H")})History (${em("i")})Inventory (${em("L")})Look`;
         }
 
         if (getState().gameState === GameState.INSPECT) {
-          controls = "(L/escape)Return to Game (arrows/hjkl)Move cursor";
+          controls = `(${em("L/escape")})Return to Game (${em("arrows/hjkl")})Move cursor`;
         }
 
         if (getState().gameState === GameState.TARGET) {
-          controls =
-            "(t/escape)Return to Inventory (arrows/hjkl)Move cursor (enter)Throw item";
+          controls = `(${em("t/escape")})Return to Inventory (${em("arrows/hjkl")})Move cursor (${em("enter")})Throw item`;
         }
 
         if (getState().gameState === GameState.INVENTORY) {
-          controls =
-            "(i/escape)Return to Game (c)Consume (d)Drop (t)Throw (W)Wear (w)Wield (r)Remove";
+          controls = `(${em("i/escape")})Return to Game (${em("c")})Consume (${em("d")})Drop (${em("t")})Throw (${em("W")})Wear (${em("w")})Wield (${em("r")})Remove`;
         }
 
         if (getState().gameState === GameState.LOG_HISTORY) {
-          controls = "(H/escape)Return to Game (arrows/jk)Scroll history";
+          controls = `(${em("H/escape")})Return to Game (${em("arrows/jk")})Scroll history`;
         }
 
         controlsView?.updateRows([[], [{ string: controls }]], true);

@@ -2,10 +2,22 @@ import { Entity, gameWorld } from "../ecs/engine";
 import { getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos } from "./grid";
-import { pull } from "lodash";
+import { pull, get } from "lodash";
 
 export const colorTag = (color: number) => {
   return `§#${color.toString(16).padStart(6, "0")}§`;
+};
+
+export const colorEntity = (entity: Entity, path = "name") => {
+  const tint = entity.appearance?.tint;
+  const string = get(entity, path);
+  if (tint && string) {
+    return `${colorTag(tint)}${string}`;
+  }
+};
+
+export const em = (string: string) => {
+  return `§purple§${string}§reset§`;
 };
 
 export const logFrozenEntity = (entity: Entity) => {

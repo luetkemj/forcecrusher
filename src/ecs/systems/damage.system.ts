@@ -1,4 +1,4 @@
-import { addLog, colorTag, getWearing } from "../../lib/utils";
+import { addLog, colorEntity, getWearing } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 import { DamageType } from "../enums";
 
@@ -99,14 +99,11 @@ export const createDamageSystem = (
         }
 
         // only log if player is in on the attack
-        let infoColorTag = attacker.pc ? '§purple§' : '§red§';
+        let infoColorTag = attacker.pc ? "§purple§" : "§red§";
         if (attacker.pc || target.pc) {
-          const attackerTint = attacker.appearance?.tint || 0xff00ff;
-          const targetTint = target.appearance?.tint || 0xff00ff;
-          const weaponTint = weapon?.appearance?.tint || 0xff00ff;
-          let log = `${colorTag(attackerTint)}${attacker.name}${infoColorTag} ${attack.verb} ${colorTag(targetTint)}${target.name}${infoColorTag}`;
+          let log = `${colorEntity(attacker)}${infoColorTag} ${attack.verb} ${colorEntity(target)}${infoColorTag}`;
           if (weapon) {
-            log += ` with ${colorTag(weaponTint)}${weapon.name}${infoColorTag}`;
+            log += ` with ${colorEntity(weapon)}${infoColorTag}`;
           }
           log += ` for ${computedDamage}hp!`;
           if (vulnerable) log = `${infoColorTag}Vulnerable! ${log}`;
