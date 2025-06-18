@@ -47,7 +47,7 @@ const baseWeapon: Entity = {
   ...renderable,
   appearance: {
     char: chars.weapon,
-    tint: colors.weapon,
+    tint: colors.steel,
     tileSet: "ascii",
   },
   legendable: true,
@@ -273,6 +273,11 @@ export const clubPrefab: Entity = {
   name: "Club",
   description: "A crude bludgeon, little more than a knotted branch.",
   weaponClass: WeaponClass.Simple,
+  appearance: {
+    char: chars.weapon,
+    tint: colors.wood,
+    tileSet: "ascii",
+  },
   attacks: [
     {
       name: "Smash",
@@ -330,7 +335,7 @@ export const leatherArmor: Entity = {
   ...renderable,
   appearance: {
     char: chars.armor,
-    tint: colors.armor,
+    tint: colors.leather,
     tileSet: "ascii",
   },
   legendable: true,

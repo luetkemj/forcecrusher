@@ -123,7 +123,33 @@ export const buildDungeon = (props: DungeonProps): Dungeon => {
     prevRoom = room;
   }
 
-  dungeon.tiles = { ...dungeon.tiles, ...roomTiles, ...passageTiles };
+  // First apply tags
+  for (const [key, tile] of Object.entries(roomTiles)) {
+    if (!tile.tags) tile.tags = new Set();
+    tile.tags.add("room");
+  }
+
+  for (const [key, tile] of Object.entries(passageTiles)) {
+    if (!tile.tags) tile.tags = new Set();
+    tile.tags.add("passage");
+
+    // If the tile also exists in roomTiles, merge tags
+    if (roomTiles[key]) {
+      tile.tags = new Set([...roomTiles[key].tags, ...tile.tags]);
+    }
+  }
+
+  // Merge tiles with tag merging logic
+  for (const [key, tile] of Object.entries({ ...roomTiles, ...passageTiles })) {
+    dungeon.tiles[key] = {
+      ...dungeon.tiles[key],
+      ...tile,
+      tags: new Set([
+        ...(dungeon.tiles[key]?.tags ?? []),
+        ...(tile.tags ?? []),
+      ]),
+    };
+  }
 
   return dungeon;
 };
@@ -147,11 +173,22 @@ export const generateDungeon = (zoneId: string) => {
   for (const tile of tiles) {
     if (tile.sprite === "WALL") {
       const { x, y, z } = tile;
-      spawn("wall", { position: { x, y, z } });
+      const newTile = spawn("wall", { position: { x, y, z } });
     }
     if (tile.sprite === "FLOOR") {
       const { x, y, z } = tile;
-      spawn("floor", { position: { x, y, z } });
+      const newTile = spawn("floor", { position: { x, y, z } });
+      if (newTile.appearance) {
+        if (tile.tags.has("room")) {
+          newTile.appearance.tint = 0x00ff00;
+        }
+        if (tile.tags.has("passage")) {
+          newTile.appearance.tint = 0xffff00;
+        }
+        if (tile.tags.has("passage") && tile.tags.has("room")) {
+          newTile.appearance.tint = 0x00ffff;
+        }
+      }
     }
   }
 

@@ -2,7 +2,13 @@ import { IGameWorld, Entity } from "../engine";
 import { distance } from "../../lib/grid";
 import { getState, GameState } from "../gameState";
 import { View, UpdateRow } from "../../lib/canvas";
-import { colorTag, getWielding, getWearing, em } from "../../lib/utils";
+import {
+  colorTag,
+  getWielding,
+  getWearing,
+  em,
+  entityNamePlate,
+} from "../../lib/utils";
 import { getArmorClass } from "../../lib/combat";
 
 export const createRenderSystem = (
@@ -216,7 +222,7 @@ export const createRenderSystem = (
             ...itemsInInventory.map((item, index) => [
               {},
               {
-                string: `${activeIndex === index ? "*" : " "} ${item?.appearance?.char} ${item?.name} ${item?.description}`,
+                string: `${activeIndex === index ? "*" : " "} ${entityNamePlate(item)} ${item?.description}`,
               },
             ]),
             [],
@@ -229,7 +235,7 @@ export const createRenderSystem = (
             [
               {},
               {
-                string: `  ${wieldedEntity?.appearance?.char} ${wieldedEntity?.name} ${wieldedEntity?.description}`,
+                string: `  ${entityNamePlate(wieldedEntity)} ${wieldedEntity?.description}`,
               },
             ],
             [],
@@ -242,13 +248,13 @@ export const createRenderSystem = (
             [
               {},
               {
-                string: `  ${armor && armor?.appearance?.char} ${armor && armor?.name} ${armor && armor?.description}`,
+                string: `  ${armor && entityNamePlate(armor)} ${armor && armor?.description}`,
               },
             ],
           ];
 
           inventoryView?.clearView();
-          inventoryView?.updateRows(rows);
+          inventoryView?.updateRows(rows, true);
           inventoryView?.show();
         } else {
           inventoryView?.hide();
