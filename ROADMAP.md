@@ -51,7 +51,14 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] multi color logs
 - [x] color coded logs (ale-dsi/brogue-esque)
   - [x] support writing mutiple colors to a text row
-- [ ] doors from skrimshank
+- [ ] dungeons v2
+    - [ ] doors from skrimshank
+    - [ ] room of different shapes (circular)
+    - [ ] caverns
+    - [ ] water
+    - [ ] walls of different materials
+    - [ ] cave ins (deteriorated walls etc)
+    - [ ] doors of different kinds (wooden, portculis, locked, jammed)
 - [ ] morgue file (game over screen)
 - [ ] money
 - [ ] points(?)

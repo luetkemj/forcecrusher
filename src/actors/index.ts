@@ -16,7 +16,7 @@ import {
   wallPrefab,
 } from "./prefabs";
 
-const prefabs = {
+export const prefabs = {
   // NOTE: Player
   player: playerPrefab,
 

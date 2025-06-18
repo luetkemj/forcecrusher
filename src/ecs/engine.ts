@@ -196,7 +196,6 @@ class GameWorld {
   }
 
   changeZone(zoneId: string, direction: ChangeZoneDirections) {
-    const { foo } = buttercake;
     // get all ids for player and their inventory - all entities that will change zone
     const { playerId } = getState();
     const playerEntity = this.registry.get(playerId);
