@@ -309,17 +309,29 @@ export const createRenderSystem = (
 
     const hudView = getState().views.hud;
     const [player] = pcQuery;
+
     let weapon = "unarmed";
     const wielding = getWielding(player);
+    let weaponString;
     if (wielding) {
       weapon = wielding.name;
+      const tint = wielding.appearance?.tint || 0x00ff00;
+      weaponString = `${colorTag(tint)}): ${weapon}`;
+    } else {
+      weaponString = `): ${weapon}`;
     }
 
     let armor = "unarmored";
     const wearing = getWearing(player);
+    let armorString;
     if (wearing) {
       armor = wearing.name;
+      const tint = wearing.appearance?.tint || 0x00ff00;
+      armorString = `${colorTag(tint)}]: ${armor}`;
+    } else {
+      armorString = `]: ${armor}`;
     }
+
     if (hudView) {
       const rows = [
         [{ string: `Forcecrusher` }],
@@ -329,8 +341,8 @@ export const createRenderSystem = (
         [{ string: `LV: 1` }],
         [{ string: `HP: ${player?.health?.current}/${player?.health?.max}` }],
         [],
-        [{ string: `): ${weapon} (${player.averageDamage})` }],
-        [{ string: `]: ${armor} [${getArmorClass(player)}]` }],
+        [{ string: `${weaponString}§reset§ (${player.averageDamage})` }],
+        [{ string: `${armorString}§reset§ [${getArmorClass(player)}]` }],
         [],
         [{ string: `AC: ${getArmorClass(player)}` }],
         [{ string: `DM: ${player.averageDamage}` }],
@@ -344,7 +356,7 @@ export const createRenderSystem = (
       ];
 
       hudView?.clearView();
-      hudView?.updateRows(rows);
+      hudView?.updateRows(rows, true);
     }
 
     // render controls
