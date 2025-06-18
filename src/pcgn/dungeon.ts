@@ -1,8 +1,9 @@
-import { random, sample, times } from "lodash";
+import { each, random, sample, times } from "lodash";
 import {
   type Pos,
   type PosId,
   type Rectangle,
+  line,
   rectangle,
   rectsIntersect,
   toPosId,
@@ -17,6 +18,7 @@ type Tile = {
   y: number;
   z: number;
   sprite: string;
+  tags: Set<string>;
 };
 
 type Tiles = { [key: PosId]: Tile };
@@ -29,7 +31,7 @@ function digHorizontalPassage(posA: Pos, posB: Pos) {
 
   while (x < end) {
     const tilePos = { ...posB, x };
-    tiles[toPosId(tilePos)] = { ...tilePos, sprite: "FLOOR" };
+    tiles[toPosId(tilePos)] = { ...tilePos, sprite: "FLOOR", tags: new Set() };
     x++;
   }
 
@@ -44,7 +46,7 @@ function digVerticalPassage(posA: Pos, posB: Pos): Tiles {
 
   while (y < end) {
     const tilePos = { ...posA, y };
-    tiles[toPosId(tilePos)] = { ...tilePos, sprite: "FLOOR" };
+    tiles[toPosId(tilePos)] = { ...tilePos, sprite: "FLOOR", tags: new Set() };
     y++;
   }
 
@@ -85,9 +87,17 @@ export const buildDungeon = (props: DungeonProps): Dungeon => {
     rooms: [],
   };
 
-  // create room
+  const addTags = (pos: Pos, tags: Array<string>) => {
+    const posid = toPosId(pos);
+    const tile = dungeon.tiles[posid];
+    if (tile) {
+      if (!tile.tags) tile.tags = new Set();
+      tile.tags.add(...tags);
+    }
+  };
 
-  let roomTiles = {};
+  // create room
+  let roomTiles: Record<string, Tile> = {};
 
   times(maxRoomCount, () => {
     let rw = random(minRoomSize, maxRoomSize);
@@ -104,7 +114,7 @@ export const buildDungeon = (props: DungeonProps): Dungeon => {
     // test if candidate is overlapping with any existing rooms
     if (!dungeon.rooms.some((room) => rectsIntersect(room, candidate))) {
       dungeon.rooms.push(candidate);
-      roomTiles = { ...roomTiles, ...candidate.tiles };
+      roomTiles = { ...roomTiles, ...candidate.tiles } as Record<string, Tile>;
     }
   });
 
@@ -124,32 +134,61 @@ export const buildDungeon = (props: DungeonProps): Dungeon => {
   }
 
   // First apply tags
-  for (const [key, tile] of Object.entries(roomTiles)) {
-    if (!tile.tags) tile.tags = new Set();
-    tile.tags.add("room");
+  for (const tile of Object.values(roomTiles) as Tile[]) {
+    const { x, y, z } = tile;
+    addTags({ x, y, z }, ["room"]);
   }
 
-  for (const [key, tile] of Object.entries(passageTiles)) {
+  for (const [key, tile] of Object.entries(passageTiles) as [string, Tile][]) {
     if (!tile.tags) tile.tags = new Set();
     tile.tags.add("passage");
 
     // If the tile also exists in roomTiles, merge tags
-    if (roomTiles[key]) {
-      tile.tags = new Set([...roomTiles[key].tags, ...tile.tags]);
+    const roomTile = roomTiles[key];
+    if (roomTile?.tags) {
+      tile.tags = new Set([...roomTile.tags, ...tile.tags]);
     }
   }
 
-  // Merge tiles with tag merging logic
-  for (const [key, tile] of Object.entries({ ...roomTiles, ...passageTiles })) {
-    dungeon.tiles[key] = {
-      ...dungeon.tiles[key],
-      ...tile,
-      tags: new Set([
-        ...(dungeon.tiles[key]?.tags ?? []),
-        ...(tile.tags ?? []),
-      ]),
-    };
-  }
+  // const addPerimeterTags = (cell: Pos) => {
+  //   const posid = `${cell.x},${cell.y},0`;
+  //   console.log(posid);
+  //   if (dungeon.tiles[posid]) {
+  //     if (!dungeon.tiles[posid].tags) {
+  //       dungeon.tiles[posid].tags = new Set();
+  //     }
+  //     dungeon.tiles[posid].tags.add("WALL");
+  //     dungeon.tiles[posid].tags.add("PERIMETER");
+  //   }
+  // };
+
+  each(dungeon.rooms, (room) => {
+    const sw = { x: room.x1, y: room.y2 - 1, z: 0 }; // sw
+    const se = { x: room.x2 - 1, y: room.y2 - 1, z: 0 }; // se
+    const nw = { x: room.x1, y: room.y1, z: 0 };
+    const ne = { x: room.x2 - 1, y: room.y1, z: 0 };
+
+    const tags = ["WALL", "PERIMETER"];
+    line(nw, ne).forEach((pos) => addTags(pos, tags));
+    line(ne, se).forEach((pos) => addTags(pos, tags));
+    line(se, sw).forEach((pos) => addTags(pos, tags));
+    line(sw, nw).forEach((pos) => addTags(pos, tags));
+  });
+  //
+  // // Merge tiles with tag merging logic
+  // for (const [key, tile] of Object.entries({
+  //   ...roomTiles,
+  //   ...passageTiles,
+  // }) as [string, Tile][]) {
+  //   dungeon.tiles[key] = {
+  //     ...dungeon.tiles[key],
+  //     ...tile,
+  //     tags: new Set([
+  //       ...(dungeon.tiles[key]?.tags ?? []),
+  //       ...(tile.tags ?? []),
+  //     ]),
+  //   };
+  // }
 
   return dungeon;
 };
@@ -173,7 +212,14 @@ export const generateDungeon = (zoneId: string) => {
   for (const tile of tiles) {
     if (tile.sprite === "WALL") {
       const { x, y, z } = tile;
+      tile.tags = new Set();
+
       const newTile = spawn("wall", { position: { x, y, z } });
+
+      if (tile.tags.has("PERIMETER") && tile.tags.has("room")) {
+        console.log("permiter", newTile);
+        newTile.appearance.tint = 0x443355;
+      }
     }
     if (tile.sprite === "FLOOR") {
       const { x, y, z } = tile;
@@ -230,6 +276,8 @@ export const generateDungeon = (zoneId: string) => {
       spawn("stairsDown", { position: { x, y, z } });
     }
   });
+
+  console.log(dungeon);
 
   return dungeon;
 };
