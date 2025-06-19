@@ -20,6 +20,7 @@ export enum DungeonTags {
   Passage = "passage",
   Perimeter = "perimeter",
   Room = "room",
+  Wall = "wall",
 }
 
 export enum WeaponClass {
