@@ -22,6 +22,14 @@ export enum DungeonTags {
   Room = "room",
   Wall = "wall",
 }
+export enum OpenState {
+  Closed = "closed",
+  Open = "open",
+  Ajar = "ajar",
+  Jammed = "jammed",
+  Broken = "broken",
+  Sealed = "sealed",
+}
 
 export enum WeaponClass {
   Martial = "martial",

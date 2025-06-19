@@ -1,5 +1,5 @@
 import { type Entity } from "../ecs/engine";
-import { DamageType, WeaponClass } from "../ecs/enums";
+import { DamageType, WeaponClass, OpenState } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
 // NOTE: generics
@@ -364,6 +364,9 @@ export const doorPrefab: Entity = {
   opaque: true,
   blocking: true,
   door: true,
+  openable: {
+    state: OpenState.Closed,
+  },
 };
 
 export const stairsDownPrefab: Entity = {

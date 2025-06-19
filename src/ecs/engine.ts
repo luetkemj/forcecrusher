@@ -1,5 +1,5 @@
 import { World } from "miniplex";
-import { DamageType, WeaponClass, WeaponType } from "./enums";
+import { DamageType, OpenState, WeaponClass, WeaponType } from "./enums";
 import { type State, getState, setState } from "./gameState";
 import { generateDungeon } from "../pcgn/dungeon";
 
@@ -105,6 +105,16 @@ export type Entity = {
   locked?: true;
   opaque?: true;
   open?: true;
+  openable?: {
+    state: OpenState;
+    isLocked?: { lockId: string }; // keyId?: string;
+    isTrapped?: { trapId: string };
+    requiresTool?: string; // tool name?
+    isOneWay?: true;
+    isAutoClosing?: true;
+    isSilent?: true;
+    hasBeenOpened?: true;
+  };
   pathThrough?: true;
   pickUp?: true;
   name: string;
@@ -118,7 +128,7 @@ export type Entity = {
   strength?: number;
   tryDrop?: { dropperId: string };
   tryMove?: { x: number; y: number; z: number };
-  tryOpenDoor?: { doorId: string };
+  tryOpen?: { id: string };
   tryPickUp?: { pickerId: string };
   tryThrow?: { throwerId: string };
   version: number;
