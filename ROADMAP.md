@@ -53,6 +53,13 @@ This is aspirational only. Expect anything and everything in this document to be
   - [x] support writing mutiple colors to a text row
 - [ ] dungeons v2
     - [ ] doors from skrimshank
+        - [x] Place doors
+        - [ ] Open and closeable doors
+        - [ ] Lockable doors
+        - [ ] Different kinds of doors (metal, wooden, stone, etc)
+        - [ ] Jammable doors (what's that UI look like?)
+        - [ ] Breakable doors
+        - [ ] AI that can open doors (or not)
     - [ ] room of different shapes (circular)
     - [ ] caverns
     - [ ] water

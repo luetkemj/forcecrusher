@@ -22,7 +22,7 @@ export const createFovSystem = (world: IGameWorld["world"]) => {
       74, // map width
       39, // map height
       player.position,
-      10,
+      100,
     );
 
     for (const entity of inFovQuery) {

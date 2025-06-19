@@ -353,7 +353,7 @@ export const doorPrefab: Entity = {
   ...renderable,
   ...tile,
   appearance: {
-    char: chars.doorOpen,
+    char: chars.doorClosed,
     tint: colors.wood,
     tileSet: "ascii",
   },
@@ -362,6 +362,8 @@ export const doorPrefab: Entity = {
   description: "A door",
   layer200: true,
   opaque: true,
+  blocking: true,
+  door: true,
 };
 
 export const stairsDownPrefab: Entity = {

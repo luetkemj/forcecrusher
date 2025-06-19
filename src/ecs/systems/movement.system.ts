@@ -21,6 +21,10 @@ export const createMovementSystem = (world: IGameWorld["world"]) => {
           if (blockingEntity.health) {
             // meleeAttack(movingEntity, blockingEntity);
             world.addComponent(movingEntity, "attackTarget", blockingEntity);
+          } else if (blockingEntity.door) {
+            world.addComponent(movingEntity, "tryOpenDoor", {
+              doorId: blockingEntity.id,
+            });
           } else {
             if (movingEntity.pc) {
               addLog(`${movingEntity.name} blocked by ${blockingEntity.name}`);

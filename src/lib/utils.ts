@@ -16,6 +16,14 @@ export const colorEntity = (entity: Entity, path = "name") => {
   }
 };
 
+export const colorEntityName = (entity: Entity) => {
+  const name = entity.name;
+  const tint = entity.appearance?.tint;
+  if (tint && name) {
+    return `${colorTag(tint)}${name}§reset§`;
+  }
+};
+
 export const entityNamePlate = (entity?: Entity) => {
   console.log("no entity");
   const tint = entity?.appearance?.tint || 0x00ff00;

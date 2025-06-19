@@ -87,6 +87,7 @@ export type Entity = {
   dead?: true;
   description?: string;
   dexterity?: number;
+  door?: true;
   effects?: Array<Effect>;
   health?: {
     max: number;
@@ -101,7 +102,9 @@ export type Entity = {
   layer300?: true;
   layer400?: true;
   legendable?: true;
+  locked?: true;
   opaque?: true;
+  open?: true;
   pathThrough?: true;
   pickUp?: true;
   name: string;
@@ -115,6 +118,7 @@ export type Entity = {
   strength?: number;
   tryDrop?: { dropperId: string };
   tryMove?: { x: number; y: number; z: number };
+  tryOpenDoor?: { doorId: string };
   tryPickUp?: { pickerId: string };
   tryThrow?: { throwerId: string };
   version: number;
