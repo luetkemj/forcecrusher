@@ -11,6 +11,7 @@ import {
 import { spawn } from "../actors";
 import { spawnSkeleton, spawnRat } from "./monsters";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
+import { DungeonTags } from "../ecs/enums";
 
 type Tile = {
   x: number;
@@ -62,7 +63,12 @@ type DungeonProps = {
 
 type Dungeon = Rectangle & { rooms: Array<Rectangle> };
 
-export const buildDungeon = (props: DungeonProps): Dungeon => {
+export const buildDungeon = (
+  props: DungeonProps,
+): {
+  dungeon: Dungeon;
+  tilesMap: Map<string, any>;
+} => {
   const {
     pos,
     width,
@@ -74,20 +80,40 @@ export const buildDungeon = (props: DungeonProps): Dungeon => {
 
   const { x, y, z } = pos;
 
-  // fill the entire space with walls so we can dig it out later
+  // fill the entire space with dirt so we can dig it out later
   const dungeon: Dungeon = {
-    ...rectangle(
-      { x, y, z, width, height, hasWalls: false },
-      {
-        sprite: "WALL",
-      },
-    ),
+    ...rectangle({ x, y, z, width, height, hasWalls: false }, {}),
     rooms: [],
   };
 
-  // create room
+  console.log(JSON.parse(JSON.stringify(dungeon)));
+  // During generation
+  const tilesMap = new Map<string, any>(Object.entries(dungeon.tiles));
 
-  let roomTiles = {};
+  const addTags = ({ x, y, z }: any, tags: Array<string>) => {
+    const posId = toPosId({ x, y, z });
+    const tile = tilesMap.get(posId);
+
+    if (tile) {
+      if (!tile.tags) {
+        tile.tags = new Set();
+      }
+
+      tags.forEach((tag) => tile.tags.add(tag));
+    }
+
+    tilesMap.set(posId, tile);
+  };
+
+  // start with all tiles as Dirt
+  for (const [_, tile] of tilesMap) {
+    addTags(tile, [DungeonTags.Dirt]);
+  }
+
+  // After generation
+  // dungeon.tiles = Object.fromEntries(tilesMap);
+
+  // create room
 
   times(maxRoomCount, () => {
     let rw = random(minRoomSize, maxRoomSize);
@@ -98,34 +124,39 @@ export const buildDungeon = (props: DungeonProps): Dungeon => {
     // create a candidate room
     const candidate = rectangle(
       { x: rx, y: ry, z, width: rw, height: rh, hasWalls: true },
-      { sprite: "FLOOR" },
+      {},
     );
 
     // test if candidate is overlapping with any existing rooms
     if (!dungeon.rooms.some((room) => rectsIntersect(room, candidate))) {
       dungeon.rooms.push(candidate);
-      roomTiles = { ...roomTiles, ...candidate.tiles };
+      // roomTiles = { ...roomTiles, ...candidate.tiles };
+      // update tilesMap
+      for (const tile of Object.entries(candidate.tiles)) {
+        addTags(tile[1], [DungeonTags.Room, DungeonTags.Floor]);
+      }
     }
   });
 
   let prevRoom = null;
-  let passageTiles = {};
+  let passageTiles: Tiles = {};
 
   for (let room of dungeon.rooms) {
     if (prevRoom) {
       passageTiles = {
-        ...passageTiles,
         ...digHorizontalPassage(room.center, prevRoom.center),
         ...digVerticalPassage(room.center, prevRoom.center),
       };
     }
 
+    for (const tile of Object.entries(passageTiles)) {
+      addTags(tile[1], [DungeonTags.Passage, DungeonTags.Floor]);
+    }
+
     prevRoom = room;
   }
 
-  dungeon.tiles = { ...dungeon.tiles, ...roomTiles, ...passageTiles };
-
-  return dungeon;
+  return { dungeon, tilesMap };
 };
 
 export const generateDungeon = (zoneId: string) => {
@@ -133,7 +164,7 @@ export const generateDungeon = (zoneId: string) => {
 
   const depth = Math.abs(z);
 
-  const dungeon = buildDungeon({
+  const { dungeon, tilesMap } = buildDungeon({
     pos: { x: 0, y: 0, z: 0 },
     width: 74,
     height: 39,
@@ -142,26 +173,29 @@ export const generateDungeon = (zoneId: string) => {
     maxRoomCount: 100,
   });
 
-  const tiles = Object.values(dungeon.tiles);
-
-  for (const tile of tiles) {
-    if (tile.sprite === "WALL") {
-      const { x, y, z } = tile;
+  for (const [_, tile] of tilesMap) {
+    const { x, y, z } = tile;
+    // create dirt
+    if (tile.tags.has(DungeonTags.Dirt) && !tile.tags.has(DungeonTags.Floor)) {
       spawn("wall", { position: { x, y, z } });
     }
-    if (tile.sprite === "FLOOR") {
-      const { x, y, z } = tile;
+
+    // create floors
+    if (
+      tile.tags.has(DungeonTags.Floor) ||
+      tile.tags.has(DungeonTags.Passage)
+    ) {
       spawn("floor", { position: { x, y, z } });
     }
   }
 
-  // get all open tiles (floor)
-  const openTiles = Object.values(dungeon.tiles).filter(
-    (tile) => tile.sprite === "FLOOR",
+  const floorTiles = [...tilesMap.values()].filter((tile) =>
+    tile.tags?.has("floor"),
   );
+
   // randomly place enemies on open tiles
   times(10 + depth, () => {
-    const openTile = sample(openTiles);
+    const openTile = sample(floorTiles);
     if (!openTile) return;
     const position = { x: openTile.x, y: openTile.y, z: openTile.z };
     const percentile = new DiceRoll("d100").total;

@@ -14,6 +14,14 @@ export enum DamageType {
   Thunder = "thunder",
 }
 
+export enum DungeonTags {
+  Dirt = "dirt",
+  Floor = "floor",
+  Passage = "passage",
+  Perimeter = "perimeter",
+  Room = "room",
+}
+
 export enum WeaponClass {
   Martial = "martial",
   Simple = "simple",
