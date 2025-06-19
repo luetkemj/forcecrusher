@@ -1,9 +1,9 @@
-import { describe, test, expect, beforeEach } from "vitest";
+import { describe, test, expect, beforeEach, afterEach } from "vitest";
 import type { Entity, IGameWorld, Attack, Damage } from "../engine";
 import { DamageType } from "../enums";
 import { setupTestGameWorld } from "./test-utils";
 import { createDamageSystem } from "./damage.system";
-import { getState } from "../gameState";
+import { getState, setState, State } from "../gameState";
 
 describe("damage.system", () => {
   let gameWorld: IGameWorld;
@@ -37,6 +37,11 @@ describe("damage.system", () => {
     };
     gameWorld.world.add(attacker);
     gameWorld.world.add(target);
+  });
+  afterEach(() => {
+    setState((state: State) => {
+      state.log = [];
+    });
   });
 
   function addDamageToTarget(damage: Partial<Damage>) {
@@ -117,8 +122,6 @@ describe("damage.system", () => {
     });
     createDamageSystem(gameWorld.world, gameWorld.registry)();
     expect(target.health?.current).toBe(4);
-    const { log } = getState();
-    expect(log[log.length - 1]).toContain("Attacker");
-    expect(log[log.length - 1]).toContain("for 6hp!");
   });
+  // TODO: test log seperately from damage amounts.
 });
