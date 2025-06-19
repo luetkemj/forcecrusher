@@ -3,10 +3,12 @@ import {
   type Pos,
   type PosId,
   type Rectangle,
+  line,
   rectangle,
   rectsIntersect,
   toPosId,
   toPos,
+  getNeighbors,
 } from "../lib/grid";
 import { spawn } from "../actors";
 import { spawnSkeleton, spawnRat } from "./monsters";
@@ -138,6 +140,7 @@ export const buildDungeon = (
     }
   });
 
+  // Create passage ways
   let prevRoom = null;
   let passageTiles: Tiles = {};
 
@@ -154,6 +157,32 @@ export const buildDungeon = (
     }
 
     prevRoom = room;
+  }
+
+  // get perimeter walls for each room
+  // const addPerimeterTags = (cell) => {
+  //   const posid = `${cell.x},${cell.y}`;
+  //   if (dungeon.dTiles[posid]) {
+  //     dungeon.dTiles[posid].tags.push("WALL");
+  //     dungeon.dTiles[posid].tags.push("PERIMETER");
+  //   }
+  // };
+  for (let room of dungeon.rooms) {
+    const sw = { x: room.x1, y: room.y2 - 1, z: 0 }; // sw
+    const se = { x: room.x2 - 1, y: room.y2 - 1, z: 0 }; // se
+    const nw = { x: room.x1, y: room.y1, z: 0 };
+    const ne = { x: room.x2 - 1, y: room.y1, z: 0 };
+
+    const perimeterPositions = [
+      ...line(nw, ne),
+      ...line(ne, se),
+      ...line(se, sw),
+      ...line(sw, nw),
+    ];
+
+    perimeterPositions.forEach((position) =>
+      addTags(position, [DungeonTags.Perimeter, DungeonTags.Wall]),
+    );
   }
 
   return { dungeon, tilesMap };
@@ -173,11 +202,14 @@ export const generateDungeon = (zoneId: string) => {
     maxRoomCount: 100,
   });
 
+  const entityMap = new Map();
+
   for (const [_, tile] of tilesMap) {
     const { x, y, z } = tile;
     // create dirt
     if (tile.tags.has(DungeonTags.Dirt) && !tile.tags.has(DungeonTags.Floor)) {
-      spawn("wall", { position: { x, y, z } });
+      const entity = spawn("wall", { position: { x, y, z } });
+      entityMap.set(toPosId({ x, y, z }), entity);
     }
 
     // create floors
@@ -185,12 +217,42 @@ export const generateDungeon = (zoneId: string) => {
       tile.tags.has(DungeonTags.Floor) ||
       tile.tags.has(DungeonTags.Passage)
     ) {
-      spawn("floor", { position: { x, y, z } });
+      const entity = spawn("floor", { position: { x, y, z } });
+      entityMap.set(toPosId({ x, y, z }), entity);
+    }
+  }
+
+  for (const [_, tile] of tilesMap) {
+    const { x, y, z } = tile;
+    // create doors
+    if (tile.tags.has(DungeonTags.Perimeter)) {
+      const posId = toPosId({ x, y, z });
+      const entity = entityMap.get(posId);
+      // entity.appearance.tint = 0x00ff00;
+      // if two of your neighbors are walls you are a door
+      const neighbors = getNeighbors(
+        { x, y, z },
+        "cardinal",
+        { width: dungeon.width, height: dungeon.height },
+        true,
+      );
+
+      let wallCount = 0;
+      for (const neighbor of neighbors) {
+        if (entityMap.get(neighbor).name === "wall") {
+          wallCount += 1;
+        }
+      }
+
+      if (tile.tags.has(DungeonTags.Floor) && wallCount === 2) {
+        entity.appearance.tint = 0x00ff00;
+        spawn("door", { position: { x, y, z } });
+      }
     }
   }
 
   const floorTiles = [...tilesMap.values()].filter((tile) =>
-    tile.tags?.has("floor"),
+    tile.tags?.has(DungeonTags.Floor),
   );
 
   // randomly place enemies on open tiles

@@ -348,6 +348,22 @@ export const leatherArmor: Entity = {
 };
 
 // NOTE: Interactive Structures
+export const doorPrefab: Entity = {
+  ...base,
+  ...renderable,
+  ...tile,
+  appearance: {
+    char: chars.doorOpen,
+    tint: colors.wood,
+    tileSet: "ascii",
+  },
+  name: "door",
+  legendable: true,
+  description: "A door",
+  layer200: true,
+  opaque: true,
+};
+
 export const stairsDownPrefab: Entity = {
   ...base,
   ...renderable,

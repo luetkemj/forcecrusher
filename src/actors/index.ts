@@ -14,6 +14,7 @@ import {
   stairsDownPrefab,
   stairsUpPrefab,
   wallPrefab,
+  doorPrefab,
 } from "./prefabs";
 
 export const prefabs = {
@@ -41,6 +42,7 @@ export const prefabs = {
   // NOTE: Interactive Structures
   stairsDown: stairsDownPrefab,
   stairsUp: stairsUpPrefab,
+  door: doorPrefab,
 
   // NOTE: Terrain / Map Features
   wall: wallPrefab,

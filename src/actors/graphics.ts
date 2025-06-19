@@ -1,6 +1,8 @@
 export enum chars {
   "armor" = "]",
   "default" = "?",
+  "doorClosed" = "+",
+  "doorOpen" = "'",
   "floor" = "•",
   "owlbear" = "F",
   "player" = "@",
