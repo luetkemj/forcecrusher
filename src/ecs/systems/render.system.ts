@@ -374,7 +374,7 @@ export const createRenderSystem = (
         let context = "";
 
         if (getState().gameState === GameState.GAME) {
-          controls = `(${em("arrows/hjkl")})Move (c)Close (${em("g")})Get (${em("H")})History (${em("i")})Inventory (${em("L")})Look`;
+          controls = `(${em("arrows/hjkl")})Move (${em("e")})Interact (${em("g")})Get (${em("H")})History (${em("i")})Inventory (${em("L")})Look`;
         }
 
         if (getState().gameState === GameState.INSPECT) {
