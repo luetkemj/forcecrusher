@@ -62,22 +62,22 @@ export const createRenderSystem = (
 
     // render revealed entities not currently in FOV
     for (const entity of renderable100Query) {
-      if (!entity.inFov && entity.revealed) {
+      if (!entity.inFov && entity.revealed && !entity.ai) {
         renderEntity(mapView, entity, 0.35);
       }
     }
     for (const entity of renderable200Query) {
-      if (!entity.inFov && entity.revealed) {
+      if (!entity.inFov && entity.revealed && !entity.ai) {
         renderEntity(mapView, entity, 0.35);
       }
     }
     for (const entity of renderable300Query) {
-      if (!entity.inFov && entity.revealed) {
+      if (!entity.inFov && entity.revealed && !entity.ai) {
         renderEntity(mapView, entity, 0.35);
       }
     }
     for (const entity of renderable400Query) {
-      if (!entity.inFov && entity.revealed) {
+      if (!entity.inFov && entity.revealed && !entity.ai) {
         renderEntity(mapView, entity, 0.35);
       }
     }
@@ -370,9 +370,10 @@ export const createRenderSystem = (
     if (controlsView) {
       {
         let controls = "";
+        let context = "";
 
         if (getState().gameState === GameState.GAME) {
-          controls = `(${em("arrows/hjkl")})Move (${em("g")})Get (${em("H")})History (${em("i")})Inventory (${em("L")})Look`;
+          controls = `(${em("arrows/hjkl")})Move (c)Close (${em("g")})Get (${em("H")})History (${em("i")})Inventory (${em("L")})Look`;
         }
 
         if (getState().gameState === GameState.INSPECT) {
@@ -391,7 +392,15 @@ export const createRenderSystem = (
           controls = `(${em("H/escape")})Return to Game (${em("arrows/jk")})Scroll history`;
         }
 
-        controlsView?.updateRows([[], [{ string: controls }]], true);
+        if (getState().gameState === GameState.INTERACT) {
+          context = `Which direction?`;
+          controls = `(${em("escape")})Cancel (${em("arrows/hjkl")})Direction`;
+        }
+
+        controlsView?.updateRows(
+          [[{ string: context }], [{ string: controls }]],
+          true,
+        );
       }
     }
   };

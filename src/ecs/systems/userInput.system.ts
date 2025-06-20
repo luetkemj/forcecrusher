@@ -21,8 +21,10 @@ const moveKeys = [
   "j",
   "k",
   "l",
-  ">",
 ];
+
+const interactKeys = ["c"];
+
 export const createUserInputSystem = (
   world: IGameWorld["world"],
   registry: IGameWorld["registry"],
@@ -102,6 +104,13 @@ export const createUserInputSystem = (
         setState((state: State) => (state.logActiveIndex = index));
       }
 
+      if (interactKeys.includes(key)) {
+        setState((state: State) => {
+          state.gameState = GameState.INTERACT;
+          state.interactKey = key;
+        });
+      }
+
       if (moveKeys.includes(key)) {
         for (const entity of pcQuery) {
           if (entity?.position) {
@@ -149,6 +158,50 @@ export const createUserInputSystem = (
           addLog("There is nothing to pickup");
         }
       }
+    }
+
+    if (gameState === GameState.INTERACT) {
+      if (key === "Escape") {
+        setState((state: State) => {
+          state.gameState = GameState.GAME;
+        });
+      }
+
+      for (const entity of pcQuery) {
+        if (entity?.position) {
+          const { x, y, z } = entity.position;
+          const { interactKey } = getState();
+          if (key === "h" || key === "ArrowLeft") {
+            const newPos = { x: x - 1, y, z };
+            if (interactKey === "c") {
+              world.addComponent(entity, "tryClose", newPos);
+            }
+          }
+          if (key === "j" || key === "ArrowDown") {
+            const newPos = { x, y: y + 1, z };
+            if (interactKey === "c") {
+              world.addComponent(entity, "tryClose", newPos);
+            }
+          }
+          if (key === "k" || key === "ArrowUp") {
+            const newPos = { x, y: y - 1, z };
+            if (interactKey === "c") {
+              world.addComponent(entity, "tryClose", newPos);
+            }
+          }
+          if (key === "l" || key === "ArrowRight") {
+            const newPos = { x: x + 1, y, z };
+            if (interactKey === "c") {
+              world.addComponent(entity, "tryClose", newPos);
+            }
+          }
+        }
+      }
+
+      setState((state: State) => {
+        state.gameState = GameState.GAME;
+        state.interactKey = "";
+      });
     }
 
     if (gameState === GameState.INSPECT || gameState === GameState.TARGET) {
@@ -232,14 +285,15 @@ export const createUserInputSystem = (
       if (key === "j" || key === "ArrowDown") {
         const { logActiveIndex, log } = getState();
         const newLogActiveIndex =
-          logActiveIndex === log.length - 39 ? log.length - 39 : logActiveIndex + 1;
+          logActiveIndex === log.length - 39
+            ? log.length - 39
+            : logActiveIndex + 1;
         setState((state: State) => (state.logActiveIndex = newLogActiveIndex));
       }
 
       if (key === "k" || key === "ArrowUp") {
         const { logActiveIndex } = getState();
-        const newLogActiveIndex =
-          logActiveIndex === 0 ? 0 : logActiveIndex - 1;
+        const newLogActiveIndex = logActiveIndex === 0 ? 0 : logActiveIndex - 1;
         setState((state: State) => (state.logActiveIndex = newLogActiveIndex));
       }
     }

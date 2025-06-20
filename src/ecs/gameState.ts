@@ -13,6 +13,7 @@ export const enum GameState {
   INSPECT = "INSPECT",
   TARGET = "TARGET",
   LOG_HISTORY = "LOG_HISTORY",
+  INTERACT = "INTERACT",
 }
 
 export type State = {
@@ -22,6 +23,7 @@ export type State = {
   log: Array<string>;
   logActiveIndex: number;
   inventoryActiveIndex: number;
+  interactKey: string;
   senses: {
     feel: string;
     see: string;
@@ -59,6 +61,7 @@ const state: State = {
   log: ["hello world", "your adventure begins anew!"],
   logActiveIndex: 0,
   inventoryActiveIndex: 0,
+  interactKey: "",
   senses: {
     feel: "You feel nothing.",
     see: "You see nothing.",

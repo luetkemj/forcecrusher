@@ -15,7 +15,7 @@ export const createOpenSystem = (
       if (!target) return;
 
       if (target.openable?.state === OpenState.Open) {
-        // try to close it? - but we don't have a way to trigger this yet
+        addLog(`${colorEntityName(target)} is open.`);
       }
 
       if (target.openable?.state === OpenState.Closed) {
@@ -96,6 +96,7 @@ export const createOpenSystem = (
     world.removeComponent(target, "blocking");
     if (target.openable) {
       target.openable.hasBeenOpened = true;
+      target.openable.state = OpenState.Open;
     }
     if (target.appearance) {
       target.appearance.char = chars.doorOpen;

@@ -126,6 +126,7 @@ export type Entity = {
   stairsDown?: true;
   stairsUp?: true;
   strength?: number;
+  tryClose?: { x: number; y: number; z: number };
   tryDrop?: { dropperId: string };
   tryMove?: { x: number; y: number; z: number };
   tryOpen?: { id: string };

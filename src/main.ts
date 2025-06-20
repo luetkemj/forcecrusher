@@ -8,6 +8,7 @@ import { logFrozenEntity } from "./lib/utils";
 import { createActiveEffectsSystem } from "./ecs/systems/activeEffects.system";
 import { createAiSystem } from "./ecs/systems/ai.system";
 import { createAttackSystem } from "./ecs/systems/attack.system";
+import { createCloseSystem } from "./ecs/systems/close.system";
 import { createCursorSystem } from "./ecs/systems/cursor.system";
 import { createDamageSystem } from "./ecs/systems/damage.system";
 import { createDropSystem } from "./ecs/systems/drop.system";
@@ -49,6 +50,7 @@ window.skulltooth.state = getState();
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld.world);
 const aiSystem = createAiSystem(gameWorld.world);
 const attackSystem = createAttackSystem(gameWorld.world, gameWorld.registry);
+const closeSystem = createCloseSystem(gameWorld.world, gameWorld.registry);
 const cursorSystem = createCursorSystem(gameWorld.world);
 const damageSystem = createDamageSystem(gameWorld.world, gameWorld.registry);
 const openSystem = createOpenSystem(gameWorld.world, gameWorld.registry);
@@ -302,6 +304,18 @@ function gameLoop() {
       dropSystem();
       fovSystem();
       renderSystem();
+    }
+  }
+
+  if (getState().gameState === GameState.INTERACT) {
+    if (getState().userInput && getState().turn === Turn.PLAYER) {
+      userInputSystem();
+      closeSystem();
+      fovSystem();
+      renderSystem();
+
+      // TODO: make sure to set turn to world somehow - else you can just
+      // interact without consequence - mobs need a turn!
     }
   }
 
