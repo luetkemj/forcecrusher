@@ -8,6 +8,7 @@ import {
   getWearing,
   em,
   entityNamePlate,
+  colorEntityName,
 } from "../../lib/utils";
 import { getArmorClass } from "../../lib/combat";
 
@@ -395,6 +396,16 @@ export const createRenderSystem = (
         if (getState().gameState === GameState.INTERACT) {
           context = `Which direction?`;
           controls = `(${em("escape")})Cancel (${em("arrows/hjkl")})Direction`;
+        }
+
+        if (getState().gameState === GameState.INTERACT_ACTION) {
+          // if more than one interactTarget - pick one
+          const { interactTargets, interactActions } = getState();
+          const inspectTarget = interactTargets[0];
+          if (!inspectTarget) return; // TODO: log? what to do here..
+
+          context = `There is a ${colorEntityName(inspectTarget)} there:`;
+          controls = `(${em("escape")})Cancel ${interactActions}`;
         }
 
         controlsView?.updateRows(

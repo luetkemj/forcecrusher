@@ -23,8 +23,6 @@ const moveKeys = [
   "l",
 ];
 
-const interactKeys = ["c"];
-
 export const createUserInputSystem = (
   world: IGameWorld["world"],
   registry: IGameWorld["registry"],
@@ -104,10 +102,9 @@ export const createUserInputSystem = (
         setState((state: State) => (state.logActiveIndex = index));
       }
 
-      if (interactKeys.includes(key)) {
+      if (key === "e") {
         setState((state: State) => {
           state.gameState = GameState.INTERACT;
-          state.interactKey = key;
         });
       }
 
@@ -161,7 +158,7 @@ export const createUserInputSystem = (
     }
 
     if (gameState === GameState.INTERACT) {
-      if (key === "Escape") {
+      if (key === "e" || key === "Escape") {
         setState((state: State) => {
           state.gameState = GameState.GAME;
         });
@@ -170,38 +167,81 @@ export const createUserInputSystem = (
       for (const entity of pcQuery) {
         if (entity?.position) {
           const { x, y, z } = entity.position;
-          const { interactKey } = getState();
+          let newPos;
           if (key === "h" || key === "ArrowLeft") {
-            const newPos = { x: x - 1, y, z };
-            if (interactKey === "c") {
-              world.addComponent(entity, "tryClose", newPos);
-            }
+            newPos = { x: x - 1, y, z };
           }
           if (key === "j" || key === "ArrowDown") {
-            const newPos = { x, y: y + 1, z };
-            if (interactKey === "c") {
-              world.addComponent(entity, "tryClose", newPos);
-            }
+            newPos = { x, y: y + 1, z };
           }
           if (key === "k" || key === "ArrowUp") {
-            const newPos = { x, y: y - 1, z };
-            if (interactKey === "c") {
-              world.addComponent(entity, "tryClose", newPos);
-            }
+            newPos = { x, y: y - 1, z };
           }
           if (key === "l" || key === "ArrowRight") {
-            const newPos = { x: x + 1, y, z };
-            if (interactKey === "c") {
-              world.addComponent(entity, "tryClose", newPos);
-            }
+            newPos = { x: x + 1, y, z };
+          }
+
+          if (moveKeys.includes(key)) {
+            world.addComponent(entity, "interactDirection", newPos);
+            setState(
+              (state: State) => (state.gameState = GameState.INTERACT_ACTION),
+            );
           }
         }
       }
+    }
 
-      setState((state: State) => {
-        state.gameState = GameState.GAME;
-        state.interactKey = "";
-      });
+    if (gameState === GameState.INTERACT_ACTION) {
+      if (key === "e" || key === "Escape") {
+        setState((state: State) => {
+          state.gameState = GameState.GAME;
+        });
+      }
+
+      const { interactActions, interactTargets } = getState();
+      const [target] = interactTargets;
+      const [actor] = pcQuery;
+
+      const afterInteractCleanUp = () => {
+        setState((state: State) => {
+          state.interactActions = "";
+          state.interactTargets = [];
+          state.gameState = GameState.GAME;
+          state.turn = Turn.WORLD;
+        });
+      };
+
+      // get
+      if (interactActions.includes("§g§")) {
+        if (key === "g") {
+          world.addComponent(target, "tryPickUp", {
+            pickerId: actor.id,
+          });
+
+          afterInteractCleanUp();
+        }
+      }
+      // attack
+      if (interactActions.includes("§a§")) {
+        if (key === "a") {
+          world.addComponent(actor, "attackTarget", target);
+          afterInteractCleanUp();
+        }
+      }
+      // close
+      if (interactActions.includes("§c§")) {
+        if (key === "c") {
+          world.addComponent(actor, "tryClose", target);
+          afterInteractCleanUp();
+        }
+      }
+      // open
+      if (interactActions.includes("§o§")) {
+        if (key === "o") {
+          world.addComponent(actor, "tryOpen", { id: target.id });
+          afterInteractCleanUp();
+        }
+      }
     }
 
     if (gameState === GameState.INSPECT || gameState === GameState.TARGET) {

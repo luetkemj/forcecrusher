@@ -14,6 +14,7 @@ import { createDamageSystem } from "./ecs/systems/damage.system";
 import { createDropSystem } from "./ecs/systems/drop.system";
 import { createOpenSystem } from "./ecs/systems/open.system";
 import { createFovSystem } from "./ecs/systems/fov.system";
+import { createInteractSystem } from "./ecs/systems/interact.system";
 import { createMorgueSystem } from "./ecs/systems/morgue.system";
 import { createMovementSystem } from "./ecs/systems/movement.system";
 import { createPickUpSystem } from "./ecs/systems/pickUp.system";
@@ -50,12 +51,16 @@ window.skulltooth.state = getState();
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld.world);
 const aiSystem = createAiSystem(gameWorld.world);
 const attackSystem = createAttackSystem(gameWorld.world, gameWorld.registry);
-const closeSystem = createCloseSystem(gameWorld.world, gameWorld.registry);
+const closeSystem = createCloseSystem(gameWorld.world);
 const cursorSystem = createCursorSystem(gameWorld.world);
 const damageSystem = createDamageSystem(gameWorld.world, gameWorld.registry);
 const openSystem = createOpenSystem(gameWorld.world, gameWorld.registry);
 const dropSystem = createDropSystem(gameWorld.world, gameWorld.registry);
 const fovSystem = createFovSystem(gameWorld.world);
+const interactSystem = createInteractSystem(
+  gameWorld.world,
+  gameWorld.registry,
+);
 const morgueSystem = createMorgueSystem(gameWorld.world, gameWorld.registry);
 const movementSystem = createMovementSystem(gameWorld.world);
 const pickUpSystem = createPickUpSystem(gameWorld.world, gameWorld.registry);
@@ -310,12 +315,29 @@ function gameLoop() {
   if (getState().gameState === GameState.INTERACT) {
     if (getState().userInput && getState().turn === Turn.PLAYER) {
       userInputSystem();
+      interactSystem();
+      fovSystem();
+      renderSystem();
+    }
+  }
+
+  if (getState().gameState === GameState.INTERACT_ACTION) {
+    if (getState().userInput && getState().turn === Turn.PLAYER) {
+      userInputSystem();
+      interactSystem();
+      activeEffectsSystem(); // NOTE: this might not be in the right spot.
+      pickUpSystem();
+      movementSystem();
       closeSystem();
+      openSystem();
+      attackSystem();
+      damageSystem();
+      morgueSystem();
+      dropSystem();
       fovSystem();
       renderSystem();
 
-      // TODO: make sure to set turn to world somehow - else you can just
-      // interact without consequence - mobs need a turn!
+      // game state and turns are updated in userInput system
     }
   }
 

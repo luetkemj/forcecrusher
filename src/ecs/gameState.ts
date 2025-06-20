@@ -1,5 +1,6 @@
 import { type Pos } from "../lib/grid";
 import { View } from "../lib/canvas";
+import { Entity } from "./engine";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -14,6 +15,7 @@ export const enum GameState {
   TARGET = "TARGET",
   LOG_HISTORY = "LOG_HISTORY",
   INTERACT = "INTERACT",
+  INTERACT_ACTION = "INTERACT_ACTION",
 }
 
 export type State = {
@@ -24,6 +26,8 @@ export type State = {
   logActiveIndex: number;
   inventoryActiveIndex: number;
   interactKey: string;
+  interactTargets: Array<Entity>;
+  interactActions: string;
   senses: {
     feel: string;
     see: string;
@@ -62,6 +66,8 @@ const state: State = {
   logActiveIndex: 0,
   inventoryActiveIndex: 0,
   interactKey: "",
+  interactTargets: [],
+  interactActions: "",
   senses: {
     feel: "You feel nothing.",
     see: "You see nothing.",

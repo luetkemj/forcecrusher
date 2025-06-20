@@ -2,6 +2,7 @@ import { World } from "miniplex";
 import { DamageType, OpenState, WeaponClass, WeaponType } from "./enums";
 import { type State, getState, setState } from "./gameState";
 import { generateDungeon } from "../pcgn/dungeon";
+import { Pos } from "../lib/grid";
 
 export interface IGameWorld {
   world: World<Entity>;
@@ -97,6 +98,7 @@ export type Entity = {
   immunities?: Array<DamageType>;
   inFov?: true;
   intelligence?: number;
+  interactDirection?: Pos;
   layer100?: true;
   layer200?: true;
   layer300?: true;
@@ -120,15 +122,15 @@ export type Entity = {
   name: string;
   paused?: true; // TODO: is this used anywhere?
   pc?: true;
-  position?: { x: number; y: number; z: number };
+  position?: Pos;
   resistances?: Array<DamageType>;
   revealed?: true;
   stairsDown?: true;
   stairsUp?: true;
   strength?: number;
-  tryClose?: { x: number; y: number; z: number };
+  tryClose?: Entity;
   tryDrop?: { dropperId: string };
-  tryMove?: { x: number; y: number; z: number };
+  tryMove?: Pos;
   tryOpen?: { id: string };
   tryPickUp?: { pickerId: string };
   tryThrow?: { throwerId: string };
