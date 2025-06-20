@@ -52,6 +52,7 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] color coded logs (ale-dsi/brogue-esque)
   - [x] support writing mutiple colors to a text row
 - [ ] dungeons v2
+    - [x] tags refactor
     - [ ] room of different shapes (circular)
     - [ ] caverns
     - [ ] water
@@ -66,6 +67,7 @@ This is aspirational only. Expect anything and everything in this document to be
     - [ ] Breakable doors
     - [ ] AI that can open doors (or not)
 - [ ] morgue file (game over screen)
+- [ ] Plague doctor outfit to guard against potions and gas attacks
 - [ ] money
 - [ ] points(?)
 - [ ] high scores list
