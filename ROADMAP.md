@@ -52,20 +52,19 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] color coded logs (ale-dsi/brogue-esque)
   - [x] support writing mutiple colors to a text row
 - [ ] dungeons v2
-    - [ ] doors from skrimshank
-        - [x] Place doors
-        - [ ] Open and closeable doors
-        - [ ] Lockable doors
-        - [ ] Different kinds of doors (metal, wooden, stone, etc)
-        - [ ] Jammable doors (what's that UI look like?)
-        - [ ] Breakable doors
-        - [ ] AI that can open doors (or not)
     - [ ] room of different shapes (circular)
     - [ ] caverns
     - [ ] water
     - [ ] walls of different materials
     - [ ] cave ins (deteriorated walls etc)
-    - [ ] doors of different kinds (wooden, portculis, locked, jammed)
+- [ ] doors
+    - [x] Place doors
+    - [x] Open and closeable doors
+    - [ ] Lockable doors
+    - [ ] doors of different kinds (wooden, metal, portculis, locked, jammed)
+    - [ ] Jammable doors (what's that UI look like?)
+    - [ ] Breakable doors
+    - [ ] AI that can open doors (or not)
 - [ ] morgue file (game over screen)
 - [ ] money
 - [ ] points(?)
