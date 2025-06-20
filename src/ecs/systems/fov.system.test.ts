@@ -35,7 +35,7 @@ describe("fov.system", () => {
   });
 
   test("does not reveal entity out of FOV range", () => {
-    entity.position = { x: 20, y: 20, z: 0 };
+    entity.position = { x: 120, y: 120, z: 0 };
     createFovSystem(gameWorld.world)();
     const found = gameWorld.world.entities.find((e) => e.id === entity.id);
     // Should remain revealed: undefined
