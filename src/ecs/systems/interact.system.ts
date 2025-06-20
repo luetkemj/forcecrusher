@@ -1,5 +1,5 @@
 import { isAtSamePosition } from "../../lib/grid";
-import { addLog, colorEntityName, em } from "../../lib/utils";
+import { addLog, em } from "../../lib/utils";
 import { IGameWorld, type Entity } from "../engine";
 import { OpenState } from "../enums";
 import { type State, getState, setState } from "../gameState";
