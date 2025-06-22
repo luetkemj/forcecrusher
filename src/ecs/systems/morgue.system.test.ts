@@ -17,6 +17,7 @@ describe("morgue.system", () => {
       health: { max: 10, current: 1 },
       appearance: { char: "S", tint: 0xffffff, tileSet: "default" },
       container: { name: "Bag", description: "", contents: [], slots: 5 },
+      ai: true,
     };
     item = {
       id: "item",
