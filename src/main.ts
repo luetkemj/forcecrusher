@@ -15,6 +15,7 @@ import { createDropSystem } from "./ecs/systems/drop.system";
 import { createFovSystem } from "./ecs/systems/fov.system";
 import { createInteractSystem } from "./ecs/systems/interact.system";
 import { createKickSystem } from "./ecs/systems/kick.system";
+import { createKnockbackSystem } from "./ecs/systems/knockback.system";
 import { createMorgueSystem } from "./ecs/systems/morgue.system";
 import { createMovementSystem } from "./ecs/systems/movement.system";
 import { createOpenSystem } from "./ecs/systems/open.system";
@@ -63,6 +64,10 @@ const interactSystem = createInteractSystem(
   gameWorld.registry,
 );
 const kickSystem = createKickSystem(gameWorld.world, gameWorld.registry);
+const knockbackSystem = createKnockbackSystem(
+  gameWorld.world,
+  gameWorld.registry,
+);
 const morgueSystem = createMorgueSystem(gameWorld.world, gameWorld.registry);
 const movementSystem = createMovementSystem(gameWorld.world);
 const pickUpSystem = createPickUpSystem(gameWorld.world, gameWorld.registry);
@@ -334,6 +339,7 @@ function gameLoop() {
       openSystem();
       kickSystem();
       attackSystem();
+      knockbackSystem();
       damageSystem();
       morgueSystem();
       dropSystem();
@@ -359,7 +365,8 @@ function gameLoop() {
       pickUpSystem();
       movementSystem();
       openSystem();
-      attackSystem();
+      attackSystem(); // might need to run this again after knockbackSystem...
+      knockbackSystem();
       damageSystem();
       morgueSystem();
       dropSystem();
@@ -380,7 +387,9 @@ function gameLoop() {
       movementSystem();
       openSystem();
       attackSystem();
+      knockbackSystem();
       damageSystem();
+      morgueSystem();
       dropSystem();
       fovSystem();
       renderSystem();

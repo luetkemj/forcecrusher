@@ -40,6 +40,7 @@ export const createMorgueSystem = (
 
         world.removeComponent(entity, "ai");
         world.removeComponent(entity, "blocking");
+        world.removeComponent(entity, "opaque");
         world.removeComponent(entity, "layer300");
 
         world.addComponent(entity, "dead", true);

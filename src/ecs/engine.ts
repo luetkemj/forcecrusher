@@ -1,5 +1,11 @@
 import { World } from "miniplex";
-import { DamageType, OpenState, WeaponClass, WeaponType } from "./enums";
+import {
+  DamageType,
+  EffectType,
+  OpenState,
+  WeaponClass,
+  WeaponType,
+} from "./enums";
 import { type State, getState, setState } from "./gameState";
 import { generateDungeon } from "../pcgn/dungeon";
 import { Pos } from "../lib/grid";
@@ -35,6 +41,7 @@ export type Attack = {
   verb: string;
   magical?: true;
   natural?: true;
+  knockbackDistance?: number; // TODO: this should be based on target weight and actor strenth/skill
   // TODO: add effects to attacks, like poison
 };
 
@@ -99,17 +106,23 @@ export type Entity = {
   };
   id: string;
   immunities?: Array<DamageType>;
+  effectImmunities?: Array<EffectType>;
   inFov?: true;
   intelligence?: number;
   interactDirection?: Pos;
   kickable?: {
-    knockbackDistance?: number; // e.g. how far to shove it
-    immovable?: boolean; // e.g. statues or bolted-down objects
     breakable?: boolean; // can this be broken by kicking?
     harmfulToKicker?: boolean; // cactus, spike traps, etc.
+    immovable?: boolean; // e.g. statues or bolted-down objects
+    isTrapped?: { trapId: string };
+    knockbackDistance?: number; // e.g. how far to shove it
     maxDamageOnKick?: number; // damage the kicker takes (optional)
     noiseLevel?: number; // 0 = silent, 10 = alerts everything
-    isTrapped?: { trapId: string };
+  };
+  knockback?: {
+    actorId: string;
+    targetId: string;
+    distance: number;
   };
   layer100?: true;
   layer200?: true;
@@ -143,6 +156,7 @@ export type Entity = {
   tryAttack?: {
     targetId: string;
     attack?: Attack;
+    immovableTarget?: boolean;
   };
   tryClose?: Entity;
   tryDrop?: { dropperId: string };

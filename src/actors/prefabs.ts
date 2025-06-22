@@ -1,5 +1,5 @@
 import { type Entity } from "../ecs/engine";
-import { DamageType, WeaponClass, OpenState } from "../ecs/enums";
+import { DamageType, WeaponClass, OpenState, EffectType } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
 // NOTE: generics
@@ -103,6 +103,7 @@ export const playerPrefab: Entity = {
       damageRoll: "1d1",
       damageType: DamageType.Bludgeoning,
       natural: true,
+      knockbackDistance: 2,
     },
   ],
 };
@@ -153,6 +154,11 @@ export const ratPrefab: Entity = {
     },
   ],
   damages: [],
+  kickable: {
+    breakable: true,
+    noiseLevel: 2,
+    maxDamageOnKick: 2,
+  },
 };
 
 export const skeletonPrefab: Entity = {
@@ -234,8 +240,8 @@ export const rockPrefab: Entity = {
   layer200: true,
   pickUp: true,
   kickable: {
-    knockbackDistance: 10,
     noiseLevel: 3,
+    breakable: true,
   },
 };
 
@@ -297,6 +303,7 @@ export const clubPrefab: Entity = {
       damageRoll: "1d4",
       damageType: DamageType.Bludgeoning,
       useModifier: true,
+      knockbackDistance: 2,
     },
   ],
 };
@@ -387,6 +394,7 @@ export const doorPrefab: Entity = {
   vulnerabilities: [DamageType.Bludgeoning, DamageType.Force],
   resistances: [DamageType.Piercing],
   immunities: [DamageType.Poison, DamageType.Psychic],
+  effectImmunities: [EffectType.Knockback],
   baseArmorClass: 1,
   damages: [],
 };

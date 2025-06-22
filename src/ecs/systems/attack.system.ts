@@ -44,14 +44,20 @@ export const createAttackSystem = (
 
       const armorClass = getArmorClass(target) || 0;
 
-      if (!target.health) return;
-
-      if (attackRoll >= armorClass) {
+      if (attackRoll >= armorClass || target.dead || !target.ai) {
         // NOTE: HIT
         let damages = calcAttackDamage(actor, attack, target, isCrit, weapon);
 
         if (target.damages) {
           target.damages.push(...damages);
+        }
+
+        if (attack.knockbackDistance) {
+          world.addComponent(target, "knockback", {
+            actorId: actor.id,
+            targetId: target.id,
+            distance: attack.knockbackDistance,
+          });
         }
       } else {
         // NOTE: MISS

@@ -19,9 +19,27 @@ export const createKickSystem = (
         const targetPosition = target.position;
         if (!actorPosition || !targetPosition) return;
 
+        // breakable is no good - cause it's odd thing to add
+        if (target.kickable.breakable) {
+          const kickAttack = actor.attacks?.find(
+            (attack) => attack.name === "Kick",
+          );
+
+          if (kickAttack) {
+            world.addComponent(actor, "tryAttack", {
+              targetId: target.id,
+              attack: kickAttack,
+              immovableTarget: target.kickable.immovable,
+            });
+          }
+        }
+
+        if (target.kickable.harmfulToKicker) {
+        }
+
         // Immovable = actor takes damage
         if (target.kickable.immovable) {
-          // use a damage roll and roll attack damage (like in the attack system)
+          // TODO: use a damage roll and roll attack damage (like in the attack system)
           if (target.kickable.maxDamageOnKick) {
             const damageAmount = random(1, target.kickable.maxDamageOnKick);
 
@@ -46,17 +64,10 @@ export const createKickSystem = (
           }
         }
 
-        if (target.kickable.breakable) {
-          const kickAttack = actor.attacks?.find(
-            (attack) => attack.name === "Kick",
-          );
+        if (target.kickable.isTrapped) {
+        }
 
-          if (kickAttack) {
-            world.addComponent(actor, "tryAttack", {
-              targetId: target.id,
-              attack: kickAttack,
-            });
-          }
+        if (target.kickable.noiseLevel) {
         }
 
         // TODO: handle knockback, noise, breakage, etc.

@@ -113,12 +113,16 @@ export const createDamageSystem = (
             }
           }
 
-          // Damage summary
-          logParts.push(`for ${totalDamage}hp!`);
-          if (vulnerable) logParts.unshift(`Vulnerable!`);
-          if (resistant) logParts.unshift(`Resistant!`);
-          if (immune) logParts.unshift(`Immune!`);
-          if (damage.critical) logParts.unshift(`Critical!`);
+          if (target.dead) {
+            logParts.push("but it's already dead.");
+          } else {
+            // Damage summary
+            logParts.push(`for ${totalDamage}hp!`);
+            if (vulnerable) logParts.unshift(`Vulnerable!`);
+            if (resistant) logParts.unshift(`Resistant!`);
+            if (immune) logParts.unshift(`Immune!`);
+            if (damage.critical) logParts.unshift(`Critical!`);
+          }
 
           addLog(logParts.join(" "));
         }

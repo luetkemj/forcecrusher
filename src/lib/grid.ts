@@ -319,6 +319,14 @@ export const getDirection = (posA: Pos, posB: Pos): Direction => {
   return { dir, x: ax - bx, y: ay - by };
 };
 
+export function moveInDirection(start: Pos, dir: Direction, n: number): Pos {
+  return {
+    x: start.x + dir.x * n,
+    y: start.y + dir.y * n,
+    z: 0,
+  };
+}
+
 // is this right? wonder if maybe it should be reversed...
 // you go from point a to point b... right?
 export const getVelocity = (posA: Pos, posB: Pos): Point => {

@@ -264,9 +264,9 @@ export const createUserInputSystem = (
         }
 
         if (key === "Enter") {
-          // get first item in inventory and add a tryThrow component
+          // get selected item in inventory and add a tryThrow component
           // with a throwerId and targetPosition
-          const entityId = player.container?.contents[0];
+          const entityId = player.container?.contents[getState().inventoryActiveIndex];
           if (entityId) {
             const entity = registry.get(entityId);
 

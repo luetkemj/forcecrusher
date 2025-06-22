@@ -88,7 +88,6 @@ export const buildDungeon = (
     rooms: [],
   };
 
-  console.log(JSON.parse(JSON.stringify(dungeon)));
   // During generation
   const tilesMap = new Map<string, any>(Object.entries(dungeon.tiles));
 
@@ -226,9 +225,6 @@ export const generateDungeon = (zoneId: string) => {
     const { x, y, z } = tile;
     // create doors
     if (tile.tags.has(DungeonTags.Perimeter)) {
-      const posId = toPosId({ x, y, z });
-      const entity = entityMap.get(posId);
-      // entity.appearance.tint = 0x00ff00;
       // if two of your neighbors are walls you are a door
       const neighbors = getNeighbors(
         { x, y, z },
@@ -245,7 +241,6 @@ export const generateDungeon = (zoneId: string) => {
       }
 
       if (tile.tags.has(DungeonTags.Floor) && wallCount === 2) {
-        entity.appearance.tint = 0x00ff00;
         spawn("door", { position: { x, y, z } });
       }
     }

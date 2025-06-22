@@ -61,15 +61,16 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] doors
     - [x] Place doors
     - [x] Open and closeable doors
+    - [x] Breakable doors
     - [ ] Lockable doors
     - [ ] doors of different kinds (wooden, metal, portculis, locked, jammed)
     - [ ] Jammable doors (what's that UI look like?)
-    - [ ] Breakable doors
     - [ ] AI that can open doors (or not)
 - [ ] Kick System
     - [x] Basic system to kick doors and walls etc
-    - [ ] Handle breaking things that are kicked
-    - [ ] Handle damage in a system
+    - [x] Handle damage in a system
+    - [x] Knockback system
+    - [x] Handle breaking things that are kicked
     - [ ] Should offer some sort of information (is it jammed, or stuck etc)
     - [ ] Sound (alert enemies) Sound System
 - [ ] morgue file (game over screen)

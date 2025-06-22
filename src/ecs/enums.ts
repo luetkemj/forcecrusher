@@ -23,6 +23,10 @@ export enum DungeonTags {
   Wall = "wall",
 }
 
+export enum EffectType {
+  Knockback = "knockback",
+}
+
 export enum OpenState {
   Closed = "closed",
   Open = "open",
