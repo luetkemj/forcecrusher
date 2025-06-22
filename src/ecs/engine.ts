@@ -45,8 +45,11 @@ type DamageAmount = {
 
 export type Damage = {
   attacker?: string | null; // Entity ID or null (environment)
+  instigator?: string | null; // Who initiated the action (e.g., who kicked the door)
+  responder?: string | null; // What was interacted with (e.g., the door)
+  attack?: Attack; // Optional, not used for environmental damage
+  target: string; // Who takes the damage
   weapon?: string;
-  critical: boolean;
   critical?: boolean;
   damageAmounts: Array<DamageAmount>;
   reason?: string; // Optional narrative text
