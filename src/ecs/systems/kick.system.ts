@@ -21,6 +21,7 @@ export const createKickSystem = (
 
         // Immovable = actor takes damage
         if (target.kickable.immovable) {
+          // use a damage roll and roll attack damage (like in the attack system)
           if (target.kickable.maxDamageOnKick) {
             const damageAmount = random(1, target.kickable.maxDamageOnKick);
 
@@ -42,6 +43,22 @@ export const createKickSystem = (
 
             if (!actor.damages) actor.damages = [];
             actor.damages.push(damage);
+          }
+        }
+
+        if (target.kickable.breakable) {
+          console.log("is breakable");
+          const kickAttack = actor.attacks?.find(
+            (attack) => attack.name === "Kick",
+          );
+
+          console.log(kickAttack);
+
+          if (kickAttack) {
+            world.addComponent(actor, "tryAttack", {
+              targetId: target.id,
+              attack: kickAttack,
+            });
           }
         }
 

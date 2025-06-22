@@ -23,7 +23,7 @@ export const createMovementSystem = (world: IGameWorld["world"]) => {
               id: target.id,
             });
           } else if (target.health) {
-            world.addComponent(actor, "attackTarget", target);
+            world.addComponent(actor, "tryAttack", { targetId: target.id });
           } else {
             if (actor.pc) {
               addLog(`${actor.name} blocked by ${target.name}`);

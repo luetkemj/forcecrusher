@@ -33,7 +33,8 @@ export type Attack = {
   damageType: DamageType;
   useModifier?: true;
   verb: string;
-  magical: boolean;
+  magical?: true;
+  natural?: true;
   // TODO: add effects to attacks, like poison
 };
 
@@ -72,7 +73,6 @@ export type Entity = {
   };
   attack?: Attack;
   attacks?: Array<Attack>;
-  attackTarget?: Entity;
   averageDamage?: number;
   baseArmorClass?: number;
   blocking?: true;
@@ -140,6 +140,10 @@ export type Entity = {
   stairsDown?: true;
   stairsUp?: true;
   strength?: number;
+  tryAttack?: {
+    targetId: string;
+    attack?: Attack;
+  };
   tryClose?: Entity;
   tryDrop?: { dropperId: string };
   tryKick?: { targetId: string };

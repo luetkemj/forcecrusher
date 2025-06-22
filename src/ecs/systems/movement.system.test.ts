@@ -46,7 +46,7 @@ describe("movement.system", () => {
     blocker.health = { max: 10, current: 10 };
     createMovementSystem(gameWorld.world)();
     expect(mover.tryMove).toBeUndefined();
-    expect(mover.attackTarget).toEqual(blocker);
+    expect(mover.tryAttack?.targetId).toEqual(blocker.id);
   });
 
   test("logs message if player is blocked by non-attackable entity", () => {

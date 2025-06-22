@@ -214,7 +214,7 @@ export const createUserInputSystem = (
       // attack
       if (interactActions.includes("§a§")) {
         if (key === "a") {
-          world.addComponent(actor, "attackTarget", target);
+          world.addComponent(actor, "tryAttack", { targetId: target.id });
           afterInteractCleanUp();
         }
       }

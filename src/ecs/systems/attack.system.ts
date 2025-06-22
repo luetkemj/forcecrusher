@@ -13,22 +13,27 @@ export const createAttackSystem = (
   world: IGameWorld["world"],
   registry: IGameWorld["registry"],
 ) => {
-  const attackQuery = world.with("attackTarget");
+  const attackQuery = world.with("tryAttack");
 
   return function system() {
-    for (const attacker of attackQuery) {
-      const target = attacker.attackTarget;
+    for (const actor of attackQuery) {
+      const target = registry.get(actor.tryAttack.targetId);
+      const attack = actor.tryAttack.attack || getAttack(actor, registry);
+      const weapon =
+        attack && attack.natural ? undefined : getWeapon(actor, registry);
+
+      if (!target) {
+        console.log(`${actor.name} has no target`);
+        return;
+      }
 
       let playerInCombat = false;
-      if (attacker.pc || target.pc) {
+      if (actor.pc || target?.pc) {
         playerInCombat = true;
       }
 
-      const weapon = getWeapon(attacker, registry);
-      let attack = getAttack(attacker, registry);
-
       if (!attack) {
-        console.log(`${attacker.name} has no means of attack`);
+        console.log(`${actor.name} has no means of attack`);
         return;
       }
 
@@ -43,13 +48,7 @@ export const createAttackSystem = (
 
       if (attackRoll >= armorClass) {
         // NOTE: HIT
-        let damages = calcAttackDamage(
-          attacker,
-          attack,
-          target,
-          isCrit,
-          weapon,
-        );
+        let damages = calcAttackDamage(actor, attack, target, isCrit, weapon);
 
         if (target.damages) {
           target.damages.push(...damages);
@@ -57,11 +56,11 @@ export const createAttackSystem = (
       } else {
         // NOTE: MISS
         if (playerInCombat) {
-          addLog(`${attacker.name} misses ${target.name}!`);
+          addLog(`${actor.name} misses ${target.name}!`);
         }
       }
 
-      world.removeComponent(attacker, "attackTarget");
+      world.removeComponent(actor, "tryAttack");
     }
   };
 };
@@ -73,20 +72,20 @@ function getWeapon(entity: Entity, registry: IGameWorld["registry"]) {
   }
 }
 
-function getAttack(entity: Entity, registry: IGameWorld["registry"]) {
-  const weapon = getWeapon(entity, registry);
+function getAttack(actor: Entity, registry: IGameWorld["registry"]) {
+  const weapon = getWeapon(actor, registry);
   let attack;
   if (weapon) {
     attack = sample(weapon.attacks);
   } else {
-    attack = sample(entity.attacks);
+    attack = sample(actor.attacks);
   }
 
   return attack || false;
 }
 
 function calcAttackDamage(
-  attacker: Entity,
+  actor: Entity,
   attack: Attack,
   target: Entity,
   isCrit: boolean,
@@ -96,15 +95,17 @@ function calcAttackDamage(
   let mod = 0;
 
   if (attack.attackType === "melee") {
-    if (attack.useModifier && attacker.strength) {
-      mod = getModifier(attacker.strength);
+    if (attack.useModifier && actor.strength) {
+      mod = getModifier(actor.strength);
     }
   } else {
-    console.log("not a melee attack", attacker, attack);
+    console.log("not a melee attack", actor, attack);
   }
 
   const damage: Damage = {
-    attacker: attacker.id,
+    attacker: actor.id,
+    instigator: actor.id,
+    responder: target.id,
     attack,
     target: target.id,
     critical: isCrit,

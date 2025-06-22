@@ -32,7 +32,6 @@ describe("attack.system", () => {
           damageRoll: "1d4",
           damageType: DamageType.Bludgeoning,
           verb: "hits",
-          magical: false,
           useModifier: true,
         },
       ],
@@ -61,7 +60,6 @@ describe("attack.system", () => {
           damageRoll: "1d6+2",
           damageType: DamageType.Piercing,
           useModifier: true,
-          magical: false,
         },
       ],
     };
@@ -85,7 +83,9 @@ describe("attack.system", () => {
     // Set dice roll to hit
     (globalThis as any).__mockedDiceRoll = 15;
     // Set up attack target
-    attacker.attackTarget = target;
+    gameWorld.world.addComponent(attacker, "tryAttack", {
+      targetId: target.id,
+    });
     createAttackSystem(gameWorld.world, gameWorld.registry)();
     expect(target.damages?.length).toBeGreaterThan(0);
     const damage = target.damages?.[0];
@@ -98,7 +98,9 @@ describe("attack.system", () => {
     // Set dice roll to hit
     (globalThis as any).__mockedDiceRoll = 15;
     // Set up attack target
-    armedAttacker.attackTarget = target;
+    gameWorld.world.addComponent(armedAttacker, "tryAttack", {
+      targetId: target.id,
+    });
     createAttackSystem(gameWorld.world, gameWorld.registry)();
     expect(target.damages?.length).toBeGreaterThan(0);
     const damage = target.damages?.[0];
@@ -110,7 +112,9 @@ describe("attack.system", () => {
   test("attacker misses target", () => {
     // Set dice roll to miss
     (globalThis as any).__mockedDiceRoll = 5;
-    attacker.attackTarget = target;
+    gameWorld.world.addComponent(attacker, "tryAttack", {
+      targetId: target.id,
+    });
     createAttackSystem(gameWorld.world, gameWorld.registry)();
     expect(target.damages?.length).toBe(0);
   });
@@ -118,7 +122,9 @@ describe("attack.system", () => {
   test("critical hit sets critical flag", () => {
     // Set dice roll to 20 for crit
     (globalThis as any).__mockedDiceRoll = 20;
-    attacker.attackTarget = target;
+    gameWorld.world.addComponent(attacker, "tryAttack", {
+      targetId: target.id,
+    });
     createAttackSystem(gameWorld.world, gameWorld.registry)();
     const damage = target.damages?.[0];
     expect(damage?.critical).toBe(true);
@@ -126,7 +132,9 @@ describe("attack.system", () => {
 
   test("no attack does nothing", () => {
     attacker.attacks = [];
-    attacker.attackTarget = target;
+    gameWorld.world.addComponent(attacker, "tryAttack", {
+      targetId: target.id,
+    });
     createAttackSystem(gameWorld.world, gameWorld.registry)();
     expect(target.damages?.length).toBe(0);
   });

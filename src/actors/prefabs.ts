@@ -94,6 +94,17 @@ export const playerPrefab: Entity = {
     slots: 1,
   },
   damages: [],
+  attacks: [
+    {
+      name: "Kick",
+      verb: "kicks",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d1",
+      damageType: DamageType.Bludgeoning,
+      natural: true,
+    },
+  ],
 };
 
 // NOTE: Actors / Creatures
@@ -131,7 +142,6 @@ export const ratPrefab: Entity = {
       attackType: "melee",
       damageRoll: "1d1",
       damageType: DamageType.Piercing,
-      magical: false,
     },
     {
       name: "Claw",
@@ -140,7 +150,6 @@ export const ratPrefab: Entity = {
       attackType: "melee",
       damageRoll: "1d1",
       damageType: DamageType.Slashing,
-      magical: false,
     },
   ],
   damages: [],
@@ -246,7 +255,6 @@ export const shortswordPrefab: Entity = {
       damageRoll: "1d6+2",
       damageType: DamageType.Piercing,
       useModifier: true,
-      magical: false,
     },
     {
       name: "Slash",
@@ -256,7 +264,6 @@ export const shortswordPrefab: Entity = {
       damageRoll: "1d6+2",
       damageType: DamageType.Slashing,
       useModifier: true,
-      magical: false,
     },
     {
       name: "Bash",
@@ -266,7 +273,6 @@ export const shortswordPrefab: Entity = {
       damageRoll: "1d4+2",
       damageType: DamageType.Bludgeoning,
       useModifier: true,
-      magical: false,
     },
   ],
 };
@@ -291,7 +297,6 @@ export const clubPrefab: Entity = {
       damageRoll: "1d4",
       damageType: DamageType.Bludgeoning,
       useModifier: true,
-      magical: false,
     },
   ],
 };
@@ -309,7 +314,6 @@ export const daggerPrefab: Entity = {
       attackType: "melee",
       damageRoll: "1d4",
       damageType: DamageType.Bludgeoning,
-      magical: false,
     },
     {
       name: "Stab",
@@ -319,7 +323,6 @@ export const daggerPrefab: Entity = {
       damageRoll: "1d4",
       damageType: DamageType.Piercing,
       useModifier: true,
-      magical: false,
     },
     {
       name: "Slash",
@@ -329,7 +332,6 @@ export const daggerPrefab: Entity = {
       damageRoll: "1d4",
       damageType: DamageType.Slashing,
       useModifier: true,
-      magical: false,
     },
   ],
 };
