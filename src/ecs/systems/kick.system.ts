@@ -47,12 +47,9 @@ export const createKickSystem = (
         }
 
         if (target.kickable.breakable) {
-          console.log("is breakable");
           const kickAttack = actor.attacks?.find(
             (attack) => attack.name === "Kick",
           );
-
-          console.log(kickAttack);
 
           if (kickAttack) {
             world.addComponent(actor, "tryAttack", {

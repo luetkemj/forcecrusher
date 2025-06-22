@@ -378,6 +378,7 @@ export const doorPrefab: Entity = {
     immovable: true,
     breakable: true,
     noiseLevel: 7,
+    maxDamageOnKick: 2,
   },
   health: {
     max: 25,
