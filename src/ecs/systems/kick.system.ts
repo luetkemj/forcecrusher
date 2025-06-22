@@ -1,5 +1,4 @@
 import { random } from "lodash";
-import { addLog, colorEntityName } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 import { DamageType } from "../enums";
 
