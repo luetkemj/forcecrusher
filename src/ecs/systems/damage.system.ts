@@ -11,69 +11,51 @@ export const createDamageSystem = (
   return function system() {
     for (const target of damageQuery) {
       for (const damage of target.damages) {
-        const attacker = registry.get(damage.attacker);
+        const attacker = damage.attacker ? registry.get(damage.attacker) : null;
+        const instigator = damage.instigator
+          ? registry.get(damage.instigator)
+          : null;
+        const responder = damage.responder
+          ? registry.get(damage.responder)
+          : null;
         const attack = damage.attack;
-        let weapon;
-        if (damage.weapon) {
-          weapon = registry.get(damage.weapon);
-        }
-
-        if (!attacker) {
-          console.log("no attacker");
-          return;
-        }
+        const weapon = damage.weapon ? registry.get(damage.weapon) : null;
 
         // actually process the damage
-        let computedDamage = 0;
+        let totalDamage = 0;
 
-        // flags
+        // flags for logging
         let vulnerable = false;
         let resistant = false;
         let immune = false;
 
         for (const damageAmount of damage.damageAmounts) {
-          computedDamage = damageAmount.amount;
+          let computedDamage = damageAmount.amount;
 
-          // TODO: get armor resistances etc
-
-          const vulnerabilities = new Set();
-          const resistances = new Set();
-          const immunities = new Set();
+          const vulnerabilities = new Set<DamageType>();
+          const resistances = new Set<DamageType>();
+          const immunities = new Set<DamageType>();
 
           const armor = getWearing(target);
 
-          // collate vulnerability
-          if (armor && armor.vulnerabilities) {
-            armor.vulnerabilities.forEach((v: DamageType) =>
-              vulnerabilities.add(v),
-            );
-          }
-          if (target.vulnerabilities) {
-            target.vulnerabilities.forEach((v: DamageType) =>
-              vulnerabilities.add(v),
-            );
-          }
+          if (armor?.vulnerabilities)
+            armor.vulnerabilities.forEach((v) => vulnerabilities.add(v));
+          if (target.vulnerabilities)
+            target.vulnerabilities.forEach((v) => vulnerabilities.add(v));
 
-          // collate resistances
-          if (armor && armor.resistances) {
-            armor.resistances.forEach((r: DamageType) => resistances.add(r));
-          }
-          if (target.resistances) {
-            target.resistances.forEach((r: DamageType) => resistances.add(r));
-          }
+          if (armor?.resistances)
+            armor.resistances.forEach((r) => resistances.add(r));
+          if (target.resistances)
+            target.resistances.forEach((r) => resistances.add(r));
 
-          // collate immunities
-          if (armor && armor.immunities) {
-            armor.immunities.forEach((i: DamageType) => immunities.add(i));
-          }
-          if (target.immunities) {
-            target.immunities.forEach((i: DamageType) => immunities.add(i));
-          }
+          if (armor?.immunities)
+            armor.immunities.forEach((i) => immunities.add(i));
+          if (target.immunities)
+            target.immunities.forEach((i) => immunities.add(i));
 
-          // add to computedDamage
           if (vulnerabilities.has(damageAmount.type)) {
             vulnerable = true;
-            computedDamage = computedDamage * 2;
+            computedDamage *= 2;
           }
           if (resistances.has(damageAmount.type)) {
             resistant = true;
@@ -84,37 +66,65 @@ export const createDamageSystem = (
             computedDamage = 0;
           }
 
-          // double if critical
           if (damage.critical) {
-            computedDamage = computedDamage * 2;
+            computedDamage *= 2;
           }
 
-          // add damage mod
           computedDamage += damageAmount.mod;
+          totalDamage += computedDamage;
 
-          // reduce target health
           if (target.health) {
             target.health.current -= computedDamage;
           }
         }
 
-        // only log if player is in on the attack
-        let infoColorTag = attacker.pc ? "§purple§" : "§red§";
-        if (attacker.pc || target.pc) {
-          let log = `${colorEntity(attacker)}${infoColorTag} ${attack.verb} ${colorEntity(target)}${infoColorTag}`;
-          if (weapon) {
-            log += ` with ${colorEntity(weapon)}${infoColorTag}`;
+        // Log output
+        const pcInvolved = attacker?.pc || instigator?.pc || target.pc;
+
+        if (pcInvolved) {
+          let logParts: string[] = [];
+
+          // Environmental damage
+          if (!attacker && instigator === target) {
+            // e.g. kicked a wall and hurt yourself
+            logParts.push(`§red§You hurt yourself`);
+            if (responder) {
+              logParts.push(`on the ${colorEntity(responder)}§red§`);
+            }
+            if (damage.reason) logParts.push(`(${damage.reason})`);
           }
-          log += ` for ${computedDamage}hp!`;
-          if (vulnerable) log = `${infoColorTag}Vulnerable! ${log}`;
-          if (resistant) log = `${infoColorTag}Resistant! ${log}`;
-          if (immune) log = `${infoColorTag}Immune! ${log}`;
-          if (damage.critical) log = `${infoColorTag}Critical! ${log}`;
-          addLog(log);
+
+          // Passive responder (e.g., trap, door)
+          else if (!attacker && instigator && responder) {
+            logParts.push(
+              `${colorEntity(instigator)}§red§ was hurt by ${colorEntity(responder)}§red§`,
+            );
+            if (damage.reason) logParts.push(`(${damage.reason})`);
+          }
+
+          // Normal attack (entity vs entity)
+          else if (attacker && attack) {
+            let colorTag = attacker.pc ? "§purple§" : "§red§";
+            logParts.push(
+              `${colorEntity(attacker)}${colorTag} ${attack.verb} ${colorEntity(target)}${colorTag}`,
+            );
+            if (weapon) {
+              logParts.push(`with ${colorEntity(weapon)}${colorTag}`);
+            }
+          }
+
+          // Damage summary
+          logParts.push(`for ${totalDamage}hp!`);
+          if (vulnerable) logParts.unshift(`Vulnerable!`);
+          if (resistant) logParts.unshift(`Resistant!`);
+          if (immune) logParts.unshift(`Immune!`);
+          if (damage.critical) logParts.unshift(`Critical!`);
+
+          addLog(logParts.join(" "));
         }
       }
 
-      // reset target damages
+      // clear damage
       target.damages = [];
     }
   };

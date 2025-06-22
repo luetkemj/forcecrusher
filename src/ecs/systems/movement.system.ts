@@ -6,28 +6,27 @@ export const createMovementSystem = (world: IGameWorld["world"]) => {
   const blockingQuery = world.with("blocking", "position");
 
   return function system() {
-    for (const movingEntity of moveableQuery) {
-      const { position, tryMove } = movingEntity;
+    for (const actor of moveableQuery) {
+      const { position, tryMove } = actor;
 
       let blocked = false;
 
-      for (const blockingEntity of blockingQuery) {
+      for (const target of blockingQuery) {
         if (
-          blockingEntity.position.x === tryMove.x &&
-          blockingEntity.position.y === tryMove.y
+          target.position.x === tryMove.x &&
+          target.position.y === tryMove.y
         ) {
-          world.removeComponent(movingEntity, "tryMove");
+          world.removeComponent(actor, "tryMove");
 
-          if (blockingEntity.health) {
-            // meleeAttack(movingEntity, blockingEntity);
-            world.addComponent(movingEntity, "attackTarget", blockingEntity);
-          } else if (blockingEntity.openable) {
-            world.addComponent(movingEntity, "tryOpen", {
-              id: blockingEntity.id,
+          if (target.openable) {
+            world.addComponent(actor, "tryOpen", {
+              id: target.id,
             });
+          } else if (target.health) {
+            world.addComponent(actor, "attackTarget", target);
           } else {
-            if (movingEntity.pc) {
-              addLog(`${movingEntity.name} blocked by ${blockingEntity.name}`);
+            if (actor.pc) {
+              addLog(`${actor.name} blocked by ${target.name}`);
             }
           }
 
@@ -42,7 +41,7 @@ export const createMovementSystem = (world: IGameWorld["world"]) => {
         position.y = tryMove.y;
         position.z = tryMove.z;
 
-        world.removeComponent(movingEntity, "tryMove");
+        world.removeComponent(actor, "tryMove");
       }
     }
   };

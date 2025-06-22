@@ -41,21 +41,15 @@ type DamageAmount = {
   type: DamageType;
   amount: number;
   mod: number;
-
-  // source
-  // instigator
-  // target
-  // type
-  // reason
 };
 
 export type Damage = {
-  attacker: string;
-  attack: Attack;
-  target: string;
+  attacker?: string | null; // Entity ID or null (environment)
   weapon?: string;
   critical: boolean;
+  critical?: boolean;
   damageAmounts: Array<DamageAmount>;
+  reason?: string; // Optional narrative text
 };
 
 export type Entity = {

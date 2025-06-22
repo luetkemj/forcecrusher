@@ -185,8 +185,6 @@ export const getWearing = (entity: Entity) => {
       if (wearing) return wearing;
     }
   }
-
-  return false;
 };
 
 export const wear = (equipper: Entity, equipment: Entity) => {

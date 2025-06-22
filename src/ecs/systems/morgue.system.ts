@@ -15,14 +15,6 @@ export const createMorgueSystem = (
           entity.appearance.char = "%";
         }
 
-        world.removeComponent(entity, "ai");
-        world.removeComponent(entity, "blocking");
-        world.removeComponent(entity, "layer300");
-
-        world.addComponent(entity, "dead", true);
-        world.addComponent(entity, "pickUp", true);
-        world.addComponent(entity, "layer200", true);
-
         unWield(entity);
         unWear(entity);
 
@@ -37,7 +29,22 @@ export const createMorgueSystem = (
         }
 
         const entityTint = entity.appearance?.tint || 0x00ff00;
-        addLog(`${colorTag(entityTint)}${entity.name}§purple§ has died!`);
+
+        if (entity.ai) {
+          addLog(`${colorTag(entityTint)}${entity.name}§purple§ has died!`);
+        } else {
+          addLog(
+            `${colorTag(entityTint)}${entity.name}§purple§ has been destroyed!`,
+          );
+        }
+
+        world.removeComponent(entity, "ai");
+        world.removeComponent(entity, "blocking");
+        world.removeComponent(entity, "layer300");
+
+        world.addComponent(entity, "dead", true);
+        world.addComponent(entity, "pickUp", true);
+        world.addComponent(entity, "layer200", true);
 
         if (entity.pc) {
           setState((state: State) => (state.gameState = GameState.GAME_OVER));

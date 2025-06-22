@@ -1,6 +1,7 @@
 import { random } from "lodash";
 import { addLog, colorEntityName } from "../../lib/utils";
 import { IGameWorld } from "../engine";
+import { DamageType } from "../enums";
 
 export const createKickSystem = (
   world: IGameWorld["world"],
@@ -15,34 +16,41 @@ export const createKickSystem = (
       if (!target) return;
 
       if (target.kickable) {
-        // get actor position
         const actorPosition = actor.position;
         const targetPosition = target.position;
         if (!actorPosition || !targetPosition) return;
-        // get direction
-        // draw line
-        // move until you hit something
-        // stop in front of thing
-        // damage thing
+
+        // Immovable = actor takes damage
         if (target.kickable.immovable) {
           if (target.kickable.maxDamageOnKick) {
-            // TODO: if wearing boots or similar, reduce damage
-            const damage = random(1, target.kickable.maxDamageOnKick);
-            // TODO: this should be in a system (not Damage, cause that assumes a weapon attack... unless I can make that work for this too... which would be ideal)
-            if (actor.health) {
-              actor.health.current -= damage;
-            }
+            const damageAmount = random(1, target.kickable.maxDamageOnKick);
 
-            addLog(
-              `§red§Ouch! ${colorEntityName(actor)}§red§ kicks the ${colorEntityName(target)}§red§ for ${damage}hp!`,
-            );
+            const damage = {
+              attacker: null,
+              instigator: actor.id,
+              responder: target.id,
+              target: actor.id,
+              reason: `kicked ${target.name}`,
+              critical: false,
+              damageAmounts: [
+                {
+                  type: DamageType.Bludgeoning,
+                  amount: damageAmount,
+                  mod: 0,
+                },
+              ],
+            };
+
+            if (!actor.damages) actor.damages = [];
+            actor.damages.push(damage);
           }
         }
+
+        // TODO: handle knockback, noise, breakage, etc.
       } else {
         console.log("unkickable", target);
       }
 
-      // remove item from dropper's inventory
       world.removeComponent(actor, "tryKick");
     }
   };

@@ -377,6 +377,15 @@ export const doorPrefab: Entity = {
     breakable: true,
     noiseLevel: 7,
   },
+  health: {
+    max: 25,
+    current: 25,
+  },
+  vulnerabilities: [DamageType.Bludgeoning, DamageType.Force],
+  resistances: [DamageType.Piercing],
+  immunities: [DamageType.Poison, DamageType.Psychic],
+  baseArmorClass: 1,
+  damages: [],
 };
 
 export const stairsDownPrefab: Entity = {
