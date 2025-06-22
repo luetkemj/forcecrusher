@@ -70,6 +70,7 @@ describe("attack.system", () => {
       health: { max: 10, current: 10 },
       damages: [],
       armorClass: 10,
+      ai: true,
     };
     gameWorld.world.add(attacker);
     gameWorld.world.add(target);
