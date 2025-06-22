@@ -22,6 +22,7 @@ export enum DungeonTags {
   Room = "room",
   Wall = "wall",
 }
+
 export enum OpenState {
   Closed = "closed",
   Open = "open",

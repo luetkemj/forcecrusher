@@ -211,16 +211,6 @@ export const createUserInputSystem = (
         });
       };
 
-      // get
-      if (interactActions.includes("§g§")) {
-        if (key === "g") {
-          world.addComponent(target, "tryPickUp", {
-            pickerId: actor.id,
-          });
-
-          afterInteractCleanUp();
-        }
-      }
       // attack
       if (interactActions.includes("§a§")) {
         if (key === "a") {
@@ -232,6 +222,24 @@ export const createUserInputSystem = (
       if (interactActions.includes("§c§")) {
         if (key === "c") {
           world.addComponent(actor, "tryClose", target);
+          afterInteractCleanUp();
+        }
+      }
+      // get
+      if (interactActions.includes("§g§")) {
+        if (key === "g") {
+          world.addComponent(target, "tryPickUp", {
+            pickerId: actor.id,
+          });
+
+          afterInteractCleanUp();
+        }
+      }
+      // kick
+      if (interactActions.includes("§k§")) {
+        if (key === "k") {
+          world.addComponent(actor, "tryKick", { targetId: target.id });
+
           afterInteractCleanUp();
         }
       }

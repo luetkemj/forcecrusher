@@ -12,11 +12,12 @@ import { createCloseSystem } from "./ecs/systems/close.system";
 import { createCursorSystem } from "./ecs/systems/cursor.system";
 import { createDamageSystem } from "./ecs/systems/damage.system";
 import { createDropSystem } from "./ecs/systems/drop.system";
-import { createOpenSystem } from "./ecs/systems/open.system";
 import { createFovSystem } from "./ecs/systems/fov.system";
 import { createInteractSystem } from "./ecs/systems/interact.system";
+import { createKickSystem } from "./ecs/systems/kick.system";
 import { createMorgueSystem } from "./ecs/systems/morgue.system";
 import { createMovementSystem } from "./ecs/systems/movement.system";
+import { createOpenSystem } from "./ecs/systems/open.system";
 import { createPickUpSystem } from "./ecs/systems/pickUp.system";
 import { createRenderSystem } from "./ecs/systems/render.system";
 import { createThrowSystem } from "./ecs/systems/throw.system";
@@ -61,6 +62,7 @@ const interactSystem = createInteractSystem(
   gameWorld.world,
   gameWorld.registry,
 );
+const kickSystem = createKickSystem(gameWorld.world, gameWorld.registry);
 const morgueSystem = createMorgueSystem(gameWorld.world, gameWorld.registry);
 const movementSystem = createMovementSystem(gameWorld.world);
 const pickUpSystem = createPickUpSystem(gameWorld.world, gameWorld.registry);
@@ -330,6 +332,7 @@ function gameLoop() {
       movementSystem();
       closeSystem();
       openSystem();
+      kickSystem();
       attackSystem();
       damageSystem();
       morgueSystem();

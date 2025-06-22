@@ -224,6 +224,10 @@ export const rockPrefab: Entity = {
   description: "A small, jagged stone—barely useful, unless thrown.",
   layer200: true,
   pickUp: true,
+  kickable: {
+    knockbackDistance: 10,
+    noiseLevel: 3,
+  },
 };
 
 // NOTE: Weapons
@@ -367,6 +371,12 @@ export const doorPrefab: Entity = {
   openable: {
     state: OpenState.Closed,
   },
+  kickable: {
+    knockbackDistance: 0,
+    immovable: true,
+    breakable: true,
+    noiseLevel: 7,
+  },
 };
 
 export const stairsDownPrefab: Entity = {
@@ -414,6 +424,12 @@ export const wallPrefab: Entity = {
   blocking: true,
   opaque: true,
   name: "wall",
+  kickable: {
+    knockbackDistance: 0,
+    immovable: true,
+    maxDamageOnKick: 2,
+    noiseLevel: 5,
+  },
 };
 
 export const floorPrefab: Entity = {

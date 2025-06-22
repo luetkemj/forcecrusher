@@ -66,6 +66,12 @@ This is aspirational only. Expect anything and everything in this document to be
     - [ ] Jammable doors (what's that UI look like?)
     - [ ] Breakable doors
     - [ ] AI that can open doors (or not)
+- [ ] Kick System
+    - [x] Basic system to kick doors and walls etc
+    - [ ] Handle breaking things that are kicked
+    - [ ] Handle damage in a system
+    - [ ] Should offer some sort of information (is it jammed, or stuck etc)
+    - [ ] Sound (alert enemies) Sound System
 - [ ] morgue file (game over screen)
 - [ ] Plague doctor outfit to guard against potions and gas attacks
 - [ ] money

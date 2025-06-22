@@ -41,6 +41,12 @@ type DamageAmount = {
   type: DamageType;
   amount: number;
   mod: number;
+
+  // source
+  // instigator
+  // target
+  // type
+  // reason
 };
 
 export type Damage = {
@@ -99,6 +105,15 @@ export type Entity = {
   inFov?: true;
   intelligence?: number;
   interactDirection?: Pos;
+  kickable?: {
+    knockbackDistance?: number; // e.g. how far to shove it
+    immovable?: boolean; // e.g. statues or bolted-down objects
+    breakable?: boolean; // can this be broken by kicking?
+    harmfulToKicker?: boolean; // cactus, spike traps, etc.
+    maxDamageOnKick?: number; // damage the kicker takes (optional)
+    noiseLevel?: number; // 0 = silent, 10 = alerts everything
+    isTrapped?: { trapId: string };
+  };
   layer100?: true;
   layer200?: true;
   layer300?: true;
@@ -130,6 +145,7 @@ export type Entity = {
   strength?: number;
   tryClose?: Entity;
   tryDrop?: { dropperId: string };
+  tryKick?: { targetId: string };
   tryMove?: Pos;
   tryOpen?: { id: string };
   tryPickUp?: { pickerId: string };

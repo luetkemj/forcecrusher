@@ -76,6 +76,9 @@ export const createInteractSystem = (
     if (target.health && target.health.current > 0) {
       actions += `(${em("a")})attack `;
     }
+    if (target.kickable) {
+      actions += `(${em("k")})kick `;
+    }
     if (target.openable) {
       if (target.openable.state === OpenState.Open) {
         actions += `(${em("c")})close `;
