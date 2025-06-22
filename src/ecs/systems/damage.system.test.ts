@@ -25,7 +25,6 @@ describe("damage.system", () => {
       damageRoll: "1d4",
       damageType: DamageType.Bludgeoning,
       verb: "hits",
-      magical: false,
       useModifier: true,
     };
     target = {
