@@ -400,6 +400,13 @@ function gameLoop() {
     }
   }
 
+  if (getState().gameState === GameState.MAKER_MODE) {
+    if (getState().userInput) {
+      userInputSystem();
+      renderSystem();
+    }
+  }
+
   // Track FPS
   {
     if (!now) {

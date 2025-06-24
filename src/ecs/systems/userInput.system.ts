@@ -50,6 +50,7 @@ export const createUserInputSystem = (
       if (key === "1") {
         saveGameData();
       }
+
       if (key === "2") {
         loadGameData();
       }
@@ -91,6 +92,10 @@ export const createUserInputSystem = (
         setState(
           (state: State) => (state.cursor = [player.position, player.position]),
         );
+      }
+
+      if (key === "§") {
+        setState((state: State) => (state.gameState = GameState.MAKER_MODE));
       }
 
       if (key === "H") {
@@ -266,7 +271,8 @@ export const createUserInputSystem = (
         if (key === "Enter") {
           // get selected item in inventory and add a tryThrow component
           // with a throwerId and targetPosition
-          const entityId = player.container?.contents[getState().inventoryActiveIndex];
+          const entityId =
+            player.container?.contents[getState().inventoryActiveIndex];
           if (entityId) {
             const entity = registry.get(entityId);
 
@@ -503,6 +509,13 @@ export const createUserInputSystem = (
             state.cursor = [player.position, player.position];
           });
         }
+      }
+    }
+
+    // NOTE: MAKER MODE
+    if (gameState === GameState.MAKER_MODE) {
+      if (key === "§") {
+        setState((state: State) => (state.gameState = GameState.GAME));
       }
     }
 

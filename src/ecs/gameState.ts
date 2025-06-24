@@ -16,6 +16,7 @@ export const enum GameState {
   LOG_HISTORY = "LOG_HISTORY",
   INTERACT = "INTERACT",
   INTERACT_ACTION = "INTERACT_ACTION",
+  MAKER_MODE = "MAKER_MODE",
 }
 
 export type State = {
