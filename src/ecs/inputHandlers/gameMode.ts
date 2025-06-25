@@ -3,17 +3,7 @@ import { ChangeZoneDirections } from "../engine";
 import { InputContext } from "../systems/userInput.system";
 import { GameState, State } from "../gameState";
 import { toPos, toPosId, isAtSamePosition } from "../../lib/grid";
-
-const moveKeys = [
-  "ArrowLeft",
-  "ArrowDown",
-  "ArrowUp",
-  "ArrowRight",
-  "h",
-  "j",
-  "k",
-  "l",
-];
+import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 
 export const handleGameModeInput = ({
   key,
@@ -28,33 +18,32 @@ export const handleGameModeInput = ({
   addLog,
 }: InputContext) => {
   // these should be provided in context?
-  const pcQuery = world.with("pc", "position");
   const pickUpQuery = world.with("pickUp");
   const stairsUpQuery = world.with("stairsUp", "position");
   const stairsDownQuery = world.with("stairsDown", "position");
 
   if (gameState === GameState.GAME) {
-    if (key === "1") {
+    if (key === Keys.SAVE) {
       saveGameData();
 
       return true;
     }
 
-    if (key === "2") {
+    if (key === Keys.LOAD) {
       loadGameData();
 
       return true;
     }
 
     // NOTE: Cheats
-    if (key === "Escape") {
+    if (key === Keys.DEBUG_TOGGLE) {
       window.skulltooth.debug = true;
 
       return true;
     }
 
     // stairs needs to be it's own system
-    if (key === ">") {
+    if (key === Keys.STAIRS_DOWN) {
       if (!player.position) return;
       const [stairsDownEntity] = stairsDownQuery;
       if (isAtSamePosition(player.position, stairsDownEntity.position)) {
@@ -69,7 +58,7 @@ export const handleGameModeInput = ({
       return true;
     }
 
-    if (key === "<") {
+    if (key === Keys.STAIRS_UP) {
       if (!player.position) return;
       const [stairsUpEntity] = stairsUpQuery;
       if (isAtSamePosition(player.position, stairsUpEntity.position)) {
@@ -83,14 +72,14 @@ export const handleGameModeInput = ({
       return true;
     }
 
-    if (key === "i") {
+    if (key === Keys.INVENTORY) {
       setState((state: State) => (state.gameState = GameState.INVENTORY));
       setState((state: State) => (state.inventoryActiveIndex = 0));
 
       return true;
     }
 
-    if (key === "L") {
+    if (key === Keys.INSPECT) {
       setState((state: State) => (state.gameState = GameState.INSPECT));
       const pos = player.position;
       if (pos) {
@@ -100,13 +89,13 @@ export const handleGameModeInput = ({
       return true;
     }
 
-    if (key === "§") {
+    if (key === Keys.TOGGLE_MAKER_MODE) {
       setState((state: State) => (state.gameState = GameState.MAKER_MODE));
 
       return true;
     }
 
-    if (key === "H") {
+    if (key === Keys.SHOW_LOG) {
       setState((state: State) => (state.gameState = GameState.LOG_HISTORY));
       let index = state.log.length - 39;
 
@@ -117,7 +106,7 @@ export const handleGameModeInput = ({
       return true;
     }
 
-    if (key === "e") {
+    if (key === Keys.INTERACT) {
       setState((state: State) => {
         state.gameState = GameState.INTERACT;
       });
@@ -125,41 +114,21 @@ export const handleGameModeInput = ({
       return true;
     }
 
-    if (moveKeys.includes(key)) {
-      for (const entity of pcQuery) {
-        if (entity?.position) {
-          const { x, y, z } = entity.position;
-
-          if (key === "h" || key === "ArrowLeft") {
-            const newPos = { x: x - 1, y, z };
-            world.addComponent(entity, "tryMove", newPos);
-
-            return true;
-          }
-          if (key === "j" || key === "ArrowDown") {
-            const newPos = { x, y: y + 1, z };
-            world.addComponent(entity, "tryMove", newPos);
-
-            return true;
-          }
-          if (key === "k" || key === "ArrowUp") {
-            const newPos = { x, y: y - 1, z };
-            world.addComponent(entity, "tryMove", newPos);
-
-            return true;
-          }
-          if (key === "l" || key === "ArrowRight") {
-            const newPos = { x: x + 1, y, z };
-            world.addComponent(entity, "tryMove", newPos);
-
-            return true;
-          }
-        }
+    if (isMoveKey(key)) {
+      const dir = getDirectionFromKey(key);
+      if (dir && player?.position) {
+        const newPos = {
+          x: player.position.x + dir.dx,
+          y: player.position.y + dir.dy,
+          z: player.position.z,
+        };
+        world.addComponent(player, "tryMove", newPos);
       }
+      return true;
     }
 
     // does this really have to go here?
-    if (key === "g") {
+    if (key === Keys.PICK_UP) {
       // check if player is standing on a pickup
       // if standing on a pickup - try to pick it up
       let noPickUps = true;

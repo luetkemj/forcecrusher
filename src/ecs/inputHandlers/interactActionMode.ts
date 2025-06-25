@@ -1,5 +1,6 @@
 import { InputContext } from "../systems/userInput.system";
 import { GameState, State, Turn } from "../gameState";
+import { Keys } from "./KeyMap";
 
 export const handleInteractActionModeInput = ({
   key,
@@ -8,7 +9,7 @@ export const handleInteractActionModeInput = ({
   player,
   setState,
 }: InputContext) => {
-  if (key === "e" || key === "Escape") {
+  if (key === Keys.INTERACT || key === Keys.CANCEL) {
     setState((state: State) => {
       state.gameState = GameState.GAME;
     });
@@ -28,24 +29,24 @@ export const handleInteractActionModeInput = ({
   };
 
   // attack
-  if (interactActions.includes("§a§")) {
-    if (key === "a") {
+  if (interactActions.includes(`§${Keys.ATTACK}§`)) {
+    if (key === Keys.ATTACK) {
       world.addComponent(actor, "tryAttack", { targetId: target.id });
       afterInteractCleanUp();
       return true;
     }
   }
   // close
-  if (interactActions.includes("§c§")) {
-    if (key === "c") {
+  if (interactActions.includes(`§${Keys.CONSUME}§`)) {
+    if (key === Keys.CONSUME) {
       world.addComponent(actor, "tryClose", target);
       afterInteractCleanUp();
       return true;
     }
   }
   // get
-  if (interactActions.includes("§g§")) {
-    if (key === "g") {
+  if (interactActions.includes(`§${Keys.PICK_UP}§`)) {
+    if (key === Keys.PICK_UP) {
       world.addComponent(target, "tryPickUp", {
         pickerId: actor.id,
       });
@@ -54,16 +55,16 @@ export const handleInteractActionModeInput = ({
     }
   }
   // kick
-  if (interactActions.includes("§k§")) {
-    if (key === "k") {
+  if (interactActions.includes(`§${Keys.KICK}§`)) {
+    if (key === Keys.KICK) {
       world.addComponent(actor, "tryKick", { targetId: target.id });
       afterInteractCleanUp();
       return true;
     }
   }
   // open
-  if (interactActions.includes("§o§")) {
-    if (key === "o") {
+  if (interactActions.includes(`§${Keys.OPEN}§`)) {
+    if (key === Keys.OPEN) {
       world.addComponent(actor, "tryOpen", { id: target.id });
       afterInteractCleanUp();
       return true;

@@ -2,6 +2,7 @@ import { InputContext } from "../systems/userInput.system";
 import { GameState, State } from "../gameState";
 import { logFrozenEntity, wield, wear, unWield, unWear } from "../../lib/utils";
 import { remove, isUndefined } from "lodash";
+import { Keys } from "./KeyMap";
 
 export const handleInventoryModeInput = ({
   key,
@@ -12,7 +13,7 @@ export const handleInventoryModeInput = ({
   setState,
   addLog,
 }: InputContext) => {
-  if (key === "i" || key === "Escape") {
+  if (key === Keys.INVENTORY || key === Keys.CANCEL) {
     setState((state: State) => (state.gameState = GameState.GAME));
   }
 
@@ -24,7 +25,7 @@ export const handleInventoryModeInput = ({
   const inventoryLength = player.container?.contents.length || 0;
   const currentIndex = state.inventoryActiveIndex;
 
-  if (key === "j" || key === "ArrowDown") {
+  if ((Keys.SCROLL_DOWN as readonly string[]).includes(key)) {
     if (currentIndex < inventoryLength - 1) {
       setState(
         (state: State) => (state.inventoryActiveIndex = currentIndex + 1),
@@ -35,7 +36,7 @@ export const handleInventoryModeInput = ({
     return true;
   }
 
-  if (key === "k" || key === "ArrowUp") {
+  if ((Keys.SCROLL_UP as readonly string[]).includes(key)) {
     if (currentIndex > 0) {
       setState(
         (state: State) => (state.inventoryActiveIndex = currentIndex - 1),
@@ -49,7 +50,7 @@ export const handleInventoryModeInput = ({
   }
 
   // NOTE: Consume
-  if (key === "c") {
+  if (key === Keys.CONSUME) {
     do {
       if (!player.container) {
         addLog(`You have no container to hold consumables`);
@@ -97,7 +98,7 @@ export const handleInventoryModeInput = ({
   }
 
   // NOTE: Drop
-  if (key === "d") {
+  if (key === Keys.DROP) {
     do {
       if (!player.container) {
         addLog(`You can't drop without a container to hold.`);
@@ -137,7 +138,7 @@ export const handleInventoryModeInput = ({
   }
 
   // NOTE: Wield
-  if (key === "w") {
+  if (key === Keys.WIELD) {
     if (activeItemEntity) {
       wield(player, activeItemEntity);
     }
@@ -145,7 +146,7 @@ export const handleInventoryModeInput = ({
   }
 
   // NOTE: Wear
-  if (key === "W") {
+  if (key === Keys.WEAR) {
     if (activeItemEntity) {
       wear(player, activeItemEntity);
     }
@@ -153,7 +154,7 @@ export const handleInventoryModeInput = ({
   }
 
   // NOTE: Remove
-  if (key === "r") {
+  if (key === Keys.REMOVE) {
     if (activeItemEId) {
       if (player.armorSlot?.contents[0] === activeItemEId) {
         unWear(player);
@@ -167,7 +168,7 @@ export const handleInventoryModeInput = ({
   }
 
   // NOTE: Target
-  if (key === "t") {
+  if (key === Keys.TARGET) {
     // if items in inventory - enter target mode
     if (player.container?.contents.length) {
       setState((state: State) => {

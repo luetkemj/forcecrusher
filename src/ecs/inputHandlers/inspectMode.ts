@@ -1,17 +1,7 @@
 import { InputContext } from "../systems/userInput.system";
 import { GameState, State } from "../gameState";
 import { outOfBounds } from "../../lib/utils";
-
-const moveKeys = [
-  "ArrowLeft",
-  "ArrowDown",
-  "ArrowUp",
-  "ArrowRight",
-  "h",
-  "j",
-  "k",
-  "l",
-];
+import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 
 export const handleInspectModeInput = ({
   key,
@@ -19,47 +9,25 @@ export const handleInspectModeInput = ({
   player,
   setState,
 }: InputContext) => {
-  if (key === "L" || key === "Escape") {
+  if (key === Keys.INSPECT || key === Keys.CANCEL) {
     setState((state: State) => (state.gameState = GameState.GAME));
   }
 
-  if (moveKeys.includes(key)) {
-    if (player.position) {
+  if (isMoveKey(key)) {
+    const dir = getDirectionFromKey(key);
+    if (dir && player?.position) {
       const oldPos = state.cursor[1];
-      const { x, y, z } = oldPos;
-
-      if (key === "h" || key === "ArrowLeft") {
-        const newPos = { x: x - 1, y, z };
-        if (outOfBounds(newPos)) return;
+      const newPos = {
+        x: oldPos.x + dir.dx,
+        y: oldPos.y + dir.dy,
+        z: oldPos.z,
+      };
+      if (!outOfBounds(newPos)) {
         setState((state: State) => {
           state.cursor = [oldPos, newPos];
         });
-        return true;
-      }
-      if (key === "j" || key === "ArrowDown") {
-        const newPos = { x, y: y + 1, z };
-        if (outOfBounds(newPos)) return;
-        setState((state: State) => {
-          state.cursor = [oldPos, newPos];
-        });
-        return true;
-      }
-      if (key === "k" || key === "ArrowUp") {
-        const newPos = { x, y: y - 1, z };
-        if (outOfBounds(newPos)) return;
-        setState((state: State) => {
-          state.cursor = [oldPos, newPos];
-        });
-        return true;
-      }
-      if (key === "l" || key === "ArrowRight") {
-        const newPos = { x: x + 1, y, z };
-        if (outOfBounds(newPos)) return;
-        setState((state: State) => {
-          state.cursor = [oldPos, newPos];
-        });
-        return true;
       }
     }
+    return true;
   }
 };
