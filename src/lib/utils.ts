@@ -25,7 +25,7 @@ export const colorEntityName = (entity: Entity) => {
 };
 
 export const entityNamePlate = (entity?: Entity) => {
-  console.log("no entity");
+  if (!entity) return console.log("no entity");
   const tint = entity?.appearance?.tint || 0x00ff00;
   const name = entity?.name || "noname";
   const char = entity?.appearance?.char || "?";
