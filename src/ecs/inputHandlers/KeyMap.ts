@@ -34,14 +34,6 @@ export const Keys = {
   LOAD: "2",
 } as const;
 
-// export const keyLabels = {
-//   [Keys.PICK_UP]: "Pick up",
-//   [Keys.INVENTORY]: "Open inventory",
-//   [Keys.INSPECT]: "Inspect",
-//   [Keys.SAVE]: "Save",
-//   // ...
-// };
-
 export const isMoveKey = (key: string): boolean =>
   (Keys.MOVE_LEFT as readonly string[]).includes(key) ||
   (Keys.MOVE_DOWN as readonly string[]).includes(key) ||
