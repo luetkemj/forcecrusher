@@ -1,7 +1,6 @@
 import { IGameWorld, Entity } from "../engine";
-import { distance } from "../../lib/grid";
-import { getState, GameState } from "../gameState";
-import { View, UpdateRow } from "../../lib/canvas";
+import { getState, GameState, Views } from "../gameState";
+import { View } from "../../lib/canvas";
 import {
   colorTag,
   getWielding,
@@ -11,6 +10,31 @@ import {
   colorEntityName,
 } from "../../lib/utils";
 import { getArmorClass } from "../../lib/combat";
+import { renderLegend } from "../renderers/renderLegend";
+import { Query, With } from "miniplex";
+import { renderMap } from "../renderers/renderMap";
+
+export interface RendererContext {
+  views: Views;
+  queries: {
+    renderable100Query: Query<
+      With<Entity, "position" | "appearance" | "layer100">
+    >;
+    renderable200Query: Query<
+      With<Entity, "position" | "appearance" | "layer200">
+    >;
+    renderable300Query: Query<
+      With<Entity, "position" | "appearance" | "layer300">
+    >;
+    renderable400Query: Query<
+      With<Entity, "position" | "appearance" | "layer400">
+    >;
+    pcQuery: Query<With<Entity, "position" | "pc">>;
+    inFovQuery: Query<
+      With<Entity, "inFov" | "legendable" | "position" | "appearance" | "name">
+    >;
+  };
+}
 
 export const createRenderSystem = (
   world: IGameWorld["world"],
@@ -31,73 +55,23 @@ export const createRenderSystem = (
   );
   const pcQuery = world.with("pc", "position");
 
+  const ctx = {
+    views: getState().views,
+    queries: {
+      renderable100Query,
+      renderable200Query,
+      renderable300Query,
+      renderable400Query,
+      inFovQuery,
+      pcQuery,
+    },
+  };
+
   return function system() {
+    renderMap(ctx);
+
     const mapView = getState().views.map;
     if (!mapView) return;
-
-    // TODO: clear the map before each render (this is only necessary for loading a game
-    // could def find a better place for this.
-    mapView.clearView();
-
-    // render entities currently in FOV
-    for (const entity of renderable100Query) {
-      if (entity.inFov) {
-        renderEntity(mapView, entity, 1);
-      }
-    }
-    for (const entity of renderable200Query) {
-      if (entity.inFov) {
-        renderEntity(mapView, entity, 1);
-      }
-    }
-    for (const entity of renderable300Query) {
-      if (entity.inFov) {
-        renderEntity(mapView, entity, 1);
-      }
-    }
-    for (const entity of renderable400Query) {
-      if (entity.inFov) {
-        renderEntity(mapView, entity, 1);
-      }
-    }
-
-    // render revealed entities not currently in FOV
-    for (const entity of renderable100Query) {
-      if (!entity.inFov && entity.revealed && !entity.ai) {
-        renderEntity(mapView, entity, 0.35);
-      }
-    }
-    for (const entity of renderable200Query) {
-      if (!entity.inFov && entity.revealed && !entity.ai) {
-        renderEntity(mapView, entity, 0.35);
-      }
-    }
-    for (const entity of renderable300Query) {
-      if (!entity.inFov && entity.revealed && !entity.ai) {
-        renderEntity(mapView, entity, 0.35);
-      }
-    }
-    for (const entity of renderable400Query) {
-      if (!entity.inFov && entity.revealed && !entity.ai) {
-        renderEntity(mapView, entity, 0.35);
-      }
-    }
-
-    // make this key off of a cheat menu in state - so you can just render all the things immediately instead of having to wait a frame
-    if (window.skulltooth.debug) {
-      for (const entity of renderable100Query) {
-        renderEntity(mapView, entity, 1);
-      }
-      for (const entity of renderable200Query) {
-        renderEntity(mapView, entity, 1);
-      }
-      for (const entity of renderable300Query) {
-        renderEntity(mapView, entity, 1);
-      }
-      for (const entity of renderable400Query) {
-        renderEntity(mapView, entity, 1);
-      }
-    }
 
     {
       const sensesView = getState().views.senses;
@@ -113,33 +87,7 @@ export const createRenderSystem = (
       ]);
     }
 
-    {
-      const legendView = getState().views.legend;
-      if (legendView) {
-        const entities = [];
-        const [player] = pcQuery;
-
-        for (const entity of inFovQuery) {
-          entities.push(entity);
-        }
-
-        entities.sort((entity) => distance(player.position, entity.position));
-
-        legendView?.clearView();
-
-        const rows: Array<Array<UpdateRow>> = [];
-        entities.forEach((entity) => {
-          const entityChar = entity.appearance.char;
-          const entityTint = entity.appearance.tint;
-          const entityName = entity.name;
-
-          const string = `${colorTag(entityTint)}${entityChar} ${entityName}`;
-          rows.push([{ string }]);
-        });
-
-        legendView?.updateRows(rows, true);
-      }
-    }
+    renderLegend(ctx);
 
     {
       // NOTE: MENUS
@@ -441,7 +389,7 @@ const getAlpha = (index: number) => {
   return 1;
 };
 
-const renderEntity = (view: View, entity: Entity, alpha: number) => {
+export const renderEntity = (view: View, entity: Entity, alpha: number) => {
   const { appearance, position } = entity;
   if (!appearance || !position) return;
 

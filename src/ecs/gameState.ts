@@ -19,6 +19,20 @@ export const enum GameState {
   MAKER_MODE = "MAKER_MODE",
 }
 
+export type Views = {
+  fps?: View;
+  map?: View;
+  log?: View;
+  senses?: View;
+  legend?: View;
+  inventory?: View;
+  menuUnderlay?: View;
+  controls?: View;
+  cursor?: View;
+  hud?: View;
+  logHistory?: View;
+};
+
 export type State = {
   cursor: [Pos, Pos];
   fps: number;
@@ -38,19 +52,7 @@ export type State = {
   };
   turn: Turn;
   userInput: KeyboardEvent | null;
-  views: {
-    fps?: View;
-    map?: View;
-    log?: View;
-    senses?: View;
-    legend?: View;
-    inventory?: View;
-    menuUnderlay?: View;
-    controls?: View;
-    cursor?: View;
-    hud?: View;
-    logHistory?: View;
-  };
+  views: Views;
   zoneId: string;
   playerId: string;
   version: number;
