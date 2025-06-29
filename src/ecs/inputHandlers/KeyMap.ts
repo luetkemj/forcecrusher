@@ -26,7 +26,7 @@ export const Keys = {
   TOGGLE_MAKER_MODE: "§",
   SHOW_LOG: "H",
 
-  DEBUG_TOGGLE: "Escape",
+  DEBUG_TOGGLE: "~",
   CONFIRM: "Enter",
   CANCEL: "Escape", // sometimes used differently depending on state
 

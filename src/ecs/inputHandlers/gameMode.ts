@@ -37,7 +37,7 @@ export const handleGameModeInput = ({
 
     // NOTE: Cheats
     if (key === Keys.DEBUG_TOGGLE) {
-      window.skulltooth.debug = true;
+      window.skulltooth.debug = !window.skulltooth.debug;
 
       return true;
     }
