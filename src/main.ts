@@ -1,10 +1,8 @@
 import "./style.css";
 import { mean } from "lodash";
-
 import { pxToPosId, setupCanvas, View } from "./lib/canvas";
 import { toPosId } from "./lib/grid";
 import { logFrozenEntity } from "./lib/utils";
-
 import { createActiveEffectsSystem } from "./ecs/systems/activeEffects.system";
 import { createAiSystem } from "./ecs/systems/ai.system";
 import { createAttackSystem } from "./ecs/systems/attack.system";
@@ -23,11 +21,9 @@ import { createPickUpSystem } from "./ecs/systems/pickUp.system";
 import { createRenderSystem } from "./ecs/systems/render.system";
 import { createThrowSystem } from "./ecs/systems/throw.system";
 import { createUserInputSystem } from "./ecs/systems/userInput.system";
-
 import { generateDungeon } from "./pcgn/dungeon";
-
-import { gameWorld } from "./ecs/engine";
 import { spawnPlayer } from "./pcgn/player";
+import { gameWorld } from "./ecs/engine";
 import {
   type State,
   GameState,
@@ -47,7 +43,6 @@ declare global {
 }
 window.skulltooth = window.skulltooth || {};
 window.skulltooth.debug = false;
-
 window.skulltooth.state = getState();
 
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
