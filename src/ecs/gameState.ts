@@ -21,6 +21,7 @@ export const enum GameState {
 
 export type Views = {
   fps?: View;
+  gitHash?: View;
   map?: View;
   log?: View;
   senses?: View;

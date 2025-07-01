@@ -1,6 +1,6 @@
 import "./style.css";
 import { mean } from "lodash";
-import { pxToPosId, setupCanvas, View } from "./lib/canvas";
+import { pxToPosId, setupCanvas } from "./lib/canvas";
 import { toPosId } from "./lib/grid";
 import { logFrozenEntity } from "./lib/utils";
 import { createActiveEffectsSystem } from "./ecs/systems/activeEffects.system";
@@ -31,6 +31,7 @@ import {
   getState,
   setState,
 } from "./ecs/gameState";
+import { createViews, ViewId } from "./views/views";
 
 // for debugging
 declare global {
@@ -65,159 +66,17 @@ const throwSystem = createThrowSystem(gameWorld);
 const userInputSystem = createUserInputSystem(gameWorld);
 
 const init = async () => {
+  // setup canvas
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);
 
-  const legendView = new View({
-    width: 25,
-    height: 44,
-    x: 0,
-    y: 0,
-    layers: 1,
-    tileSets: ["text"],
-    tints: [0xff0077],
-    alphas: [1],
-    visible: true,
-  });
+  // create views
+  const views = createViews();
 
-  const logView = new View({
-    width: 74,
-    height: 5,
-    x: 26,
-    y: 0,
-    layers: 1,
-    tileSets: ["text"],
-    tints: [0xeeeeee],
-    alphas: [1],
-    visible: true,
-  });
-
-  const sensesView = new View({
-    width: 74,
-    height: 5,
-    x: 100,
-    y: 0,
-    layers: 1,
-    tileSets: ["text"],
-    tints: [0xff0077],
-    alphas: [1],
-    visible: true,
-  });
-
-  // 3 render layers
-  // 1: background
-  // 2: character
-  // 3: foreground
-  const mapView = new View({
-    width: 74,
-    height: 39,
-    x: 13,
-    y: 5,
-    layers: 3,
-    tileSets: ["tile", "ascii", "tile"],
-    tints: [0x000000, 0x000000, 0x000000],
-    alphas: [1, 1, 0],
-    visible: true,
-  });
-
-  const fpsView = new View({
-    width: 12,
-    height: 1,
-    x: 0,
-    y: 44,
-    layers: 1,
-    tileSets: ["text"],
-    tints: [0x333333],
-    alphas: [1],
-    visible: true,
-  }).updateRows([[{ string: "FPS: calc..." }]]);
-
-  new View({
-    width: 12,
-    height: 1,
-    x: 0,
-    y: 45,
-    layers: 1,
-    tileSets: ["text"],
-    tints: [0x333333],
-    alphas: [1],
-    visible: true,
-  }).updateRows([[{ string: "TAG: GITHASH" }]]);
-
-  const hudView = new View({
-    width: 26,
-    height: 46,
-    x: 174,
-    y: 0,
-    layers: 1,
-    tileSets: ["text"],
-    tints: [0xdddddd],
-    alphas: [1],
-    visible: true,
-  });
-
-  // keyboard controls
-  const controlsView = new View({
-    width: 148,
-    height: 2,
-    x: 26,
-    y: 44,
-    layers: 1,
-    tileSets: ["text"],
-    tints: [0x999999],
-    alphas: [1],
-    visible: true,
-  });
-
-  // MENUS
-  // menu underlay (goes over game view, below menu views)
-  const menuUnderlayView = new View({
-    width: 100,
-    height: 44,
-    x: 0,
-    y: 0,
-    layers: 1,
-    tileSets: ["tile"],
-    tints: [0x111111],
-    alphas: [0.75],
-    visible: false,
-  });
-
-  // Inventory Menu
-  const inventoryView = new View({
-    width: 148,
-    height: 39,
-    x: 26,
-    y: 5,
-    layers: 2,
-    tileSets: ["text", "text"],
-    tints: [0x111111, 0xffffff],
-    alphas: [1],
-    visible: false,
-  });
-
-  const logHistoryView = new View({
-    width: 148,
-    height: 44,
-    x: 26,
-    y: 0,
-    layers: 1,
-    tileSets: ["text"],
-    tints: [0xffffff],
-    alphas: [1],
-    visible: false,
-  });
-
+  // store views
   setState((state: State) => {
-    state.views.fps = fpsView;
-    state.views.map = mapView;
-    state.views.log = logView;
-    state.views.senses = sensesView;
-    state.views.legend = legendView;
-    state.views.inventory = inventoryView;
-    state.views.menuUnderlay = menuUnderlayView;
-    state.views.controls = controlsView;
-    state.views.hud = hudView;
-    state.views.logHistory = logHistoryView;
+    for (const id of Object.keys(views) as ViewId[]) {
+      state.views[id] = views[id]!;
+    }
   });
 
   // create world
@@ -226,6 +85,7 @@ const init = async () => {
   const startPos = dungeon.rooms[0].center;
   const player = spawnPlayer(startPos);
 
+  // add playerId to state
   setState((state: State) => {
     state.playerId = player.id;
   });
