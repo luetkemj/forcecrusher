@@ -34,7 +34,7 @@ describe("drop.system", () => {
 
   test("drops item at or near dropper's position and removes from inventory", () => {
     addTryDrop();
-    createDropSystem(gameWorld.world, gameWorld.registry)();
+    createDropSystem(gameWorld)();
     if (!dropper.position) return;
     const dropZone = circle(dropper.position, 2).posIds;
     expect(dropZone.includes(toPosId(dropper.position))).toBeTruthy();
@@ -48,7 +48,7 @@ describe("drop.system", () => {
   test("does nothing if dropper has no position", () => {
     dropper.position = undefined;
     addTryDrop();
-    createDropSystem(gameWorld.world, gameWorld.registry)();
+    createDropSystem(gameWorld)();
     expect(item.position).toBeUndefined();
     expect(dropper.container?.contents.includes(item.id)).toBe(true);
   });
@@ -56,7 +56,7 @@ describe("drop.system", () => {
   test("does nothing if item not in dropper's inventory", () => {
     if (dropper.container) dropper.container.contents = [];
     addTryDrop();
-    createDropSystem(gameWorld.world, gameWorld.registry)();
+    createDropSystem(gameWorld)();
     expect(item.position).toBeUndefined();
     expect(item.tryDrop).toBeUndefined();
   });
@@ -64,7 +64,7 @@ describe("drop.system", () => {
   test("does nothing if dropper not found", () => {
     addTryDrop();
     if (item.tryDrop) item.tryDrop.dropperId = "notfound";
-    createDropSystem(gameWorld.world, gameWorld.registry)();
+    createDropSystem(gameWorld)();
     expect(item.position).toBeUndefined();
     expect(item.tryDrop).toBeUndefined();
   });

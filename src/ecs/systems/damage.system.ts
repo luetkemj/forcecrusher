@@ -2,10 +2,7 @@ import { addLog, colorEntity, getWearing } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 import { DamageType } from "../enums";
 
-export const createDamageSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createDamageSystem = ({world, registry}:IGameWorld) => {
   const damageQuery = world.with("damages");
 
   return function system() {

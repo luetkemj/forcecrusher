@@ -2,7 +2,7 @@ import { IGameWorld } from "../engine";
 import { getState, setState, State } from "../gameState";
 import { toPosId } from "../../lib/grid";
 
-export const createCursorSystem = (world: IGameWorld["world"]) => {
+export const createCursorSystem = ({ world }: IGameWorld) => {
   const inspectableQuery = world.with("revealed", "position");
 
   return function system() {

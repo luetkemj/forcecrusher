@@ -3,10 +3,7 @@ import { addLog, colorEntityName } from "../../lib/utils";
 import { type IGameWorld, type Entity } from "../engine";
 import { OpenState } from "../enums";
 
-export const createOpenSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createOpenSystem = ({ world, registry }: IGameWorld) => {
   const tryOpenQuery = world.with("tryOpen");
 
   return function system() {

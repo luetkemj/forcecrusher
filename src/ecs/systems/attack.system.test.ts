@@ -87,7 +87,7 @@ describe("attack.system", () => {
     gameWorld.world.addComponent(attacker, "tryAttack", {
       targetId: target.id,
     });
-    createAttackSystem(gameWorld.world, gameWorld.registry)();
+    createAttackSystem(gameWorld)();
     expect(target.damages?.length).toBeGreaterThan(0);
     const damage = target.damages?.[0];
     expect(damage?.attacker).toBe(attacker.id);
@@ -102,7 +102,7 @@ describe("attack.system", () => {
     gameWorld.world.addComponent(armedAttacker, "tryAttack", {
       targetId: target.id,
     });
-    createAttackSystem(gameWorld.world, gameWorld.registry)();
+    createAttackSystem(gameWorld)();
     expect(target.damages?.length).toBeGreaterThan(0);
     const damage = target.damages?.[0];
     expect(damage?.attacker).toBe(armedAttacker.id);
@@ -116,7 +116,7 @@ describe("attack.system", () => {
     gameWorld.world.addComponent(attacker, "tryAttack", {
       targetId: target.id,
     });
-    createAttackSystem(gameWorld.world, gameWorld.registry)();
+    createAttackSystem(gameWorld)();
     expect(target.damages?.length).toBe(0);
   });
 
@@ -126,7 +126,7 @@ describe("attack.system", () => {
     gameWorld.world.addComponent(attacker, "tryAttack", {
       targetId: target.id,
     });
-    createAttackSystem(gameWorld.world, gameWorld.registry)();
+    createAttackSystem(gameWorld)();
     const damage = target.damages?.[0];
     expect(damage?.critical).toBe(true);
   });
@@ -136,7 +136,7 @@ describe("attack.system", () => {
     gameWorld.world.addComponent(attacker, "tryAttack", {
       targetId: target.id,
     });
-    createAttackSystem(gameWorld.world, gameWorld.registry)();
+    createAttackSystem(gameWorld)();
     expect(target.damages?.length).toBe(0);
   });
 });

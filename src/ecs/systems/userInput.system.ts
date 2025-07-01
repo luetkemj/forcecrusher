@@ -25,13 +25,13 @@ export interface InputContext {
   addLog: (string: string) => void;
 }
 
-export const createUserInputSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-  saveGameData: IGameWorld["saveGameData"],
-  loadGameData: IGameWorld["loadGameData"],
-  changeZone: IGameWorld["changeZone"],
-) => {
+export const createUserInputSystem = ({
+  world,
+  registry,
+  saveGameData,
+  loadGameData,
+  changeZone,
+}: IGameWorld) => {
   const pcQuery = world.with("pc", "position");
 
   return function system() {

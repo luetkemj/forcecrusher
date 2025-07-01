@@ -50,36 +50,24 @@ window.skulltooth.debug = false;
 
 window.skulltooth.state = getState();
 
-const activeEffectsSystem = createActiveEffectsSystem(gameWorld.world);
-const aiSystem = createAiSystem(gameWorld.world);
-const attackSystem = createAttackSystem(gameWorld.world, gameWorld.registry);
-const closeSystem = createCloseSystem(gameWorld.world);
-const cursorSystem = createCursorSystem(gameWorld.world);
-const damageSystem = createDamageSystem(gameWorld.world, gameWorld.registry);
-const openSystem = createOpenSystem(gameWorld.world, gameWorld.registry);
-const dropSystem = createDropSystem(gameWorld.world, gameWorld.registry);
-const fovSystem = createFovSystem(gameWorld.world);
-const interactSystem = createInteractSystem(
-  gameWorld.world,
-  gameWorld.registry,
-);
-const kickSystem = createKickSystem(gameWorld.world, gameWorld.registry);
-const knockbackSystem = createKnockbackSystem(
-  gameWorld.world,
-  gameWorld.registry,
-);
-const morgueSystem = createMorgueSystem(gameWorld.world, gameWorld.registry);
-const movementSystem = createMovementSystem(gameWorld.world);
-const pickUpSystem = createPickUpSystem(gameWorld.world, gameWorld.registry);
-const renderSystem = createRenderSystem(gameWorld.world, gameWorld.registry);
-const throwSystem = createThrowSystem(gameWorld.world, gameWorld.registry);
-const userInputSystem = createUserInputSystem(
-  gameWorld.world,
-  gameWorld.registry,
-  gameWorld.saveGameData,
-  gameWorld.loadGameData,
-  gameWorld.changeZone,
-);
+const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
+const aiSystem = createAiSystem(gameWorld);
+const attackSystem = createAttackSystem(gameWorld);
+const closeSystem = createCloseSystem(gameWorld);
+const cursorSystem = createCursorSystem(gameWorld);
+const damageSystem = createDamageSystem(gameWorld);
+const openSystem = createOpenSystem(gameWorld);
+const dropSystem = createDropSystem(gameWorld);
+const fovSystem = createFovSystem(gameWorld);
+const interactSystem = createInteractSystem(gameWorld);
+const kickSystem = createKickSystem(gameWorld);
+const knockbackSystem = createKnockbackSystem(gameWorld);
+const morgueSystem = createMorgueSystem(gameWorld);
+const movementSystem = createMovementSystem(gameWorld);
+const pickUpSystem = createPickUpSystem(gameWorld);
+const renderSystem = createRenderSystem(gameWorld);
+const throwSystem = createThrowSystem(gameWorld);
+const userInputSystem = createUserInputSystem(gameWorld);
 
 const init = async () => {
   await setupCanvas(document.querySelector<HTMLCanvasElement>("#canvas")!);

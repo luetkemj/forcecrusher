@@ -44,7 +44,7 @@ describe("ai.system", () => {
   });
 
   test("AI moves toward player", () => {
-    createAiSystem(gameWorld.world)();
+    createAiSystem(gameWorld)();
     const movedAI = gameWorld.world.entities.find((e) => e.id === "ai");
     expect(movedAI?.tryMove).toBeDefined();
     // Should move left toward player
@@ -53,7 +53,7 @@ describe("ai.system", () => {
 
   test("AI does not move if already at player position", () => {
     ai.position = { x: 1, y: 1, z: 0 };
-    createAiSystem(gameWorld.world)();
+    createAiSystem(gameWorld)();
     const movedAI = gameWorld.world.entities.find((e) => e.id === "ai");
     expect(movedAI?.tryMove).toBeUndefined();
   });
@@ -68,7 +68,7 @@ describe("ai.system", () => {
       position: { x: 2, y: 1, z: 0 },
     };
     gameWorld.world.add(blocker);
-    createAiSystem(gameWorld.world)();
+    createAiSystem(gameWorld)();
     const movedAI = gameWorld.world.entities.find((e) => e.id === "ai");
     // Should move around the blocker, so y should change
     expect(movedAI?.tryMove).toBeDefined();

@@ -1,7 +1,7 @@
 import type { IGameWorld } from "../engine";
 import { aStar } from "../../lib/pathfinding";
 
-export const createAiSystem = (world: IGameWorld["world"]) => {
+export const createAiSystem = ({ world }: IGameWorld) => {
   const pcQuery = world.with("pc", "position");
   const aiQuery = world.with("ai", "position");
   const positionQuery = world.with("position");

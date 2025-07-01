@@ -31,7 +31,7 @@ describe("morgue.system", () => {
 
   test("marks entity as dead and changes components when health <= 0", () => {
     entity.health && (entity.health.current = 0);
-    createMorgueSystem(gameWorld.world, gameWorld.registry)();
+    createMorgueSystem(gameWorld)();
     expect(entity.appearance?.char).toBe("%");
     expect(entity.dead).toBe(true);
     expect(entity.layer200).toBe(true);
@@ -44,7 +44,7 @@ describe("morgue.system", () => {
 
   test("drops inventory on death", () => {
     entity.health && (entity.health.current = 0);
-    createMorgueSystem(gameWorld.world, gameWorld.registry)();
+    createMorgueSystem(gameWorld)();
     expect(item.tryDrop).toBeDefined();
   });
 
@@ -52,7 +52,7 @@ describe("morgue.system", () => {
     if (entity.health) entity.health.current = 0;
     entity.name = "player";
     entity.pc = true;
-    createMorgueSystem(gameWorld.world, gameWorld.registry)();
+    createMorgueSystem(gameWorld)();
     expect(getState().gameState).toBe(GameState.GAME_OVER);
     const { log } = getState();
     expect(log[log.length - 1]).toContain("player");
@@ -61,7 +61,7 @@ describe("morgue.system", () => {
 
   test("does nothing if entity is alive", () => {
     if (entity.health) entity.health.current = 5;
-    createMorgueSystem(gameWorld.world, gameWorld.registry)();
+    createMorgueSystem(gameWorld)();
     expect(entity.dead).toBeUndefined();
     expect(entity.appearance?.char).toBe("S");
   });

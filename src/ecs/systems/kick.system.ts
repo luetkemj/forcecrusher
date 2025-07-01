@@ -2,10 +2,7 @@ import { random } from "lodash";
 import { IGameWorld } from "../engine";
 import { DamageType } from "../enums";
 
-export const createKickSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createKickSystem = ({ world, registry }: IGameWorld) => {
   const tryKickQuery = world.with("tryKick");
 
   return function system() {

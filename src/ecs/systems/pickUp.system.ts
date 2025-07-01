@@ -2,10 +2,7 @@ import { isUndefined } from "lodash";
 import { addLog, colorTag, logFrozenEntity } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
-export const createPickUpSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createPickUpSystem = ({ world, registry }: IGameWorld) => {
   const pcQuery = world.with("pc");
   const pickUpQuery = world.with("tryPickUp");
 

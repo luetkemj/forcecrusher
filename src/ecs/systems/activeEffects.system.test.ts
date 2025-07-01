@@ -25,7 +25,7 @@ describe("activeEffects.system", () => {
       component: "health",
     });
 
-    createActiveEffectsSystem(gameWorld.world)();
+    createActiveEffectsSystem(gameWorld)();
 
     const affectedEntity = gameWorld.world.entities[0];
 
@@ -38,7 +38,7 @@ describe("activeEffects.system", () => {
       component: "health",
     });
 
-    createActiveEffectsSystem(gameWorld.world)();
+    createActiveEffectsSystem(gameWorld)();
 
     const affectedEntity = gameWorld.world.entities[0];
 
@@ -51,7 +51,7 @@ describe("activeEffects.system", () => {
       component: "health",
     });
 
-    createActiveEffectsSystem(gameWorld.world)();
+    createActiveEffectsSystem(gameWorld)();
 
     const affectedEntity = gameWorld.world.entities[0];
 
@@ -65,7 +65,7 @@ describe("activeEffects.system", () => {
       component: "health",
     });
 
-    createActiveEffectsSystem(gameWorld.world)();
+    createActiveEffectsSystem(gameWorld)();
 
     const affectedEntity = gameWorld.world.entities[0];
 
@@ -83,7 +83,7 @@ describe("activeEffects.system", () => {
       component: "health",
     });
 
-    createActiveEffectsSystem(gameWorld.world)();
+    createActiveEffectsSystem(gameWorld)();
 
     const affectedEntity = gameWorld.world.entities[0];
 

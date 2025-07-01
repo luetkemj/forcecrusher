@@ -27,7 +27,7 @@ describe("cursor.system", () => {
   });
 
   test("shows message for entity under cursor in FOV", () => {
-    createCursorSystem(gameWorld.world)();
+    createCursorSystem(gameWorld)();
     const cursorPosId = toPosId(getState().cursor[1]);
     const found = gameWorld.world.entities.find(
       (e) => e.position && toPosId(e.position) === cursorPosId && e.layer100,
@@ -40,7 +40,7 @@ describe("cursor.system", () => {
   test("shows recall message for entity not in FOV but revealed", () => {
     entity.inFov = undefined;
     entity.revealed = true;
-    createCursorSystem(gameWorld.world)();
+    createCursorSystem(gameWorld)();
     const cursorPosId = toPosId(getState().cursor[1]);
     const found = gameWorld.world.entities.find(
       (e) => e.position && toPosId(e.position) === cursorPosId && e.layer100,
@@ -57,7 +57,7 @@ describe("cursor.system", () => {
         { x: 0, y: 0, z: 0 },
       ];
     });
-    createCursorSystem(gameWorld.world)();
+    createCursorSystem(gameWorld)();
     const cursorPosId = toPosId(getState().cursor[1]);
     const found = gameWorld.world.entities.find(
       (e) => e.position && toPosId(e.position) === cursorPosId && e.layer100,
@@ -77,7 +77,7 @@ describe("cursor.system", () => {
       revealed: true,
     };
     gameWorld.world.add(entity2);
-    createCursorSystem(gameWorld.world)();
+    createCursorSystem(gameWorld)();
     const cursorPosId = toPosId(getState().cursor[1]);
     const found100 = gameWorld.world.entities.find(
       (e) => e.position && toPosId(e.position) === cursorPosId && e.layer100,

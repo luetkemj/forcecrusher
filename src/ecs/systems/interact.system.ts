@@ -4,10 +4,7 @@ import { IGameWorld, type Entity } from "../engine";
 import { OpenState } from "../enums";
 import { type State, getState, setState } from "../gameState";
 
-export const createInteractSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createInteractSystem = ({ world, registry }: IGameWorld) => {
   const renderable100Query = world.with("position", "appearance", "layer100");
   const renderable200Query = world.with("position", "appearance", "layer200");
   const renderable300Query = world.with("position", "appearance", "layer300");

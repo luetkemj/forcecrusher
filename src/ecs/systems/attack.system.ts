@@ -9,10 +9,7 @@ import { sample } from "lodash";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { getArmorClass } from "../../lib/combat";
 
-export const createAttackSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createAttackSystem = ({ world, registry }: IGameWorld) => {
   const attackQuery = world.with("tryAttack");
 
   return function system() {

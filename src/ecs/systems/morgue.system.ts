@@ -2,10 +2,7 @@ import { IGameWorld } from "../engine";
 import { setState, State, GameState } from "../gameState";
 import { addLog, unWield, unWear, colorTag } from "../../lib/utils";
 
-export const createMorgueSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
   const livingQuery = world.with("health").without("dead");
 
   return function system() {

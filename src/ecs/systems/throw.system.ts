@@ -5,12 +5,7 @@ import { IGameWorld, Entity } from "../engine";
 import { line, Pos } from "../../lib/grid";
 import { rangeAttack } from "../../lib/combat";
 
-import {} from "../engine";
-
-export const createThrowSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createThrowSystem = ({ world, registry }: IGameWorld) => {
   const tryThrowQuery = world.with("tryThrow");
   const blockingQuery = world.with("blocking", "position");
 

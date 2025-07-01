@@ -38,7 +38,7 @@ describe("throw.system", () => {
 
   test("does not throw if thrower not found", () => {
     addTryThrow("notfound");
-    createThrowSystem(gameWorld.world, gameWorld.registry)();
+    createThrowSystem(gameWorld)();
     expect(item.position).toEqual({ x: 1, y: 1, z: 0 });
     expect(item.tryThrow).toBeUndefined();
   });
@@ -49,7 +49,7 @@ describe("throw.system", () => {
       (state: State) => (state.cursor = [thrower.position as Pos, targetPos]),
     );
     addTryThrow();
-    createThrowSystem(gameWorld.world, gameWorld.registry)();
+    createThrowSystem(gameWorld)();
     expect(item.position).toEqual(targetPos);
     expect(item.tryThrow).toBeUndefined();
   });
@@ -68,7 +68,7 @@ describe("throw.system", () => {
       (state: State) => (state.cursor = [thrower.position as Pos, targetPos]),
     );
     addTryThrow();
-    createThrowSystem(gameWorld.world, gameWorld.registry)();
+    createThrowSystem(gameWorld)();
     expect(item.position).toEqual({ x: 2, y: 1, z: 0 });
     expect(item.tryThrow).toBeUndefined();
   });

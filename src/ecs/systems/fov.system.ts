@@ -2,7 +2,7 @@ import { IGameWorld } from "../engine";
 import createFOV from "../../lib/fov";
 import { toPosId } from "../../lib/grid";
 
-export const createFovSystem = (world: IGameWorld["world"]) => {
+export const createFovSystem = ({ world }: IGameWorld) => {
   const inFovQuery = world.with("inFov", "position");
   const opaqueQuery = world.with("opaque", "position");
   const playerQuery = world.with("pc", "position");

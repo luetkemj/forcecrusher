@@ -29,14 +29,14 @@ describe("fov.system", () => {
   });
 
   test("reveals entity in FOV", () => {
-    createFovSystem(gameWorld.world)();
+    createFovSystem(gameWorld)();
     const found = gameWorld.world.entities.find((e) => e.id === entity.id);
     expect(found?.revealed).toBe(true);
   });
 
   test("does not reveal entity out of FOV range", () => {
     entity.position = { x: 120, y: 120, z: 0 };
-    createFovSystem(gameWorld.world)();
+    createFovSystem(gameWorld)();
     const found = gameWorld.world.entities.find((e) => e.id === entity.id);
     // Should remain revealed: undefined
     expect(found?.revealed).toBeUndefined();
@@ -51,7 +51,7 @@ describe("fov.system", () => {
       position: { x: 1, y: 2, z: 0 },
     };
     gameWorld.world.add(entity2);
-    createFovSystem(gameWorld.world)();
+    createFovSystem(gameWorld)();
     const found1 = gameWorld.world.entities.find((e) => e.id === entity.id);
     const found2 = gameWorld.world.entities.find((e) => e.id === entity2.id);
     expect(found1?.revealed).toBe(true);

@@ -3,7 +3,7 @@ import { IGameWorld, type Entity } from "../engine";
 import { OpenState } from "../enums";
 import { chars } from "../../actors/graphics";
 
-export const createCloseSystem = (world: IGameWorld["world"]) => {
+export const createCloseSystem = ({ world }: IGameWorld) => {
   const tryCloseQuery = world.with("tryClose");
 
   return function system() {

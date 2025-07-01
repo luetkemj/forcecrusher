@@ -58,7 +58,7 @@ describe("damage.system", () => {
 
   test("applies normal damage", () => {
     addDamageToTarget({});
-    createDamageSystem(gameWorld.world, gameWorld.registry)();
+    createDamageSystem(gameWorld)();
     expect(target.health?.current).toBe(6);
     expect(target.damages?.length).toBe(0);
     const { log } = getState();
@@ -68,7 +68,7 @@ describe("damage.system", () => {
   test("applies vulnerability (double damage)", () => {
     target.vulnerabilities = [DamageType.Bludgeoning];
     addDamageToTarget({});
-    createDamageSystem(gameWorld.world, gameWorld.registry)();
+    createDamageSystem(gameWorld)();
     expect(target.health?.current).toBe(2);
     const { log } = getState();
     expect(log[log.length - 1]).toContain("Vulnerable!");
@@ -78,7 +78,7 @@ describe("damage.system", () => {
   test("applies resistance (half damage)", () => {
     target.resistances = [DamageType.Bludgeoning];
     addDamageToTarget({});
-    createDamageSystem(gameWorld.world, gameWorld.registry)();
+    createDamageSystem(gameWorld)();
     expect(target.health?.current).toBe(8);
     const { log } = getState();
     expect(log[log.length - 1]).toContain("Resistant!");
@@ -88,7 +88,7 @@ describe("damage.system", () => {
   test("applies immunity (zero damage)", () => {
     target.immunities = [DamageType.Bludgeoning];
     addDamageToTarget({});
-    createDamageSystem(gameWorld.world, gameWorld.registry)();
+    createDamageSystem(gameWorld)();
     expect(target.health?.current).toBe(10);
     const { log } = getState();
     expect(log[log.length - 1]).toContain("Immune!");
@@ -98,7 +98,7 @@ describe("damage.system", () => {
   test("applies critical hit (double damage)", () => {
     target.vulnerabilities = [DamageType.Bludgeoning];
     addDamageToTarget({ critical: true });
-    createDamageSystem(gameWorld.world, gameWorld.registry)();
+    createDamageSystem(gameWorld)();
     expect(target.health?.current).toBe(-6);
     const { log } = getState();
     expect(log[log.length - 1]).toContain("Critical!");
@@ -108,7 +108,7 @@ describe("damage.system", () => {
 
   test("applies critical hit (double damage) after vulnerability, resistance, and immunities", () => {
     addDamageToTarget({ critical: true });
-    createDamageSystem(gameWorld.world, gameWorld.registry)();
+    createDamageSystem(gameWorld)();
     expect(target.health?.current).toBe(2);
     const { log } = getState();
     expect(log[log.length - 1]).toContain("Critical!");
@@ -119,7 +119,7 @@ describe("damage.system", () => {
     addDamageToTarget({
       damageAmounts: [{ type: DamageType.Bludgeoning, amount: 4, mod: 2 }],
     });
-    createDamageSystem(gameWorld.world, gameWorld.registry)();
+    createDamageSystem(gameWorld)();
     expect(target.health?.current).toBe(4);
   });
   // TODO: test log seperately from damage amounts.

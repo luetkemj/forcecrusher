@@ -3,10 +3,7 @@ import { colorTag, addLog, logFrozenEntity } from "../../lib/utils";
 import { circle, toPos, toPosId } from "../../lib/grid";
 import { IGameWorld } from "../engine";
 
-export const createDropSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createDropSystem = ({ world, registry }: IGameWorld) => {
   const dropQuery = world.with("tryDrop");
   const pickUpQuery = world.with("position", "pickUp");
   const blockingQuery = world.with("position", "blocking");
@@ -84,7 +81,9 @@ export const createDropSystem = (
 
       const dropperTint = dropperEntity.appearance?.tint || 0x00ff00;
       const droppedTint = entity.appearance?.tint || 0x00ff00;
-      addLog(`${colorTag(dropperTint)}${dropperEntity.name}§purple§ drops ${colorTag(droppedTint)}${entity.name}`);
+      addLog(
+        `${colorTag(dropperTint)}${dropperEntity.name}§purple§ drops ${colorTag(droppedTint)}${entity.name}`,
+      );
     }
   };
 };

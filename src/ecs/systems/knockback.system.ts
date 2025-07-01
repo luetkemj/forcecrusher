@@ -5,10 +5,7 @@ import { Pos, getDirection, line, moveInDirection } from "../../lib/grid";
 import { isSamePosition } from "../../lib/utils";
 import { rangeAttack } from "../../lib/combat";
 
-export const createKnockbackSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createKnockbackSystem = ({ world, registry }: IGameWorld) => {
   const knockbackQuery = world.with("knockback");
   const blockingQuery = world.with("blocking", "position");
 

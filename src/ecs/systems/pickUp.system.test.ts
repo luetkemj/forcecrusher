@@ -40,7 +40,7 @@ describe("pickUp.system", () => {
 
   test("picks up item and removes position", () => {
     addTryPickUp();
-    createPickUpSystem(gameWorld.world, gameWorld.registry)();
+    createPickUpSystem(gameWorld)();
     expect(player.container?.contents.includes(item.id)).toBe(true);
     expect(item.position).toBeUndefined();
     expect(item.tryPickUp).toBeUndefined();
@@ -49,7 +49,7 @@ describe("pickUp.system", () => {
   test("cancels pickup if picker has no container", () => {
     delete player.container;
     addTryPickUp();
-    createPickUpSystem(gameWorld.world, gameWorld.registry)();
+    createPickUpSystem(gameWorld)();
     expect(item.position).toBeDefined();
     expect(item.tryPickUp).toBeUndefined();
   });
@@ -57,7 +57,7 @@ describe("pickUp.system", () => {
   test("logs message if picker has no container", () => {
     delete player.container;
     addTryPickUp();
-    createPickUpSystem(gameWorld.world, gameWorld.registry)();
+    createPickUpSystem(gameWorld)();
     const { log } = getState();
     expect(log[log.length - 1]).toBe("You have nowhere to put that.");
   });
@@ -65,7 +65,7 @@ describe("pickUp.system", () => {
   test("cancels pickup if no container is full", () => {
     if (player.container) player.container.contents = ["a", "b"];
     addTryPickUp();
-    createPickUpSystem(gameWorld.world, gameWorld.registry)();
+    createPickUpSystem(gameWorld)();
     expect(item.position).toBeDefined();
     expect(item.tryPickUp).toBeUndefined();
   });
@@ -73,14 +73,14 @@ describe("pickUp.system", () => {
   test("logs message if container is full", () => {
     if (player.container) player.container.contents = ["a", "b"];
     addTryPickUp();
-    createPickUpSystem(gameWorld.world, gameWorld.registry)();
+    createPickUpSystem(gameWorld)();
     const { log } = getState();
     expect(log[log.length - 1]).toBe("You have no room in your Bag.");
   });
 
   test("does nothing if picker not found", () => {
     addTryPickUp("notfound");
-    createPickUpSystem(gameWorld.world, gameWorld.registry)();
+    createPickUpSystem(gameWorld)();
     expect(item.position).toBeDefined();
     expect(item.tryPickUp?.pickerId).toBe("notfound");
   });

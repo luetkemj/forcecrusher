@@ -1,7 +1,7 @@
 import { addLog } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
-export const createMovementSystem = (world: IGameWorld["world"]) => {
+export const createMovementSystem = ({ world }: IGameWorld) => {
   const moveableQuery = world.with("position", "tryMove");
   const blockingQuery = world.with("blocking", "position");
 

@@ -36,10 +36,7 @@ export interface RendererContext {
   registry: IGameWorld["registry"];
 }
 
-export const createRenderSystem = (
-  world: IGameWorld["world"],
-  registry: IGameWorld["registry"],
-) => {
+export const createRenderSystem = ({ world, registry }: IGameWorld) => {
   const renderable100Query = world.with("position", "appearance", "layer100");
   const renderable200Query = world.with("position", "appearance", "layer200");
   const renderable300Query = world.with("position", "appearance", "layer300");
