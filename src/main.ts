@@ -166,7 +166,7 @@ function gameLoop() {
 
 let fps = 0;
 let now = Date.now();
-let fpsSamples: Array<Number> = [];
+let fpsSamples: number[];
 
 function trackFPS() {
   if (!now) now = Date.now();
