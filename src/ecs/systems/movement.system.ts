@@ -5,7 +5,7 @@ export const createMovementSystem = ({ world }: IGameWorld) => {
   const moveableQuery = world.with("position", "tryMove");
   const blockingQuery = world.with("blocking", "position");
 
-  return function system() {
+  return function movementSystem() {
     for (const actor of moveableQuery) {
       const { position, tryMove } = actor;
 

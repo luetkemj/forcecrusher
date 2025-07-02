@@ -64,7 +64,7 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     registry,
   };
 
-  return function system() {
+  return function renderSystem() {
     renderMap(ctx);
     renderSenses(ctx);
     renderLegend(ctx);

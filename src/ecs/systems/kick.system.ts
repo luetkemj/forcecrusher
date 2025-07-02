@@ -5,7 +5,7 @@ import { DamageType } from "../enums";
 export const createKickSystem = ({ world, registry }: IGameWorld) => {
   const tryKickQuery = world.with("tryKick");
 
-  return function system() {
+  return function kickSystem() {
     for (const actor of tryKickQuery) {
       const { targetId } = actor.tryKick;
       const target = registry.get(targetId);

@@ -34,7 +34,7 @@ export const createUserInputSystem = ({
 }: IGameWorld) => {
   const pcQuery = world.with("pc", "position");
 
-  return function system() {
+  return function userInputSystem() {
     const { userInput, gameState } = getState();
     const state = getState();
 

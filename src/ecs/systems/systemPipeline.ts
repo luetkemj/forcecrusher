@@ -18,6 +18,7 @@ import { createThrowSystem } from "../systems/throw.system";
 import { createUserInputSystem } from "../systems/userInput.system";
 import { gameWorld } from "../engine";
 import { GameState } from "../gameState";
+import { styleDuration } from "./debug-utils";
 
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
 const aiSystem = createAiSystem(gameWorld);
@@ -65,7 +66,7 @@ type SystemPhase = "preInput" | "input" | "main" | "postMain" | "render";
 
 type SystemPipeline = Partial<Record<SystemPhase, SystemFn[]>>;
 
-export const runPipeline = (pipeline: SystemPipeline) => {
+export const runPipeline = (pipeline: SystemPipeline, label = "") => {
   const order: SystemPhase[] = [
     "preInput",
     "input",
@@ -73,9 +74,46 @@ export const runPipeline = (pipeline: SystemPipeline) => {
     "postMain",
     "render",
   ];
-  for (const phase of order) {
-    for (const fn of pipeline[phase] ?? []) {
-      fn();
+
+  if (window.skulltooth.debug) {
+    const pipelineStart = performance.now();
+    for (const phase of order) {
+      for (const system of pipeline[phase] ?? []) {
+        const start = performance.now();
+        system();
+        const end = performance.now();
+
+        const duration = end - start;
+        const { color: timeColor, emoji } = styleDuration(
+          duration,
+          system.name,
+        );
+
+        console.log(
+          `%c[${label}] ▶ %c ${phase.padEnd(9)} %c ⚙ ${system.name.padEnd(18)} %c ${emoji} ${duration.toFixed(2)}ms`,
+          "color: gray; font-weight: bold",
+          "color: #5e9cff; font-weight: bold",
+          "color: #22c55e; font-weight: bold",
+          timeColor,
+        );
+      }
+    }
+    const pipelineEnd = performance.now();
+    const frameTime = pipelineEnd - pipelineStart;
+
+    const { color: frameColor, emoji: frameEmoji } = styleDuration(
+      frameTime,
+      "FRAME",
+    );
+    console.log(
+      `%c${frameEmoji} Frame Time: ${frameTime.toFixed(2)}ms`,
+      frameColor,
+    );
+  } else {
+    for (const phase of order) {
+      for (const system of pipeline[phase] ?? []) {
+        system();
+      }
     }
   }
 };

@@ -12,7 +12,7 @@ import { getArmorClass } from "../../lib/combat";
 export const createAttackSystem = ({ world, registry }: IGameWorld) => {
   const attackQuery = world.with("tryAttack");
 
-  return function system() {
+  return function attackSystem() {
     for (const actor of attackQuery) {
       const target = registry.get(actor.tryAttack.targetId);
       const attack = actor.tryAttack.attack || getAttack(actor, registry);

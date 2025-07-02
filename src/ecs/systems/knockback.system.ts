@@ -9,7 +9,7 @@ export const createKnockbackSystem = ({ world, registry }: IGameWorld) => {
   const knockbackQuery = world.with("knockback");
   const blockingQuery = world.with("blocking", "position");
 
-  return function system() {
+  return function knockbackSystem() {
     for (const target of knockbackQuery) {
       const { actorId, distance } = target.knockback;
       const actor = registry.get(actorId);

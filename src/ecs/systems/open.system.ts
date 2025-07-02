@@ -6,7 +6,7 @@ import { OpenState } from "../enums";
 export const createOpenSystem = ({ world, registry }: IGameWorld) => {
   const tryOpenQuery = world.with("tryOpen");
 
-  return function system() {
+  return function openSystem() {
     for (const actor of tryOpenQuery) {
       const target = registry.get(actor.tryOpen.id);
       if (!target) return;

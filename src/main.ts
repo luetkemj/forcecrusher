@@ -105,6 +105,7 @@ const init = async () => {
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
+  trackFPS();
 
   const state = getState();
 
@@ -112,14 +113,14 @@ function gameLoop() {
 
   if (state.gameState !== GameState.GAME) {
     if (playerCanAct) {
-      runPipeline(gameStatePipelines[state.gameState]!);
+      runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
     }
 
     return;
   }
 
   if (playerCanAct) {
-    runPipeline(playerTurnPipeline);
+    runPipeline(playerTurnPipeline, "PlayerTurn");
 
     if (getState().gameState === GameState.GAME) {
       setState((state: State) => {
@@ -131,14 +132,12 @@ function gameLoop() {
   }
 
   if (state.turn === Turn.WORLD) {
-    runPipeline(worldTurnPipeline);
+    runPipeline(worldTurnPipeline, "WorldTurn");
 
     setState((state: State) => {
       state.turn = Turn.PLAYER;
     });
   }
-
-  trackFPS();
 }
 
 let fps = 0;

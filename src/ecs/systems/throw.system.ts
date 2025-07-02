@@ -9,7 +9,7 @@ export const createThrowSystem = ({ world, registry }: IGameWorld) => {
   const tryThrowQuery = world.with("tryThrow");
   const blockingQuery = world.with("blocking", "position");
 
-  return function system() {
+  return function throwSystem() {
     for (const entity of tryThrowQuery) {
       // get thrower entity
       const { throwerId } = entity.tryThrow;

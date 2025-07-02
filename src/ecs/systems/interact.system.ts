@@ -10,7 +10,7 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
   const renderable300Query = world.with("position", "appearance", "layer300");
   const renderable400Query = world.with("position", "appearance", "layer400");
 
-  return function system() {
+  return function interactSystem() {
     const playerId = getState().playerId;
     const actor = registry.get(playerId);
     if (!actor) return;

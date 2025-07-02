@@ -6,7 +6,7 @@ import { chars } from "../../actors/graphics";
 export const createCloseSystem = ({ world }: IGameWorld) => {
   const tryCloseQuery = world.with("tryClose");
 
-  return function system() {
+  return function closeSystem() {
     for (const actor of tryCloseQuery) {
       const target = actor.tryClose;
 

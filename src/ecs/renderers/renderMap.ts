@@ -29,13 +29,13 @@ export const renderMap = ({ views, queries }: RendererContext) => {
       }
     }
 
-    // make this key off of a cheat menu in state - so you can just render all the things immediately instead of having to wait a frame
-    if (window.skulltooth.debug) {
-      for (const query of allLayers) {
-        for (const entity of query) {
-          renderEntity(view, entity, 1);
-        }
-      }
-    }
+    // // make this key off of a cheat menu in state - so you can just render all the things immediately instead of having to wait a frame
+    // if (window.skulltooth.debug) {
+    //   for (const query of allLayers) {
+    //     for (const entity of query) {
+    //       renderEntity(view, entity, 1);
+    //     }
+    //   }
+    // }
   }
 };

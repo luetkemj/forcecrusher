@@ -6,7 +6,7 @@ export const createPickUpSystem = ({ world, registry }: IGameWorld) => {
   const pcQuery = world.with("pc");
   const pickUpQuery = world.with("tryPickUp");
 
-  return function system() {
+  return function pickUpSystem() {
     const [player] = pcQuery;
 
     for (const entity of pickUpQuery) {

@@ -5,7 +5,7 @@ import { DamageType } from "../enums";
 export const createDamageSystem = ({world, registry}:IGameWorld) => {
   const damageQuery = world.with("damages");
 
-  return function system() {
+  return function damageSystem() {
     for (const target of damageQuery) {
       for (const damage of target.damages) {
         const attacker = damage.attacker ? registry.get(damage.attacker) : null;

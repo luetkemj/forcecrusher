@@ -5,7 +5,7 @@ import { addLog, unWield, unWear, colorTag } from "../../lib/utils";
 export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
   const livingQuery = world.with("health").without("dead");
 
-  return function system() {
+  return function morgueSystem() {
     for (const entity of livingQuery) {
       if (entity.health.current <= 0) {
         if (entity.appearance) {

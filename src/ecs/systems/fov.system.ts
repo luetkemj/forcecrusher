@@ -8,7 +8,7 @@ export const createFovSystem = ({ world }: IGameWorld) => {
   const playerQuery = world.with("pc", "position");
   const renderableQuery = world.with("appearance", "position");
 
-  return function system() {
+  return function fovSystem() {
     let player;
 
     for (const entity of playerQuery) {

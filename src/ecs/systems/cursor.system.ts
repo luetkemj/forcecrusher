@@ -5,7 +5,7 @@ import { toPosId } from "../../lib/grid";
 export const createCursorSystem = ({ world }: IGameWorld) => {
   const inspectableQuery = world.with("revealed", "position");
 
-  return function system() {
+  return function cursorSystem() {
     const cursorPosId = toPosId(getState().cursor[1]);
 
     const layer100 = [];

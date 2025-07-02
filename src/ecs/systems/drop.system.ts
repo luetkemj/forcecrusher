@@ -8,7 +8,7 @@ export const createDropSystem = ({ world, registry }: IGameWorld) => {
   const pickUpQuery = world.with("position", "pickUp");
   const blockingQuery = world.with("position", "blocking");
 
-  return function system() {
+  return function dropSystem() {
     for (const entity of dropQuery) {
       // get dropper entity
       const dropperId = entity.tryDrop.dropperId;
