@@ -1,3 +1,5 @@
+export const IGNORED_KEYS = ["Shift", "Meta", "Control", "Alt"];
+
 export const Keys = {
   MOVE_LEFT: ["ArrowLeft", "h"],
   MOVE_DOWN: ["ArrowDown", "j"],

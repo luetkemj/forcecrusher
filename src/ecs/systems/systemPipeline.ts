@@ -80,7 +80,41 @@ export const runPipeline = (pipeline: SystemPipeline) => {
   }
 };
 
-export const pipelines: Partial<Record<GameState, SystemPipeline>> = {
+export const playerTurnPipeline: SystemPipeline = {
+  preInput: [systems.activeEffects],
+  input: [systems.userInput],
+  main: [
+    systems.pickUp,
+    systems.movement,
+    systems.open,
+    systems.attack,
+    systems.knockback,
+    systems.damage,
+    systems.morgue,
+    systems.drop,
+  ],
+  postMain: [systems.fov],
+  render: [systems.render],
+};
+
+export const worldTurnPipeline: SystemPipeline = {
+  preInput: [systems.activeEffects, systems.morgue],
+  input: [],
+  main: [
+    systems.ai,
+    systems.movement,
+    systems.open,
+    systems.attack,
+    systems.knockback,
+    systems.damage,
+    systems.morgue,
+    systems.drop,
+  ],
+  postMain: [systems.fov],
+  render: [systems.render],
+};
+
+export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
   [GameState.INSPECT]: {
     preInput: [],
     input: [systems.userInput],

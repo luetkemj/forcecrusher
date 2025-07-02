@@ -14,7 +14,14 @@ import {
   setState,
 } from "./ecs/gameState";
 import { createViews, ViewId } from "./views/views";
-import { pipelines, runPipeline, systems } from "./ecs/systems/systemPipeline";
+import {
+  gameStatePipelines,
+  playerTurnPipeline,
+  runPipeline,
+  systems,
+  worldTurnPipeline,
+} from "./ecs/systems/systemPipeline";
+import { IGNORED_KEYS } from "./ecs/inputHandlers/KeyMap";
 
 // for debugging
 declare global {
@@ -67,10 +74,8 @@ const init = async () => {
 
   gameLoop();
 
-  const metaKeys = ["Shift", "Meta", "Control", "Alt"];
   document.addEventListener("keydown", (ev) => {
-    // ignore metaKeys
-    if (metaKeys.includes(ev.key)) return;
+    if (IGNORED_KEYS.includes(ev.key)) return;
 
     setState((state: State) => {
       state.userInput = ev;
@@ -107,54 +112,26 @@ function gameLoop() {
 
   if (state.gameState !== GameState.GAME) {
     if (playerCanAct) {
-      runPipeline(pipelines[state.gameState]!);
+      runPipeline(gameStatePipelines[state.gameState]!);
     }
 
     return;
   }
 
   if (playerCanAct) {
-    runPipeline({
-      preInput: [systems.activeEffects],
-      input: [systems.userInput],
-      main: [
-        systems.pickUp,
-        systems.movement,
-        systems.open,
-        systems.attack,
-        systems.knockback,
-        systems.damage,
-        systems.morgue,
-        systems.drop,
-      ],
-      postMain: [systems.fov],
-      render: [systems.render],
-    });
+    runPipeline(playerTurnPipeline);
 
     if (getState().gameState === GameState.GAME) {
       setState((state: State) => {
         state.turn = Turn.WORLD;
       });
     }
+
+    return;
   }
 
   if (state.turn === Turn.WORLD) {
-    runPipeline({
-      preInput: [systems.activeEffects, systems.morgue],
-      input: [],
-      main: [
-        systems.ai,
-        systems.movement,
-        systems.open,
-        systems.attack,
-        systems.knockback,
-        systems.damage,
-        systems.morgue,
-        systems.drop,
-      ],
-      postMain: [systems.fov],
-      render: [systems.render],
-    });
+    runPipeline(worldTurnPipeline);
 
     setState((state: State) => {
       state.turn = Turn.PLAYER;
@@ -166,7 +143,7 @@ function gameLoop() {
 
 let fps = 0;
 let now = Date.now();
-let fpsSamples: number[];
+let fpsSamples: number[] = [];
 
 function trackFPS() {
   if (!now) now = Date.now();
