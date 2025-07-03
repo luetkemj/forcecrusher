@@ -1,40 +1,10 @@
 import { Entity, IGameWorld } from "../engine";
 import { InputContext } from "../systems/userInput.system";
 import { GameState, State, getState } from "../gameState";
-import { isSamePosition, logFrozenEntity, outOfBounds } from "../../lib/utils";
+import { isSamePosition, outOfBounds } from "../../lib/utils";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 import { prefabs } from "../../actors";
-
-const preservedKeys: Array<keyof Entity> = ["id", "position"];
-
-function convertEntity(entity: Entity, prefab: Partial<Entity>) {
-  const preservedData: Partial<Record<keyof Entity, Entity[keyof Entity]>> = {};
-  for (const key of preservedKeys) {
-    if (key in entity) {
-      preservedData[key] = entity[key];
-    }
-  }
-
-  for (const key in entity) {
-    if (!preservedKeys.includes(key as keyof Entity)) {
-      delete entity[key as keyof Entity];
-    }
-  }
-
-  Object.assign(entity, prefab, preservedData);
-}
-
-function findAndConvertEntity(
-  query: ReturnType<IGameWorld["world"]["with"]>,
-  prefab: Entity,
-) {
-  const cursorPosition = getState().cursor[1];
-  for (const entity of query) {
-    if (isSamePosition(cursorPosition, entity.position)) {
-      convertEntity(entity, prefab);
-    }
-  }
-}
+import { spawnSkeleton } from "../../pcgn/monsters";
 
 export const handleMakerModeInput = ({
   key,
@@ -48,6 +18,14 @@ export const handleMakerModeInput = ({
 }: InputContext) => {
   if (key === Keys.TOGGLE_MAKER_MODE) {
     setState((state: State) => (state.gameState = GameState.GAME));
+
+    return true;
+  }
+
+  if (key === Keys.MAKER_MODE_SELECT_PREFAB) {
+    setState(
+      (state: State) => (state.gameState = GameState.MAKER_MODE_PREFAB_SELECT),
+    );
 
     return true;
   }
@@ -72,7 +50,7 @@ export const handleMakerModeInput = ({
 
   // if enter
   if (key === Keys.CONFIRM) {
-    const selectedEntityPrefab = prefabs.floor;
+    const selectedEntityPrefab = prefabs.skeleton;
 
     const { layer100, layer200, layer300, layer400 } = selectedEntityPrefab;
 
@@ -95,3 +73,41 @@ export const handleMakerModeInput = ({
     return true;
   }
 };
+
+function convertEntity(entity: Entity, prefab: Partial<Entity>) {
+  const preservedKeys: Array<keyof Entity> = ["id", "position"];
+  const preservedData: Partial<Record<keyof Entity, Entity[keyof Entity]>> = {};
+  for (const key of preservedKeys) {
+    if (key in entity) {
+      preservedData[key] = entity[key];
+    }
+  }
+
+  for (const key in entity) {
+    if (!preservedKeys.includes(key as keyof Entity)) {
+      delete entity[key as keyof Entity];
+    }
+  }
+
+  Object.assign(entity, prefab, preservedData);
+}
+
+function findAndConvertEntity(
+  query: ReturnType<IGameWorld["world"]["with"]>,
+  prefab: Entity,
+) {
+  const cursorPosition = getState().cursor[1];
+
+  let entityToConvert;
+  for (const entity of query) {
+    if (isSamePosition(cursorPosition, entity.position)) {
+      entityToConvert = entity;
+    }
+  }
+
+  if (entityToConvert) {
+    convertEntity(entityToConvert, prefab);
+  } else {
+    spawnSkeleton(cursorPosition);
+  }
+}

@@ -1,20 +1,36 @@
 import { RendererContext } from "../systems/render.system";
 import { getState, GameState } from "../gameState";
+import { prefabs } from "../../actors";
 
-export const renderMakerModeRight = ({ views }: RendererContext) => {
-  const view = views.makerModeRight;
+export const renderMakerMode = ({ views }: RendererContext) => {
+  const viewRight = views.makerModeRight;
+  const viewLeft = views.makerModeLeft;
 
-  if (view) {
+  if (viewRight) {
     if (getState().gameState === GameState.MAKER_MODE) {
-      const rows = [
-        [{}, { string: "MAKER MODE" }],
-      ];
+      const rows = [[{}, { string: "MAKER MODE" }]];
 
-      view?.clearView();
-      view?.updateRows(rows, true);
-      view?.show();
+      viewRight?.clearView();
+      viewRight?.updateRows(rows, true);
+      viewRight?.show();
     } else {
-      view?.hide();
+      viewRight?.hide();
+    }
+  }
+
+  if (viewLeft) {
+    if (getState().gameState === GameState.MAKER_MODE) {
+      const rows = [[{}, { string: "MAKER MODE SELECT" }]];
+
+      Object.values(prefabs).forEach((value) => {
+        rows.push([{}, { string: ` ${value.appearance?.char} ${value.name}` }]);
+      });
+
+      viewLeft?.clearView();
+      viewLeft?.updateRows(rows, true);
+      viewLeft?.show();
+    } else {
+      viewLeft?.hide();
     }
   }
 };

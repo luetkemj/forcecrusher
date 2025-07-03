@@ -34,6 +34,8 @@ export const Keys = {
 
   SAVE: "1",
   LOAD: "2",
+
+  MAKER_MODE_SELECT_PREFAB: "e",
 } as const;
 
 export const isMoveKey = (key: string): boolean =>

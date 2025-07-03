@@ -12,7 +12,7 @@ import { renderLog } from "../renderers/renderLog";
 import { renderCursor } from "../renderers/renderCursor";
 import { renderHud } from "../renderers/renderHud";
 import { renderControls } from "../renderers/renderControls";
-import { renderMakerModeRight } from "../renderers/renderMakerMode";
+import { renderMakerMode } from "../renderers/renderMakerMode";
 
 export interface RendererContext {
   views: Views;
@@ -76,7 +76,7 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     renderCursor(ctx);
     renderHud(ctx);
     renderControls(ctx);
-    renderMakerModeRight(ctx);
+    renderMakerMode(ctx);
   };
 };
 
