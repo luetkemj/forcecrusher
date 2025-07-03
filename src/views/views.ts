@@ -11,7 +11,8 @@ export type ViewId =
   | "controls"
   | "menuUnderlay"
   | "inventory"
-  | "logHistory";
+  | "logHistory"
+  | "makerModeRight";
 
 type ViewConfig = ConstructorParameters<typeof View>[0];
 
@@ -152,6 +153,18 @@ const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0xffffff],
     alphas: [1],
     visible: false,
+  },
+
+  makerModeRight: {
+    width: 26,
+    height: 46,
+    x: 174,
+    y: 0,
+    layers: 2,
+    tileSets: ["tile", "text"],
+    tints: [0x000000, 0xdddddd],
+    alphas: [1, 1],
+    visible: true,
   },
 };
 

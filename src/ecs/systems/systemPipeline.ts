@@ -218,7 +218,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     preInput: [],
     input: [systems.userInput],
     main: [],
-    postMain: [],
+    postMain: [systems.fov],
     render: [systems.render],
   },
 };

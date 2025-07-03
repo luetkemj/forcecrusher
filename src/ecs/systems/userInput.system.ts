@@ -23,6 +23,10 @@ export interface InputContext {
   loadGameData: () => void;
   changeZone: (zoneId: string, direction: ChangeZoneDirections) => void;
   addLog: (string: string) => void;
+  layer100Query: ReturnType<IGameWorld["world"]["with"]>;
+  layer200Query: ReturnType<IGameWorld["world"]["with"]>;
+  layer300Query: ReturnType<IGameWorld["world"]["with"]>;
+  layer400Query: ReturnType<IGameWorld["world"]["with"]>;
 }
 
 export const createUserInputSystem = ({
@@ -33,6 +37,10 @@ export const createUserInputSystem = ({
   changeZone,
 }: IGameWorld) => {
   const pcQuery = world.with("pc", "position");
+  const layer100Query = world.with("layer100", "position");
+  const layer200Query = world.with("layer200", "position");
+  const layer300Query = world.with("layer300", "position");
+  const layer400Query = world.with("layer400", "position");
 
   return function userInputSystem() {
     const { userInput, gameState } = getState();
@@ -55,6 +63,10 @@ export const createUserInputSystem = ({
       loadGameData,
       changeZone,
       addLog,
+      layer100Query,
+      layer200Query,
+      layer300Query,
+      layer400Query,
     };
 
     const inputDispatchers = {

@@ -32,6 +32,7 @@ export type Views = {
   cursor?: View;
   hud?: View;
   logHistory?: View;
+  makerModeRight?: View;
 };
 
 export type State = {
