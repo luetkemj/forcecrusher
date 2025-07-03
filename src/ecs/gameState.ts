@@ -17,6 +17,7 @@ export const enum GameState {
   INTERACT = "INTERACT",
   INTERACT_ACTION = "INTERACT_ACTION",
   MAKER_MODE = "MAKER_MODE",
+  MAKER_MODE_PREFAB_SELECT = "MAKER_MODE_PREFAB_SELECT",
 }
 
 export type Views = {

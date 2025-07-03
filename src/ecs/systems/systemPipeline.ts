@@ -221,4 +221,12 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     postMain: [systems.fov],
     render: [systems.render],
   },
+
+  [GameState.MAKER_MODE_PREFAB_SELECT]: {
+    preInput: [],
+    input: [systems.userInput],
+    main: [],
+    postMain: [],
+    render: [systems.render],
+  },
 };

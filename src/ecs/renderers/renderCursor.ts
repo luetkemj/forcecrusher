@@ -16,7 +16,7 @@ export const renderCursor = ({ views }: RendererContext) => {
     if (
       getState().gameState === GameState.INSPECT ||
       getState().gameState === GameState.TARGET ||
-      getState().gameState === GameState.MAKER_MODE
+      getState().gameState.startsWith(GameState.MAKER_MODE)
     ) {
       // clear last cursor
       view.updateCell({

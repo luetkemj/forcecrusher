@@ -22,7 +22,7 @@ export const handleMakerModeInput = ({
     return true;
   }
 
-  if (key === Keys.MAKER_MODE_SELECT_PREFAB) {
+  if (key === Keys.TOGGLE_MAKER_MODE_PREFAB_SELECT) {
     setState(
       (state: State) => (state.gameState = GameState.MAKER_MODE_PREFAB_SELECT),
     );

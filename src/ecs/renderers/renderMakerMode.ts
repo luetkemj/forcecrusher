@@ -7,7 +7,7 @@ export const renderMakerMode = ({ views }: RendererContext) => {
   const viewLeft = views.makerModeLeft;
 
   if (viewRight) {
-    if (getState().gameState === GameState.MAKER_MODE) {
+    if (getState().gameState.startsWith(GameState.MAKER_MODE)) {
       const rows = [[{}, { string: "MAKER MODE" }]];
 
       viewRight?.clearView();
@@ -19,7 +19,7 @@ export const renderMakerMode = ({ views }: RendererContext) => {
   }
 
   if (viewLeft) {
-    if (getState().gameState === GameState.MAKER_MODE) {
+    if (getState().gameState.startsWith(GameState.MAKER_MODE)) {
       const rows = [[{}, { string: "MAKER MODE SELECT" }]];
 
       Object.values(prefabs).forEach((value) => {

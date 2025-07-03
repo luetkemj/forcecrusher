@@ -10,6 +10,7 @@ import { handleInventoryModeInput } from "../inputHandlers/inventoryMode";
 import { handleLogHistoryModeInput } from "../inputHandlers/logHistoryMode";
 import { handleMakerModeInput } from "../inputHandlers/makerMode";
 import { handleTargetModeInput } from "../inputHandlers/targetMode";
+import { handleMakerModePrefabSelectInput } from "../inputHandlers/makerModePrefabSelect";
 
 export interface InputContext {
   key: string;
@@ -78,6 +79,7 @@ export const createUserInputSystem = ({
       [GameState.INVENTORY]: handleInventoryModeInput,
       [GameState.LOG_HISTORY]: handleLogHistoryModeInput,
       [GameState.MAKER_MODE]: handleMakerModeInput,
+      [GameState.MAKER_MODE_PREFAB_SELECT]: handleMakerModePrefabSelectInput,
       [GameState.TARGET]: handleTargetModeInput,
     };
 
