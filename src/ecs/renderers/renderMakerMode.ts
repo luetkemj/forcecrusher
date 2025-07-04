@@ -1,6 +1,7 @@
 import { RendererContext } from "../systems/render.system";
 import { getState, GameState } from "../gameState";
 import { prefabs } from "../../actors";
+import { entityNamePlate } from "../../lib/utils";
 
 export const renderMakerMode = ({ views }: RendererContext) => {
   const viewRight = views.makerModeRight;
@@ -9,7 +10,12 @@ export const renderMakerMode = ({ views }: RendererContext) => {
 
   if (viewTop) {
     if (getState().gameState.startsWith(GameState.MAKER_MODE)) {
-      const rows = [[{}, { string: "MAKER MODE TOP" }]];
+      let rows = [];
+      if (getState().gameState === GameState.MAKER_MODE) {
+        rows.push([{}, { string: "*PLACE*", tint: 0x7766ff }], [{}, {}]);
+      } else {
+        rows.push([{}, { string: " PLACE ", tint: 0xdddddd }], [{}, {}]);
+      }
 
       viewTop?.clearView();
       viewTop?.updateRows(rows, true);
@@ -33,26 +39,34 @@ export const renderMakerMode = ({ views }: RendererContext) => {
 
   if (viewLeft) {
     if (getState().gameState.startsWith(GameState.MAKER_MODE)) {
-      const bgTint =
-        getState().gameState === GameState.MAKER_MODE_PREFAB_SELECT
-          ? 0x7700ff
-          : 0x000000;
-      const rows = [
-        [
-          { string: "                     ", tint: bgTint, alpha: 1 },
-          { string: "  MAKER MODE SELECT" },
-        ],
-      ];
+      let rows = [];
+      if (getState().gameState === GameState.MAKER_MODE_PREFAB_SELECT) {
+        rows.push([{}, { string: "   *SELECT*   ", tint: 0x7766ff }], [{}, {}]);
+      } else {
+        rows.push([{}, { string: "    SELECT    ", tint: 0xdddddd }], [{}, {}]);
+      }
 
       const { makerModePrefabSelectIndex: selectedIndex } = getState();
 
       Object.values(prefabs).forEach((value, index) => {
-        rows.push([
-          { string: "", tint: 0x000000, alpha: 1 },
-          {
-            string: `${index === selectedIndex ? "*" : " "} ${value.appearance?.char} ${value.name}`,
-          },
-        ]);
+        if (
+          index === selectedIndex &&
+          getState().gameState === GameState.MAKER_MODE_PREFAB_SELECT
+        ) {
+          rows.push([
+            {},
+            {
+              string: `${index === selectedIndex ? "*" : " "} ${entityNamePlate(value)}`,
+            },
+          ]);
+        } else {
+          rows.push([
+            {},
+            {
+              string: `${index === selectedIndex ? "*" : " "} ${value.appearance?.char} ${value.name}`,
+            },
+          ]);
+        }
       });
 
       viewLeft?.clearView();
