@@ -21,7 +21,7 @@ export const renderMakerMode = ({ views }: RendererContext) => {
       viewTop?.updateRows(rows, true);
       viewTop?.show();
     } else {
-      viewRight?.hide();
+      viewTop?.hide();
     }
   }
 
