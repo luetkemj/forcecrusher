@@ -47,6 +47,7 @@ export type State = {
   interactKey: string;
   interactTargets: Array<Entity>;
   interactActions: string;
+  makerModePrefabSelectIndex: number;
   senses: {
     feel: string;
     see: string;
@@ -75,6 +76,7 @@ const state: State = {
   interactKey: "",
   interactTargets: [],
   interactActions: "",
+  makerModePrefabSelectIndex: 0,
   senses: {
     feel: "You feel nothing.",
     see: "You see nothing.",

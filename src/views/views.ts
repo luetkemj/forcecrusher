@@ -17,7 +17,7 @@ export type ViewId =
 
 type ViewConfig = ConstructorParameters<typeof View>[0];
 
-const viewConfigs: Record<ViewId, ViewConfig> = {
+export const viewConfigs: Record<ViewId, ViewConfig> = {
   legend: {
     width: 25,
     height: 44,

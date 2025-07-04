@@ -3,8 +3,10 @@ import { InputContext } from "../systems/userInput.system";
 import { GameState, State, getState } from "../gameState";
 import { isSamePosition, outOfBounds } from "../../lib/utils";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
-import { prefabs } from "../../actors";
-import { spawnSkeleton } from "../../pcgn/monsters";
+import { prefabs, spawn } from "../../actors";
+import { spawnRat, spawnSkeleton } from "../../pcgn/monsters";
+import { spawnPlayer } from "../../pcgn/player";
+import { camelCase, cloneDeep } from "lodash";
 
 export const handleMakerModeInput = ({
   key,
@@ -50,24 +52,25 @@ export const handleMakerModeInput = ({
 
   // if enter
   if (key === Keys.CONFIRM) {
-    const selectedEntityPrefab = prefabs.skeleton;
+    const index = getState().makerModePrefabSelectIndex;
+    const selectedPrefab = Object.values(prefabs)[index];
 
-    const { layer100, layer200, layer300, layer400 } = selectedEntityPrefab;
+    const { layer100, layer200, layer300, layer400 } = selectedPrefab;
 
     if (layer100) {
-      findAndConvertEntity(layer100Query, selectedEntityPrefab);
+      findAndConvertEntity(layer100Query, selectedPrefab);
     }
 
     if (layer200) {
-      findAndConvertEntity(layer200Query, selectedEntityPrefab);
+      findAndConvertEntity(layer200Query, selectedPrefab);
     }
 
     if (layer300) {
-      findAndConvertEntity(layer300Query, selectedEntityPrefab);
+      findAndConvertEntity(layer300Query, selectedPrefab);
     }
 
     if (layer400) {
-      findAndConvertEntity(layer400Query, selectedEntityPrefab);
+      findAndConvertEntity(layer400Query, selectedPrefab);
     }
 
     return true;
@@ -89,7 +92,7 @@ function convertEntity(entity: Entity, prefab: Partial<Entity>) {
     }
   }
 
-  Object.assign(entity, prefab, preservedData);
+  Object.assign(entity, cloneDeep(prefab), preservedData);
 }
 
 function findAndConvertEntity(
@@ -108,6 +111,15 @@ function findAndConvertEntity(
   if (entityToConvert) {
     convertEntity(entityToConvert, prefab);
   } else {
-    spawnSkeleton(cursorPosition);
+    const { name } =
+      Object.values(prefabs)[getState().makerModePrefabSelectIndex];
+
+    if (name === "skeleton") spawnSkeleton(cursorPosition);
+    else if (name === "rat") spawnRat(cursorPosition);
+    else if (name === "player") spawnPlayer(cursorPosition);
+    else {
+      const prefabName = camelCase(name);
+      spawn(prefabName as keyof typeof prefabs, { position: cursorPosition });
+    }
   }
 }

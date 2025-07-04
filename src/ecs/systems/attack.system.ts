@@ -12,6 +12,10 @@ import { getArmorClass } from "../../lib/combat";
 export const createAttackSystem = ({ world, registry }: IGameWorld) => {
   const attackQuery = world.with("tryAttack");
 
+  const cleanUp = (actor: Entity) => {
+    world.removeComponent(actor, "tryAttack");
+  };
+
   return function attackSystem() {
     for (const actor of attackQuery) {
       const target = registry.get(actor.tryAttack.targetId);
@@ -21,7 +25,7 @@ export const createAttackSystem = ({ world, registry }: IGameWorld) => {
 
       if (!target) {
         console.log(`${actor.name} has no target`);
-        return;
+        return cleanUp(actor);
       }
 
       let playerInCombat = false;
@@ -31,7 +35,7 @@ export const createAttackSystem = ({ world, registry }: IGameWorld) => {
 
       if (!attack) {
         console.log(`${actor.name} has no means of attack`);
-        return;
+        return cleanUp(actor);
       }
 
       // roll attack
@@ -63,7 +67,7 @@ export const createAttackSystem = ({ world, registry }: IGameWorld) => {
         }
       }
 
-      world.removeComponent(actor, "tryAttack");
+      cleanUp(actor);
     }
   };
 };

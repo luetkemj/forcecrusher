@@ -21,9 +21,15 @@ export const renderMakerMode = ({ views }: RendererContext) => {
   if (viewLeft) {
     if (getState().gameState.startsWith(GameState.MAKER_MODE)) {
       const rows = [[{}, { string: "MAKER MODE SELECT" }]];
+      const { makerModePrefabSelectIndex: selectedIndex } = getState();
 
-      Object.values(prefabs).forEach((value) => {
-        rows.push([{}, { string: ` ${value.appearance?.char} ${value.name}` }]);
+      Object.values(prefabs).forEach((value, index) => {
+        rows.push([
+          {},
+          {
+            string: `${index === selectedIndex ? "*" : " "} ${value.appearance?.char} ${value.name}`,
+          },
+        ]);
       });
 
       viewLeft?.clearView();
