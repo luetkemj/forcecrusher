@@ -1,7 +1,6 @@
 import { RendererContext } from "../systems/render.system";
 import { getState, GameState } from "../gameState";
 import { em, colorEntityName } from "../../lib/utils";
-import { keyBy, keys } from "lodash";
 import { Keys } from "../inputHandlers/KeyMap";
 
 export const renderControls = ({ views, queries }: RendererContext) => {
