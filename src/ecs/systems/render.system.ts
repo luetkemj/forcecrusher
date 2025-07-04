@@ -1,6 +1,6 @@
 import { Query, With } from "miniplex";
 import { IGameWorld, Entity } from "../engine";
-import { getState, Views } from "../gameState";
+import { GameState, getState, Views } from "../gameState";
 import { View } from "../../lib/canvas";
 import { renderLegend } from "../renderers/renderLegend";
 import { renderMap } from "../renderers/renderMap";

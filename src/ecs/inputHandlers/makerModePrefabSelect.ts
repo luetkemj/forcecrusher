@@ -37,7 +37,7 @@ export const handleMakerModePrefabSelectInput = ({
   if ((Keys.SCROLL_UP as readonly string[]).includes(key)) {
     const index = state.makerModePrefabSelectIndex;
     let newIndex = index - 1;
-    if (newIndex <= 0) newIndex = Object.values(prefabs).length - 1;
+    if (newIndex < 0) newIndex = Object.values(prefabs).length - 1;
 
     state.makerModePrefabSelectIndex = newIndex;
 

@@ -1,6 +1,8 @@
 import { RendererContext } from "../systems/render.system";
 import { getState, GameState } from "../gameState";
 import { em, colorEntityName } from "../../lib/utils";
+import { keyBy, keys } from "lodash";
+import { Keys } from "../inputHandlers/KeyMap";
 
 export const renderControls = ({ views, queries }: RendererContext) => {
   const view = views.controls;
@@ -11,7 +13,7 @@ export const renderControls = ({ views, queries }: RendererContext) => {
       let context = "";
 
       if (getState().gameState === GameState.GAME) {
-        controls = `(${em("arrows/hjkl")})Move (${em("e")})Interact (${em("g")})Get (${em("H")})History (${em("i")})Inventory (${em("L")})Look`;
+        controls = `(${em("arrows/hjkl")})Move (${em("e")})Interact (${em("g")})Get (${em("H")})History (${em("i")})Inventory (${em("L")})Look (${em("M")})MakerMode`;
       }
 
       if (getState().gameState === GameState.INSPECT) {
@@ -43,6 +45,14 @@ export const renderControls = ({ views, queries }: RendererContext) => {
 
         context = `There is a ${colorEntityName(inspectTarget)} there:`;
         controls = `(${em("escape")})Cancel ${interactActions}`;
+      }
+
+      if (getState().gameState === GameState.MAKER_MODE) {
+        controls = `(${em("M/escape")})Return to Game (${em("arrows/hjkl")})Move cursor (${em(Keys.TOGGLE_MAKER_MODE_PREFAB_SELECT)})Select Prefab (${em(Keys.CONFIRM)})Place Selected Prefab`;
+      }
+
+      if (getState().gameState === GameState.MAKER_MODE_PREFAB_SELECT) {
+        controls = `(${em("e/escape")})Exit  (${em("arrows/jk")})Select Prefab`;
       }
 
       view?.updateRows([[{ string: context }], [{ string: controls }]], true);

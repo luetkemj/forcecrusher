@@ -13,7 +13,8 @@ export type ViewId =
   | "inventory"
   | "logHistory"
   | "makerModeRight"
-  | "makerModeLeft";
+  | "makerModeLeft"
+  | "makerModeTop";
 
 type ViewConfig = ConstructorParameters<typeof View>[0];
 
@@ -176,6 +177,17 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     layers: 2,
     tileSets: ["tile", "text"],
     tints: [0x000000, 0xdddddd],
+    alphas: [1, 1],
+    visible: false,
+  },
+  makerModeTop: {
+    width: 148,
+    height: 5,
+    x: 26,
+    y: 0,
+    layers: 2,
+    tileSets: ["tile", "text"],
+    tints: [0x000000, 0xeeeeee],
     alphas: [1, 1],
     visible: false,
   },

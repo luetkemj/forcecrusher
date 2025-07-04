@@ -35,6 +35,7 @@ export type Views = {
   logHistory?: View;
   makerModeLeft?: View;
   makerModeRight?: View;
+  makerModeTop?: View;
 };
 
 export type State = {

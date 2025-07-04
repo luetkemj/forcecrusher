@@ -18,7 +18,7 @@ export const handleMakerModeInput = ({
   layer300Query,
   layer400Query,
 }: InputContext) => {
-  if (key === Keys.TOGGLE_MAKER_MODE) {
+  if (key === Keys.TOGGLE_MAKER_MODE || key === Keys.CANCEL) {
     setState((state: State) => (state.gameState = GameState.GAME));
 
     return true;

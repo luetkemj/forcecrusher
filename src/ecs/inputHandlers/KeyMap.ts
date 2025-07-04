@@ -34,7 +34,7 @@ export const Keys = {
   SAVE: "1",
   LOAD: "2",
 
-  TOGGLE_MAKER_MODE: "§",
+  TOGGLE_MAKER_MODE: "M",
   TOGGLE_MAKER_MODE_PREFAB_SELECT: "e",
 } as const;
 
