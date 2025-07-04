@@ -51,6 +51,12 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] multi color logs
 - [x] color coded logs (ale-dsi/brogue-esque)
   - [x] support writing mutiple colors to a text row
+- [x] Systems Piplines refactor
+- [x] View Renderer refactor
+- [x] Input Handlers refactor
+- [x] Enhanced Debog logging
+
+- [ ] Debug overlay
 - [ ] dungeons v2
     - [x] tags refactor
     - [ ] room of different shapes (circular)
@@ -73,6 +79,11 @@ This is aspirational only. Expect anything and everything in this document to be
     - [x] Handle breaking things that are kicked
     - [ ] Should offer some sort of information (is it jammed, or stuck etc)
     - [ ] Sound (alert enemies) Sound System
+- [ ] Maker Mode
+    - [x] Maker Mode Game State
+    - [x] Select Prefabs
+    - [x] Place Prefabs
+    - [ ] Create shapes (rectangles for rooms etc)
 - [ ] morgue file (game over screen)
 - [ ] Plague doctor outfit to guard against potions and gas attacks
 - [ ] money
