@@ -94,6 +94,7 @@ export type Entity = {
   };
   damages?: Array<Damage>;
   damageType?: DamageType;
+  damageReduction?: { min: number; max: number };
   damageRoll?: string;
   dead?: true;
   description?: string;

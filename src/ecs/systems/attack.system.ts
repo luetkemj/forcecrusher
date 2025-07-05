@@ -1,13 +1,11 @@
-import { addLog } from "../../lib/utils";
 import {
   type IGameWorld,
   type Entity,
   type Attack,
   type Damage,
 } from "../engine";
-import { sample } from "lodash";
+import { random, sample } from "lodash";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
-import { getArmorClass } from "../../lib/combat";
 
 export const createAttackSystem = ({ world, registry }: IGameWorld) => {
   const attackQuery = world.with("tryAttack");
@@ -40,31 +38,21 @@ export const createAttackSystem = ({ world, registry }: IGameWorld) => {
 
       // roll attack
       // TODO: should this have any toHit bonuses?
-      const attackRoll = new DiceRoll("d20").total;
-      const isCrit = attackRoll === 20;
+      const isCrit = Math.random() < 0.05; // 5% or 1 on a d20
 
-      const armorClass = getArmorClass(target) || 0;
+      // NOTE: HIT
+      let damages = calcAttackDamage(actor, attack, target, isCrit, weapon);
 
-      if (attackRoll >= armorClass || target.dead || !target.ai) {
-        // NOTE: HIT
-        let damages = calcAttackDamage(actor, attack, target, isCrit, weapon);
+      if (target.damages) {
+        target.damages.push(...damages);
+      }
 
-        if (target.damages) {
-          target.damages.push(...damages);
-        }
-
-        if (attack.knockbackDistance) {
-          world.addComponent(target, "knockback", {
-            actorId: actor.id,
-            targetId: target.id,
-            distance: attack.knockbackDistance,
-          });
-        }
-      } else {
-        // NOTE: MISS
-        if (playerInCombat) {
-          addLog(`${actor.name} misses ${target.name}!`);
-        }
+      if (attack.knockbackDistance) {
+        world.addComponent(target, "knockback", {
+          actorId: actor.id,
+          targetId: target.id,
+          distance: attack.knockbackDistance,
+        });
       }
 
       cleanUp(actor);

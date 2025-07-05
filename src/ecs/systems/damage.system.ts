@@ -1,8 +1,9 @@
+import { random } from "lodash";
 import { addLog, colorEntity, getWearing } from "../../lib/utils";
-import { IGameWorld } from "../engine";
+import { Entity, IGameWorld } from "../engine";
 import { DamageType } from "../enums";
 
-export const createDamageSystem = ({world, registry}:IGameWorld) => {
+export const createDamageSystem = ({ world, registry }: IGameWorld) => {
   const damageQuery = world.with("damages");
 
   return function damageSystem() {
@@ -67,12 +68,17 @@ export const createDamageSystem = ({world, registry}:IGameWorld) => {
             computedDamage *= 2;
           }
 
+          const damageReduction = getDamageReduction(armor);
+
           computedDamage += damageAmount.mod;
           totalDamage += computedDamage;
+          totalDamage -= damageReduction;
+        }
 
-          if (target.health) {
-            target.health.current -= computedDamage;
-          }
+        if (totalDamage < 0) totalDamage = 0;
+
+        if (target.health) {
+          target.health.current -= totalDamage;
         }
 
         // Log output
@@ -130,3 +136,11 @@ export const createDamageSystem = ({world, registry}:IGameWorld) => {
     }
   };
 };
+
+function getDamageReduction(armor?: Entity): number {
+  if (!armor) return 0;
+  if (!armor.damageReduction) return 0;
+
+  const { min, max } = armor.damageReduction;
+  return random(min, max);
+}
