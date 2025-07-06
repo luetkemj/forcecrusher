@@ -2,13 +2,7 @@ import { isUndefined } from "lodash";
 import { ChangeZoneDirections } from "../engine";
 import { InputContext } from "../systems/userInput.system";
 import { GameState, State } from "../gameState";
-import {
-  toPos,
-  toPosId,
-  isAtSamePosition,
-  toZone,
-  toZoneId,
-} from "../../lib/grid";
+import { toPosId, isAtSamePosition, toZone, toZoneId } from "../../lib/grid";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 
 export const handleGameModeInput = ({

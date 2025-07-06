@@ -39,7 +39,6 @@ export const createMovementSystem = ({ world }: IGameWorld) => {
       if (!blocked) {
         position.x = tryMove.x;
         position.y = tryMove.y;
-        position.z = tryMove.z;
 
         world.removeComponent(actor, "tryMove");
       }
