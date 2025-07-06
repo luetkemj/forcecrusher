@@ -63,6 +63,18 @@ export type Damage = {
   reason?: string; // Optional narrative text
 };
 
+export type Memory = {
+  id: EntityId;
+  lastKnownPosition: Pos;
+  turnStamp: number;
+  // track which sense generate memory?
+  // status?: "unknown" | "alive" | "dead";
+  // perceivedVia?: "vision" | "hearing" | "inference";
+  // threatLevel?: "low" | "moderate" | "high";
+};
+
+export type EntityId = string;
+
 export type Entity = {
   activeEffects?: Array<Effect>;
   ai?: true;
@@ -75,7 +87,7 @@ export type Entity = {
   armorClassMod?: string;
   armorSlot?: {
     name: string;
-    contents: Array<string>;
+    contents: Array<EntityId>;
     slots: number;
   };
   attack?: Attack;
@@ -89,7 +101,7 @@ export type Entity = {
   container?: {
     name: string;
     description: string;
-    contents: Array<string>;
+    contents: Array<EntityId>;
     slots: number;
   };
   damages?: Array<Damage>;
@@ -105,7 +117,7 @@ export type Entity = {
     max: number;
     current: number;
   };
-  id: string;
+  id: EntityId;
   immunities?: Array<DamageType>;
   effectImmunities?: Array<EffectType>;
   inFov?: true;
@@ -115,14 +127,14 @@ export type Entity = {
     breakable?: boolean; // can this be broken by kicking?
     harmfulToKicker?: boolean; // cactus, spike traps, etc.
     immovable?: boolean; // e.g. statues or bolted-down objects
-    isTrapped?: { trapId: string };
+    isTrapped?: { trapId: EntityId };
     knockbackDistance?: number; // e.g. how far to shove it
     maxDamageOnKick?: number; // damage the kicker takes (optional)
     noiseLevel?: number; // 0 = silent, 10 = alerts everything
   };
   knockback?: {
-    actorId: string;
-    targetId: string;
+    actorId: EntityId;
+    targetId: EntityId;
     distance: number;
   };
   layer100?: true;
@@ -131,12 +143,17 @@ export type Entity = {
   layer400?: true;
   legendable?: true;
   locked?: true;
+  memory?: {
+    player?: Memory;
+    sentients: Record<EntityId, Memory>;
+    items: Record<EntityId, Memory>;
+  };
   opaque?: true;
   open?: true;
   openable?: {
     state: OpenState;
-    isLocked?: { lockId: string }; // keyId?: string;
-    isTrapped?: { trapId: string };
+    isLocked?: { lockId: EntityId }; // keyId?: string;
+    isTrapped?: { trapId: EntityId };
     requiresTool?: string; // tool name?
     isOneWay?: true;
     isAutoClosing?: true;
@@ -155,19 +172,19 @@ export type Entity = {
   stairsUp?: true;
   strength?: number;
   tryAttack?: {
-    targetId: string;
+    targetId: EntityId;
     attack?: Attack;
     immovableTarget?: boolean;
   };
   tryClose?: Entity;
-  tryDrop?: { dropperId: string };
-  tryKick?: { targetId: string };
+  tryDrop?: { dropperId: EntityId };
+  tryKick?: { targetId: EntityId };
   tryMove?: Pos;
-  tryOpen?: { id: string };
-  tryPickUp?: { pickerId: string };
-  tryThrow?: { throwerId: string };
+  tryOpen?: { id: EntityId };
+  tryPickUp?: { pickerId: EntityId };
+  tryThrow?: { throwerId: EntityId };
   version: number;
-  vision?: { range: number; visible: Array<string> };
+  vision?: { range: number; visible: Array<EntityId> };
   vulnerabilities?: Array<DamageType>;
   weaponClass?: WeaponClass;
   weaponSlot?: {

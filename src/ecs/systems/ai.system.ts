@@ -2,31 +2,55 @@ import type { IGameWorld } from "../engine";
 import { aStar } from "../../lib/pathfinding";
 
 export const createAiSystem = ({ world }: IGameWorld) => {
-  const pcQuery = world.with("pc", "position");
-  const aiQuery = world.with("ai", "position");
+  const aiQuery = world.with("ai", "position", "memory");
   const positionQuery = world.with("position");
 
   return function aiSystem() {
-    const [player] = pcQuery.entities;
+    for (const actor of aiQuery) {
+      // path to something of interest - not JUST the player
+      const target = { position: { x: 0, y: 0, z: 0 } };
+      let hasTarget = false;
 
-    for (const entity of aiQuery) {
-      const path = aStar(
-        entity.position,
-        player.position,
-        positionQuery.entities,
-      );
+      if (actor.memory.player) {
+        target.position = actor.memory.player.lastKnownPosition;
+        hasTarget = true;
+      }
 
-      // the start and end positions are the first and last indices of path
-      // start is the current location of pathing entity
-      // so we skip it.
-      if (path[1]) {
-        const newPos = {
-          x: path[1][0],
-          y: path[1][1],
-          z: entity.position.z,
-        };
+      if (actor.memory.sentients && !hasTarget) {
+        const sentient = Object.values(actor.memory.sentients)[0]; // find a better way to pick than just the first
+        if (sentient) {
+          target.position = sentient.lastKnownPosition;
+          hasTarget = true;
+        }
+      }
 
-        world.addComponent(entity, "tryMove", newPos);
+      if (actor.memory.items && !hasTarget) {
+        const item = Object.values(actor.memory.items)[0]; // find a better way to pick than just the first
+        if (item) {
+          target.position = item.lastKnownPosition;
+          hasTarget = true;
+        }
+      }
+
+      if (hasTarget) {
+        const path = aStar(
+          actor.position,
+          target.position,
+          positionQuery.entities,
+        );
+
+        // the start and end positions are the first and last indices of path
+        // start is the current location of pathing entity
+        // so we skip it.
+        if (path[1]) {
+          const newPos = {
+            x: path[1][0],
+            y: path[1][1],
+            z: actor.position.z,
+          };
+
+          world.addComponent(actor, "tryMove", newPos);
+        }
       }
     }
   };
