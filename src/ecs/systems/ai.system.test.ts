@@ -30,6 +30,15 @@ describe("ai.system", () => {
       version: 1,
       ai: true,
       position: { x: 3, y: 1 },
+      memory: {
+        player: {
+          id: "player",
+          lastKnownPosition: { x: 1, y: 1 },
+          turnStamp: 1,
+        },
+        sentients: {},
+        items: {},
+      },
     };
     gameWorld.world.add(player);
     gameWorld.world.add(ai);
