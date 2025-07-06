@@ -2,7 +2,13 @@ import { isUndefined } from "lodash";
 import { ChangeZoneDirections } from "../engine";
 import { InputContext } from "../systems/userInput.system";
 import { GameState, State } from "../gameState";
-import { toPos, toPosId, isAtSamePosition } from "../../lib/grid";
+import {
+  toPos,
+  toPosId,
+  isAtSamePosition,
+  toZone,
+  toZoneId,
+} from "../../lib/grid";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 
 export const handleGameModeInput = ({
@@ -54,9 +60,9 @@ export const handleGameModeInput = ({
       const [stairsDownEntity] = stairsDownQuery;
       if (isAtSamePosition(player.position, stairsDownEntity.position)) {
         const { zoneId } = state;
-        const zonePos = toPos(zoneId);
-        const targetZonePos = { ...zonePos };
-        const targetZoneId = toPosId(targetZonePos);
+        const zonePos = toZone(zoneId);
+        const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
+        const targetZoneId = toZoneId(targetZonePos);
         changeZone(targetZoneId, ChangeZoneDirections.down);
       }
 
@@ -68,9 +74,9 @@ export const handleGameModeInput = ({
       const [stairsUpEntity] = stairsUpQuery;
       if (isAtSamePosition(player.position, stairsUpEntity.position)) {
         const { zoneId } = state;
-        const zonePos = toPos(zoneId);
-        const targetZonePos = { ...zonePos };
-        const targetZoneId = toPosId(targetZonePos);
+        const zonePos = toZone(zoneId);
+        const targetZonePos = { ...zonePos, z: zonePos.z + 1 };
+        const targetZoneId = toZoneId(targetZonePos);
         changeZone(targetZoneId, ChangeZoneDirections.up);
       }
 

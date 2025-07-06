@@ -93,7 +93,7 @@ const state: State = {
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,
   views: {},
-  zoneId: "0,0",
+  zoneId: "0,0,0",
   playerId: "",
   version: 1,
   cheats: {

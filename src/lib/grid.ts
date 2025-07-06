@@ -2,6 +2,8 @@ import _ from "lodash";
 
 export type PosId = string;
 export type Pos = { x: number; y: number };
+export type ZoneId = string;
+export type Zone = { x: number; y: number; z: number };
 
 export const toPosId = (pos: Pos): PosId => {
   return `${pos.x},${pos.y}`;
@@ -10,6 +12,15 @@ export const toPosId = (pos: Pos): PosId => {
 export const toPos = (posId: PosId): Pos => {
   const coords = posId.split(",").map((coord) => parseInt(coord, 10));
   return { x: coords[0], y: coords[1] };
+};
+
+export const toZoneId = (zone: Zone): ZoneId => {
+  return `${zone.x},${zone.y},${zone.z}`;
+};
+
+export const toZone = (zoneId: ZoneId): Zone => {
+  const coords = zoneId.split(",").map((coord) => parseInt(coord, 10));
+  return { x: coords[0], y: coords[1], z: coords[2] };
 };
 
 export const insideCircle = (
