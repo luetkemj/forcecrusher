@@ -30,7 +30,10 @@ export const renderMap = ({ views, queries }: RendererContext) => {
       }
     }
 
-    if (getState().gameState.startsWith(GameState.MAKER_MODE)) {
+    if (
+      getState().gameState.startsWith(GameState.MAKER_MODE) ||
+      getState().cheats.seeAll
+    ) {
       for (const query of allLayers) {
         for (const entity of query) {
           renderEntity(view, entity, 1);

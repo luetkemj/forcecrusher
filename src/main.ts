@@ -134,6 +134,8 @@ function gameLoop() {
   if (state.turn === Turn.WORLD) {
     runPipeline(worldTurnPipeline, "WorldTurn");
 
+    setState((state: State) => (state.turnNumber += 1));
+
     setState((state: State) => {
       state.turn = Turn.PLAYER;
     });

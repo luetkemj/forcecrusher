@@ -35,6 +35,8 @@ export const renderHud = ({ views, queries }: RendererContext) => {
         [{ string: `Forcecrusher` }],
         [],
         [{ string: `Zone: ${getState().zoneId}` }],
+        [{ string: `Turn: ${getState().turnNumber}` }],
+        [{ string: `Mode: ${getState().gameState}` }],
         [],
         [{ string: `LV: 1` }],
         [{ string: `HP: ${player?.health?.current}/${player?.health?.max}` }],

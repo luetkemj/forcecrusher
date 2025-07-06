@@ -167,6 +167,7 @@ export type Entity = {
   tryPickUp?: { pickerId: string };
   tryThrow?: { throwerId: string };
   version: number;
+  vision?: { range: number; visible: Array<string> };
   vulnerabilities?: Array<DamageType>;
   weaponClass?: WeaponClass;
   weaponSlot?: {
@@ -231,14 +232,14 @@ class GameWorld {
   }
 
   saveGameData() {
-    const { log, zoneId, playerId, version } = getState();
+    const { log, zoneId, playerId, version, turnNumber } = getState();
 
     this.saveZone(zoneId);
 
     const saveData = {
       registry: prepRegistryForSerialization(this.registry),
       zones: prepZonesForSerialization(this.zones),
-      state: { log, zoneId, playerId, version },
+      state: { log, zoneId, playerId, version, turnNumber },
     };
 
     localStorage.setItem("gameData", JSON.stringify(saveData));
@@ -345,12 +346,13 @@ class GameWorld {
       }
     }
     // load state
-    const { log, zoneId, playerId, version } = state;
+    const { log, zoneId, playerId, version, turnNumber } = state;
     setState((state: State) => {
       state.log = log;
       state.zoneId = zoneId;
       state.playerId = playerId;
       state.version = version;
+      state.turnNumber = turnNumber;
     });
   }
 }

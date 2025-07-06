@@ -57,11 +57,15 @@ export type State = {
     taste: string;
   };
   turn: Turn;
+  turnNumber: number;
   userInput: KeyboardEvent | null;
   views: Views;
   zoneId: string;
   playerId: string;
   version: number;
+  cheats: {
+    seeAll: boolean;
+  };
 };
 
 const state: State = {
@@ -86,11 +90,15 @@ const state: State = {
     taste: "You taste nothing.",
   },
   turn: Turn.PLAYER,
+  turnNumber: 0, // this needs to be stored in game saves
   userInput: null,
   views: {},
   zoneId: "0,0,0",
   playerId: "",
   version: 1,
+  cheats: {
+    seeAll: false,
+  },
 };
 
 export const setState = (callback: Function): void => {

@@ -36,8 +36,14 @@ export const handleGameModeInput = ({
     }
 
     // NOTE: Cheats
-    if (key === Keys.DEBUG_TOGGLE) {
+    if (key === Keys.TOGGLE_DEBUG) {
       window.skulltooth.debug = !window.skulltooth.debug;
+
+      return true;
+    }
+
+    if (key === Keys.TOGGLE_SEE_ALL) {
+      setState((state: State) => (state.cheats.seeAll = !state.cheats.seeAll));
 
       return true;
     }

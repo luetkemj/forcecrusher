@@ -27,7 +27,6 @@ export const Keys = {
   STAIRS_UP: "<",
   SHOW_LOG: "H",
 
-  DEBUG_TOGGLE: "~",
   CONFIRM: "Enter",
   CANCEL: "Escape", // sometimes used differently depending on state
 
@@ -36,6 +35,10 @@ export const Keys = {
 
   TOGGLE_MAKER_MODE: "M",
   TOGGLE_MAKER_MODE_PREFAB_SELECT: "e",
+
+  // cheats
+  TOGGLE_DEBUG: "F1",
+  TOGGLE_SEE_ALL: "F2",
 } as const;
 
 export const isMoveKey = (key: string): boolean =>
