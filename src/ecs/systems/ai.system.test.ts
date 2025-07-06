@@ -22,14 +22,14 @@ describe("ai.system", () => {
       name: "Player",
       version: 1,
       pc: true,
-      position: { x: 1, y: 1, z: 0 },
+      position: { x: 1, y: 1 },
     };
     ai = {
       id: "ai",
       name: "AI",
       version: 1,
       ai: true,
-      position: { x: 3, y: 1, z: 0 },
+      position: { x: 3, y: 1 },
     };
     gameWorld.world.add(player);
     gameWorld.world.add(ai);
@@ -48,11 +48,11 @@ describe("ai.system", () => {
     const movedAI = gameWorld.world.entities.find((e) => e.id === "ai");
     expect(movedAI?.tryMove).toBeDefined();
     // Should move left toward player
-    expect(movedAI?.tryMove).toMatchObject({ x: 2, y: 1, z: 0 });
+    expect(movedAI?.tryMove).toMatchObject({ x: 2, y: 1 });
   });
 
   test("AI does not move if already at player position", () => {
-    ai.position = { x: 1, y: 1, z: 0 };
+    ai.position = { x: 1, y: 1 };
     createAiSystem(gameWorld)();
     const movedAI = gameWorld.world.entities.find((e) => e.id === "ai");
     expect(movedAI?.tryMove).toBeUndefined();
@@ -65,7 +65,7 @@ describe("ai.system", () => {
       name: "Blocker",
       version: 1,
       blocking: true,
-      position: { x: 2, y: 1, z: 0 },
+      position: { x: 2, y: 1 },
     };
     gameWorld.world.add(blocker);
     createAiSystem(gameWorld)();
@@ -73,10 +73,10 @@ describe("ai.system", () => {
     // Should move around the blocker, so y should change
     expect(movedAI?.tryMove).toBeDefined();
     expect([
-      { x: 3, y: 0, z: 0 },
-      { x: 3, y: 2, z: 0 },
-      { x: 2, y: 0, z: 0 },
-      { x: 2, y: 2, z: 0 },
+      { x: 3, y: 0 },
+      { x: 3, y: 2 },
+      { x: 2, y: 0 },
+      { x: 2, y: 2 },
     ]).toContainEqual(movedAI?.tryMove);
   });
 });

@@ -14,7 +14,7 @@ describe("cursor.system", () => {
       id: "1",
       name: "Orc",
       version: 1,
-      position: { x: 2, y: 2, z: 0 },
+      position: { x: 2, y: 2 },
       layer100: true,
       inFov: true,
       revealed: true,
@@ -53,8 +53,8 @@ describe("cursor.system", () => {
   test("no message if no entity under cursor", () => {
     setState((state: any) => {
       state.cursor = [
-        { x: 0, y: 0, z: 0 },
-        { x: 0, y: 0, z: 0 },
+        { x: 0, y: 0 },
+        { x: 0, y: 0 },
       ];
     });
     createCursorSystem(gameWorld)();
@@ -71,7 +71,7 @@ describe("cursor.system", () => {
       id: "2",
       name: "Goblin",
       version: 1,
-      position: { x: 2, y: 2, z: 0 },
+      position: { x: 2, y: 2 },
       layer200: true,
       inFov: true,
       revealed: true,

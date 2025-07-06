@@ -14,14 +14,14 @@ describe("movement.system", () => {
       id: "mover",
       name: "Mover",
       version: 1,
-      position: { x: 1, y: 1, z: 0 },
-      tryMove: { x: 2, y: 1, z: 0 },
+      position: { x: 1, y: 1 },
+      tryMove: { x: 2, y: 1 },
     };
     blocker = {
       id: "blocker",
       name: "Blocker",
       version: 1,
-      position: { x: 2, y: 1, z: 0 },
+      position: { x: 2, y: 1 },
       blocking: true,
     };
     gameWorld.world.add(mover);
@@ -30,15 +30,15 @@ describe("movement.system", () => {
 
   test("moves entity to new position if not blocked", () => {
     // Remove blocker from the blocking position
-    blocker.position = { x: 3, y: 3, z: 0 };
+    blocker.position = { x: 3, y: 3 };
     createMovementSystem(gameWorld)();
-    expect(mover.position).toEqual({ x: 2, y: 1, z: 0 });
+    expect(mover.position).toEqual({ x: 2, y: 1 });
     expect(mover.tryMove).toBeUndefined();
   });
 
   test("does not move entity if blocked", () => {
     createMovementSystem(gameWorld)();
-    expect(mover.position).toEqual({ x: 1, y: 1, z: 0 });
+    expect(mover.position).toEqual({ x: 1, y: 1 });
     expect(mover.tryMove).toBeUndefined();
   });
 

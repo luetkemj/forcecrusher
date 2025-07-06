@@ -22,7 +22,6 @@ export const handleInteractModeInput = ({
       const newPos = {
         x: oldPos.x + dir.dx,
         y: oldPos.y + dir.dy,
-        z: oldPos.z,
       };
       world.addComponent(player, "interactDirection", newPos);
       setState((state: State) => (state.gameState = GameState.INTERACT_ACTION));

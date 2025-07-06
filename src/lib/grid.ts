@@ -1,15 +1,15 @@
 import _ from "lodash";
 
 export type PosId = string;
-export type Pos = { x: number; y: number; z: number };
+export type Pos = { x: number; y: number };
 
 export const toPosId = (pos: Pos): PosId => {
-  return `${pos.x},${pos.y},${pos.z}`;
+  return `${pos.x},${pos.y}`;
 };
 
 export const toPos = (posId: PosId): Pos => {
   const coords = posId.split(",").map((coord) => parseInt(coord, 10));
-  return { x: coords[0], y: coords[1], z: coords[2] };
+  return { x: coords[0], y: coords[1] };
 };
 
 export const insideCircle = (
@@ -36,9 +36,7 @@ export const circle = (center: Pos, radius: number) => {
     for (let x = left; x <= right; x++) {
       const cx = Math.ceil(x);
       const cy = Math.ceil(y);
-      const cz = center.z;
-
-      const candidate = { x: cx, y: cy, z: cz };
+      const candidate = { x: cx, y: cy };
       if (insideCircle(center, radius, candidate)) {
         posIds.push(toPosId(candidate));
       }
@@ -63,9 +61,7 @@ export const lerp = (start: number, end: number, t: number): number => {
 export const lerpPoint = (pos0: Pos, pos1: Pos, t: number): Pos => {
   const x = lerp(pos0.x, pos1.x, t);
   const y = lerp(pos0.y, pos1.y, t);
-  const z = pos0.z;
-
-  return { x, y, z };
+  return { x, y };
 };
 
 export const diagonalDistance = (pos0: Pos, pos1: Pos): number => {
@@ -77,9 +73,7 @@ export const diagonalDistance = (pos0: Pos, pos1: Pos): number => {
 export const roundPoint = (pos: Pos) => {
   const x = Math.round(pos.x);
   const y = Math.round(pos.y);
-  const z = pos.z;
-
-  return { x, y, z };
+  return { x, y };
 };
 
 export const line = (pos0: Pos, pos1: Pos): Array<Pos> => {
@@ -92,14 +86,13 @@ export const line = (pos0: Pos, pos1: Pos): Array<Pos> => {
   return positions;
 };
 
-type Tile = { x: number; y: number; z: number; [key: string]: any };
+type Tile = { x: number; y: number; [key: string]: any };
 type Tiles = { [key: string]: Tile };
 export type Rectangle = {
   x1: number;
   x2: number;
   y1: number;
   y2: number;
-  z: number;
   center: Pos;
   hasWalls: boolean;
   tiles: Tiles;
@@ -110,7 +103,6 @@ export type Rectangle = {
 interface RectangleProps {
   x: number;
   y: number;
-  z: number;
   width: number;
   height: number;
   hasWalls: boolean;
@@ -120,7 +112,7 @@ export const rectangle = (
   rectangleProps: RectangleProps,
   tileProps: any,
 ): Rectangle => {
-  const { x, y, z, width, height, hasWalls } = rectangleProps;
+  const { x, y, width, height, hasWalls } = rectangleProps;
 
   const tiles: Tiles = {};
 
@@ -132,13 +124,13 @@ export const rectangle = (
   if (hasWalls) {
     for (let yi = y1 + 1; yi < y2 - 1; yi++) {
       for (let xi = x1 + 1; xi < x2 - 1; xi++) {
-        tiles[`${xi},${yi},${z}`] = { x: xi, y: yi, z, ...tileProps };
+        tiles[`${xi},${yi}`] = { x: xi, y: yi, ...tileProps };
       }
     }
   } else {
     for (let yi = y1; yi < y2; yi++) {
       for (let xi = x1; xi < x2; xi++) {
-        tiles[`${xi},${yi},${z}`] = { x: xi, y: yi, z, ...tileProps };
+        tiles[`${xi},${yi}`] = { x: xi, y: yi, ...tileProps };
       }
     }
   }
@@ -146,10 +138,9 @@ export const rectangle = (
   const center = {
     x: Math.round((x1 + x2) / 2),
     y: Math.round((y1 + y2) / 2),
-    z,
   };
 
-  return { x1, x2, y1, y2, z, center, hasWalls, tiles, width, height };
+  return { x1, x2, y1, y2, center, hasWalls, tiles, width, height };
 };
 
 export const rectsIntersect = (rect1: Rectangle, rect2: Rectangle): boolean => {
@@ -232,7 +223,6 @@ export const getNeighbors = (
     let candidate: Pos = {
       x: pos.x + dir.x,
       y: pos.y + dir.y,
-      z: pos.z,
     };
     if (
       candidate.x >= 0 &&
@@ -250,14 +240,10 @@ export const getNeighbors = (
 };
 
 export const isAtSamePosition = (pos1: Pos, pos2: Pos): boolean => {
-  return pos1.x === pos2.x && pos1.y === pos2.y && pos1.z === pos2.z;
+  return pos1.x === pos2.x && pos1.y === pos2.y;
 };
 
 export const isNeighbor = (pos1: Pos, pos2: Pos): boolean => {
-  if (pos1.z !== pos2.z) {
-    return false;
-  }
-
   const { x: ax, y: ay } = pos1;
   const { x: bx, y: by } = pos2;
 
@@ -277,7 +263,7 @@ export const randomNeighbor = (pos: Pos): Pos => {
   const direction = _.sample(CARDINAL);
   const x = pos.x + direction!.x;
   const y = pos.y + direction!.y;
-  return { x, y, z: pos.z };
+  return { x, y };
 };
 
 type DirMap = { [key: string]: number };
@@ -288,7 +274,6 @@ export const getNeighbor = (pos: Pos, dir: string): Pos => {
   return {
     x: pos.x + direction.x,
     y: pos.y + direction.y,
-    z: pos.z,
   };
 };
 
@@ -323,7 +308,6 @@ export function moveInDirection(start: Pos, dir: Direction, n: number): Pos {
   return {
     x: start.x + dir.x * n,
     y: start.y + dir.y * n,
-    z: 0,
   };
 }
 

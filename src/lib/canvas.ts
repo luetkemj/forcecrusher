@@ -19,12 +19,10 @@ const grid = {
 
 const cellWidth = window.innerWidth / grid.width;
 
-export const pxToPosId = (x: number, y: number, z: number) => {
+export const pxToPosId = (x: number, y: number) => {
   const posX = Math.trunc(x / cellWidth);
   const posY = Math.trunc(y / cellWidth);
-  const posZ = z;
-
-  return `${posX},${posY},${posZ}`;
+  return `${posX},${posY}`;
 };
 
 type Textures = {

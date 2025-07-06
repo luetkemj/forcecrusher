@@ -82,8 +82,7 @@ export const outOfBounds = (pos: Pos) => {
 export const isSamePosition = (blocker: Pos, blockee: Pos) => {
   if (
     blocker.x === blockee.x &&
-    blocker.y === blockee.y &&
-    blocker.z === blockee.z
+    blocker.y === blockee.y
   ) {
     return true;
   }

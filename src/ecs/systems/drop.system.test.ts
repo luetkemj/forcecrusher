@@ -15,7 +15,7 @@ describe("drop.system", () => {
       id: "dropper",
       name: "Dropper",
       version: 1,
-      position: { x: 1, y: 1, z: 0 },
+      position: { x: 1, y: 1 },
       container: { name: "Bag", description: "", contents: [], slots: 5 },
     };
     item = {

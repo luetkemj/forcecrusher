@@ -86,9 +86,7 @@ const init = async () => {
   document.addEventListener("mousedown", (ev: any) => {
     const x = ev.x - getState().views.map!.layers[0].x;
     const y = ev.layerY - getState().views.map!.layers[0].y;
-    const z = 0;
-
-    const posId = pxToPosId(x, y, z);
+    const posId = pxToPosId(x, y);
 
     if (window.skulltooth.debug === true || import.meta.env.DEV) {
       const entities = gameWorld.world.with("position");

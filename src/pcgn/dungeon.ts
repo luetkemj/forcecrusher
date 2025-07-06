@@ -18,7 +18,6 @@ import { DungeonTags } from "../ecs/enums";
 type Tile = {
   x: number;
   y: number;
-  z: number;
   sprite: string;
 };
 
@@ -80,19 +79,19 @@ export const buildDungeon = (
     maxRoomCount = 30,
   } = props;
 
-  const { x, y, z } = pos;
+  const { x, y } = pos;
 
   // fill the entire space with dirt so we can dig it out later
   const dungeon: Dungeon = {
-    ...rectangle({ x, y, z, width, height, hasWalls: false }, {}),
+    ...rectangle({ x, y, width, height, hasWalls: false }, {}),
     rooms: [],
   };
 
   // During generation
   const tilesMap = new Map<string, any>(Object.entries(dungeon.tiles));
 
-  const addTags = ({ x, y, z }: any, tags: Array<string>) => {
-    const posId = toPosId({ x, y, z });
+  const addTags = ({ x, y }: any, tags: Array<string>) => {
+    const posId = toPosId({ x, y });
     const tile = tilesMap.get(posId);
 
     if (tile) {
@@ -124,7 +123,7 @@ export const buildDungeon = (
 
     // create a candidate room
     const candidate = rectangle(
-      { x: rx, y: ry, z, width: rw, height: rh, hasWalls: true },
+      { x: rx, y: ry, width: rw, height: rh, hasWalls: true },
       {},
     );
 
@@ -159,18 +158,11 @@ export const buildDungeon = (
   }
 
   // get perimeter walls for each room
-  // const addPerimeterTags = (cell) => {
-  //   const posid = `${cell.x},${cell.y}`;
-  //   if (dungeon.dTiles[posid]) {
-  //     dungeon.dTiles[posid].tags.push("WALL");
-  //     dungeon.dTiles[posid].tags.push("PERIMETER");
-  //   }
-  // };
   for (let room of dungeon.rooms) {
-    const sw = { x: room.x1, y: room.y2 - 1, z: 0 }; // sw
-    const se = { x: room.x2 - 1, y: room.y2 - 1, z: 0 }; // se
-    const nw = { x: room.x1, y: room.y1, z: 0 };
-    const ne = { x: room.x2 - 1, y: room.y1, z: 0 };
+    const sw = { x: room.x1, y: room.y2 - 1 }; // sw
+    const se = { x: room.x2 - 1, y: room.y2 - 1 }; // se
+    const nw = { x: room.x1, y: room.y1 };
+    const ne = { x: room.x2 - 1, y: room.y1 };
 
     const perimeterPositions = [
       ...line(nw, ne),
@@ -188,12 +180,11 @@ export const buildDungeon = (
 };
 
 export const generateDungeon = (zoneId: string) => {
-  const { z } = toPos(zoneId);
-
-  const depth = Math.abs(z);
+  // zoneId is now just a string, depth logic can be handled elsewhere if needed
+  const depth = 0;
 
   const { dungeon, tilesMap } = buildDungeon({
-    pos: { x: 0, y: 0, z: 0 },
+    pos: { x: 0, y: 0 },
     width: 74,
     height: 39,
     minRoomSize: 8,
@@ -204,11 +195,11 @@ export const generateDungeon = (zoneId: string) => {
   const entityMap = new Map();
 
   for (const [_, tile] of tilesMap) {
-    const { x, y, z } = tile;
+    const { x, y } = tile;
     // create dirt
     if (tile.tags.has(DungeonTags.Dirt) && !tile.tags.has(DungeonTags.Floor)) {
-      const entity = spawn("wall", { position: { x, y, z } });
-      entityMap.set(toPosId({ x, y, z }), entity);
+      const entity = spawn("wall", { position: { x, y } });
+      entityMap.set(toPosId({ x, y }), entity);
     }
 
     // create floors
@@ -216,18 +207,18 @@ export const generateDungeon = (zoneId: string) => {
       tile.tags.has(DungeonTags.Floor) ||
       tile.tags.has(DungeonTags.Passage)
     ) {
-      const entity = spawn("floor", { position: { x, y, z } });
-      entityMap.set(toPosId({ x, y, z }), entity);
+      const entity = spawn("floor", { position: { x, y } });
+      entityMap.set(toPosId({ x, y }), entity);
     }
   }
 
   for (const [_, tile] of tilesMap) {
-    const { x, y, z } = tile;
+    const { x, y } = tile;
     // create doors
     if (tile.tags.has(DungeonTags.Perimeter)) {
       // if two of your neighbors are walls you are a door
       const neighbors = getNeighbors(
-        { x, y, z },
+        { x, y },
         "cardinal",
         { width: dungeon.width, height: dungeon.height },
         true,
@@ -241,7 +232,7 @@ export const generateDungeon = (zoneId: string) => {
       }
 
       if (tile.tags.has(DungeonTags.Floor) && wallCount === 2) {
-        spawn("door", { position: { x, y, z } });
+        spawn("door", { position: { x, y } });
       }
     }
   }
@@ -254,7 +245,7 @@ export const generateDungeon = (zoneId: string) => {
   times(10 + depth, () => {
     const openTile = sample(floorTiles);
     if (!openTile) return;
-    const position = { x: openTile.x, y: openTile.y, z: openTile.z };
+    const position = { x: openTile.x, y: openTile.y };
     const percentile = new DiceRoll("d100").total;
 
     if (percentile < 30) {
@@ -276,12 +267,12 @@ export const generateDungeon = (zoneId: string) => {
       }
     }
     if (index === 1) {
-      const { x, y, z } = sample(room.tiles) || { x: 0, y: 0, z: 0 };
-      spawn("stairsUp", { position: { x, y, z } });
+      const { x, y } = sample(room.tiles) || { x: 0, y: 0 };
+      spawn("stairsUp", { position: { x, y } });
     }
     if (index === 2) {
-      const { x, y, z } = sample(room.tiles) || { x: 0, y: 0, z: 0 };
-      spawn("stairsDown", { position: { x, y, z } });
+      const { x, y } = sample(room.tiles) || { x: 0, y: 0 };
+      spawn("stairsDown", { position: { x, y } });
     }
   });
 

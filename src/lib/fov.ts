@@ -27,24 +27,22 @@ export default function createFOV(
   pos: Pos,
   radius: number,
 ) {
-  const { x: originX, y: originY, z: originZ } = pos;
+  const { x: originX, y: originY } = pos;
 
   const visible: Set<string> = new Set();
 
   const blockingLocations = new Set();
 
   for (const entity of opaqueEntities) {
-    if (entity.position.z === originZ) {
-      blockingLocations.add(toPosId(entity.position));
-    }
+    blockingLocations.add(toPosId(entity.position));
   }
 
   const isOpaque = (x: number, y: number) => {
-    const locId = `${x},${y},${originZ}`;
+    const locId = `${x},${y}`;
     return !!blockingLocations.has(locId);
   };
   const reveal = (x: number, y: number) => {
-    return visible.add(`${x},${y},${originZ}`);
+    return visible.add(`${x},${y}`);
   };
 
   function castShadows(

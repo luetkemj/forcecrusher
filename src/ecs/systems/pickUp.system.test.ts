@@ -22,7 +22,7 @@ describe("pickUp.system", () => {
       name: "Potion",
       version: 1,
       pickUp: true,
-      position: { x: 1, y: 1, z: 0 },
+      position: { x: 1, y: 1 },
     };
     gameWorld.world.add(player);
     gameWorld.world.add(item);

@@ -20,7 +20,6 @@ export const handleInspectModeInput = ({
       const newPos = {
         x: oldPos.x + dir.dx,
         y: oldPos.y + dir.dy,
-        z: oldPos.z,
       };
       if (!outOfBounds(newPos)) {
         setState((state: State) => {

@@ -16,14 +16,14 @@ describe("throw.system", () => {
       id: "thrower",
       name: "Thrower",
       version: 1,
-      position: { x: 1, y: 1, z: 0 },
+      position: { x: 1, y: 1 },
       container: { name: "Bag", description: "", contents: [], slots: 5 },
     };
     item = {
       id: "item",
       name: "Rock",
       version: 1,
-      position: { x: 1, y: 1, z: 0 },
+      position: { x: 1, y: 1 },
     };
     thrower.container?.contents.push(item.id);
     gameWorld.world.add(thrower);
@@ -39,12 +39,12 @@ describe("throw.system", () => {
   test("does not throw if thrower not found", () => {
     addTryThrow("notfound");
     createThrowSystem(gameWorld)();
-    expect(item.position).toEqual({ x: 1, y: 1, z: 0 });
+    expect(item.position).toEqual({ x: 1, y: 1 });
     expect(item.tryThrow).toBeUndefined();
   });
 
   test("throws item to target position if not blocked", () => {
-    const targetPos: Pos = { x: 3, y: 1, z: 0 };
+    const targetPos: Pos = { x: 3, y: 1 };
     setState(
       (state: State) => (state.cursor = [thrower.position as Pos, targetPos]),
     );
@@ -60,16 +60,16 @@ describe("throw.system", () => {
       name: "Blocker",
       version: 1,
       blocking: true,
-      position: { x: 3, y: 1, z: 0 },
+      position: { x: 3, y: 1 },
     };
     gameWorld.world.add(blocker);
-    const targetPos: Pos = { x: 4, y: 1, z: 0 };
+    const targetPos: Pos = { x: 4, y: 1 };
     setState(
       (state: State) => (state.cursor = [thrower.position as Pos, targetPos]),
     );
     addTryThrow();
     createThrowSystem(gameWorld)();
-    expect(item.position).toEqual({ x: 2, y: 1, z: 0 });
+    expect(item.position).toEqual({ x: 2, y: 1 });
     expect(item.tryThrow).toBeUndefined();
   });
 });

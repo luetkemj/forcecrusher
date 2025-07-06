@@ -55,9 +55,8 @@ export const handleGameModeInput = ({
       if (isAtSamePosition(player.position, stairsDownEntity.position)) {
         const { zoneId } = state;
         const zonePos = toPos(zoneId);
-        const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
+        const targetZonePos = { ...zonePos };
         const targetZoneId = toPosId(targetZonePos);
-        // does changeZone really need to be on ctx?
         changeZone(targetZoneId, ChangeZoneDirections.down);
       }
 
@@ -70,7 +69,7 @@ export const handleGameModeInput = ({
       if (isAtSamePosition(player.position, stairsUpEntity.position)) {
         const { zoneId } = state;
         const zonePos = toPos(zoneId);
-        const targetZonePos = { ...zonePos, z: zonePos.z + 1 };
+        const targetZonePos = { ...zonePos };
         const targetZoneId = toPosId(targetZonePos);
         changeZone(targetZoneId, ChangeZoneDirections.up);
       }
@@ -126,7 +125,6 @@ export const handleGameModeInput = ({
         const newPos = {
           x: player.position.x + dir.dx,
           y: player.position.y + dir.dy,
-          z: player.position.z,
         };
         world.addComponent(player, "tryMove", newPos);
       }

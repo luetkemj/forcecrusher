@@ -15,14 +15,14 @@ describe("fov.system", () => {
       version: 1,
       pc: true,
       appearance: { char: "@", tint: 0xffffff, tileSet: "ascii" },
-      position: { x: 1, y: 1, z: 0 },
+      position: { x: 1, y: 1 },
     };
     entity = {
       id: "e1",
       name: "Wall",
       version: 1,
       appearance: { char: "#", tint: 0xffffff, tileSet: "ascii" },
-      position: { x: 2, y: 1, z: 0 },
+      position: { x: 2, y: 1 },
     };
     gameWorld.world.add(player);
     gameWorld.world.add(entity);
@@ -35,7 +35,7 @@ describe("fov.system", () => {
   });
 
   test("does not reveal entity out of FOV range", () => {
-    entity.position = { x: 120, y: 120, z: 0 };
+    entity.position = { x: 120, y: 120 };
     createFovSystem(gameWorld)();
     const found = gameWorld.world.entities.find((e) => e.id === entity.id);
     // Should remain revealed: undefined
@@ -48,7 +48,7 @@ describe("fov.system", () => {
       name: "Goblin",
       version: 1,
       appearance: { char: "g", tint: 0xffffff, tileSet: "ascii" },
-      position: { x: 1, y: 2, z: 0 },
+      position: { x: 1, y: 2 },
     };
     gameWorld.world.add(entity2);
     createFovSystem(gameWorld)();

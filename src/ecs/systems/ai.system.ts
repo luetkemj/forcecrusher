@@ -8,7 +8,7 @@ export const createAiSystem = ({ world }: IGameWorld) => {
   return function aiSystem() {
     for (const actor of aiQuery) {
       // path to something of interest - not JUST the player
-      const target = { position: { x: 0, y: 0, z: 0 } };
+      const target = { position: { x: 0, y: 0 } };
       let hasTarget = false;
 
       if (actor.memory.player) {
@@ -46,7 +46,6 @@ export const createAiSystem = ({ world }: IGameWorld) => {
           const newPos = {
             x: path[1][0],
             y: path[1][1],
-            z: actor.position.z,
           };
 
           world.addComponent(actor, "tryMove", newPos);
