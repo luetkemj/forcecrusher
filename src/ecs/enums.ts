@@ -36,6 +36,11 @@ export enum OpenState {
   Sealed = "sealed",
 }
 
+export enum Sense {
+  Vision = "vision",
+  Hearing = "hearing",
+}
+
 export enum WeaponClass {
   Martial = "martial",
   Simple = "simple",

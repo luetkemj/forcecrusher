@@ -4,7 +4,7 @@ import {
   type Attack,
   type Damage,
 } from "../engine";
-import { random, sample } from "lodash";
+import { sample } from "lodash";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 
 export const createAttackSystem = ({ world, registry }: IGameWorld) => {
@@ -23,6 +23,11 @@ export const createAttackSystem = ({ world, registry }: IGameWorld) => {
 
       if (!target) {
         console.log(`${actor.name} has no target`);
+        return cleanUp(actor);
+      }
+
+      // baddies only attack PC
+      if (!actor.pc && !target.pc) {
         return cleanUp(actor);
       }
 

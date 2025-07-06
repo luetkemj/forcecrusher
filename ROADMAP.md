@@ -56,6 +56,7 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] Input Handlers refactor
 - [x] Enhanced Debog logging
 
+- [ ] Memory AI
 - [ ] Debug overlay
 - [ ] dungeons v2
     - [x] tags refactor

@@ -3,6 +3,7 @@ import {
   DamageType,
   EffectType,
   OpenState,
+  Sense,
   WeaponClass,
   WeaponType,
 } from "./enums";
@@ -67,9 +68,9 @@ export type Memory = {
   id: EntityId;
   lastKnownPosition: Pos;
   turnStamp: number;
+  perceivedVia?: Sense;
   // track which sense generate memory?
   // status?: "unknown" | "alive" | "dead";
-  // perceivedVia?: "vision" | "hearing" | "inference";
   // threatLevel?: "low" | "moderate" | "high";
 };
 

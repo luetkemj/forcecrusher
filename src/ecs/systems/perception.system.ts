@@ -2,6 +2,7 @@ import { Entity, IGameWorld } from "../engine";
 import createFOV from "../../lib/fov";
 import { toPosId } from "../../lib/grid";
 import { getState } from "../gameState";
+import { Sense } from "../enums";
 
 export const createPerceptionSystem = ({ world }: IGameWorld) => {
   const aiQuery = world.with("ai");
@@ -25,7 +26,7 @@ export const createPerceptionSystem = ({ world }: IGameWorld) => {
           if (FOV.fov.has(toPosId(target.position))) {
             // limit to things of interest somehow...?
             actor.vision?.visible.push(target.id);
-            remember(actor, target);
+            remember(actor, target, Sense.Vision);
           }
         }
       }
@@ -33,7 +34,7 @@ export const createPerceptionSystem = ({ world }: IGameWorld) => {
   };
 };
 
-function remember(actor: Entity, target: Entity) {
+function remember(actor: Entity, target: Entity, sense: Sense) {
   if (!actor.memory) return;
   if (!target.position) return;
 
@@ -41,6 +42,7 @@ function remember(actor: Entity, target: Entity) {
     id: target.id,
     lastKnownPosition: { ...target.position },
     turnStamp: getState().turnNumber,
+    perceivedVia: sense,
   };
 
   if (target.pc) {
