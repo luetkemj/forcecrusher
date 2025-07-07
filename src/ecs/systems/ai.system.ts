@@ -1,5 +1,7 @@
 import type { IGameWorld } from "../engine";
-import { aStar } from "../../lib/pathfinding";
+import { aStar, wanderToward } from "../../lib/pathfinding";
+import { getDirection } from "../../lib/grid";
+import { logFrozenEntity } from "../../lib/utils";
 
 export const createAiSystem = ({ world }: IGameWorld) => {
   const aiQuery = world.with("ai", "position", "memory");
@@ -33,6 +35,15 @@ export const createAiSystem = ({ world }: IGameWorld) => {
       }
 
       if (hasTarget) {
+        // entities need a mood component (aggressive, fleeing, etc) to determine what they do.
+        // const newPos = wanderToward({
+        //   currentPos: actor.position,
+        //   biasDir: getDirection(target.position, actor.position),
+        //   targetPos: target.position,
+        //   entities: positionQuery.entities,
+        // });
+        // world.addComponent(actor, "tryMove", newPos);
+        // if aggressive:
         const path = aStar(
           actor.position,
           target.position,

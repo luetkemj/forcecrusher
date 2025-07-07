@@ -26,11 +26,6 @@ export const createAttackSystem = ({ world, registry }: IGameWorld) => {
         return cleanUp(actor);
       }
 
-      // baddies only attack PC
-      if (!actor.pc && !target.pc) {
-        return cleanUp(actor);
-      }
-
       let playerInCombat = false;
       if (actor.pc || target?.pc) {
         playerInCombat = true;
