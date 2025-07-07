@@ -57,6 +57,14 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] Enhanced Debog logging
 
 - [ ] Memory AI
+    - [x] Remember
+    - [ ] Forget
+- [ ] Relationships
+    - [x] Only attack player
+    - [ ] Attack based on relationships
+- [ ] Behavior
+    - [ ] Agressive, passive, idle etc
+    - [ ] Only do things according to behavior
 - [ ] Debug overlay
 - [ ] dungeons v2
     - [x] tags refactor
