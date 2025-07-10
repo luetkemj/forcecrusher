@@ -1,5 +1,11 @@
 import { type Entity } from "../ecs/engine";
-import { DamageType, WeaponClass, OpenState, EffectType } from "../ecs/enums";
+import {
+  DamageType,
+  WeaponClass,
+  OpenState,
+  EffectType,
+  EntityKind,
+} from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
 // NOTE: generics
@@ -61,6 +67,7 @@ const baseWeapon: Entity = {
 export const playerPrefab: Entity = {
   ...renderable,
   ...being,
+  entityKind: EntityKind.Player,
   appearance: {
     char: chars.player,
     tint: colors.player,
@@ -115,6 +122,7 @@ export const ratPrefab: Entity = {
   ...base,
   ...renderable,
   ...being,
+  entityKind: EntityKind.Beast,
   ai: true,
   appearance: {
     char: chars.rat,
@@ -167,6 +175,7 @@ export const skeletonPrefab: Entity = {
   ...base,
   ...renderable,
   ...being,
+  entityKind: EntityKind.Undead,
   ai: true,
   appearance: {
     char: chars.skeleton,

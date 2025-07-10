@@ -2,6 +2,7 @@ import { World } from "miniplex";
 import {
   DamageType,
   EffectType,
+  EntityKind,
   OpenState,
   Sense,
   WeaponClass,
@@ -114,6 +115,7 @@ export type Entity = {
   dexterity?: number;
   door?: true;
   effects?: Array<Effect>;
+  entityKind?: EntityKind;
   health?: {
     max: number;
     current: number;

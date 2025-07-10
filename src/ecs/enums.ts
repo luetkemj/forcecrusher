@@ -23,6 +23,21 @@ export enum DungeonTags {
   Wall = "wall",
 }
 
+export enum EntityKind {
+  Beast = "beast",
+  Humanoid = "humanoid",
+  Player = "player",
+  Undead = "undead",
+}
+
+export enum Disposition {
+  Hostile = -2,
+  Unfriendly = -1,
+  Neutral = 0,
+  Friendly = 1,
+  Allied = 2,
+}
+
 export enum EffectType {
   Knockback = "knockback",
 }
