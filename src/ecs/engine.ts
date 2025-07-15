@@ -69,7 +69,7 @@ export type Memory = {
   id: EntityId;
   lastKnownPosition: Pos;
   turnStamp: number;
-  perceivedVia?: Sense;
+  perceivedVia: Sense;
   // track which sense generate memory?
   // status?: "unknown" | "alive" | "dead";
   // threatLevel?: "low" | "moderate" | "high";

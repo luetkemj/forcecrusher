@@ -1,4 +1,5 @@
 import { Entity, gameWorld } from "../ecs/engine";
+import { Disposition, EntityKind } from "../ecs/enums";
 import { getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos } from "./grid";
@@ -80,10 +81,7 @@ export const outOfBounds = (pos: Pos) => {
 };
 
 export const isSamePosition = (blocker: Pos, blockee: Pos) => {
-  if (
-    blocker.x === blockee.x &&
-    blocker.y === blockee.y
-  ) {
+  if (blocker.x === blockee.x && blocker.y === blockee.y) {
     return true;
   }
   return false;
@@ -237,4 +235,38 @@ export const unWear = (equipper: Entity) => {
   }
 
   return false;
+};
+
+export const getDisposition = (actor: Entity, target: Entity) => {
+  const dispositions: Record<EntityKind, Record<EntityKind, number>> = {
+    beast: {
+      beast: Disposition.Neutral,
+      humanoid: Disposition.Neutral,
+      undead: Disposition.Hostile,
+      player: Disposition.Hostile,
+    },
+    humanoid: {
+      beast: Disposition.Neutral,
+      humanoid: Disposition.Neutral,
+      undead: Disposition.Hostile,
+      player: Disposition.Hostile,
+    },
+    undead: {
+      beast: Disposition.Hostile,
+      humanoid: Disposition.Hostile,
+      undead: Disposition.Friendly,
+      player: Disposition.Hostile,
+    },
+    player: {
+      beast: Disposition.Neutral,
+      humanoid: Disposition.Neutral,
+      undead: Disposition.Neutral,
+      player: Disposition.Neutral,
+    },
+  };
+  if (actor.entityKind && target.entityKind) {
+    return dispositions[actor.entityKind][target.entityKind];
+  }
+  console.log("default neutral disposition", { actor, target });
+  return Disposition.Neutral;
 };

@@ -1,8 +1,9 @@
 import type { IGameWorld } from "../engine";
 import { aStar, wanderToward } from "../../lib/pathfinding";
 import { getDirection } from "../../lib/grid";
-import { logFrozenEntity } from "../../lib/utils";
+import { getDisposition, logFrozenEntity } from "../../lib/utils";
 import { Disposition, EntityKind } from "../enums";
+import { orderBy, sortBy } from "lodash";
 
 export const createAiSystem = ({ world, registry }: IGameWorld) => {
   const aiQuery = world.with("ai", "position", "memory");
@@ -14,61 +15,30 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
       const target = { position: { x: 0, y: 0 } };
       let hasTarget = false;
 
-      // with dispositions below - do we need the player memory? Should just go for who you like/don't like.
-      // player isn't special.
-      // requires refactor of perception system...
-      if (actor.memory.player) {
-        target.position = actor.memory.player.lastKnownPosition;
-        hasTarget = true;
-      }
-
       if (actor.memory.sentients && !hasTarget) {
         // for each sentient, check dispositions.If allied, go towards and create a pack. If friendly, ignore or protect if it's fighting. If neutral, ignore. If unfriendly, attack if it's being attacked, if hostile, attack.
         // sort dispositions, find the strongest in one way or other, do that thing.
-        const dispositions: Record<EntityKind, Record<EntityKind, number>> = {
-          beast: {
-            beast: Disposition.Neutral,
-            humanoid: Disposition.Neutral,
-            undead: Disposition.Neutral,
-            player: Disposition.Hostile,
-          },
-          humanoid: {
-            beast: Disposition.Neutral,
-            humanoid: Disposition.Neutral,
-            undead: Disposition.Hostile,
-            player: Disposition.Hostile,
-          },
-          undead: {
-            beast: Disposition.Neutral,
-            humanoid: Disposition.Hostile,
-            undead: Disposition.Friendly,
-            player: Disposition.Hostile,
-          },
-          player: {
-            beast: Disposition.Neutral,
-            humanoid: Disposition.Neutral,
-            undead: Disposition.Neutral,
-            player: Disposition.Neutral,
-          },
-        };
-
-        const disposition: Record<string, number> = {};
+        const foundDispositions: Array<{ id: string; disposition: number }> =
+          [];
 
         for (const sentient of Object.values(actor.memory.sentients)) {
           const candidate = registry.get(sentient.id);
           if (!candidate) return;
 
           if (actor.entityKind && candidate.entityKind) {
-            disposition[candidate.id] =
-              dispositions[actor.entityKind][candidate.entityKind];
+            foundDispositions.push({
+              id: candidate.id,
+              disposition: getDisposition(actor, candidate),
+            });
           }
         }
 
-        console.log(disposition);
+        const sortedDispositions = sortBy(foundDispositions, "disposition");
 
-        const sentient = Object.values(actor.memory.sentients)[0]; // find a better way to pick than just the first
-        if (sentient) {
-          target.position = sentient.lastKnownPosition;
+        if (sortedDispositions.length) {
+          const candidateId = sortedDispositions[0].id;
+          const selectedTarget = actor.memory.sentients[candidateId];
+          target.position = selectedTarget.lastKnownPosition;
           hasTarget = true;
         }
       }
