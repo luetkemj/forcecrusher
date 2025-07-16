@@ -310,7 +310,7 @@ class GameWorld {
       }
     } else {
       // Zone not found: generate new zone
-      generateDungeon(zoneId);
+      generateDungeon();
 
       const playerEntity = gameWorld.registry.get(playerId);
       if (playerEntity) {
