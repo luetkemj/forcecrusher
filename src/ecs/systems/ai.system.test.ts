@@ -31,11 +31,6 @@ describe("ai.system", () => {
       ai: true,
       position: { x: 3, y: 1 },
       memory: {
-        player: {
-          id: "player",
-          lastKnownPosition: { x: 1, y: 1 },
-          turnStamp: 1,
-        },
         sentients: {},
         items: {},
       },

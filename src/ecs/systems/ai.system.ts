@@ -1,9 +1,8 @@
 import type { IGameWorld } from "../engine";
-import { aStar, wanderToward } from "../../lib/pathfinding";
+import { wanderToward } from "../../lib/pathfinding";
 import { getDirection } from "../../lib/grid";
-import { getDisposition, logFrozenEntity } from "../../lib/utils";
-import { Disposition, EntityKind } from "../enums";
-import { orderBy, sortBy } from "lodash";
+import { getDisposition } from "../../lib/utils";
+import { sortBy } from "lodash";
 
 export const createAiSystem = ({ world, registry }: IGameWorld) => {
   const aiQuery = world.with("ai", "position", "memory");

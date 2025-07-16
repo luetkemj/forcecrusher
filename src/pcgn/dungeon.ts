@@ -7,7 +7,6 @@ import {
   rectangle,
   rectsIntersect,
   toPosId,
-  toPos,
   getNeighbors,
 } from "../lib/grid";
 import { spawn } from "../actors";
@@ -179,7 +178,7 @@ export const buildDungeon = (
   return { dungeon, tilesMap };
 };
 
-export const generateDungeon = (zoneId: string) => {
+export const generateDungeon = () => {
   // zoneId is now just a string, depth logic can be handled elsewhere if needed
   const depth = 0;
 

@@ -26,11 +26,6 @@ export const createAttackSystem = ({ world, registry }: IGameWorld) => {
         return cleanUp(actor);
       }
 
-      let playerInCombat = false;
-      if (actor.pc || target?.pc) {
-        playerInCombat = true;
-      }
-
       if (!attack) {
         console.log(`${actor.name} has no means of attack`);
         return cleanUp(actor);

@@ -2,7 +2,6 @@ import PF from "pathfinding";
 import { CARDINAL, isAtSamePosition, type Pos } from "./grid";
 import { getState } from "../ecs/gameState";
 import { Entity } from "../ecs/engine";
-import { Exceptions } from "@dice-roller/rpg-dice-roller";
 
 function isBlocked(pos: Pos, entities: Array<Entity>) {
   let blocked = false;
