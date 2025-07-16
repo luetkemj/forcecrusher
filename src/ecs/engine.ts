@@ -147,7 +147,6 @@ export type Entity = {
   legendable?: true;
   locked?: true;
   memory?: {
-    player?: Memory;
     sentients: Record<EntityId, Memory>;
     items: Record<EntityId, Memory>;
   };
