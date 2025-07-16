@@ -3,6 +3,7 @@ import type { Entity, IGameWorld } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
 import { createMovementSystem } from "./movement.system";
 import { getState } from "../gameState";
+import { EntityKind } from "../enums";
 
 describe("movement.system", () => {
   let gameWorld: IGameWorld;
@@ -16,6 +17,7 @@ describe("movement.system", () => {
       version: 1,
       position: { x: 1, y: 1 },
       tryMove: { x: 2, y: 1 },
+      entityKind: EntityKind.Undead,
     };
     blocker = {
       id: "blocker",
@@ -44,6 +46,7 @@ describe("movement.system", () => {
 
   test("initiates attack if blocked by entity with health", () => {
     blocker.health = { max: 10, current: 10 };
+    blocker.entityKind = EntityKind.Beast;
     createMovementSystem(gameWorld)();
     expect(mover.tryMove).toBeUndefined();
     expect(mover.tryAttack?.targetId).toEqual(blocker.id);
