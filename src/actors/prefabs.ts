@@ -386,6 +386,7 @@ export const doorPrefab: Entity = {
   description: "A door",
   layer200: true,
   opaque: true,
+  pathThrough: true,
   blocking: true,
   door: true,
   openable: {

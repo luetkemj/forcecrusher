@@ -1,6 +1,5 @@
 import { addLog, getDisposition } from "../../lib/utils";
 import { IGameWorld } from "../engine";
-import { camelCase } from "lodash";
 
 export const createMovementSystem = ({ world }: IGameWorld) => {
   const moveableQuery = world.with("position", "tryMove");
@@ -24,6 +23,8 @@ export const createMovementSystem = ({ world }: IGameWorld) => {
               id: target.id,
             });
           } else if (target.health) {
+            // if pc - assume attack
+            // if ai, check disposition towards target
             if (actor.pc || getDisposition(actor, target) === -2) {
               world.addComponent(actor, "tryAttack", { targetId: target.id });
             }

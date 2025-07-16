@@ -9,6 +9,7 @@ import { createFovSystem } from "../systems/fov.system";
 import { createInteractSystem } from "../systems/interact.system";
 import { createKickSystem } from "../systems/kick.system";
 import { createKnockbackSystem } from "../systems/knockback.system";
+import { createMemorySystem } from "./memory.system";
 import { createMorgueSystem } from "../systems/morgue.system";
 import { createMovementSystem } from "../systems/movement.system";
 import { createOpenSystem } from "../systems/open.system";
@@ -32,6 +33,7 @@ const fovSystem = createFovSystem(gameWorld);
 const interactSystem = createInteractSystem(gameWorld);
 const kickSystem = createKickSystem(gameWorld);
 const knockbackSystem = createKnockbackSystem(gameWorld);
+const memorySystem = createMemorySystem(gameWorld);
 const morgueSystem = createMorgueSystem(gameWorld);
 const movementSystem = createMovementSystem(gameWorld);
 const openSystem = createOpenSystem(gameWorld);
@@ -53,6 +55,7 @@ export const systems = {
   interact: interactSystem,
   kick: kickSystem,
   knockback: knockbackSystem,
+  memory: memorySystem,
   morgue: morgueSystem,
   movement: movementSystem,
   open: openSystem,
@@ -140,7 +143,7 @@ export const playerTurnPipeline: SystemPipeline = {
 
 export const worldTurnPipeline: SystemPipeline = {
   preInput: [systems.activeEffects, systems.morgue],
-  input: [systems.perception],
+  input: [systems.perception, systems.memory],
   main: [
     systems.ai,
     systems.movement,
