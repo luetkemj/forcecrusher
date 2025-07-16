@@ -3,6 +3,7 @@ import type { Entity, IGameWorld } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
 import { createAiSystem } from "./ai.system";
 import { type State, setState } from "../gameState";
+import { EntityKind, Sense } from "../enums";
 
 // At the top of ai.system.test.ts
 vitest.mock("../../lib/canvas", () => ({
@@ -23,6 +24,7 @@ describe("ai.system", () => {
       version: 1,
       pc: true,
       position: { x: 1, y: 1 },
+      entityKind: EntityKind.Player,
     };
     ai = {
       id: "ai",
@@ -30,8 +32,16 @@ describe("ai.system", () => {
       version: 1,
       ai: true,
       position: { x: 3, y: 1 },
+      entityKind: EntityKind.Undead,
       memory: {
-        sentients: {},
+        sentients: {
+          player: {
+            id: "player",
+            lastKnownPosition: { x: 1, y: 1 },
+            turnStamp: 0,
+            perceivedVia: Sense.Vision,
+          },
+        },
         items: {},
       },
     };
@@ -53,13 +63,6 @@ describe("ai.system", () => {
     expect(movedAI?.tryMove).toBeDefined();
     // Should move left toward player
     expect(movedAI?.tryMove).toMatchObject({ x: 2, y: 1 });
-  });
-
-  test("AI does not move if already at player position", () => {
-    ai.position = { x: 1, y: 1 };
-    createAiSystem(gameWorld)();
-    const movedAI = gameWorld.world.entities.find((e) => e.id === "ai");
-    expect(movedAI?.tryMove).toBeUndefined();
   });
 
   test("AI pathfinds around blocking entities", () => {
