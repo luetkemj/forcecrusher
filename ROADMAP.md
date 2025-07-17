@@ -55,13 +55,29 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] View Renderer refactor
 - [x] Input Handlers refactor
 - [x] Enhanced Debog logging
-
-- [ ] Memory AI
+- [x] Memory AI
     - [x] Remember
-    - [ ] Forget
-- [ ] Relationships
-    - [x] Only attack player
-    - [ ] Attack based on relationships
+    - [x] Forget
+- [x] Disposition
+    - [x] ~~Only attack player~~
+    - [x] Attack based on disposition
+- [ ] Perception
+    - [ ] See
+        - [x] See things
+        - [x] Remember things seen
+        - [x] Act on memory
+        - [ ] Debug UI
+    - [ ] Smell
+        - [x] Smell things
+        - [ ] Remember things smelled
+        - [ ] Act on memory
+        - [x] Debug UI
+    - [ ] Hear
+        - [ ] Hear things
+        - [ ] Remember things heard
+        - [ ] Act on memory
+        - [ ] Debug UI
+    - [ ] 
 - [ ] Behavior
     - [ ] Agressive, passive, idle etc
     - [ ] Only do things according to behavior
