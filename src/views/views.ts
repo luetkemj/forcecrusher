@@ -30,6 +30,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0xff0077],
     alphas: [1],
     visible: true,
+    name: "legend",
   },
   log: {
     width: 74,
@@ -41,6 +42,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0xeeeeee],
     alphas: [1],
     visible: true,
+    name: "log",
   },
   senses: {
     width: 74,
@@ -52,6 +54,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0xff0077],
     alphas: [1],
     visible: true,
+    name: "senses",
   },
 
   // 3 render layers
@@ -68,6 +71,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x000000, 0x000000, 0x000000],
     alphas: [1, 1, 0],
     visible: true,
+    name: "map",
   },
 
   odorMap: {
@@ -75,11 +79,12 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     height: 39,
     x: 13,
     y: 5,
-    layers: 3,
+    layers: 1,
     tileSets: ["tile"],
     tints: [0x000000],
     alphas: [1],
     visible: true,
+    name: "odorMap",
   },
 
   fps: {
@@ -92,6 +97,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x333333],
     alphas: [1],
     visible: true,
+    name: "fps",
   },
 
   gitHash: {
@@ -104,6 +110,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x333333],
     alphas: [1],
     visible: true,
+    name: "gitHash",
   },
 
   hud: {
@@ -116,6 +123,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0xdddddd],
     alphas: [1],
     visible: true,
+    name: "hud",
   },
 
   // keyboard controls
@@ -129,6 +137,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x999999],
     alphas: [1],
     visible: true,
+    name: "controls",
   },
 
   // MENUS
@@ -143,6 +152,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x111111],
     alphas: [0.75],
     visible: false,
+    name: "menuUnderlay",
   },
 
   // Inventory Menu
@@ -156,6 +166,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x111111, 0xffffff],
     alphas: [1],
     visible: false,
+    name: "inventory",
   },
 
   logHistory: {
@@ -168,6 +179,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0xffffff],
     alphas: [1],
     visible: false,
+    name: "logHistory",
   },
 
   makerModeRight: {
@@ -180,6 +192,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x000000, 0xdddddd],
     alphas: [1, 1],
     visible: false,
+    name: "makerModeRight",
   },
 
   makerModeLeft: {
@@ -192,6 +205,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x000000, 0xdddddd],
     alphas: [1, 1],
     visible: false,
+    name: "makerModeLeft",
   },
   makerModeTop: {
     width: 148,
@@ -203,6 +217,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x000000, 0xeeeeee],
     alphas: [1, 1],
     visible: false,
+    name: "makerModeTop",
   },
 };
 

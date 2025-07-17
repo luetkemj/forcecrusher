@@ -133,6 +133,7 @@ interface ViewOptions {
   tints: Array<number>;
   alphas: Array<number>;
   visible: boolean;
+  name: string;
 }
 
 interface GetTextureOptions {
@@ -198,6 +199,7 @@ export class View {
   tints: Array<number> = [];
   alphas: Array<number> = [];
   visible: boolean = true;
+  name: string;
 
   constructor(options: ViewOptions) {
     this.width = options.width;
@@ -207,6 +209,7 @@ export class View {
     this.alphas = options.alphas;
     this.halfWidth = this.tileSets.includes("text");
     this.visible = options.visible;
+    this.name = options.name;
 
     // create n layers of containers
     _.times(options.layers, () => this.layers.push(new Container()));
@@ -413,22 +416,25 @@ export class View {
   clearRow = (layer: number, row: number) => {
     const eraser = new Array(this.width + 1).join(" ");
 
-    const tileSet = this.tileSets[layer];
-    const tileSetsToClear = new Set([
-      tileSet,
-      "tile", // common for visuals like odor
-      "text", // common for UI text
-      "ascii", // common for classic roguelike glyphs
-    ]);
+    this.updateRow({ string: eraser, layer: layer, y: row });
 
-    for (const ts of tileSetsToClear) {
+    const tileSet = this.tileSets[layer];
+
+    if (tileSet === "tile") {
       this.updateRow({
         string: eraser,
         layer,
         y: row,
-        tileSet: ts,
+        tileSet,
         tint: 0x000000,
         alpha: 0,
+      });
+    } else {
+      this.updateRow({
+        string: eraser,
+        layer,
+        y: row,
+        tileSet,
       });
     }
   };
