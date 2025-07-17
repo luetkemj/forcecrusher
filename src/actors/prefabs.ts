@@ -48,6 +48,9 @@ const being: Entity = {
   charisma: 10,
   vision: { range: 10, visible: [] },
   memory: { sentients: {}, items: {} },
+  odor: {
+    strength: 10,
+  },
 };
 
 const baseWeapon: Entity = {

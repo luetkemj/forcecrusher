@@ -1,9 +1,10 @@
 import PF from "pathfinding";
-import { CARDINAL, isAtSamePosition, type Pos } from "./grid";
+import { CARDINAL, isAtSamePosition, toPosId, type Pos } from "./grid";
 import { getState } from "../ecs/gameState";
 import { Entity } from "../ecs/engine";
+import { outOfBounds } from "./utils";
 
-function isBlocked(pos: Pos, entities: Array<Entity>) {
+export function isBlocked(pos: Pos, entities: Array<Entity>) {
   let blocked = false;
   for (const entity of entities) {
     if (!entity.position) return false;
@@ -90,4 +91,42 @@ function getDirectionCandidates(biasDir: Pos, wiggleChance: number): Pos[] {
 
 function dot(a: Pos, b: Pos): number {
   return a.x * b.x + a.y * b.y;
+}
+
+export function propagateSmell(
+  sourcePos: Pos,
+  strength: number,
+  isBlocked: (p: Pos) => boolean,
+  isObscured: (p: Pos) => boolean,
+): Map<string, number> {
+  const visited = new Map<string, number>();
+  const queue: Array<{ pos: Pos; strength: number }> = [
+    { pos: sourcePos, strength },
+  ];
+
+  while (queue.length) {
+    const { pos, strength } = queue.shift()!;
+    const key = toPosId(pos);
+    if (visited.has(key) || strength <= 0) continue;
+
+    visited.set(key, strength);
+
+    for (const dir of CARDINAL) {
+      const next = { x: pos.x + dir.x, y: pos.y + dir.y };
+      // if outOfBound - bail
+      if (!outOfBounds(next)) {
+        // if obscured, reduce smell & propogate
+        if (isObscured(next)) {
+          queue.push({ pos: next, strength: strength / 2 }); // or decay by distance
+        }
+
+        // if not blocked, propogate
+        if (!isBlocked(next)) {
+          queue.push({ pos: next, strength: strength - 1 }); // or decay by distance
+        }
+      }
+    }
+  }
+
+  return visited; // maps posId -> smell strength
 }

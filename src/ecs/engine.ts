@@ -150,6 +150,9 @@ export type Entity = {
     sentients: Record<EntityId, Memory>;
     items: Record<EntityId, Memory>;
   };
+  odor?: {
+    strength: number;
+  };
   opaque?: true;
   open?: true;
   openable?: {

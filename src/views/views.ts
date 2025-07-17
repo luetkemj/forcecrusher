@@ -5,6 +5,7 @@ export type ViewId =
   | "log"
   | "senses"
   | "map"
+  | "odorMap"
   | "fps"
   | "gitHash"
   | "hud"
@@ -58,6 +59,18 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   // 2: character
   // 3: foreground
   map: {
+    width: 74,
+    height: 39,
+    x: 13,
+    y: 5,
+    layers: 3,
+    tileSets: ["tile", "ascii", "tile"],
+    tints: [0x000000, 0x000000, 0x000000],
+    alphas: [1, 1, 0],
+    visible: true,
+  },
+
+  odorMap: {
     width: 74,
     height: 39,
     x: 13,

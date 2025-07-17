@@ -48,6 +48,14 @@ export const handleGameModeInput = ({
       return true;
     }
 
+    if (key === Keys.TOGGLE_SEE_ODOR_MAP) {
+      setState(
+        (state: State) => (state.cheats.seeOdorMap = !state.cheats.seeOdorMap),
+      );
+
+      return true;
+    }
+
     // stairs needs to be it's own system
     if (key === Keys.STAIRS_DOWN) {
       if (!player.position) return;

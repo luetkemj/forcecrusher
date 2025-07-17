@@ -1,6 +1,6 @@
-import { type Pos } from "../lib/grid";
+import { PosId, type Pos } from "../lib/grid";
 import { View } from "../lib/canvas";
-import { Entity } from "./engine";
+import { Entity, EntityId } from "./engine";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -24,6 +24,7 @@ export type Views = {
   fps?: View;
   gitHash?: View;
   map?: View;
+  odorMap?: View;
   log?: View;
   senses?: View;
   legend?: View;
@@ -49,6 +50,7 @@ export type State = {
   interactTargets: Array<Entity>;
   interactActions: string;
   makerModePrefabSelectIndex: number;
+  odorMap: Map<PosId, Record<EntityId, number>>;
   senses: {
     feel: string;
     see: string;
@@ -65,6 +67,7 @@ export type State = {
   version: number;
   cheats: {
     seeAll: boolean;
+    seeOdorMap: boolean;
   };
 };
 
@@ -82,6 +85,7 @@ const state: State = {
   interactTargets: [],
   interactActions: "",
   makerModePrefabSelectIndex: 0,
+  odorMap: new Map(),
   senses: {
     feel: "You feel nothing.",
     see: "You see nothing.",
@@ -98,6 +102,7 @@ const state: State = {
   version: 1,
   cheats: {
     seeAll: false,
+    seeOdorMap: false,
   },
 };
 

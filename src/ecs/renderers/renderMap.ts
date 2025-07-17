@@ -4,8 +4,8 @@ import { RendererContext, renderEntity } from "../systems/render.system";
 export const renderMap = ({ views, queries }: RendererContext) => {
   const view = views.map;
   if (view) {
-    // TODO: clear the map before each render (this is only necessary for loading a game
-    // could def find a better place for this.
+    // TODO: clear the map before each render (this is only necessary for loading a game/clearing omciscience
+    // Do this only when needed as it's kinda expensive.
     view.clearView();
 
     const allLayers = [

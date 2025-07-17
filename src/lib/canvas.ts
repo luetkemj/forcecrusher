@@ -326,7 +326,12 @@ export class View {
       rows.forEach((rowLayer, layerIndex) => {
         // clear row before writing to it
         this.clearRow(layerIndex, rowIndex);
-        this.updateRow({ ...rowLayer, layer: layerIndex, y: rowIndex, parseTags });
+        this.updateRow({
+          ...rowLayer,
+          layer: layerIndex,
+          y: rowIndex,
+          parseTags,
+        });
       });
     });
 
@@ -407,7 +412,25 @@ export class View {
 
   clearRow = (layer: number, row: number) => {
     const eraser = new Array(this.width + 1).join(" ");
-    this.updateRow({ string: eraser, layer: layer, y: row });
+
+    const tileSet = this.tileSets[layer];
+    const tileSetsToClear = new Set([
+      tileSet,
+      "tile", // common for visuals like odor
+      "text", // common for UI text
+      "ascii", // common for classic roguelike glyphs
+    ]);
+
+    for (const ts of tileSetsToClear) {
+      this.updateRow({
+        string: eraser,
+        layer,
+        y: row,
+        tileSet: ts,
+        tint: 0x000000,
+        alpha: 0,
+      });
+    }
   };
 
   clearView = () => {
