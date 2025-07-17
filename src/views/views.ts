@@ -76,9 +76,9 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     x: 13,
     y: 5,
     layers: 3,
-    tileSets: ["tile", "ascii", "tile"],
-    tints: [0x000000, 0x000000, 0x000000],
-    alphas: [1, 1, 0],
+    tileSets: ["tile"],
+    tints: [0x000000],
+    alphas: [1],
     visible: true,
   },
 
@@ -208,6 +208,8 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
 
 export function createViews() {
   const views: Partial<Record<ViewId, View>> = {};
+
+  console.log(Object.keys(viewConfigs));
 
   for (const [id, config] of Object.entries(viewConfigs) as [
     ViewId,
