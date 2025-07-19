@@ -51,16 +51,16 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     y: 0,
     layers: 1,
     tileSets: ["text"],
-    tints: [0xff0077],
+    tints: [0xeeeeee],
     alphas: [1],
     visible: true,
     name: "senses",
   },
 
   // 3 render layers
-  // 1: background
-  // 2: character
-  // 3: foreground
+  // 1: background - ??
+  // 2: character - ascii
+  // 3: foreground - cursor
   map: {
     width: 74,
     height: 39,

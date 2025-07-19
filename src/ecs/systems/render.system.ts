@@ -4,7 +4,7 @@ import { getState, Views } from "../gameState";
 import { View } from "../../lib/canvas";
 import { renderLegend } from "../renderers/renderLegend";
 import { renderMap } from "../renderers/renderMap";
-import { renderOdorMap } from "../renderers/renderOderMap";
+import { renderOdorMap } from "../renderers/renderOdorMap";
 import { renderSenses } from "../renderers/renderSenses";
 import { renderMenuUnderlay } from "../renderers/renderMenuUnderlay";
 import { renderLogHistory } from "../renderers/renderLogHistory";
@@ -115,7 +115,7 @@ export const renderEntity = (view: View, entity: Entity, alpha: number) => {
   const { x, y } = position;
 
   view?.updateCell({
-    0: { char, tint: 0x000000, alpha: 0, tileSet: "tile", x, y },
+    0: { char, tint: 0x000000, alpha: 1, tileSet: "tile", x, y },
     1: { char, tint, alpha, tileSet, x, y },
   });
 };

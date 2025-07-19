@@ -52,11 +52,11 @@ export type State = {
   makerModePrefabSelectIndex: number;
   odorMap: Map<PosId, Record<EntityId, number>>;
   senses: {
-    feel: string;
-    see: string;
-    hear: string;
+    sight: string;
+    hearing: string;
     smell: string;
     taste: string;
+    touch: string;
   };
   turn: Turn;
   turnNumber: number;
@@ -87,11 +87,11 @@ const state: State = {
   makerModePrefabSelectIndex: 0,
   odorMap: new Map(),
   senses: {
-    feel: "You feel nothing.",
-    see: "You see nothing.",
-    hear: "You hear nothing.",
-    smell: "You smell nothing.",
-    taste: "You taste nothing.",
+    sight: "",
+    hearing: "",
+    smell: "",
+    taste: "",
+    touch: "",
   },
   turn: Turn.PLAYER,
   turnNumber: 0, // this needs to be stored in game saves

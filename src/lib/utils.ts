@@ -74,6 +74,10 @@ export const addLog = (newLog: string) => {
   }
 };
 
+export const addSenseLog = (log: string, sense: keyof State["senses"]) => {
+  setState((state: State) => (state.senses[sense] = log));
+};
+
 export const outOfBounds = (pos: Pos) => {
   const { x, y } = pos;
   const { width, height } = getState().views.map!;

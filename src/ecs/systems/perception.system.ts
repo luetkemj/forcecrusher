@@ -1,17 +1,14 @@
 import createFOV from "../../lib/fov";
-import { Pos, toPosId } from "../../lib/grid";
-import { propagateSmell } from "../../lib/pathfinding";
-import { IGameWorld } from "../engine";
-import { State, getState, setState } from "../gameState";
+import { toPosId } from "../../lib/grid";
+import { addSenseLog } from "../../lib/utils";
+import { EntityId, IGameWorld } from "../engine";
+import { getState } from "../gameState";
 
 export const createPerceptionSystem = (gameWorld: IGameWorld) => {
-  const { world } = gameWorld;
+  const { world, registry } = gameWorld;
   const aiQuery = world.with("ai");
-  const odorQuery = world.with("odor", "position");
   const opaqueQuery = world.with("opaque", "position");
   const renderableQuery = world.with("appearance", "position");
-  const blockingQuery = world.with("blocking", "position");
-  const pathThroughQuery = world.with("blocking", "position", "pathThrough");
 
   return function perceptionSystem() {
     for (const actor of aiQuery) {
@@ -36,64 +33,47 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
     }
 
     // NOTE: OLFACTORY
-    const odorFields = new Map<string, Map<string, number>>(); // entityId -> odor map
-    const blockingSet = new Set<string>();
-    const obscuredSet = new Set<string>();
+    const player = registry.get(getState().playerId);
+    const odorMap = getState().odorMap;
+    if (player && player.position) {
+      // get player position
+      const posId = toPosId(player.position);
+      // find smells at position
+      const odors = odorMap.get(posId);
+      if (!odors) return addSenseLog("", "smell");
+      // const orderedOdors = Object.entries(odors).sort((a, b) => b[1] - a[1]); // Sort by strength descending
+      const smell = getStrongestOdor(odors, getState().playerId);
 
-    // Decay odorMap
-    for (const [posId, odors] of getState().odorMap.entries()) {
-      for (const [entityId, strength] of Object.entries(odors)) {
-        const decayed = strength - 0.25;
-        if (decayed <= 0) {
-          delete odors[entityId];
-        } else {
-          odors[entityId] = decayed;
+      if (smell) {
+        const [entityId, strength] = smell;
+        const entity = registry.get(entityId);
+        if (entity) {
+          if (strength >= 8) {
+            return addSenseLog(`Intense smell of ${entity.name}`, "smell");
+          }
+          if (strength >= 6) {
+            return addSenseLog(`Strong smell of ${entity.name}`, "smell");
+          }
+          if (strength >= 4) {
+            return addSenseLog(`Noticable smell of ${entity.name}`, "smell");
+          }
+          if (strength >= 2) {
+            return addSenseLog(`Mild smell of ${entity.name}`, "smell");
+          }
+          if (strength >= 1) {
+            return addSenseLog(`Faint smell of ${entity.name}`, "smell");
+          }
+          if (strength > 0) {
+            return addSenseLog(`Trace smell of ${entity.name}`, "smell");
+          }
         }
       }
-
-      // Remove cell entirely if no smells left
-      if (Object.keys(odors).length === 0) {
-        setState((state: State) => {
-          state.odorMap.delete(posId);
-        });
-      }
-    }
-
-    for (const entity of blockingQuery) {
-      blockingSet.add(toPosId(entity.position));
-    }
-
-    for (const entity of pathThroughQuery) {
-      obscuredSet.add(toPosId(entity.position));
-    }
-
-    for (const entity of odorQuery) {
-      const field = propagateSmell(
-        entity.position,
-        entity.odor.strength,
-        (pos: Pos) => {
-          return blockingSet.has(toPosId(pos));
-        },
-        (pos: Pos) => {
-          return obscuredSet.has(toPosId(pos));
-        },
-      );
-
-      for (const [posId, strength] of field) {
-        const { odorMap } = getState();
-        if (!odorMap.has(posId)) {
-          setState((state: State) => {
-            state.odorMap.set(posId, {});
-          });
-        }
-
-        odorMap.get(posId)![entity.id] = Math.max(
-          strength,
-          odorMap.get(posId)![entity.id] ?? 0,
-        );
-      }
-
-      odorFields.set(entity.id, field);
     }
   };
 };
+
+function getStrongestOdor(odors: Record<EntityId, number>, playerId: EntityId) {
+  return Object.entries(odors)
+    .filter(([entityId]) => entityId !== playerId) // remove player
+    .sort((a, b) => b[1] - a[1])[0]; // sort by strength descending // get the strongest (or undefined if empty)
+}

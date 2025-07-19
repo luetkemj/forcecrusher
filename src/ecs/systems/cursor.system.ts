@@ -1,6 +1,7 @@
 import { IGameWorld } from "../engine";
-import { getState, setState, State } from "../gameState";
+import { getState } from "../gameState";
 import { toPosId } from "../../lib/grid";
+import { addSenseLog } from "../../lib/utils";
 
 export const createCursorSystem = ({ world }: IGameWorld) => {
   const inspectableQuery = world.with("revealed", "position");
@@ -52,13 +53,9 @@ export const createCursorSystem = ({ world }: IGameWorld) => {
         message += `the ${baseNames[0]}`;
       }
 
-      setState((state: State) => {
-        state.senses.see = message;
-      });
+      addSenseLog(message, "sight");
     } else {
-      setState((state: State) => {
-        state.senses.see = `You see nothing.`;
-      });
+      addSenseLog("You see nothing of interest", "sight");
     }
   };
 };

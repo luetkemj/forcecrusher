@@ -70,6 +70,9 @@ const baseWeapon: Entity = {
 export const playerPrefab: Entity = {
   ...renderable,
   ...being,
+  odor: {
+    strength: 0,
+  },
   entityKind: EntityKind.Player,
   appearance: {
     char: chars.player,

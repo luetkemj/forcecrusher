@@ -8,12 +8,18 @@ export const renderSenses = ({ views }: RendererContext) => {
     const senses = getState().senses;
     const width = view!.width - 1;
 
+    const sight = `VI: ${senses.sight || ""}`;
+    const hearing = `AU: ${senses.hearing || ""}`;
+    const smell = `SM: ${senses.smell || ""}`;
+    const taste = `TS: ${senses.taste || ""}`;
+    const touch = `TO: ${senses.touch || ""}`;
+
     view?.updateRows([
-      [{ string: concatRow(senses.feel, width) }],
-      [{ string: concatRow(senses.see, width) }],
-      [{ string: concatRow(senses.hear, width) }],
-      [{ string: concatRow(senses.smell, width) }],
-      [{ string: concatRow(senses.taste, width) }],
+      [{ string: concatRow(sight, width) }],
+      [{ string: concatRow(hearing, width) }],
+      [{ string: concatRow(smell, width) }],
+      [{ string: concatRow(taste, width) }],
+      [{ string: concatRow(touch, width) }],
     ]);
   }
 };

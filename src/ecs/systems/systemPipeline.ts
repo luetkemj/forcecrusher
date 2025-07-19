@@ -12,6 +12,7 @@ import { createKnockbackSystem } from "../systems/knockback.system";
 import { createMemorySystem } from "./memory.system";
 import { createMorgueSystem } from "../systems/morgue.system";
 import { createMovementSystem } from "../systems/movement.system";
+import { createOdorSystem } from "../systems/odor.system";
 import { createOpenSystem } from "../systems/open.system";
 import { createPerceptionSystem } from "./perception.system";
 import { createPickUpSystem } from "../systems/pickUp.system";
@@ -36,6 +37,7 @@ const knockbackSystem = createKnockbackSystem(gameWorld);
 const memorySystem = createMemorySystem(gameWorld);
 const morgueSystem = createMorgueSystem(gameWorld);
 const movementSystem = createMovementSystem(gameWorld);
+const odorSystem = createOdorSystem(gameWorld);
 const openSystem = createOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
 const pickUpSystem = createPickUpSystem(gameWorld);
@@ -58,6 +60,7 @@ export const systems = {
   memory: memorySystem,
   morgue: morgueSystem,
   movement: movementSystem,
+  odor: odorSystem,
   open: openSystem,
   perception: perceptionSystem,
   pickUp: pickUpSystem,
@@ -142,7 +145,7 @@ export const playerTurnPipeline: SystemPipeline = {
 };
 
 export const worldTurnPipeline: SystemPipeline = {
-  preInput: [systems.activeEffects, systems.morgue],
+  preInput: [systems.activeEffects, systems.morgue, systems.odor],
   input: [systems.perception, systems.memory],
   main: [
     systems.ai,

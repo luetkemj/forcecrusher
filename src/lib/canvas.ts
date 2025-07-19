@@ -314,7 +314,13 @@ export class View {
     if (y >= this.height || x >= this.width) {
       return this;
     }
+
+    if (!this.sprites[layer]) return;
+    if (!this.sprites[layer][y]) return;
+    if (!this.sprites[layer][y][x]) return;
+
     const sprite = this.sprites[layer][y][x];
+
     if (!sprite) return;
 
     sprite.texture = this._getTexture({ tileSet, char });
@@ -420,6 +426,8 @@ export class View {
 
     const tileSet = this.tileSets[layer];
 
+    const alpha0List = ["map", "odorMap"];
+
     if (tileSet === "tile") {
       this.updateRow({
         string: eraser,
@@ -427,7 +435,7 @@ export class View {
         y: row,
         tileSet,
         tint: 0x000000,
-        alpha: 0,
+        alpha: alpha0List.includes(this.name) ? 0 : 1,
       });
     } else {
       this.updateRow({
