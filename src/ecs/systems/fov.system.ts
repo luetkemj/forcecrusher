@@ -1,7 +1,7 @@
 import { IGameWorld } from "../engine";
 import createFOV from "../../lib/fov";
 import { toPosId } from "../../lib/grid";
-import { addLog, addSenseLog } from "../../lib/utils";
+import { addSenseLog } from "../../lib/utils";
 
 export const createFovSystem = ({ world }: IGameWorld) => {
   const inFovQuery = world.with("inFov", "position");

@@ -34,7 +34,7 @@ describe("cursor.system", () => {
     );
     expect(found).toBeDefined();
     expect(found?.name).toBe("Orc");
-    expect(getState().senses.see).toBe("You see the Orc");
+    expect(getState().senses.sight).toBe("You see the Orc");
   });
 
   test("shows recall message for entity not in FOV but revealed", () => {
@@ -47,7 +47,7 @@ describe("cursor.system", () => {
     );
     expect(found).toBeDefined();
     expect(found?.name).toBe("Orc");
-    expect(getState().senses.see).toBe("You recall seeing the Orc");
+    expect(getState().senses.sight).toBe("You recall seeing the Orc");
   });
 
   test("no message if no entity under cursor", () => {
@@ -63,7 +63,7 @@ describe("cursor.system", () => {
       (e) => e.position && toPosId(e.position) === cursorPosId && e.layer100,
     );
     expect(found).toBeUndefined();
-    expect(getState().senses.see).toBe("You see nothing.");
+    expect(getState().senses.sight).toBe("You see nothing.");
   });
 
   test("shows message for multiple entities on different layers", () => {
@@ -87,6 +87,6 @@ describe("cursor.system", () => {
     );
     expect(found100).toBeDefined();
     expect(found200).toBeDefined();
-    expect(getState().senses.see).toBe("You see a Goblin on the Orc");
+    expect(getState().senses.sight).toBe("You see a Goblin on the Orc");
   });
 });
