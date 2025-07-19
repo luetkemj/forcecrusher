@@ -63,7 +63,7 @@ describe("cursor.system", () => {
       (e) => e.position && toPosId(e.position) === cursorPosId && e.layer100,
     );
     expect(found).toBeUndefined();
-    expect(getState().senses.sight).toBe("You see nothing.");
+    expect(getState().senses.sight).toBe("");
   });
 
   test("shows message for multiple entities on different layers", () => {

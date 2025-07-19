@@ -55,7 +55,7 @@ export const createCursorSystem = ({ world }: IGameWorld) => {
 
       addSenseLog(message, "sight");
     } else {
-      addSenseLog("You see nothing of interest", "sight");
+      addSenseLog("", "sight");
     }
   };
 };
