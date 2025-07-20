@@ -61,12 +61,13 @@ This is aspirational only. Expect anything and everything in this document to be
 - [x] Disposition
     - [x] ~~Only attack player~~
     - [x] Attack based on disposition
+- [x] Sensory System
 - [ ] Perception
-    - [ ] See
+    - [x] See
         - [x] See things
         - [x] Remember things seen
         - [x] Act on memory
-        - [ ] Debug UI
+        - [x] Debug UI
     - [ ] Smell
         - [x] Smell things
         - [ ] Remember things smelled
@@ -131,7 +132,6 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] AI for actors to use own inventory
 - [ ] you can "wear" a health potion?? seems like that shouldn't be possible. Do we need wearable and wieldable Or just go with it? It's no better then not wearing any armor...
 - [ ] Materials
-- [ ] Sensory System
 - [ ] Overworld map with multiple dungeons to explore
 - [ ] Crafting
 - [ ] Ability to shoot things from a ranged weapon

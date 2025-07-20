@@ -40,6 +40,7 @@ export const Keys = {
   TOGGLE_DEBUG: "F1",
   TOGGLE_SEE_ALL: "F2",
   TOGGLE_SEE_ODOR_MAP: "F3",
+  TOGGLE_SEE_VISION_MAP: "F4",
 } as const;
 
 export const isMoveKey = (key: string): boolean =>

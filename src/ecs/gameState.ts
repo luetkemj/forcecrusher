@@ -1,6 +1,7 @@
 import { PosId, type Pos } from "../lib/grid";
 import { View } from "../lib/canvas";
 import { Entity, EntityId } from "./engine";
+import { VisibleFov } from "../lib/fov";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -25,6 +26,7 @@ export type Views = {
   gitHash?: View;
   map?: View;
   odorMap?: View;
+  visionMap?: View;
   log?: View;
   senses?: View;
   legend?: View;
@@ -51,6 +53,7 @@ export type State = {
   interactActions: string;
   makerModePrefabSelectIndex: number;
   odorMap: Map<PosId, Record<EntityId, number>>;
+  visionMap: Array<{ fov: VisibleFov; canSeePc: boolean }>;
   senses: {
     sight: string;
     hearing: string;
@@ -68,6 +71,7 @@ export type State = {
   cheats: {
     seeAll: boolean;
     seeOdorMap: boolean;
+    seeVisionMap: boolean;
   };
 };
 
@@ -86,6 +90,7 @@ const state: State = {
   interactActions: "",
   makerModePrefabSelectIndex: 0,
   odorMap: new Map(),
+  visionMap: [],
   senses: {
     sight: "",
     hearing: "",

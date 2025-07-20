@@ -6,6 +6,7 @@ export type ViewId =
   | "senses"
   | "map"
   | "odorMap"
+  | "visionMap"
   | "fps"
   | "gitHash"
   | "hud"
@@ -85,6 +86,19 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     alphas: [1],
     visible: true,
     name: "odorMap",
+  },
+
+  visionMap: {
+    width: 74,
+    height: 39,
+    x: 13,
+    y: 5,
+    layers: 1,
+    tileSets: ["tile"],
+    tints: [0x000000],
+    alphas: [1],
+    visible: true,
+    name: "visionMap",
   },
 
   fps: {
@@ -223,8 +237,6 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
 
 export function createViews() {
   const views: Partial<Record<ViewId, View>> = {};
-
-  console.log(Object.keys(viewConfigs));
 
   for (const [id, config] of Object.entries(viewConfigs) as [
     ViewId,

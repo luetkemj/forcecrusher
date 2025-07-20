@@ -175,6 +175,7 @@ export const ratPrefab: Entity = {
     noiseLevel: 2,
     maxDamageOnKick: 2,
   },
+  vision: { range: 3, visible: [] },
 };
 
 export const skeletonPrefab: Entity = {

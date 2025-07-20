@@ -2,7 +2,7 @@ import createFOV from "../../lib/fov";
 import { toPosId } from "../../lib/grid";
 import { addSenseLog } from "../../lib/utils";
 import { EntityId, IGameWorld } from "../engine";
-import { getState } from "../gameState";
+import { State, getState, setState } from "../gameState";
 
 export const createPerceptionSystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
@@ -11,6 +11,7 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
   const renderableQuery = world.with("appearance", "position");
 
   return function perceptionSystem() {
+    setState((state: State) => (state.visionMap = []));
     for (const actor of aiQuery) {
       // NOTE: VISION
       if (actor.vision && actor.position) {
@@ -22,6 +23,10 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
           39, // map height
           actor.position,
           actor.vision.range,
+        );
+
+        setState((state: State) =>
+          state.visionMap.push({ fov: FOV.fov, canSeePc: false }),
         );
 
         for (const target of renderableQuery) {

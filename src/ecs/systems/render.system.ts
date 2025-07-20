@@ -5,6 +5,7 @@ import { View } from "../../lib/canvas";
 import { renderLegend } from "../renderers/renderLegend";
 import { renderMap } from "../renderers/renderMap";
 import { renderOdorMap } from "../renderers/renderOdorMap";
+import { renderVisionMap } from "../renderers/renderVisionMap";
 import { renderSenses } from "../renderers/renderSenses";
 import { renderMenuUnderlay } from "../renderers/renderMenuUnderlay";
 import { renderLogHistory } from "../renderers/renderLogHistory";
@@ -69,6 +70,7 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
   return function renderSystem() {
     renderMap(ctx);
     renderOdorMap(ctx);
+    renderVisionMap(ctx);
     renderSenses(ctx);
     renderLegend(ctx);
     renderMenuUnderlay(ctx);
@@ -115,7 +117,7 @@ export const renderEntity = (view: View, entity: Entity, alpha: number) => {
   const { x, y } = position;
 
   view?.updateCell({
-    0: { char, tint: 0x000000, alpha: 1, tileSet: "tile", x, y },
+    0: { char, tint: 0x000000, alpha: 0, tileSet: "tile", x, y },
     1: { char, tint, alpha, tileSet, x, y },
   });
 };

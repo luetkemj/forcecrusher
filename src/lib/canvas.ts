@@ -426,7 +426,7 @@ export class View {
 
     const tileSet = this.tileSets[layer];
 
-    const alpha0List = ["map", "odorMap"];
+    const alpha0List = ["map", "odorMap", "visionMap"];
 
     if (tileSet === "tile") {
       this.updateRow({

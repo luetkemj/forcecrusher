@@ -56,6 +56,15 @@ export const handleGameModeInput = ({
       return true;
     }
 
+    if (key === Keys.TOGGLE_SEE_VISION_MAP) {
+      setState(
+        (state: State) =>
+          (state.cheats.seeVisionMap = !state.cheats.seeVisionMap),
+      );
+
+      return true;
+    }
+
     // stairs needs to be it's own system
     if (key === Keys.STAIRS_DOWN) {
       if (!player.position) return;

@@ -20,6 +20,8 @@ const octantTransforms = [
   { xx: 0, xy: -1, yx: -1, yy: 0 },
 ];
 
+export type VisibleFov = Set<string>;
+
 export default function createFOV(
   opaqueEntities: Query<With<Entity, "opaque" | "position">>,
   width: number,
@@ -29,7 +31,7 @@ export default function createFOV(
 ) {
   const { x: originX, y: originY } = pos;
 
-  const visible: Set<string> = new Set();
+  const visible: VisibleFov = new Set();
 
   const blockingLocations = new Set();
 
