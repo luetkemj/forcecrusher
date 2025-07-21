@@ -52,8 +52,11 @@ export enum OpenState {
 }
 
 export enum Sense {
-  Vision = "vision",
+  Sight = "sight",
   Hearing = "hearing",
+  Smell = "smell",
+  Taste = "taste",
+  Touch = "touch",
 }
 
 export enum WeaponClass {

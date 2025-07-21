@@ -66,12 +66,13 @@ export type Damage = {
 };
 
 export type Memory = {
-  id: EntityId;
-  lastKnownPosition: Pos;
-  turnStamp: number;
+  id?: EntityId;
+  kind: "sentient" | "item" | "unknown";
+  status: "unknown" | "alive" | "dead";
+  position: Pos;
+  turn: number;
   perceivedVia: Sense;
-  // track which sense generate memory?
-  // status?: "unknown" | "alive" | "dead";
+  strength?: number; // optional: e.g., for smells
   // threatLevel?: "low" | "moderate" | "high";
 };
 
@@ -147,8 +148,8 @@ export type Entity = {
   legendable?: true;
   locked?: true;
   memory?: {
-    sentients: Record<EntityId, Memory>;
-    items: Record<EntityId, Memory>;
+    memories: Array<Memory>;
+    target: Memory;
   };
   odor?: {
     strength: number;
