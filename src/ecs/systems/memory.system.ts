@@ -1,15 +1,13 @@
-import { Entity, EntityId, IGameWorld, Memory } from "../engine";
+import { Entity, IGameWorld, Memory } from "../engine";
 import { Pos, isAtSamePosition } from "../../lib/grid";
 import { getState } from "../gameState";
 import { Sense } from "../enums";
 
 export const createMemorySystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
-  const visionQuery = world.with("vision");
+  const visionQuery = world.with("vision", "memory");
 
   return function memorySystem() {
-    const turn = getState().turnNumber;
-
     for (const actor of visionQuery) {
       // check things we see to decide if we should remember them
       for (const id of actor.vision.visible) {
@@ -22,27 +20,30 @@ export const createMemorySystem = (gameWorld: IGameWorld) => {
 
         // else
         if (target) {
-          remember(actor, target, Sense.Sight);
+          remember({ actor, target, perceivedVia: Sense.Sight });
         }
       }
 
       // clean up old memories
-      forgetOldMemories(actor, gameWorld, turn);
+      forgetOldMemories(actor);
     }
   };
 };
 
 function getMemoryKind(target: Entity | undefined) {
   if (!target) return "unknown";
-  if (target.ai) return "sentient";
+  if (target.ai || target.pc) return "sentient";
   if (target.pickUp) return "item";
   return "unknown";
 }
 
+// a lot of issues here. Not super valuable yet.
+// how will you know if it's dead if you haven't seen it yet? Probably should
+// have to set this instead of derive it.
 function getMemoryStatus(target: Entity | undefined) {
   if (!target) return "unknown";
-  if (target.ai && target.dead) return "dead";
-  if (target.ai && !target.dead) return "alive";
+  if (target.dead) return "dead";
+  if (target.health && !target.dead) return "alive";
   if (target.pickUp) return "unknown";
   return "unknown";
 }
@@ -70,9 +71,10 @@ function updateOrCreateMemory(actor: Entity, memory: Memory) {
     );
   });
 
-  // If we found it, update that memory
   if (index !== -1) {
-    createMemory(actor, memory);
+    memories[index] = memory; // update existing memory
+  } else {
+    createMemory(actor, memory); // add new memory
   }
 }
 
@@ -102,55 +104,21 @@ function remember({
     strength,
   };
 
-  updateOrCreateMemory(actor, memory);
-}
-// function remember(actor: Entity, target: Entity, sense: Sense) {
-//   if (!actor.memory) return;
-//   if (!target.position) return;
-//
-//   const memory: Memory = {
-//     id: target.id,
-//     lastKnownPosition: { ...target.position },
-//     turnStamp: getState().turnNumber,
-//     perceivedVia: sense,
-//   };
-//
-//   // remeber sentients
-//   if (target.ai || target.pc) {
-//     actor.memory.sentients[target.id] = memory;
-//   }
-//
-//   // remember items
-//   if (target.pickUp) {
-//     actor.memory.items[target.id] = memory;
-//   }
-// }
-
-function forget(
-  actor: Entity,
-  memory: Memory,
-  memoryKey: "sentients" | "items",
-) {
-  if (actor.memory) delete actor.memory[memoryKey][memory.id];
+  if (memory.kind && memory.kind !== "unknown") {
+    updateOrCreateMemory(actor, memory);
+  }
 }
 
-function forgetOldMemories(
-  actor: Entity,
-  { registry }: IGameWorld,
-  turn: number,
-) {
+function forgetOldMemories(actor: Entity) {
   if (!actor.memory) return;
+  if (!actor.memory.memories) return console.log(actor);
 
-  Object.values(actor.memory.sentients).forEach((memory) => {
-    const target = registry.get(memory.id);
-    if (!target) return forget(actor, memory, "sentients");
+  const { turnNumber } = getState();
 
-    if (target.dead) return forget(actor, memory, "sentients");
-
+  const memories = actor.memory.memories.filter((memory) => {
     const recall = (actor?.intelligence || 0) * 2;
-
-    if (turn - memory.turnStamp > recall) {
-      return forget(actor, memory, "sentients");
-    }
+    return turnNumber - memory.turn <= recall; // keep this memory
   });
+
+  actor.memory.memories = [...memories];
 }

@@ -149,7 +149,7 @@ export type Entity = {
   locked?: true;
   memory?: {
     memories: Array<Memory>;
-    target: Memory;
+    target?: Memory;
   };
   odor?: {
     strength: number;

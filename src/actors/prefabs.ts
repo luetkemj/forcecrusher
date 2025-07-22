@@ -47,7 +47,7 @@ const being: Entity = {
   wisdom: 10,
   charisma: 10,
   vision: { range: 10, visible: [] },
-  memory: { sentients: {}, items: {} },
+  memory: { memories: [] },
   odor: {
     strength: 10,
   },
