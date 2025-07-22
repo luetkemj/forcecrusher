@@ -14,21 +14,26 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
       const target = { position: { x: 0, y: 0 } };
       let hasTarget = false;
 
-      if (actor.memory.sentients && !hasTarget) {
+      const recalledSentients = actor.memory.memories.filter(
+        (memory) => memory.kind === "sentient",
+      );
+      if (recalledSentients && !hasTarget) {
         // for each sentient, check dispositions.If allied, go towards and create a pack. If friendly, ignore or protect if it's fighting. If neutral, ignore. If unfriendly, attack if it's being attacked, if hostile, attack.
         // sort dispositions, find the strongest in one way or other, do that thing.
         const foundDispositions: Array<{ id: string; disposition: number }> =
           [];
 
-        for (const sentient of Object.values(actor.memory.sentients)) {
-          const candidate = registry.get(sentient.id);
-          if (!candidate) return;
+        for (const sentient of Object.values(recalledSentients)) {
+          if (sentient.id) {
+            const candidate = registry.get(sentient.id);
+            if (!candidate) return;
 
-          if (actor.entityKind && candidate.entityKind) {
-            foundDispositions.push({
-              id: candidate.id,
-              disposition: getDisposition(actor, candidate),
-            });
+            if (actor.entityKind && candidate.entityKind) {
+              foundDispositions.push({
+                id: candidate.id,
+                disposition: getDisposition(actor, candidate),
+              });
+            }
           }
         }
 
@@ -36,16 +41,23 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
 
         if (sortedDispositions.length) {
           const candidateId = sortedDispositions[0].id;
-          const selectedTarget = actor.memory.sentients[candidateId];
-          target.position = selectedTarget.lastKnownPosition;
-          hasTarget = true;
+          const selectedTarget = recalledSentients.find(
+            (memory) => memory.id === candidateId,
+          );
+          if (selectedTarget) {
+            target.position = selectedTarget?.position;
+            hasTarget = true;
+          }
         }
       }
 
-      if (actor.memory.items && !hasTarget) {
-        const item = Object.values(actor.memory.items)[0]; // find a better way to pick than just the first
-        if (item) {
-          target.position = item.lastKnownPosition;
+      const recalledItems = actor.memory.memories.filter(
+        (memory) => memory.kind === "sentient",
+      );
+      if (recalledItems.length && !hasTarget) {
+        const memory = Object.values(recalledItems)[0]; // find a better way to pick than just the first
+        if (memory) {
+          target.position = memory.position;
           hasTarget = true;
         }
       }
