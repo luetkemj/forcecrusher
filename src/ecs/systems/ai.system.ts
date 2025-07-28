@@ -8,6 +8,12 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
   const aiQuery = world.with("ai", "position", "memory");
   const positionQuery = world.with("position");
 
+  // this works but doesn't feel good yet.
+  // about to add smells
+  // need to run through a procedure to sort sights and smells and pick the relevant thing
+  // ...
+  // not sure how to do that yet.
+  //
   return function aiSystem() {
     for (const actor of aiQuery) {
       // path to something of interest - not JUST the player
