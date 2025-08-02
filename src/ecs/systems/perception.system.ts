@@ -1,7 +1,9 @@
+import { compact, flatMap } from "lodash";
 import createFOV from "../../lib/fov";
-import { toPosId } from "../../lib/grid";
+import { getNeighbors, toPosId } from "../../lib/grid";
 import { addSenseLog } from "../../lib/utils";
-import { EntityId, IGameWorld } from "../engine";
+import { Constants } from "../../pcgn/constants";
+import { DetectedOdor, Entity, EntityId, IGameWorld } from "../engine";
 import { State, getState, setState } from "../gameState";
 
 export const createPerceptionSystem = (gameWorld: IGameWorld) => {
@@ -9,6 +11,7 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
   const aiQuery = world.with("ai");
   const opaqueQuery = world.with("opaque", "position");
   const renderableQuery = world.with("appearance", "position");
+  const noseQuery = world.with("nose", "position", "ai");
 
   return function perceptionSystem() {
     setState((state: State) => (state.visionMap = []));
@@ -46,33 +49,25 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
       // find smells at position
       const odors = odorMap.get(posId);
       if (!odors) return addSenseLog("", "smell");
-      // const orderedOdors = Object.entries(odors).sort((a, b) => b[1] - a[1]); // Sort by strength descending
       const smell = getStrongestOdor(odors, getState().playerId);
 
       if (smell) {
-        const [entityId, strength] = smell;
-        const entity = registry.get(entityId);
-        if (entity) {
-          if (strength >= 8) {
-            return addSenseLog(`Intense smell of ${entity.name}`, "smell");
-          }
-          if (strength >= 6) {
-            return addSenseLog(`Strong smell of ${entity.name}`, "smell");
-          }
-          if (strength >= 4) {
-            return addSenseLog(`Noticable smell of ${entity.name}`, "smell");
-          }
-          if (strength >= 2) {
-            return addSenseLog(`Mild smell of ${entity.name}`, "smell");
-          }
-          if (strength >= 1) {
-            return addSenseLog(`Faint smell of ${entity.name}`, "smell");
-          }
-          if (strength > 0) {
-            return addSenseLog(`Trace smell of ${entity.name}`, "smell");
-          }
-        }
+        processPlayerDetectedSmells(smell, gameWorld);
       }
+    }
+
+    for (const actor of noseQuery) {
+      // get smells in immediate vicinity - story in memory
+      const { position } = actor;
+      const neighbors = getNeighbors(
+        position,
+        "cardinal",
+        { width: Constants.dungeonWidth, height: Constants.dungeonHeight },
+        true,
+      ) as string[];
+      const { odorMap } = getState();
+      const detectedSmells = processAiSmells(neighbors, odorMap, actor);
+      actor.nose.detected = flatMap(detectedSmells);
     }
   };
 };
@@ -81,4 +76,66 @@ function getStrongestOdor(odors: Record<EntityId, number>, playerId: EntityId) {
   return Object.entries(odors)
     .filter(([entityId]) => entityId !== playerId) // remove player
     .sort((a, b) => b[1] - a[1])[0]; // sort by strength descending // get the strongest (or undefined if empty)
+}
+
+interface Smell {
+  0: EntityId;
+  1: number;
+}
+
+function processPlayerDetectedSmells(
+  smell: Smell,
+  gameWorld: IGameWorld,
+): void {
+  const entityId = smell[0];
+  const strength = smell[1];
+  const entity = gameWorld.registry.get(entityId) as Entity | undefined;
+  if (entity) {
+    if (strength >= 8) {
+      return addSenseLog(`Intense smell of ${entity.name}`, "smell");
+    }
+    if (strength >= 6) {
+      return addSenseLog(`Strong smell of ${entity.name}`, "smell");
+    }
+    if (strength >= 4) {
+      return addSenseLog(`Noticable smell of ${entity.name}`, "smell");
+    }
+    if (strength >= 2) {
+      return addSenseLog(`Mild smell of ${entity.name}`, "smell");
+    }
+    if (strength >= 1) {
+      return addSenseLog(`Faint smell of ${entity.name}`, "smell");
+    }
+    if (strength > 0) {
+      return addSenseLog(`Trace smell of ${entity.name}`, "smell");
+    }
+  }
+}
+
+function processAiSmells(
+  neighbors: string[],
+  odorMap: Map<string, Record<EntityId, number>>,
+  actor: Entity,
+): DetectedOdor[][] {
+  return compact(
+    neighbors.map((posId: string) => {
+      const odors = odorMap.get(posId);
+      if (odors) {
+        const odorArray: (DetectedOdor | undefined)[] = Object.entries(
+          odors,
+        ).map(([eId, strength]) => {
+          // don't detect own odor
+          if (eId !== actor.id) {
+            return {
+              eId,
+              strength,
+              posId,
+            };
+          }
+        });
+
+        return compact(odorArray);
+      }
+    }),
+  );
 }

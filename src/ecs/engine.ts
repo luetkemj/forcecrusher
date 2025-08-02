@@ -76,6 +76,12 @@ export type Memory = {
   // threatLevel?: "low" | "moderate" | "high";
 };
 
+export interface DetectedOdor {
+  eId: EntityId;
+  strength: number;
+  posId: string;
+}
+
 export type EntityId = string;
 
 export type Entity = {
@@ -150,6 +156,10 @@ export type Entity = {
   memory?: {
     memories: Array<Memory>;
     target?: Memory;
+  };
+  nose?: {
+    sensitivity: number;
+    detected: Array<DetectedOdor>;
   };
   odor?: {
     strength: number;

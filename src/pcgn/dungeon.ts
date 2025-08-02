@@ -13,6 +13,7 @@ import { spawn } from "../actors";
 import { spawnSkeleton, spawnRat } from "./monsters";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { DungeonTags } from "../ecs/enums";
+import { Constants } from "./constants";
 
 type Tile = {
   x: number;
@@ -184,8 +185,8 @@ export const generateDungeon = () => {
 
   const { dungeon, tilesMap } = buildDungeon({
     pos: { x: 0, y: 0 },
-    width: 74,
-    height: 39,
+    width: Constants.dungeonWidth,
+    height: Constants.dungeonHeight,
     minRoomSize: 8,
     maxRoomSize: 18,
     maxRoomCount: 100,

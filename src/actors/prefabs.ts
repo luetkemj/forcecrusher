@@ -71,7 +71,7 @@ export const playerPrefab: Entity = {
   ...renderable,
   ...being,
   odor: {
-    strength: 0,
+    strength: 10,
   },
   entityKind: EntityKind.Player,
   appearance: {
@@ -137,6 +137,7 @@ export const ratPrefab: Entity = {
   },
   legendable: true,
   name: "rat",
+  nose: { sensitivity: 0, detected: [] },
   description:
     "A filthy, disease-ridden rodent with glowing eyes and a hungry squeak.",
   pathThrough: true,
@@ -191,6 +192,7 @@ export const skeletonPrefab: Entity = {
   },
   legendable: true,
   name: "skeleton",
+  nose: { sensitivity: 5, detected: [] },
   description:
     "A brittle warrior from another age, still fighting long after death forgot it.",
   pathThrough: true,
