@@ -66,14 +66,11 @@ export type Damage = {
 };
 
 export type Memory = {
-  id?: EntityId;
-  kind: "sentient" | "item" | "unknown";
-  status: "unknown" | "alive" | "dead";
+  id: EntityId;
   position: Pos;
   turn: number;
   perceivedVia: Sense;
   strength?: number; // optional: e.g., for smells
-  // threatLevel?: "low" | "moderate" | "high";
 };
 
 export interface DetectedOdor {
@@ -154,8 +151,8 @@ export type Entity = {
   legendable?: true;
   locked?: true;
   memory?: {
-    memories: Array<Memory>;
-    target?: Memory;
+    memories: Map<string, Memory>;
+    target?: string;
   };
   nose?: {
     sensitivity: number;

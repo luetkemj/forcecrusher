@@ -38,8 +38,22 @@ export const em = (string: string) => {
   return `§purple§${string}§reset§`;
 };
 
+// export const logFrozenEntity = (entity: Entity) => {
+//   console.log(JSON.parse(JSON.stringify(entity)));
+// };
+
 export const logFrozenEntity = (entity: Entity) => {
-  console.log(JSON.parse(JSON.stringify(entity)));
+  const safeCopy = {
+    ...entity,
+    memory: entity.memory
+      ? {
+          ...entity.memory,
+          memories: Object.fromEntries(entity.memory.memories || []),
+        }
+      : undefined,
+  };
+
+  console.log(JSON.parse(JSON.stringify(safeCopy)));
 };
 
 export const addLog = (newLog: string) => {

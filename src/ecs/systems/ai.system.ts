@@ -20,6 +20,8 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
       const target = { position: { x: 0, y: 0 } };
       let hasTarget = false;
 
+      return;
+
       const recalledSentients = actor.memory.memories.filter(
         (memory) => memory.kind === "sentient",
       );

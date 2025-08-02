@@ -1,4 +1,4 @@
-import { type Entity } from "../ecs/engine";
+import { EntityId, Memory, type Entity } from "../ecs/engine";
 import {
   DamageType,
   WeaponClass,
@@ -47,7 +47,7 @@ const being: Entity = {
   wisdom: 10,
   charisma: 10,
   vision: { range: 10, visible: [] },
-  memory: { memories: [] },
+  memory: { memories: new Map<EntityId, Memory>() },
   odor: {
     strength: 10,
   },

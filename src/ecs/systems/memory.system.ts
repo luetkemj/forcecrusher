@@ -1,13 +1,43 @@
 import { Entity, IGameWorld, Memory } from "../engine";
-import { Pos, isAtSamePosition } from "../../lib/grid";
+import { Pos } from "../../lib/grid";
 import { getState } from "../gameState";
 import { Sense } from "../enums";
 
 export const createMemorySystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
-  const visionQuery = world.with("vision", "memory");
+  const visionQuery = world.with("vision", "memory").without("dead");
+  const noseQuery = world.with("nose", "memory").without("dead");
+  const memoryQuery = world.with("memory").without("dead");
 
   return function memorySystem() {
+    for (const actor of noseQuery) {
+      const smells = new Map();
+
+      actor.nose.detected.forEach((smell) => {
+        // if smell already exists check if we should override with stronger smell
+        if (smells.has(smell.eId)) {
+          if (smells.get(smell.eId).strength < smell.strength) {
+            smells.set(smell.eId, smell);
+          }
+          // if doesn't exist, add it
+        } else {
+          smells.set(smell.eId, smell);
+        }
+      });
+
+      // remember strongest smell detected for each target
+      smells.forEach((smell) => {
+        const target = registry.get(smell.eId);
+        if (!target) return;
+        remember({
+          actor,
+          target,
+          position: { ...smell.position },
+          perceivedVia: Sense.Smell,
+        });
+      });
+    }
+
     for (const actor of visionQuery) {
       // check things we see to decide if we should remember them
       for (const id of actor.vision.visible) {
@@ -18,65 +48,26 @@ export const createMemorySystem = (gameWorld: IGameWorld) => {
         // if target is self
         if (target.id === actor.id) continue;
 
-        // else
-        if (target) {
-          remember({ actor, target, perceivedVia: Sense.Sight });
+        // position is required to save memory
+        if (!target.position) continue;
+
+        // remember things that are interesting (not floors, walls, etc)
+        if (isMemorable(target)) {
+          remember({
+            actor,
+            target,
+            position: { ...target.position },
+            perceivedVia: Sense.Sight,
+          });
         }
       }
+    }
 
-      // clean up old memories
+    for (const actor of memoryQuery) {
       forgetOldMemories(actor);
     }
   };
 };
-
-function getMemoryKind(target: Entity | undefined) {
-  if (!target) return "unknown";
-  if (target.ai || target.pc) return "sentient";
-  if (target.pickUp) return "item";
-  return "unknown";
-}
-
-// a lot of issues here. Not super valuable yet.
-// how will you know if it's dead if you haven't seen it yet? Probably should
-// have to set this instead of derive it.
-function getMemoryStatus(target: Entity | undefined) {
-  if (!target) return "unknown";
-  if (target.dead) return "dead";
-  if (target.health && !target.dead) return "alive";
-  if (target.pickUp) return "unknown";
-  return "unknown";
-}
-
-function createMemory(actor: Entity, memory: Memory) {
-  if (actor.memory) {
-    actor.memory.memories.push(memory);
-  }
-}
-
-function updateOrCreateMemory(actor: Entity, memory: Memory) {
-  // Safely exit if no actor or no memory component
-  if (!actor?.memory) return createMemory(actor, memory);
-
-  const memories = actor.memory.memories;
-
-  // Find the index of the matching memory (either by id or position + sense)
-  const index = memories.findIndex((mem) => {
-    if (memory.id && memory.id === mem.id) return true;
-
-    return (
-      !memory.id &&
-      mem.perceivedVia === memory.perceivedVia &&
-      isAtSamePosition(mem.position, memory.position)
-    );
-  });
-
-  if (index !== -1) {
-    memories[index] = memory; // update existing memory
-  } else {
-    createMemory(actor, memory); // add new memory
-  }
-}
 
 function remember({
   actor,
@@ -86,27 +77,26 @@ function remember({
   strength,
 }: {
   actor: Entity;
-  target?: Entity;
-  position?: Pos;
+  target: Entity;
+  position: Pos;
   perceivedVia: Sense;
   strength?: number;
 }) {
   if (!actor.memory) return;
-  if (!target && !position) return;
+
+  if (!actor.memory.memories) {
+    actor.memory.memories = new Map();
+  }
 
   const memory: Memory = {
-    id: target?.id,
-    kind: getMemoryKind(target),
-    status: getMemoryStatus(target),
-    position: target?.position || position || { x: 0, y: 0 },
+    id: target.id,
+    position,
     turn: getState().turnNumber,
     perceivedVia,
     strength,
   };
 
-  if (memory.kind && memory.kind !== "unknown") {
-    updateOrCreateMemory(actor, memory);
-  }
+  actor.memory.memories.set(memory.id, memory);
 }
 
 function forgetOldMemories(actor: Entity) {
@@ -114,11 +104,18 @@ function forgetOldMemories(actor: Entity) {
   if (!actor.memory.memories) return console.log(actor);
 
   const { turnNumber } = getState();
+  const recall = (actor?.intelligence || 0) * 2;
+  for (const [_, memory] of actor.memory.memories) {
+    if (turnNumber - memory.turn >= recall) {
+      actor.memory.memories.delete(memory.id);
+    }
+  }
+}
 
-  const memories = actor.memory.memories.filter((memory) => {
-    const recall = (actor?.intelligence || 0) * 2;
-    return turnNumber - memory.turn <= recall; // keep this memory
-  });
+function isMemorable(target: Entity) {
+  if (target.ai) return true;
+  if (target.pc) return true;
+  if (target.pickUp) return true;
 
-  actor.memory.memories = [...memories];
+  return false;
 }
