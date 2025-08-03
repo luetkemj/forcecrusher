@@ -1,5 +1,5 @@
 import { Entity, IGameWorld, Memory } from "../engine";
-import { Pos } from "../../lib/grid";
+import { Pos, toPos } from "../../lib/grid";
 import { getState } from "../gameState";
 import { Sense } from "../enums";
 
@@ -29,12 +29,17 @@ export const createMemorySystem = (gameWorld: IGameWorld) => {
       smells.forEach((smell) => {
         const target = registry.get(smell.eId);
         if (!target) return;
-        remember({
+
+        const memory = {
           actor,
           target,
-          position: { ...smell.position },
+          position: { ...toPos(smell.posId) },
           perceivedVia: Sense.Smell,
-        });
+        };
+
+        console.log({ smell, memory });
+
+        remember(memory);
       });
     }
 

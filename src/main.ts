@@ -88,16 +88,16 @@ const init = async () => {
     const y = ev.layerY - getState().views.map!.layers[0].y;
     const posId = pxToPosId(x, y);
 
-    if (window.skulltooth.debug === true || import.meta.env.DEV) {
-      const entities = gameWorld.world.with("position");
+    // if (window.skulltooth.debug === true || import.meta.env.DEV) {
+    const entities = gameWorld.world.with("position");
 
-      for (const entity of entities) {
-        if (posId === toPosId(entity.position)) {
-          console.log(posId);
-          logFrozenEntity(entity);
-        }
+    for (const entity of entities) {
+      if (posId === toPosId(entity.position)) {
+        console.log(posId);
+        logFrozenEntity(entity);
       }
     }
+    // }
   });
 };
 

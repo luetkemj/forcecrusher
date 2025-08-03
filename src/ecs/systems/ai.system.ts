@@ -1,4 +1,4 @@
-import type { IGameWorld } from "../engine";
+import type { IGameWorld, Memory } from "../engine";
 import { wanderToward } from "../../lib/pathfinding";
 import { getDirection } from "../../lib/grid";
 import { getDisposition } from "../../lib/utils";
@@ -8,48 +8,80 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
   const aiQuery = world.with("ai", "position", "memory");
   const positionQuery = world.with("position");
 
-  // this works but doesn't feel good yet.
-  // about to add smells
-  // need to run through a procedure to sort sights and smells and pick the relevant thing
-  // ...
-  // not sure how to do that yet.
-  //
   return function aiSystem() {
     for (const actor of aiQuery) {
       // path to something of interest - not JUST the player
       const target = { position: { x: 0, y: 0 } };
       let hasTarget = false;
 
-      return;
+      // sort memories into sentient or item
+      const memories: {
+        sentients: Memory[];
+        items: Memory[];
+        dead: Memory[];
+        unknown: Memory[];
+      } = {
+        sentients: [],
+        items: [],
+        dead: [],
+        unknown: [],
+      };
 
-      const recalledSentients = actor.memory.memories.filter(
-        (memory) => memory.kind === "sentient",
-      );
-      if (recalledSentients && !hasTarget) {
+      for (const [_, memory] of actor.memory.memories) {
+        const focus = registry.get(memory.id);
+        if (!focus) continue;
+
+        // Sentient
+        if (focus!.pc || focus!.ai) {
+          // @ts-ignore focus is garanteed to exist. TS being dumb.
+          memories.sentients.push(memory);
+          continue;
+        }
+
+        // Item
+        if (focus!.pickUp) {
+          // @ts-ignore focus is garanteed to exist. TS being dumb.
+          memories.items.push(memory);
+          continue;
+        }
+
+        // Unknown
+        // @ts-ignore focus is garanteed to exist. TS being dumb.
+        memories.unknown.push(memory);
+      }
+
+      // eventually, change behavior based on enemy personality
+      // if enemy is agressive, look to fight sentients first
+      // if enemy is greedy, look to pick up items first
+      // if enemy is curious, look to unknown things first
+      //
+      // find sentient target to fight or group to
+      // find item get
+      // wander
+
+      if (memories.sentients.length && !hasTarget) {
         // for each sentient, check dispositions.If allied, go towards and create a pack. If friendly, ignore or protect if it's fighting. If neutral, ignore. If unfriendly, attack if it's being attacked, if hostile, attack.
         // sort dispositions, find the strongest in one way or other, do that thing.
         const foundDispositions: Array<{ id: string; disposition: number }> =
           [];
 
-        for (const sentient of Object.values(recalledSentients)) {
-          if (sentient.id) {
-            const candidate = registry.get(sentient.id);
-            if (!candidate) return;
+        memories.sentients.forEach((memory) => {
+          const candidate = registry.get(memory.id);
+          if (!candidate) return;
 
-            if (actor.entityKind && candidate.entityKind) {
-              foundDispositions.push({
-                id: candidate.id,
-                disposition: getDisposition(actor, candidate),
-              });
-            }
+          if (actor.entityKind && candidate.entityKind) {
+            foundDispositions.push({
+              id: candidate.id,
+              disposition: getDisposition(actor, candidate),
+            });
           }
-        }
+        });
 
         const sortedDispositions = sortBy(foundDispositions, "disposition");
 
         if (sortedDispositions.length) {
           const candidateId = sortedDispositions[0].id;
-          const selectedTarget = recalledSentients.find(
+          const selectedTarget = memories.sentients.find(
             (memory) => memory.id === candidateId,
           );
           if (selectedTarget) {
@@ -59,16 +91,16 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
         }
       }
 
-      const recalledItems = actor.memory.memories.filter(
-        (memory) => memory.kind === "sentient",
-      );
-      if (recalledItems.length && !hasTarget) {
-        const memory = Object.values(recalledItems)[0]; // find a better way to pick than just the first
-        if (memory) {
-          target.position = memory.position;
-          hasTarget = true;
-        }
-      }
+      // const recalledItems = actor.memory.memories.filter(
+      //   (memory) => memory.kind === "sentient",
+      // );
+      // if (recalledItems.length && !hasTarget) {
+      //   const memory = Object.values(recalledItems)[0]; // find a better way to pick than just the first
+      //   if (memory) {
+      //     target.position = memory.position;
+      //     hasTarget = true;
+      //   }
+      // }
 
       if (hasTarget) {
         // entities need a mood component (aggressive, fleeing, etc) to determine what they do.
@@ -77,7 +109,7 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
           biasDir: getDirection(target.position, actor.position),
           targetPos: target.position,
           entities: positionQuery.entities,
-          wiggleChance: 5,
+          wiggleChance: 2,
         });
         world.addComponent(actor, "tryMove", newPos);
 
