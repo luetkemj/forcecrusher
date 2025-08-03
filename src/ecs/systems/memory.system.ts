@@ -37,8 +37,6 @@ export const createMemorySystem = (gameWorld: IGameWorld) => {
           perceivedVia: Sense.Smell,
         };
 
-        console.log({ smell, memory });
-
         remember(memory);
       });
     }
