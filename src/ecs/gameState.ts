@@ -108,6 +108,7 @@ const state: State = {
   cheats: {
     seeAll: false,
     seeOdorMap: false,
+    seeVisionMap: false,
   },
 };
 
