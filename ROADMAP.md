@@ -68,17 +68,23 @@ This is aspirational only. Expect anything and everything in this document to be
         - [x] Remember things seen
         - [x] Act on memory
         - [x] Debug UI
-    - [ ] Smell
+    - [x] Smell
         - [x] Smell things
-        - [ ] Remember things smelled
-        - [ ] Act on memory
+        - [x] Remember things smelled
+        - [x] Act on memory
         - [x] Debug UI
     - [ ] Hear
         - [ ] Hear things
         - [ ] Remember things heard
         - [ ] Act on memory
         - [ ] Debug UI
-    - [ ] 
+    - [ ] Feel (tremor sense)
+        - [ ] Feel things
+        - [ ] Remember things felt 
+        - [ ] Act on memory
+        - [ ] Debug UI
+    - [ ] Taste
+        - [ ] Player taste UI (flavor text) - this isn't really useful for baddies
 - [ ] Behavior
     - [ ] Agressive, passive, idle etc
     - [ ] Only do things according to behavior
@@ -141,6 +147,7 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] dykstra maps
 - [ ] lightsources from skrimshank
 - [ ] map gen from shank
+- [ ] graphical mode (use sprites not ascii as an option)
 
 ## Crafting notes
 Can only craft at a workbench, workbenches are rare enough that you have to be careful what you save - you can't save it all for new gear or potions.
