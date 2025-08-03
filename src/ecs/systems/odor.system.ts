@@ -18,7 +18,7 @@ export const createOdorSystem = (gameWorld: IGameWorld) => {
     // Decay odorMap
     for (const [posId, odors] of getState().odorMap.entries()) {
       for (const [entityId, strength] of Object.entries(odors)) {
-        const decayed = strength - 0.1;
+        const decayed = strength - 0.25;
         if (decayed <= 0) {
           delete odors[entityId];
         } else {

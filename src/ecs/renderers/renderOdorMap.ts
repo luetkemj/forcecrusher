@@ -10,6 +10,9 @@ export const renderOdorMap = ({ views }: RendererContext) => {
       view.clearView();
       if (getState().odorMap) {
         for (const [posId, odors] of getState().odorMap.entries()) {
+          // only show player odors
+          // let totalStrength = odors[getState().playerId] || 0;
+          // show all odors
           let totalStrength = 0;
           for (const [_, strength] of Object.entries(odors)) {
             totalStrength += strength;
