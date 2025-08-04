@@ -93,7 +93,7 @@ function dot(a: Pos, b: Pos): number {
   return a.x * b.x + a.y * b.y;
 }
 
-export function propagateSmell(
+export function propagateField(
   sourcePos: Pos,
   strength: number,
   isBlocked: (p: Pos) => boolean,
@@ -115,7 +115,7 @@ export function propagateSmell(
       const next = { x: pos.x + dir.x, y: pos.y + dir.y };
       // if outOfBound - bail
       if (!outOfBounds(next)) {
-        // if obscured, reduce smell & propogate
+        // if obscured, reduce & propogate
         if (isObscured(next)) {
           queue.push({ pos: next, strength: strength / 2 }); // or decay by distance
         }
