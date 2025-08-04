@@ -50,6 +50,8 @@ export const createAttackSystem = ({ world, registry }: IGameWorld) => {
         });
       }
 
+      world.addComponent(actor, "sound", { strength: 50 });
+
       cleanUp(actor);
     }
   };

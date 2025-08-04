@@ -74,6 +74,8 @@ export const createThrowSystem = ({ world, registry }: IGameWorld) => {
         if (hitEntity?.health) {
           rangeAttack(throwerEntity, hitEntity, thrownEntity);
         }
+
+        world.addComponent(thrownEntity, "sound", { strength: 25 });
       } else {
         // put entity to be thrown on at cursor location
         const position = getState().cursor[1];
@@ -81,6 +83,7 @@ export const createThrowSystem = ({ world, registry }: IGameWorld) => {
         logFrozenEntity(thrownEntity);
 
         addLog(`${throwerEntity.name} throws ${thrownEntity.name}`);
+        world.addComponent(thrownEntity, "sound", { strength: 25 });
       }
 
       // remove item from dropper's inventory

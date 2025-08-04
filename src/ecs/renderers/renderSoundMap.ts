@@ -14,7 +14,7 @@ export const renderSoundMap = ({ views }: RendererContext) => {
           // let totalStrength = sounds[getState().playerId] || 0;
           // show all sounds
           let totalStrength = 0;
-          for (const [_, strength] of Object.entries(sounds)) {
+          for (const [_, { strength }] of Object.entries(sounds)) {
             totalStrength += strength;
           }
 

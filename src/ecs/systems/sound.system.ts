@@ -17,12 +17,12 @@ export const createSoundSystem = (gameWorld: IGameWorld) => {
 
     // Decay odorMap
     for (const [posId, sounds] of getState().soundMap.entries()) {
-      for (const [entityId, strength] of Object.entries(sounds)) {
+      for (const [entityId, { strength }] of Object.entries(sounds)) {
         const decayed = strength - 50;
         if (decayed <= 0) {
           delete sounds[entityId];
         } else {
-          sounds[entityId] = decayed;
+          sounds[entityId].strength = decayed;
         }
       }
 
@@ -58,15 +58,17 @@ export const createSoundSystem = (gameWorld: IGameWorld) => {
         const { soundMap } = getState();
         if (!soundMap.has(posId)) {
           setState((state: State) => {
-            state.soundMap.set(posId, {});
+            state.soundMap.set(posId, { [actor.id]: { strength: 0 } });
           });
         }
 
-        soundMap.get(posId)![actor.id] = Math.max(
+        soundMap.get(posId)![actor.id].strength = Math.max(
           strength,
-          soundMap.get(posId)![actor.id] ?? 0,
+          soundMap.get(posId)![actor.id].strength ?? 0,
         );
       }
+
+      console.log(field);
 
       soundFields.set(actor.id, field);
 

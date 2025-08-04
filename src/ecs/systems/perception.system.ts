@@ -15,6 +15,8 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
 
   return function perceptionSystem() {
     setState((state: State) => (state.visionMap = []));
+    const player = registry.get(getState().playerId);
+
     for (const actor of aiQuery) {
       // NOTE: VISION
       if (actor.vision && actor.position) {
@@ -41,7 +43,6 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
     }
 
     // NOTE: OLFACTORY
-    const player = registry.get(getState().playerId);
     const odorMap = getState().odorMap;
     if (player && player.position) {
       // get player position
@@ -69,8 +70,45 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
       const detectedSmells = processAiSmells(neighbors, odorMap, actor);
       actor.nose.detected = flatMap(detectedSmells);
     }
+
+    // NOTE: AUDITORY
+    const soundMap = getState().soundMap;
+    if (player && player.position) {
+      // get player position
+      const posId = toPosId(player.position);
+      // find smells at position
+      const sounds = soundMap.get(posId);
+      if (!sounds) return addSenseLog("", "hearing");
+      const sound = getLoudestSound(sounds, getState().playerId);
+
+      if (sound) {
+        processPlayerDetectedSounds(sound, gameWorld);
+      }
+    }
+
+    // for (const actor of noseQuery) {
+    //   // get smells in immediate vicinity - story in memory
+    //   const { position } = actor;
+    //   const neighbors = getNeighbors(
+    //     position,
+    //     "cardinal",
+    //     { width: Constants.dungeonWidth, height: Constants.dungeonHeight },
+    //     true,
+    //   ) as string[];
+    //   const { odorMap } = getState();
+    //   const detectedSmells = processAiSmells(neighbors, odorMap, actor);
+    //   actor.nose.detected = flatMap(detectedSmells);
+    // }
   };
 };
+function getLoudestSound(
+  sounds: Record<EntityId, { strength: number }>,
+  playerId: EntityId,
+) {
+  return Object.entries(sounds)
+    .filter(([entityId]) => entityId !== playerId) // remove player
+    .sort((a, b) => b[1].strength - a[1].strength)[0]; // sort by strength descending // get the strongest (or undefined if empty)
+}
 
 function getStrongestOdor(odors: Record<EntityId, number>, playerId: EntityId) {
   return Object.entries(odors)
@@ -81,6 +119,11 @@ function getStrongestOdor(odors: Record<EntityId, number>, playerId: EntityId) {
 interface Smell {
   0: EntityId;
   1: number;
+}
+
+interface Sound {
+  0: EntityId;
+  1: { strength: number };
 }
 
 function processPlayerDetectedSmells(
@@ -108,6 +151,35 @@ function processPlayerDetectedSmells(
     }
     if (strength > 0) {
       return addSenseLog(`Trace smell of ${entity.name}`, "smell");
+    }
+  }
+}
+
+function processPlayerDetectedSounds(
+  sound: Sound,
+  gameWorld: IGameWorld,
+): void {
+  const entityId = sound[0];
+  const strength = sound[1].strength;
+  const entity = gameWorld.registry.get(entityId) as Entity | undefined;
+  if (entity) {
+    if (strength >= 8) {
+      return addSenseLog(`Deafening sound of ${entity.name}`, "hearing");
+    }
+    if (strength >= 6) {
+      return addSenseLog(`Loud sound of ${entity.name}`, "hearing");
+    }
+    if (strength >= 4) {
+      return addSenseLog(`Clear sound of ${entity.name}`, "hearing");
+    }
+    if (strength >= 2) {
+      return addSenseLog(`Muffled sound of ${entity.name}`, "hearing");
+    }
+    if (strength >= 1) {
+      return addSenseLog(`Faint sound of ${entity.name}`, "hearing");
+    }
+    if (strength > 0) {
+      return addSenseLog(`Whispered sound of ${entity.name}`, "hearing");
     }
   }
 }

@@ -44,6 +44,7 @@ export const createMovementSystem = ({ world }: IGameWorld) => {
         position.x = tryMove.x;
         position.y = tryMove.y;
 
+        world.addComponent(actor, "sound", { strength: 10 });
         world.removeComponent(actor, "tryMove");
       }
     }

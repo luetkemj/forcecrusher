@@ -117,7 +117,7 @@ export function propagateField(
       if (!outOfBounds(next)) {
         // if obscured, reduce & propogate
         if (isObscured(next)) {
-          queue.push({ pos: next, strength: strength / 2 }); // or decay by distance
+          queue.push({ pos: next, strength: strength / 1.5 }); // or decay by distance
         }
 
         // if not blocked, propogate
