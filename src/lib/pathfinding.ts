@@ -98,7 +98,8 @@ export function propagateField(
   strength: number,
   isBlocked: (p: Pos) => boolean,
   isObscured: (p: Pos) => boolean,
-): Map<string, number> {
+  asObject: boolean = false
+): Map<string, number> | Map<string, { strength: number }> {
   const visited = new Map<string, number>();
   const queue: Array<{ pos: Pos; strength: number }> = [
     { pos: sourcePos, strength },
@@ -128,5 +129,12 @@ export function propagateField(
     }
   }
 
+  if (asObject) {
+    const result = new Map<string, { strength: number }>();
+    for (const [k, v] of visited.entries()) {
+      result.set(k, { strength: v });
+    }
+    return result;
+  }
   return visited; // maps posId -> smell strength
 }

@@ -14,7 +14,7 @@ export const renderOdorMap = ({ views }: RendererContext) => {
           // let totalStrength = odors[getState().playerId] || 0;
           // show all odors
           let totalStrength = 0;
-          for (const [_, strength] of Object.entries(odors)) {
+          for (const [_, { strength }] of Object.entries(odors)) {
             totalStrength += strength;
           }
 
@@ -24,7 +24,7 @@ export const renderOdorMap = ({ views }: RendererContext) => {
           view?.updateCell({
             0: {
               char: "",
-              tint: 0x0ff0f0,
+              tint: 0xffff00,
               alpha: clamped,
               tileSet: "tile",
               ...toPos(posId),

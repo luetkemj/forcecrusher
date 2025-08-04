@@ -11,7 +11,7 @@ export const createSoundSystem = (gameWorld: IGameWorld) => {
 
   return function soundSystem() {
     // NOTE: OLFACTORY
-    const soundFields = new Map<string, Map<string, number>>(); // entityId -> odor map
+    const soundFields = new Map<string, Map<string, { strength: number }>>(); // entityId -> sound map
     const blockingSet = new Set<string>();
     const obscuredSet = new Set<string>();
 
@@ -52,23 +52,28 @@ export const createSoundSystem = (gameWorld: IGameWorld) => {
         (pos: Pos) => {
           return obscuredSet.has(toPosId(pos));
         },
-      );
+        true, // asObject: return { strength } objects
+      ) as Map<string, { strength: number }>;
 
-      for (const [posId, strength] of field) {
+      for (const [posId, obj] of field) {
         const { soundMap } = getState();
+        // Ensure the position exists in the map
         if (!soundMap.has(posId)) {
           setState((state: State) => {
             state.soundMap.set(posId, { [actor.id]: { strength: 0 } });
           });
         }
-
+        // Ensure the actor id exists in the map at this position
+        if (!soundMap.get(posId)![actor.id]) {
+          setState((state: State) => {
+            state.soundMap.get(posId)![actor.id] = { strength: 0 };
+          });
+        }
         soundMap.get(posId)![actor.id].strength = Math.max(
-          strength,
+          obj.strength,
           soundMap.get(posId)![actor.id].strength ?? 0,
         );
       }
-
-      console.log(field);
 
       soundFields.set(actor.id, field);
 

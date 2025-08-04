@@ -110,15 +110,15 @@ function getLoudestSound(
     .sort((a, b) => b[1].strength - a[1].strength)[0]; // sort by strength descending // get the strongest (or undefined if empty)
 }
 
-function getStrongestOdor(odors: Record<EntityId, number>, playerId: EntityId) {
+function getStrongestOdor(odors: Record<EntityId, { strength: number }>, playerId: EntityId) {
   return Object.entries(odors)
-    .filter(([entityId]) => entityId !== playerId) // remove player
-    .sort((a, b) => b[1] - a[1])[0]; // sort by strength descending // get the strongest (or undefined if empty)
+    .filter(([entityId]) => entityId !== playerId)
+    .sort((a, b) => b[1].strength - a[1].strength)[0];
 }
 
 interface Smell {
   0: EntityId;
-  1: number;
+  1: { strength: number };
 }
 
 interface Sound {
@@ -131,7 +131,7 @@ function processPlayerDetectedSmells(
   gameWorld: IGameWorld,
 ): void {
   const entityId = smell[0];
-  const strength = smell[1];
+  const strength = smell[1].strength;
   const entity = gameWorld.registry.get(entityId) as Entity | undefined;
   if (entity) {
     if (strength >= 8) {
@@ -186,7 +186,7 @@ function processPlayerDetectedSounds(
 
 function processAiSmells(
   neighbors: string[],
-  odorMap: Map<string, Record<EntityId, number>>,
+  odorMap: Map<string, Record<EntityId, { strength: number }>>,
   actor: Entity,
 ): DetectedOdor[][] {
   return compact(
@@ -195,12 +195,12 @@ function processAiSmells(
       if (odors) {
         const odorArray: (DetectedOdor | undefined)[] = Object.entries(
           odors,
-        ).map(([eId, strength]) => {
+        ).map(([eId, odorObj]) => {
           // don't detect own odor
           if (eId !== actor.id) {
             return {
               eId,
-              strength,
+              strength: odorObj.strength,
               posId,
             };
           }

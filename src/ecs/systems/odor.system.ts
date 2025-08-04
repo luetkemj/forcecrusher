@@ -17,12 +17,12 @@ export const createOdorSystem = (gameWorld: IGameWorld) => {
 
     // Decay odorMap
     for (const [posId, odors] of getState().odorMap.entries()) {
-      for (const [entityId, strength] of Object.entries(odors)) {
-        const decayed = strength - 0.25;
+      for (const [entityId, odorObj] of Object.entries(odors)) {
+        const decayed = odorObj.strength - 0.25;
         if (decayed <= 0) {
           delete odors[entityId];
         } else {
-          odors[entityId] = decayed;
+          odors[entityId] = { strength: decayed };
         }
       }
 
@@ -61,11 +61,8 @@ export const createOdorSystem = (gameWorld: IGameWorld) => {
             state.odorMap.set(posId, {});
           });
         }
-
-        odorMap.get(posId)![entity.id] = Math.max(
-          strength,
-          odorMap.get(posId)![entity.id] ?? 0,
-        );
+        const prev = odorMap.get(posId)![entity.id]?.strength ?? 0;
+        odorMap.get(posId)![entity.id] = { strength: Math.max(strength, prev) };
       }
 
       odorFields.set(entity.id, field);

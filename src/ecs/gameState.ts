@@ -53,8 +53,7 @@ export type State = {
   interactTargets: Array<Entity>;
   interactActions: string;
   makerModePrefabSelectIndex: number;
-  odorMap: Map<PosId, Record<EntityId, number>>;
-  // soundMap: Map<PosId, Record<EntityId, number>>;
+  odorMap: Map<PosId, Record<EntityId, { strength: number }>>;
   soundMap: Map<PosId, Record<EntityId, { strength: number }>>;
   visionMap: Array<{ fov: VisibleFov; canSeePc: boolean }>;
   senses: {

@@ -24,7 +24,7 @@ export const renderSoundMap = ({ views }: RendererContext) => {
           view?.updateCell({
             0: {
               char: "",
-              tint: 0x0ff0f0,
+              tint: 0xff0077,
               alpha: clamped,
               tileSet: "tile",
               ...toPos(posId),
