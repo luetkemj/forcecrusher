@@ -6,6 +6,7 @@ export type ViewId =
   | "senses"
   | "map"
   | "odorMap"
+  | "soundMap"
   | "visionMap"
   | "fps"
   | "gitHash"
@@ -76,6 +77,19 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   odorMap: {
+    width: 74,
+    height: 39,
+    x: 13,
+    y: 5,
+    layers: 1,
+    tileSets: ["tile"],
+    tints: [0x000000],
+    alphas: [1],
+    visible: true,
+    name: "odorMap",
+  },
+
+  soundMap: {
     width: 74,
     height: 39,
     x: 13,

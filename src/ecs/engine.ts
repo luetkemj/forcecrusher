@@ -158,9 +158,7 @@ export type Entity = {
     sensitivity: number;
     detected: Array<DetectedOdor>;
   };
-  odor?: {
-    strength: number;
-  };
+  odor?: { strength: number };
   opaque?: true;
   open?: true;
   openable?: {
@@ -181,6 +179,7 @@ export type Entity = {
   position?: Pos;
   resistances?: Array<DamageType>;
   revealed?: true;
+  sound?: { strength: number };
   stairsDown?: true;
   stairsUp?: true;
   strength?: number;

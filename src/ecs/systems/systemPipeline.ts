@@ -17,6 +17,7 @@ import { createOpenSystem } from "../systems/open.system";
 import { createPerceptionSystem } from "./perception.system";
 import { createPickUpSystem } from "../systems/pickUp.system";
 import { createRenderSystem } from "../systems/render.system";
+import { createSoundSystem } from "../systems/sound.system";
 import { createThrowSystem } from "../systems/throw.system";
 import { createUserInputSystem } from "../systems/userInput.system";
 import { gameWorld } from "../engine";
@@ -42,6 +43,7 @@ const openSystem = createOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
 const pickUpSystem = createPickUpSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
+const soundSystem = createSoundSystem(gameWorld);
 const throwSystem = createThrowSystem(gameWorld);
 const userInputSystem = createUserInputSystem(gameWorld);
 
@@ -65,6 +67,7 @@ export const systems = {
   perception: perceptionSystem,
   pickUp: pickUpSystem,
   render: renderSystem,
+  sound: soundSystem,
   throw: throwSystem,
   userInput: userInputSystem,
 };
@@ -145,7 +148,12 @@ export const playerTurnPipeline: SystemPipeline = {
 };
 
 export const worldTurnPipeline: SystemPipeline = {
-  preInput: [systems.activeEffects, systems.morgue, systems.odor],
+  preInput: [
+    systems.activeEffects,
+    systems.morgue,
+    systems.odor,
+    systems.sound,
+  ],
   input: [systems.perception, systems.memory],
   main: [
     systems.ai,

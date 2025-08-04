@@ -56,6 +56,15 @@ export const handleGameModeInput = ({
       return true;
     }
 
+    if (key === Keys.TOGGLE_SEE_SOUND_MAP) {
+      setState(
+        (state: State) =>
+          (state.cheats.seeSoundMap = !state.cheats.seeSoundMap),
+      );
+
+      return true;
+    }
+
     if (key === Keys.TOGGLE_SEE_VISION_MAP) {
       setState(
         (state: State) =>

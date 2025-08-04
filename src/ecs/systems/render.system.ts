@@ -15,6 +15,7 @@ import { renderCursor } from "../renderers/renderCursor";
 import { renderHud } from "../renderers/renderHud";
 import { renderControls } from "../renderers/renderControls";
 import { renderMakerMode } from "../renderers/renderMakerMode";
+import { renderSoundMap } from "../renderers/renderSoundMap";
 
 export interface RendererContext {
   views: Views;
@@ -70,6 +71,7 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
   return function renderSystem() {
     renderMap(ctx);
     renderOdorMap(ctx);
+    renderSoundMap(ctx);
     renderVisionMap(ctx);
     renderSenses(ctx);
     renderLegend(ctx);

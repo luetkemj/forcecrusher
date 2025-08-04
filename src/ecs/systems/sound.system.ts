@@ -3,33 +3,33 @@ import { propagateField } from "../../lib/pathfinding";
 import { IGameWorld } from "../engine";
 import { State, getState, setState } from "../gameState";
 
-export const createOdorSystem = (gameWorld: IGameWorld) => {
+export const createSoundSystem = (gameWorld: IGameWorld) => {
   const { world } = gameWorld;
-  const odorQuery = world.with("odor", "position");
+  const soundQuery = world.with("sound", "position");
   const blockingQuery = world.with("blocking", "position");
   const pathThroughQuery = world.with("blocking", "position", "pathThrough");
 
-  return function odorSystem() {
+  return function soundSystem() {
     // NOTE: OLFACTORY
-    const odorFields = new Map<string, Map<string, number>>(); // entityId -> odor map
+    const soundFields = new Map<string, Map<string, number>>(); // entityId -> odor map
     const blockingSet = new Set<string>();
     const obscuredSet = new Set<string>();
 
     // Decay odorMap
-    for (const [posId, odors] of getState().odorMap.entries()) {
-      for (const [entityId, strength] of Object.entries(odors)) {
-        const decayed = strength - 0.25;
+    for (const [posId, sounds] of getState().soundMap.entries()) {
+      for (const [entityId, strength] of Object.entries(sounds)) {
+        const decayed = strength - 50;
         if (decayed <= 0) {
-          delete odors[entityId];
+          delete sounds[entityId];
         } else {
-          odors[entityId] = decayed;
+          sounds[entityId] = decayed;
         }
       }
 
       // Remove cell entirely if no smells left
-      if (Object.keys(odors).length === 0) {
+      if (Object.keys(sounds).length === 0) {
         setState((state: State) => {
-          state.odorMap.delete(posId);
+          state.soundMap.delete(posId);
         });
       }
     }
@@ -42,10 +42,10 @@ export const createOdorSystem = (gameWorld: IGameWorld) => {
       obscuredSet.add(toPosId(entity.position));
     }
 
-    for (const entity of odorQuery) {
+    for (const actor of soundQuery) {
       const field = propagateField(
-        entity.position,
-        entity.odor.strength,
+        actor.position,
+        actor.sound.strength,
         (pos: Pos) => {
           return blockingSet.has(toPosId(pos));
         },
@@ -55,20 +55,22 @@ export const createOdorSystem = (gameWorld: IGameWorld) => {
       );
 
       for (const [posId, strength] of field) {
-        const { odorMap } = getState();
-        if (!odorMap.has(posId)) {
+        const { soundMap } = getState();
+        if (!soundMap.has(posId)) {
           setState((state: State) => {
-            state.odorMap.set(posId, {});
+            state.soundMap.set(posId, {});
           });
         }
 
-        odorMap.get(posId)![entity.id] = Math.max(
+        soundMap.get(posId)![actor.id] = Math.max(
           strength,
-          odorMap.get(posId)![entity.id] ?? 0,
+          soundMap.get(posId)![actor.id] ?? 0,
         );
       }
 
-      odorFields.set(entity.id, field);
+      soundFields.set(actor.id, field);
+
+      world.removeComponent(actor, "sound");
     }
   };
 };

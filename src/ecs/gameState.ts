@@ -26,6 +26,7 @@ export type Views = {
   gitHash?: View;
   map?: View;
   odorMap?: View;
+  soundMap?: View;
   visionMap?: View;
   log?: View;
   senses?: View;
@@ -53,6 +54,7 @@ export type State = {
   interactActions: string;
   makerModePrefabSelectIndex: number;
   odorMap: Map<PosId, Record<EntityId, number>>;
+  soundMap: Map<PosId, Record<EntityId, number>>;
   visionMap: Array<{ fov: VisibleFov; canSeePc: boolean }>;
   senses: {
     sight: string;
@@ -71,6 +73,7 @@ export type State = {
   cheats: {
     seeAll: boolean;
     seeOdorMap: boolean;
+    seeSoundMap: boolean;
     seeVisionMap: boolean;
   };
 };
@@ -90,6 +93,7 @@ const state: State = {
   interactActions: "",
   makerModePrefabSelectIndex: 0,
   odorMap: new Map(),
+  soundMap: new Map(),
   visionMap: [],
   senses: {
     sight: "",
@@ -108,6 +112,7 @@ const state: State = {
   cheats: {
     seeAll: false,
     seeOdorMap: false,
+    seeSoundMap: false,
     seeVisionMap: false,
   },
 };
