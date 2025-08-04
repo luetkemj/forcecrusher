@@ -121,6 +121,7 @@ export const playerPrefab: Entity = {
       knockbackDistance: 2,
     },
   ],
+  pathThrough: true,
 };
 
 // NOTE: Actors / Creatures
@@ -405,7 +406,7 @@ export const doorPrefab: Entity = {
     knockbackDistance: 0,
     immovable: true,
     breakable: true,
-    noiseLevel: 7,
+    noiseLevel: 100,
     maxDamageOnKick: 2,
   },
   health: {

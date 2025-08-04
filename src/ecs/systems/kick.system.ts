@@ -65,6 +65,9 @@ export const createKickSystem = ({ world, registry }: IGameWorld) => {
         }
 
         if (target.kickable.noiseLevel) {
+          world.addComponent(target, "sound", {
+            strength: target.kickable.noiseLevel,
+          });
         }
 
         // TODO: handle knockback, noise, breakage, etc.
