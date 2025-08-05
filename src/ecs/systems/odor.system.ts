@@ -11,7 +11,7 @@ export const createOdorSystem = (gameWorld: IGameWorld) => {
 
   return function odorSystem() {
     // NOTE: OLFACTORY
-    const odorFields = new Map<string, Map<string, number>>(); // entityId -> odor map
+    const odorFields = new Map<string, Map<string, { strength: number }>>(); // entityId -> odor map
     const blockingSet = new Set<string>();
     const obscuredSet = new Set<string>();
 
@@ -42,30 +42,40 @@ export const createOdorSystem = (gameWorld: IGameWorld) => {
       obscuredSet.add(toPosId(entity.position));
     }
 
-    for (const entity of odorQuery) {
+    for (const actor of odorQuery) {
       const field = propagateField(
-        entity.position,
-        entity.odor.strength,
+        actor.position,
+        actor.odor.strength,
         (pos: Pos) => {
           return blockingSet.has(toPosId(pos));
         },
         (pos: Pos) => {
           return obscuredSet.has(toPosId(pos));
         },
-      );
+        true, // asObject: return { strength } objects
+      ) as Map<string, { strength: number }>;
 
-      for (const [posId, strength] of field) {
+      for (const [posId, obj] of field) {
         const { odorMap } = getState();
+        // Ensure the position exists in the map
         if (!odorMap.has(posId)) {
           setState((state: State) => {
-            state.odorMap.set(posId, {});
+            state.odorMap.set(posId, { [actor.id]: { strength: 0 } });
           });
         }
-        const prev = odorMap.get(posId)![entity.id]?.strength ?? 0;
-        odorMap.get(posId)![entity.id] = { strength: Math.max(strength, prev) };
+        // Ensure the actor id exists in the map at this position
+        if (!odorMap.get(posId)![actor.id]) {
+          setState((state: State) => {
+            state.odorMap.get(posId)![actor.id] = { strength: 0 };
+          });
+        }
+        odorMap.get(posId)![actor.id].strength = Math.max(
+          obj.strength,
+          odorMap.get(posId)![actor.id].strength ?? 0,
+        );
       }
 
-      odorFields.set(entity.id, field);
+      odorFields.set(actor.id, field);
     }
   };
 };
