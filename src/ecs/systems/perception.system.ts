@@ -3,7 +3,13 @@ import createFOV from "../../lib/fov";
 import { getNeighbors, toPosId } from "../../lib/grid";
 import { addSenseLog } from "../../lib/utils";
 import { Constants } from "../../pcgn/constants";
-import { DetectedOdor, Entity, EntityId, IGameWorld } from "../engine";
+import {
+  DetectedOdor,
+  DetectedSound,
+  Entity,
+  EntityId,
+  IGameWorld,
+} from "../engine";
 import { State, getState, setState } from "../gameState";
 
 export const createPerceptionSystem = (gameWorld: IGameWorld) => {
@@ -12,6 +18,7 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
   const opaqueQuery = world.with("opaque", "position");
   const renderableQuery = world.with("appearance", "position");
   const noseQuery = world.with("nose", "position", "ai");
+  const earsQuery = world.with("ears", "position", "ai");
 
   return function perceptionSystem() {
     setState((state: State) => (state.visionMap = []));
@@ -86,21 +93,22 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
       }
     }
 
-    // for (const actor of noseQuery) {
-    //   // get smells in immediate vicinity - story in memory
-    //   const { position } = actor;
-    //   const neighbors = getNeighbors(
-    //     position,
-    //     "cardinal",
-    //     { width: Constants.dungeonWidth, height: Constants.dungeonHeight },
-    //     true,
-    //   ) as string[];
-    //   const { odorMap } = getState();
-    //   const detectedSmells = processAiSmells(neighbors, odorMap, actor);
-    //   actor.nose.detected = flatMap(detectedSmells);
-    // }
+    for (const actor of earsQuery) {
+      // get smells in immediate vicinity - story in memory
+      const { position } = actor;
+      const neighbors = getNeighbors(
+        position,
+        "cardinal",
+        { width: Constants.dungeonWidth, height: Constants.dungeonHeight },
+        true,
+      ) as string[];
+      const { soundMap } = getState();
+      const detectedSounds = processAiHearing(neighbors, soundMap, actor);
+      actor.ears.detected = flatMap(detectedSounds);
+    }
   };
 };
+
 function getLoudestSound(
   sounds: Record<EntityId, { strength: number }>,
   playerId: EntityId,
@@ -110,7 +118,10 @@ function getLoudestSound(
     .sort((a, b) => b[1].strength - a[1].strength)[0]; // sort by strength descending // get the strongest (or undefined if empty)
 }
 
-function getStrongestOdor(odors: Record<EntityId, { strength: number }>, playerId: EntityId) {
+function getStrongestOdor(
+  odors: Record<EntityId, { strength: number }>,
+  playerId: EntityId,
+) {
   return Object.entries(odors)
     .filter(([entityId]) => entityId !== playerId)
     .sort((a, b) => b[1].strength - a[1].strength)[0];
@@ -207,6 +218,34 @@ function processAiSmells(
         });
 
         return compact(odorArray);
+      }
+    }),
+  );
+}
+
+function processAiHearing(
+  neighbors: string[],
+  soundMap: Map<string, Record<EntityId, { strength: number }>>,
+  actor: Entity,
+): DetectedSound[][] {
+  return compact(
+    neighbors.map((posId: string) => {
+      const sounds = soundMap.get(posId);
+      if (sounds) {
+        const soundArray: (DetectedSound | undefined)[] = Object.entries(
+          sounds,
+        ).map(([eId, soundObj]) => {
+          // don't detect own odor
+          if (eId !== actor.id) {
+            return {
+              eId,
+              strength: soundObj.strength,
+              posId,
+            };
+          }
+        });
+
+        return compact(soundArray);
       }
     }),
   );

@@ -7,9 +7,42 @@ export const createMemorySystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
   const visionQuery = world.with("vision", "memory").without("dead");
   const noseQuery = world.with("nose", "memory").without("dead");
+  const earsQuery = world.with("ears", "memory").without("dead");
   const memoryQuery = world.with("memory").without("dead");
 
   return function memorySystem() {
+    for (const actor of earsQuery) {
+      const sounds = new Map();
+
+      actor.ears.detected.forEach((sound) => {
+        // if smell already exists check if we should override with stronger smell
+        if (sounds.has(sound.eId)) {
+          if (sounds.get(sound.eId).strength < sound.strength) {
+            sounds.set(sound.eId, sound);
+          }
+          // if doesn't exist, add it
+        } else {
+          sounds.set(sound.eId, sound);
+        }
+      });
+
+      // remember strongest sound detected for each target
+      sounds.forEach((sound) => {
+        const target = registry.get(sound.eId);
+        if (!target) return;
+        if (!target.position) return;
+
+        const memory = {
+          actor,
+          target,
+          position: { ...target.position },
+          perceivedVia: Sense.Hearing,
+        };
+
+        remember(memory);
+      });
+    }
+
     for (const actor of noseQuery) {
       const smells = new Map();
 

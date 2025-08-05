@@ -139,6 +139,7 @@ export const ratPrefab: Entity = {
   legendable: true,
   name: "rat",
   nose: { sensitivity: 0, detected: [] },
+  ears: { sensitivity: 0, detected: [] },
   description:
     "A filthy, disease-ridden rodent with glowing eyes and a hungry squeak.",
   pathThrough: true,
@@ -193,6 +194,7 @@ export const skeletonPrefab: Entity = {
   },
   legendable: true,
   name: "skeleton",
+  ears: { sensitivity: 5, detected: [] },
   nose: { sensitivity: 5, detected: [] },
   description:
     "A brittle warrior from another age, still fighting long after death forgot it.",

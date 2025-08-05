@@ -1,5 +1,5 @@
 import type { IGameWorld, Memory } from "../engine";
-import { wanderToward } from "../../lib/pathfinding";
+import { aStar, wanderToward } from "../../lib/pathfinding";
 import { getDirection } from "../../lib/grid";
 import { getDisposition } from "../../lib/utils";
 import { sortBy } from "lodash";
@@ -11,7 +11,7 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
   return function aiSystem() {
     for (const actor of aiQuery) {
       // path to something of interest - not JUST the player
-      const target = { position: { x: 0, y: 0 } };
+      let target: Memory | undefined = undefined;
       let hasTarget = false;
 
       // sort memories into sentient or item
@@ -85,10 +85,17 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
             (memory) => memory.id === candidateId,
           );
           if (selectedTarget) {
-            target.position = selectedTarget?.position;
+            // target.position = selectedTarget?.position;
+            target = { ...selectedTarget };
             hasTarget = true;
           }
         }
+      }
+
+      if (memories.unknown.length && !hasTarget) {
+        const [memory] = memories.unknown;
+        target = { ...memory };
+        hasTarget = true;
       }
 
       // const recalledItems = actor.memory.memories.filter(
@@ -102,16 +109,38 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
       //   }
       // }
 
-      if (hasTarget) {
-        // entities need a mood component (aggressive, fleeing, etc) to determine what they do.
-        const newPos = wanderToward({
-          currentPos: actor.position,
-          biasDir: getDirection(target.position, actor.position),
-          targetPos: target.position,
-          entities: positionQuery.entities,
-          wiggleChance: 2,
-        });
-        world.addComponent(actor, "tryMove", newPos);
+      if (hasTarget && target) {
+        // need to check target - if sound, aStar to source.
+        // else use wanderToward
+        if (target.perceivedVia === "hearing") {
+          const path = aStar(
+            actor.position,
+            target.position,
+            positionQuery.entities,
+          );
+
+          // the start and end positions are the first and last indices of path
+          // start is the current location of pathing entity
+          // so we skip it.
+          if (path[1]) {
+            const newPos = {
+              x: path[1][0],
+              y: path[1][1],
+            };
+
+            world.addComponent(actor, "tryMove", newPos);
+          }
+        } else {
+          // entities need a mood component (aggressive, fleeing, etc) to determine what they do.
+          const newPos = wanderToward({
+            currentPos: actor.position,
+            biasDir: getDirection(target.position, actor.position),
+            targetPos: target.position,
+            entities: positionQuery.entities,
+            wiggleChance: 2,
+          });
+          world.addComponent(actor, "tryMove", newPos);
+        }
 
         // if aggressive:
         // const path = aStar(

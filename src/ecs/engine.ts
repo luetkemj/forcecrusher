@@ -79,6 +79,12 @@ export interface DetectedOdor {
   posId: string;
 }
 
+export interface DetectedSound {
+  eId: EntityId;
+  strength: number;
+  posId: string;
+}
+
 export type EntityId = string;
 
 export type Entity = {
@@ -126,6 +132,10 @@ export type Entity = {
   };
   id: EntityId;
   immunities?: Array<DamageType>;
+  ears?: {
+    sensitivity: number;
+    detected: Array<DetectedSound>;
+  };
   effectImmunities?: Array<EffectType>;
   inFov?: true;
   intelligence?: number;
