@@ -44,6 +44,7 @@ export type Attack = {
   magical?: true;
   natural?: true;
   knockbackDistance?: number; // TODO: this should be based on target weight and actor strenth/skill
+  sound: Sound;
   // TODO: add effects to attacks, like poison
 };
 
@@ -79,9 +80,15 @@ export interface DetectedOdor {
   posId: string;
 }
 
+export type Sound = {
+  strength: number;
+  description?: string;
+};
+
 export interface DetectedSound {
   eId: EntityId;
   strength: number;
+  description?: string;
   posId: string;
 }
 

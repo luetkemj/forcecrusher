@@ -50,7 +50,11 @@ export const createAttackSystem = ({ world, registry }: IGameWorld) => {
         });
       }
 
-      world.addComponent(actor, "sound", { strength: 50 });
+      // different attacks against differnt materials? make different sounds...
+      world.addComponent(actor, "sound", {
+        strength: 50,
+        description: "combat",
+      });
 
       cleanUp(actor);
     }
