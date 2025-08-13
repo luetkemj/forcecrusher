@@ -62,8 +62,6 @@ This is aspirational only. Expect anything and everything in this document to be
     - [x] ~~Only attack player~~
     - [x] Attack based on disposition
 - [x] Sensory System
-- [x] Game cheats/debugging menu to toggle various modes
-- [x] Debug overlay (f1 debug console)
 - [ ] Perception
     - [x] See
         - [x] See things
@@ -75,22 +73,22 @@ This is aspirational only. Expect anything and everything in this document to be
         - [x] Remember things smelled
         - [x] Act on memory
         - [x] Debug UI
-    - [x] Hear
-        - [x] Hear things
-        - [x] Remember things heard
-        - [x] Act on memory
-        - [x] Debug UI
-    - [ ] Feel (tremor sense? Heat/cold?)
+    - [ ] Hear
+        - [ ] Hear things
+        - [ ] Remember things heard
+        - [ ] Act on memory
+        - [ ] Debug UI
+    - [ ] Feel (tremor sense)
         - [ ] Feel things
         - [ ] Remember things felt 
         - [ ] Act on memory
         - [ ] Debug UI
     - [ ] Taste
         - [ ] Player taste UI (flavor text) - this isn't really useful for baddies
-- [ ] Better sound descriptions for player
 - [ ] Behavior
     - [ ] Agressive, passive, idle etc
     - [ ] Only do things according to behavior
+- [ ] Debug overlay
 - [ ] dungeons v2
     - [x] tags refactor
     - [ ] room of different shapes (circular)
@@ -98,7 +96,6 @@ This is aspirational only. Expect anything and everything in this document to be
     - [ ] water
     - [ ] walls of different materials
     - [ ] cave ins (deteriorated walls etc)
-    - [ ] prefab rooms
 - [ ] doors
     - [x] Place doors
     - [x] Open and closeable doors
@@ -119,13 +116,6 @@ This is aspirational only. Expect anything and everything in this document to be
     - [x] Select Prefabs
     - [x] Place Prefabs
     - [ ] Create shapes (rectangles for rooms etc)
-    - [ ] Shift + move keys increases speed
-- [ ] Fire
-- [ ] Wind
-- [ ] Water
-- [ ] Gas
-- [ ] Lava
-- [ ] grass/foliage in dungeon
 - [ ] morgue file (game over screen)
 - [ ] Plague doctor outfit to guard against potions and gas attacks
 - [ ] money
@@ -151,6 +141,7 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] Overworld map with multiple dungeons to explore
 - [ ] Crafting
 - [ ] Ability to shoot things from a ranged weapon
+- [ ] Game cheats/debugging menu to toggle various modes
 - [ ] save to indexDB (local storage collapses after 6 levels)
 - [ ] inventory select armor/weapons so they can be removed
 - [ ] dykstra maps

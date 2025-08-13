@@ -38,7 +38,11 @@ export const em = (string: string) => {
   return `§purple§${string}§reset§`;
 };
 
-export const getFrozenEntity = (entity: Entity) => {
+// export const logFrozenEntity = (entity: Entity) => {
+//   console.log(JSON.parse(JSON.stringify(entity)));
+// };
+
+export const logFrozenEntity = (entity: Entity) => {
   const safeCopy = {
     ...entity,
     memory: entity.memory
@@ -49,11 +53,7 @@ export const getFrozenEntity = (entity: Entity) => {
       : undefined,
   };
 
-  return JSON.parse(JSON.stringify(safeCopy));
-};
-
-export const logFrozenEntity = (entity: Entity) => {
-  return console.log(getFrozenEntity(entity));
+  console.log(JSON.parse(JSON.stringify(safeCopy)));
 };
 
 export const addLog = (newLog: string) => {

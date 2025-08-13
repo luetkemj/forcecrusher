@@ -90,8 +90,6 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
 
       if (sound) {
         processPlayerDetectedSounds(sound, gameWorld);
-      } else {
-        return addSenseLog(`                              `, "smell");
       }
     }
 
@@ -173,26 +171,26 @@ function processPlayerDetectedSounds(
   gameWorld: IGameWorld,
 ): void {
   const entityId = sound[0];
-  const { strength, description } = sound[1];
+  const strength = sound[1].strength;
   const entity = gameWorld.registry.get(entityId) as Entity | undefined;
   if (entity) {
     if (strength >= 8) {
-      return addSenseLog(`A deafening ${description || "sound"}`, "hearing");
+      return addSenseLog(`Deafening sound of ${entity.name}`, "hearing");
     }
     if (strength >= 6) {
-      return addSenseLog(`A loud ${description || "sound"}`, "hearing");
+      return addSenseLog(`Loud sound of ${entity.name}`, "hearing");
     }
     if (strength >= 4) {
-      return addSenseLog(`A clear ${description || "sound"}`, "hearing");
+      return addSenseLog(`Clear sound of ${entity.name}`, "hearing");
     }
     if (strength >= 2) {
-      return addSenseLog(`A muffled ${description || "sound"}`, "hearing");
+      return addSenseLog(`Muffled sound of ${entity.name}`, "hearing");
     }
     if (strength >= 1) {
-      return addSenseLog(`A faint ${description || "sound"}`, "hearing");
+      return addSenseLog(`Faint sound of ${entity.name}`, "hearing");
     }
     if (strength > 0) {
-      return addSenseLog(`A whispered ${description || "sound"}`, "hearing");
+      return addSenseLog(`Whispered sound of ${entity.name}`, "hearing");
     }
   }
 }

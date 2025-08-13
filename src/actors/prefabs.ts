@@ -119,7 +119,6 @@ export const playerPrefab: Entity = {
       damageType: DamageType.Bludgeoning,
       natural: true,
       knockbackDistance: 2,
-      sound: { strength: 25, description: "thud" },
     },
   ],
   pathThrough: true,
@@ -163,7 +162,6 @@ export const ratPrefab: Entity = {
       attackType: "melee",
       damageRoll: "1d1",
       damageType: DamageType.Piercing,
-      sound: { strength: 10, description: "chomp" },
     },
     {
       name: "Claw",
@@ -172,7 +170,6 @@ export const ratPrefab: Entity = {
       attackType: "melee",
       damageRoll: "1d1",
       damageType: DamageType.Slashing,
-      sound: { strength: 10, description: "scratch" },
     },
   ],
   damages: [],
@@ -287,7 +284,6 @@ export const shortswordPrefab: Entity = {
       damageRoll: "1d6+2",
       damageType: DamageType.Piercing,
       useModifier: true,
-      sound: { strength: 10, description: "stab" },
     },
     {
       name: "Slash",
@@ -297,7 +293,6 @@ export const shortswordPrefab: Entity = {
       damageRoll: "1d6+2",
       damageType: DamageType.Slashing,
       useModifier: true,
-      sound: { strength: 10, description: "slash" },
     },
     {
       name: "Bash",
@@ -307,7 +302,6 @@ export const shortswordPrefab: Entity = {
       damageRoll: "1d4+2",
       damageType: DamageType.Bludgeoning,
       useModifier: true,
-      sound: { strength: 10, description: "smash" },
     },
   ],
 };
@@ -333,7 +327,6 @@ export const clubPrefab: Entity = {
       damageType: DamageType.Bludgeoning,
       useModifier: true,
       knockbackDistance: 2,
-      sound: { strength: 10, description: "bonk" },
     },
   ],
 };
@@ -351,7 +344,6 @@ export const daggerPrefab: Entity = {
       attackType: "melee",
       damageRoll: "1d4",
       damageType: DamageType.Bludgeoning,
-      sound: { strength: 10, description: "thunk" },
     },
     {
       name: "Stab",
@@ -361,7 +353,6 @@ export const daggerPrefab: Entity = {
       damageRoll: "1d4",
       damageType: DamageType.Piercing,
       useModifier: true,
-      sound: { strength: 10, description: "shunk" },
     },
     {
       name: "Slash",
@@ -371,7 +362,6 @@ export const daggerPrefab: Entity = {
       damageRoll: "1d4",
       damageType: DamageType.Slashing,
       useModifier: true,
-      sound: { strength: 10, description: "slice" },
     },
   ],
 };
