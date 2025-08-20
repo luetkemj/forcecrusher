@@ -2,7 +2,7 @@ import "./style.css";
 import { mean } from "lodash";
 import { pxToPosId, setupCanvas } from "./lib/canvas";
 import { toPosId } from "./lib/grid";
-import { logFrozenEntity } from "./lib/utils";
+import { getFrozenEntity, logFrozenEntity } from "./lib/utils";
 import { generateDungeon } from "./pcgn/dungeon";
 import { spawnPlayer } from "./pcgn/player";
 import { gameWorld } from "./ecs/engine";
@@ -83,21 +83,43 @@ const init = async () => {
   });
 
   // log entities on mouseclick at position
+  // log entities on mouseclick at position
   document.addEventListener("mousedown", (ev: any) => {
     const x = ev.x - getState().views.map!.layers[0].x;
     const y = ev.layerY - getState().views.map!.layers[0].y;
     const posId = pxToPosId(x, y);
 
-    // if (window.skulltooth.debug === true || import.meta.env.DEV) {
     const entities = gameWorld.world.with("position");
+
+    const debugObject: { posId: string; [key: string]: any } = {
+      posId,
+    };
 
     for (const entity of entities) {
       if (posId === toPosId(entity.position)) {
-        console.log(posId);
-        logFrozenEntity(entity);
+        debugObject[entity.id] = getFrozenEntity(entity);
       }
     }
-    // }
+
+    const odorMap = getState().odorMap.get(posId);
+    const soundMap = getState().soundMap.get(posId);
+
+    debugObject.odors = {
+      map: odorMap,
+      entities: Object.keys(odorMap ?? {}).map((eid) => {
+        const entity = gameWorld.registry.get(eid);
+        return entity ? getFrozenEntity(entity) : undefined;
+      }),
+    };
+    debugObject.sounds = {
+      map: soundMap,
+      entities: Object.keys(soundMap ?? {}).map((eid) => {
+        const entity = gameWorld.registry.get(eid);
+        return entity ? getFrozenEntity(entity) : undefined;
+      }),
+    };
+
+    console.log(debugObject);
   });
 };
 
