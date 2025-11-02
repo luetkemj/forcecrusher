@@ -11,6 +11,7 @@ import {
 import { type State, getState, setState } from "./gameState";
 import { generateDungeon } from "../pcgn/dungeon";
 import { Pos } from "../lib/grid";
+import { saveGameData as dbSave, loadGameData as dbLoad } from "./saveStore";
 
 export interface IGameWorld {
   world: World<Entity>;
@@ -270,9 +271,8 @@ class GameWorld {
     }
   }
 
-  saveGameData() {
+  async saveGameData() {
     const { log, zoneId, playerId, version, turnNumber } = getState();
-
     this.saveZone(zoneId);
 
     const saveData = {
@@ -281,7 +281,7 @@ class GameWorld {
       state: { log, zoneId, playerId, version, turnNumber },
     };
 
-    localStorage.setItem("gameData", JSON.stringify(saveData));
+    await dbSave(saveData);
   }
 
   changeZone(zoneId: string, direction: ChangeZoneDirections) {
@@ -347,11 +347,11 @@ class GameWorld {
     this.saveZone(zoneId);
   }
 
-  loadGameData() {
-    const data = localStorage.getItem("gameData");
+  async loadGameData() {
+    const data = await dbLoad();
     if (!data) return;
 
-    const { registry, state, zones } = JSON.parse(data);
+    const { registry, state, zones } = data;
 
     // Clear existing data
     this.registry.clear();
@@ -379,9 +379,7 @@ class GameWorld {
     if (zone) {
       for (const eId of zone) {
         const entity = this.registry.get(eId);
-        if (entity) {
-          this.world.add(entity);
-        }
+        if (entity) this.world.add(entity);
       }
     }
     // load state
