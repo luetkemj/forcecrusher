@@ -5,7 +5,7 @@ import { GameState, State } from "../gameState";
 import { toPosId, isAtSamePosition, toZone, toZoneId } from "../../lib/grid";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 
-export const handleGameModeInput = ({
+export const handleGameModeInput = async ({
   key,
   world,
   player,
@@ -24,13 +24,17 @@ export const handleGameModeInput = ({
 
   if (gameState === GameState.GAME) {
     if (key === Keys.SAVE) {
+      console.log("Saving game...");
       saveGameData();
+      console.log("Game saved!");
 
       return true;
     }
 
     if (key === Keys.LOAD) {
+      console.log("Loading game...");
       loadGameData();
+      console.log("Game loaded!");
 
       return true;
     }

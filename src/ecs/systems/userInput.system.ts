@@ -20,8 +20,8 @@ export interface InputContext {
   state: State;
   gameState: GameState;
   setState: typeof setState;
-  saveGameData: () => void;
-  loadGameData: () => void;
+  saveGameData: () => Promise<void>;
+  loadGameData: () => Promise<void>;
   changeZone: (zoneId: string, direction: ChangeZoneDirections) => void;
   addLog: (string: string) => void;
   layer100Query: ReturnType<IGameWorld["world"]["with"]>;
@@ -43,7 +43,7 @@ export const createUserInputSystem = ({
   const layer300Query = world.with("layer300", "position");
   const layer400Query = world.with("layer400", "position");
 
-  return function userInputSystem() {
+  return async function userInputSystem() {
     const { userInput, gameState } = getState();
     const state = getState();
 
@@ -86,7 +86,7 @@ export const createUserInputSystem = ({
     const handler = inputDispatchers[gameState];
 
     if (handler) {
-      const handled = handler(ctx);
+      const handled = await handler(ctx);
       if (handled) {
         setState((state: State) => {
           state.userInput = null;

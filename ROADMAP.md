@@ -181,6 +181,15 @@ Items should provide some actual use in game. No junk items. Gold can be used to
 
 ## Saving and loading:
 
+### Todos
+
+Game saves are now handled with dexie (indexedDb)
+
+- Rerender on load
+- Add logs to game log for saving and loading
+- Add some sort of "loading" intersticial - an overlay of some sort
+
+
 saveZone()
 - store all entity ids in engine.world to current mapId in DB
 
