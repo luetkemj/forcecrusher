@@ -19,6 +19,7 @@ export const enum GameState {
   INTERACT_ACTION = "INTERACT_ACTION",
   MAKER_MODE = "MAKER_MODE",
   MAKER_MODE_PREFAB_SELECT = "MAKER_MODE_PREFAB_SELECT",
+  SAVING = "SAVING",
 }
 
 export type Views = {
@@ -40,6 +41,7 @@ export type Views = {
   makerModeLeft?: View;
   makerModeRight?: View;
   makerModeTop?: View;
+  saving?: View;
 };
 
 export type State = {

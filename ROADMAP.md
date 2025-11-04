@@ -185,7 +185,7 @@ Items should provide some actual use in game. No junk items. Gold can be used to
 
 Game saves are now handled with dexie (indexedDb)
 
-- [ ] Rerender on load
+- [ ] Rerender on load (go into a SAVING mode and manually send a keyboard impossible key code to get out of it after the save completes)
 - [ ] Add logs to game log for saving and loading
 - [ ] Add some sort of "loading" intersticial - an overlay of some sort
 - [ ] make sure we're blocking user interaction (should be but make sure)

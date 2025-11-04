@@ -2,7 +2,7 @@ import "./style.css";
 import { mean } from "lodash";
 import { pxToPosId, setupCanvas } from "./lib/canvas";
 import { toPosId } from "./lib/grid";
-import { getFrozenEntity, logFrozenEntity } from "./lib/utils";
+import { getFrozenEntity } from "./lib/utils";
 import { generateDungeon } from "./pcgn/dungeon";
 import { spawnPlayer } from "./pcgn/player";
 import { gameWorld } from "./ecs/engine";
@@ -74,13 +74,20 @@ const init = async () => {
 
   gameLoop();
 
-  document.addEventListener("keydown", (ev) => {
-    if (IGNORED_KEYS.includes(ev.key)) return;
+  function handleUserInput(input: KeyboardEvent | string) {
+    const key = input instanceof KeyboardEvent ? input.key : input;
+
+    if (IGNORED_KEYS.includes(key)) return;
 
     setState((state: State) => {
-      state.userInput = ev;
+      state.userInput =
+        input instanceof KeyboardEvent
+          ? input
+          : new KeyboardEvent("keydown", { key });
     });
-  });
+  }
+
+  document.addEventListener("keydown", (ev) => handleUserInput(ev));
 
   // log entities on mouseclick at position
   // log entities on mouseclick at position

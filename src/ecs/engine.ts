@@ -12,6 +12,8 @@ import { type State, getState, setState } from "./gameState";
 import { generateDungeon } from "../pcgn/dungeon";
 import { Pos } from "../lib/grid";
 import { saveGameData as dbSave, loadGameData as dbLoad } from "./saveStore";
+import { handleUserInput } from "./inputHandlers/KeyMap";
+import { addLog } from "../lib/utils";
 
 export interface IGameWorld {
   world: World<Entity>;
@@ -19,9 +21,9 @@ export interface IGameWorld {
   zones: Map<string, Set<string>>;
   clearEntities(disallowList?: Array<string>): void;
   saveZone(zoneId: string): void;
-  saveGameData(): void;
+  saveGameData(): Promise<void>;
   changeZone(zoneId: string, direction: ChangeZoneDirections): void;
-  loadGameData(): void;
+  loadGameData(): Promise<void>;
 }
 
 // components with a max, current shape such that they are effectable
@@ -272,6 +274,7 @@ class GameWorld {
   }
 
   async saveGameData() {
+    addLog("saving game...");
     const { log, zoneId, playerId, version, turnNumber } = getState();
     this.saveZone(zoneId);
 
@@ -282,6 +285,10 @@ class GameWorld {
     };
 
     await dbSave(saveData);
+
+    // manually emit user input to trigger game loop after save is complete
+    handleUserInput("exitSaveMode");
+    addLog("game saved successfully?");
   }
 
   changeZone(zoneId: string, direction: ChangeZoneDirections) {

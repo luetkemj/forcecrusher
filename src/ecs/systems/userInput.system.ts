@@ -11,6 +11,7 @@ import { handleLogHistoryModeInput } from "../inputHandlers/logHistoryMode";
 import { handleMakerModeInput } from "../inputHandlers/makerMode";
 import { handleTargetModeInput } from "../inputHandlers/targetMode";
 import { handleMakerModePrefabSelectInput } from "../inputHandlers/makerModePrefabSelect";
+import { handleSavingModeInput } from "../inputHandlers/savingMode";
 
 export interface InputContext {
   key: string;
@@ -52,7 +53,7 @@ export const createUserInputSystem = ({
     const { key } = userInput;
     const [player] = pcQuery;
 
-    const ctx = {
+    const ctx: InputContext = {
       key,
       world,
       registry,
@@ -63,7 +64,7 @@ export const createUserInputSystem = ({
       saveGameData,
       loadGameData,
       changeZone,
-      addLog,
+      addLog: (msg: string) => addLog(msg),
       layer100Query,
       layer200Query,
       layer300Query,
@@ -81,6 +82,7 @@ export const createUserInputSystem = ({
       [GameState.MAKER_MODE]: handleMakerModeInput,
       [GameState.MAKER_MODE_PREFAB_SELECT]: handleMakerModePrefabSelectInput,
       [GameState.TARGET]: handleTargetModeInput,
+      [GameState.SAVING]: handleSavingModeInput,
     };
 
     const handler = inputDispatchers[gameState];

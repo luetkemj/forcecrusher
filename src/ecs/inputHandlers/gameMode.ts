@@ -24,11 +24,13 @@ export const handleGameModeInput = async ({
 
   if (gameState === GameState.GAME) {
     if (key === Keys.SAVE) {
-      console.log("Saving game...");
-      saveGameData();
-      console.log("Game saved!");
+      setState((state: State) => (state.gameState = GameState.SAVING));
+      await saveGameData();
 
-      return true;
+      // return FALSE so we don't set input to null.
+      // We manually set input to "existSaveMode" from saveGameData function after it completes
+      // If this is set to true we will lose the magic input and the game will freeze
+      return false;
     }
 
     if (key === Keys.LOAD) {
