@@ -16,6 +16,8 @@ import { renderHud } from "../renderers/renderHud";
 import { renderControls } from "../renderers/renderControls";
 import { renderMakerMode } from "../renderers/renderMakerMode";
 import { renderSoundMap } from "../renderers/renderSoundMap";
+import { renderSaving } from "../renderers/renderSaving";
+import { renderLoading } from "../renderers/renderLoading";
 
 export interface RendererContext {
   views: Views;
@@ -83,6 +85,8 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     renderHud(ctx);
     renderControls(ctx);
     renderMakerMode(ctx);
+    renderSaving(ctx);
+    renderLoading(ctx);
   };
 };
 

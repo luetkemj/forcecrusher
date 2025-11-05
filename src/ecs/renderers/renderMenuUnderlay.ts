@@ -4,7 +4,12 @@ import { GameState, getState } from "../gameState";
 export const renderMenuUnderlay = ({ views }: RendererContext) => {
   const view = views.menuUnderlay;
   if (view) {
-    const menuStates = [GameState.LOG_HISTORY, GameState.INVENTORY];
+    const menuStates = [
+      GameState.LOG_HISTORY,
+      GameState.INVENTORY,
+      GameState.SAVING,
+      GameState.LOADING,
+    ];
     const { gameState } = getState();
 
     menuStates.includes(gameState) ? view.show() : view.hide();

@@ -11,6 +11,8 @@ import { handleLogHistoryModeInput } from "../inputHandlers/logHistoryMode";
 import { handleMakerModeInput } from "../inputHandlers/makerMode";
 import { handleTargetModeInput } from "../inputHandlers/targetMode";
 import { handleMakerModePrefabSelectInput } from "../inputHandlers/makerModePrefabSelect";
+import { handleSavingModeInput } from "../inputHandlers/savingMode";
+import { handleLoadingModeInput } from "../inputHandlers/loadingMode";
 
 export interface InputContext {
   key: string;
@@ -20,8 +22,8 @@ export interface InputContext {
   state: State;
   gameState: GameState;
   setState: typeof setState;
-  saveGameData: () => void;
-  loadGameData: () => void;
+  saveGameData: () => Promise<void>;
+  loadGameData: () => Promise<void>;
   changeZone: (zoneId: string, direction: ChangeZoneDirections) => void;
   addLog: (string: string) => void;
   layer100Query: ReturnType<IGameWorld["world"]["with"]>;
@@ -43,7 +45,7 @@ export const createUserInputSystem = ({
   const layer300Query = world.with("layer300", "position");
   const layer400Query = world.with("layer400", "position");
 
-  return function userInputSystem() {
+  return async function userInputSystem() {
     const { userInput, gameState } = getState();
     const state = getState();
 
@@ -52,7 +54,7 @@ export const createUserInputSystem = ({
     const { key } = userInput;
     const [player] = pcQuery;
 
-    const ctx = {
+    const ctx: InputContext = {
       key,
       world,
       registry,
@@ -63,7 +65,7 @@ export const createUserInputSystem = ({
       saveGameData,
       loadGameData,
       changeZone,
-      addLog,
+      addLog: (msg: string) => addLog(msg),
       layer100Query,
       layer200Query,
       layer300Query,
@@ -81,12 +83,14 @@ export const createUserInputSystem = ({
       [GameState.MAKER_MODE]: handleMakerModeInput,
       [GameState.MAKER_MODE_PREFAB_SELECT]: handleMakerModePrefabSelectInput,
       [GameState.TARGET]: handleTargetModeInput,
+      [GameState.SAVING]: handleSavingModeInput,
+      [GameState.LOADING]: handleLoadingModeInput,
     };
 
     const handler = inputDispatchers[gameState];
 
     if (handler) {
-      const handled = handler(ctx);
+      const handled = await handler(ctx);
       if (handled) {
         setState((state: State) => {
           state.userInput = null;

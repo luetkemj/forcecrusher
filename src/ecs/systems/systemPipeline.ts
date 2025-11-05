@@ -246,4 +246,20 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     postMain: [],
     render: [systems.render],
   },
+
+  [GameState.SAVING]: {
+    preInput: [],
+    input: [systems.userInput],
+    main: [],
+    postMain: [],
+    render: [systems.render],
+  },
+
+  [GameState.LOADING]: {
+    preInput: [],
+    input: [systems.userInput],
+    main: [],
+    postMain: [],
+    render: [systems.render],
+  },
 };

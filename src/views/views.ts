@@ -17,7 +17,9 @@ export type ViewId =
   | "logHistory"
   | "makerModeRight"
   | "makerModeLeft"
-  | "makerModeTop";
+  | "makerModeTop"
+  | "saving"
+  | "loading";
 
 type ViewConfig = ConstructorParameters<typeof View>[0];
 
@@ -246,6 +248,32 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     alphas: [1, 1],
     visible: false,
     name: "makerModeTop",
+  },
+  // saving screen
+  saving: {
+    width: 148,
+    height: 39,
+    x: 26,
+    y: 5,
+    layers: 2,
+    tileSets: ["text", "text"],
+    tints: [0x111111, 0xffffff],
+    alphas: [1],
+    visible: false,
+    name: "saving",
+  },
+  // loading screen
+  loading: {
+    width: 148,
+    height: 39,
+    x: 26,
+    y: 5,
+    layers: 1,
+    tileSets: ["text"],
+    tints: [0xffffff],
+    alphas: [1],
+    visible: false,
+    name: "saving",
   },
 };
 

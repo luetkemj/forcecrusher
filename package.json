@@ -29,6 +29,7 @@
   "dependencies": {
     "@dice-roller/rpg-dice-roller": "5.5.1",
     "@types/pathfinding": "0.0.9",
+    "dexie": "4.2.1",
     "lodash": "4.17.21",
     "miniplex": "2.0.0",
     "pako": "2.1.0",

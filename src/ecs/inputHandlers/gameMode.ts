@@ -5,7 +5,7 @@ import { GameState, State } from "../gameState";
 import { toPosId, isAtSamePosition, toZone, toZoneId } from "../../lib/grid";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 
-export const handleGameModeInput = ({
+export const handleGameModeInput = async ({
   key,
   world,
   player,
@@ -24,15 +24,23 @@ export const handleGameModeInput = ({
 
   if (gameState === GameState.GAME) {
     if (key === Keys.SAVE) {
-      saveGameData();
+      setState((state: State) => (state.gameState = GameState.SAVING));
+      await saveGameData();
 
-      return true;
+      // return FALSE so we don't set input to null.
+      // We manually set input to "exitSaveMode" from saveGameData function after it completes
+      // If this is set to true we will lose the magic input and the game will freeze
+      return false;
     }
 
     if (key === Keys.LOAD) {
-      loadGameData();
+      setState((state: State) => (state.gameState = GameState.LOADING));
+      await loadGameData();
 
-      return true;
+      // return FALSE so we don't set input to null.
+      // We manually set input to "exitLoadMode" from loadGameData function after it completes
+      // If this is set to true we will lose the magic input and the game will freeze
+      return false;
     }
 
     // NOTE: Cheats

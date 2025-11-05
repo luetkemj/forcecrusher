@@ -1,3 +1,5 @@
+import { State, setState } from "../gameState";
+
 export const IGNORED_KEYS = ["Shift", "Meta", "Control", "Alt"];
 
 export const Keys = {
@@ -60,4 +62,14 @@ export const getDirectionFromKey = (key: string) => {
   if ((Keys.MOVE_RIGHT as readonly string[]).includes(key))
     return { dx: 1, dy: 0 };
   return null;
+};
+
+export const handleUserInput = (input: KeyboardEvent | string) => {
+  const key = input instanceof KeyboardEvent ? input.key : input;
+
+  if (IGNORED_KEYS.includes(key)) return;
+
+  setState((state: State) => {
+    state.userInput = input instanceof KeyboardEvent ? input : new KeyboardEvent('keydown', { key });
+  });
 };
