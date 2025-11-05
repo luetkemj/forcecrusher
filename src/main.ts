@@ -21,7 +21,7 @@ import {
   systems,
   worldTurnPipeline,
 } from "./ecs/systems/systemPipeline";
-import { IGNORED_KEYS } from "./ecs/inputHandlers/KeyMap";
+import { handleUserInput } from "./ecs/inputHandlers/KeyMap";
 
 // for debugging
 declare global {
@@ -73,20 +73,6 @@ const init = async () => {
   });
 
   gameLoop();
-
-  // TODO: this func also exists in KeyMap (which one to keep?)
-  function handleUserInput(input: KeyboardEvent | string) {
-    const key = input instanceof KeyboardEvent ? input.key : input;
-
-    if (IGNORED_KEYS.includes(key)) return;
-
-    setState((state: State) => {
-      state.userInput =
-        input instanceof KeyboardEvent
-          ? input
-          : new KeyboardEvent("keydown", { key });
-    });
-  }
 
   document.addEventListener("keydown", (ev) => handleUserInput(ev));
 
