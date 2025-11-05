@@ -74,9 +74,13 @@ const init = async () => {
 
   gameLoop();
 
-  document.addEventListener("keydown", (ev) => handleUserInput(ev));
+  document.addEventListener("keydown", (ev) => {
+    const disableKeyStates = [GameState.LOADING, GameState.SAVING];
+    if (!disableKeyStates.includes(getState().gameState)) {
+      handleUserInput(ev);
+    }
+  });
 
-  // log entities on mouseclick at position
   // log entities on mouseclick at position
   document.addEventListener("mousedown", (ev: any) => {
     const x = ev.x - getState().views.map!.layers[0].x;
