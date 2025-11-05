@@ -8,6 +8,7 @@ export const renderMenuUnderlay = ({ views }: RendererContext) => {
       GameState.LOG_HISTORY,
       GameState.INVENTORY,
       GameState.SAVING,
+      GameState.LOADING,
     ];
     const { gameState } = getState();
 

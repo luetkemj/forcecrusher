@@ -355,6 +355,8 @@ class GameWorld {
   }
 
   async loadGameData() {
+    addLog("loading game...");
+
     const data = await dbLoad();
     if (!data) return;
 
@@ -398,6 +400,10 @@ class GameWorld {
       state.version = version;
       state.turnNumber = turnNumber;
     });
+
+    // manually emit user input to trigger game loop after save is complete
+    handleUserInput("exitLoadMode");
+    addLog("game loaded successfully");
   }
 }
 

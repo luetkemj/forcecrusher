@@ -12,6 +12,7 @@ import { handleMakerModeInput } from "../inputHandlers/makerMode";
 import { handleTargetModeInput } from "../inputHandlers/targetMode";
 import { handleMakerModePrefabSelectInput } from "../inputHandlers/makerModePrefabSelect";
 import { handleSavingModeInput } from "../inputHandlers/savingMode";
+import { handleLoadingModeInput } from "../inputHandlers/loadingMode";
 
 export interface InputContext {
   key: string;
@@ -83,6 +84,7 @@ export const createUserInputSystem = ({
       [GameState.MAKER_MODE_PREFAB_SELECT]: handleMakerModePrefabSelectInput,
       [GameState.TARGET]: handleTargetModeInput,
       [GameState.SAVING]: handleSavingModeInput,
+      [GameState.LOADING]: handleLoadingModeInput,
     };
 
     const handler = inputDispatchers[gameState];

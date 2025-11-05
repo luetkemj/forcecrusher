@@ -74,6 +74,7 @@ const init = async () => {
 
   gameLoop();
 
+  // TODO: this func also exists in KeyMap (which one to keep?)
   function handleUserInput(input: KeyboardEvent | string) {
     const key = input instanceof KeyboardEvent ? input.key : input;
 

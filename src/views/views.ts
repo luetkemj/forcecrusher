@@ -18,7 +18,8 @@ export type ViewId =
   | "makerModeRight"
   | "makerModeLeft"
   | "makerModeTop"
-  | "saving";
+  | "saving"
+  | "loading";
 
 type ViewConfig = ConstructorParameters<typeof View>[0];
 
@@ -250,6 +251,19 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
   // saving screen
   saving: {
+    width: 148,
+    height: 39,
+    x: 26,
+    y: 5,
+    layers: 2,
+    tileSets: ["text", "text"],
+    tints: [0x111111, 0xffffff],
+    alphas: [1],
+    visible: false,
+    name: "saving",
+  },
+  // loading screen
+  loading: {
     width: 148,
     height: 39,
     x: 26,
