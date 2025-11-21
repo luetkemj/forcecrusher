@@ -14,6 +14,7 @@ import { createMorgueSystem } from "../systems/morgue.system";
 import { createMovementSystem } from "../systems/movement.system";
 import { createOdorSystem } from "../systems/odor.system";
 import { createOpenSystem } from "../systems/open.system";
+import { createOpenableSystem } from "./openable.system";
 import { createPerceptionSystem } from "./perception.system";
 import { createPickUpSystem } from "../systems/pickUp.system";
 import { createRenderSystem } from "../systems/render.system";
@@ -40,6 +41,7 @@ const morgueSystem = createMorgueSystem(gameWorld);
 const movementSystem = createMovementSystem(gameWorld);
 const odorSystem = createOdorSystem(gameWorld);
 const openSystem = createOpenSystem(gameWorld);
+const openableSystem = createOpenableSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
 const pickUpSystem = createPickUpSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
@@ -64,6 +66,7 @@ export const systems = {
   movement: movementSystem,
   odor: odorSystem,
   open: openSystem,
+  openable: openableSystem,
   perception: perceptionSystem,
   pickUp: pickUpSystem,
   render: renderSystem,
@@ -143,7 +146,7 @@ export const playerTurnPipeline: SystemPipeline = {
     systems.morgue,
     systems.drop,
   ],
-  postMain: [systems.fov],
+  postMain: [systems.openable, systems.fov],
   render: [systems.render],
 };
 
@@ -165,7 +168,7 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.morgue,
     systems.drop,
   ],
-  postMain: [systems.fov],
+  postMain: [systems.openable, systems.fov],
   render: [systems.render],
 };
 
@@ -219,7 +222,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
       systems.morgue,
       systems.drop,
     ],
-    postMain: [systems.fov],
+    postMain: [systems.openable, systems.fov],
     render: [systems.render],
   },
 

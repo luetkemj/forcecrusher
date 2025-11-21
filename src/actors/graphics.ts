@@ -1,8 +1,17 @@
 export enum chars {
   "armor" = "]",
   "default" = "?",
+
   "doorClosed" = "+",
-  "doorOpen" = "'",
+  "doorOpen" = "|",
+  "doorAjar" = "/",
+  "doorJammed" = "-",
+  "doorBroken" = "%",
+  "doorSealed" = "x",
+
+  "lock" = "x",
+  "trap" = "^",
+
   "floor" = "•",
   "owlbear" = "F",
   "player" = "@",

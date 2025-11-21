@@ -68,7 +68,7 @@ const init = async () => {
     preInput: [],
     input: [],
     main: [],
-    postMain: [systems.fov],
+    postMain: [systems.openable, systems.fov],
     render: [systems.render],
   });
 

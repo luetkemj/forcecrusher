@@ -11,12 +11,22 @@ export const createOpenSystem = ({ world, registry }: IGameWorld) => {
       const target = registry.get(actor.tryOpen.id);
       if (!target) return;
 
+      if (target.openable?.isLocked) {
+        addLog(`${colorEntityName(target)} is locked.`);
+        // locked must be opened first
+        // key with id to match door with id
+        // can be picked with tool
+        // can be broken with force
+        return world.removeComponent(actor, "tryOpen");
+      }
+
       if (target.openable?.state === OpenState.Open) {
         addLog(`${colorEntityName(target)} is open.`);
+        return world.removeComponent(actor, "tryOpen");
       }
 
       if (target.openable?.state === OpenState.Closed) {
-        if (isSmartEnough(actor)) {
+        if (isSmartEnough(actor, target)) {
           openDoor(target);
 
           if (actor.pc) {
@@ -31,28 +41,51 @@ export const createOpenSystem = ({ world, registry }: IGameWorld) => {
             );
           }
         }
-
-        world.removeComponent(actor, "tryOpen");
+        return world.removeComponent(actor, "tryOpen");
       }
 
       if (target.openable?.state === OpenState.Ajar) {
         // an unintelligent thing can pass through
+        openDoor(target);
+
+        if (actor.pc) {
+          addLog(
+            `${colorEntityName(actor)} pushes through the open ${colorEntityName(target)}`,
+          );
+        }
+
+        return world.removeComponent(actor, "tryOpen");
       }
 
       if (target.openable?.state === OpenState.Jammed) {
         // must be forced open or skill check to unjam
+        // strength check to force open (very loud)
+        // carpenter's tool and an intelligence check to unjam
+        if (isStrongEnough(actor, target)) {
+          openDoor(target);
+
+          if (actor.pc) {
+            addLog(
+              `${colorEntityName(actor)} opens the ${colorEntityName(target)}`,
+            );
+          }
+        } else {
+          if (actor.pc) {
+            addLog(
+              `${colorEntityName(actor)} is not intelligent enough to open the ${colorEntityName(target)}`,
+            );
+          }
+        }
+        return world.removeComponent(actor, "tryOpen");
       }
 
       if (target.openable?.state === OpenState.Broken) {
         // must be forced open
+        // strenth check to
       }
 
       if (target.openable?.state === OpenState.Sealed) {
         // cannot be opened by normal means (plot lock)
-      }
-
-      if (target.openable?.isLocked) {
-        // locked must be opened first
       }
 
       if (target.openable?.isTrapped) {
@@ -80,12 +113,34 @@ export const createOpenSystem = ({ world, registry }: IGameWorld) => {
       }
     }
   };
-  function isSmartEnough(actor: Entity) {
-    if (actor.intelligence && actor.intelligence > 3) {
-      return true;
+
+  function isSmartEnough(actor: Entity, target: Entity) {
+    if (target.openable?.state === OpenState.Closed) {
+      if (actor.intelligence && actor.intelligence > 3) {
+        return true;
+      }
+    }
+    if (target.openable?.state === OpenState.Jammed) {
+      if (actor.intelligence && actor.intelligence > 15) {
+        return true;
+      }
     }
 
     return false;
+  }
+
+  function isStrongEnough(actor: Entity, target: Entity) {
+    if (target.openable?.state === OpenState.Ajar) {
+      if (actor.strength && actor.strength > 3) {
+        return true;
+      }
+    }
+
+    if (target.openable?.state === OpenState.Jammed) {
+      if (actor.strength && actor.strength > 3) {
+        return true;
+      }
+    }
   }
 
   function openDoor(target: Entity) {
@@ -94,9 +149,6 @@ export const createOpenSystem = ({ world, registry }: IGameWorld) => {
     if (target.openable) {
       target.openable.hasBeenOpened = true;
       target.openable.state = OpenState.Open;
-    }
-    if (target.appearance) {
-      target.appearance.char = chars.doorOpen;
     }
   }
 };

@@ -12,7 +12,7 @@ import {
 import { spawn } from "../actors";
 import { spawnSkeleton, spawnRat } from "./monsters";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
-import { DungeonTags } from "../ecs/enums";
+import { DungeonTags, OpenState } from "../ecs/enums";
 import { Constants } from "./constants";
 
 type Tile = {
@@ -232,7 +232,12 @@ export const generateDungeon = () => {
       }
 
       if (tile.tags.has(DungeonTags.Floor) && wallCount === 2) {
-        spawn("door", { position: { x, y } });
+        const door = spawn("door", { position: { x, y } });
+        // randomize door open state
+        const doorState = sample(Object.values(OpenState));
+        if (door.openable) {
+          door.openable.state = doorState || OpenState.Closed;
+        }
       }
     }
   }
