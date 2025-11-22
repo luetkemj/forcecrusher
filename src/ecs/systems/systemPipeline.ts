@@ -6,6 +6,7 @@ import { createCursorSystem } from "../systems/cursor.system";
 import { createDamageSystem } from "../systems/damage.system";
 import { createDropSystem } from "../systems/drop.system";
 import { createFovSystem } from "../systems/fov.system";
+import { createFireSystem } from "../systems/fire.system";
 import { createInteractSystem } from "../systems/interact.system";
 import { createKickSystem } from "../systems/kick.system";
 import { createKnockbackSystem } from "../systems/knockback.system";
@@ -32,6 +33,7 @@ const cursorSystem = createCursorSystem(gameWorld);
 const damageSystem = createDamageSystem(gameWorld);
 const dropSystem = createDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
+const fireSystem = createFireSystem(gameWorld);
 const interactSystem = createInteractSystem(gameWorld);
 const kickSystem = createKickSystem(gameWorld);
 const knockbackSystem = createKnockbackSystem(gameWorld);
@@ -55,6 +57,7 @@ export const systems = {
   cursor: cursorSystem,
   damage: damageSystem,
   drop: dropSystem,
+  fire: fireSystem,
   fov: fovSystem,
   interact: interactSystem,
   kick: kickSystem,
@@ -131,7 +134,7 @@ export const runPipeline = (pipeline: SystemPipeline, label = "") => {
 };
 
 export const playerTurnPipeline: SystemPipeline = {
-  preInput: [systems.activeEffects],
+  preInput: [systems.activeEffects, systems.fire],
   input: [systems.userInput],
   main: [
     systems.pickUp,

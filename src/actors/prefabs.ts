@@ -121,7 +121,17 @@ export const playerPrefab: Entity = {
       knockbackDistance: 2,
     },
   ],
+  flammable: {
+    ignitionChance: 50,
+    fuel: { max: 1000, current: 1000 },
+    maxIntensity: 3,
+    heatTolerance: 1,
+  },
   pathThrough: true,
+  onFire: {
+    intensity: 1,
+    age: 0,
+  },
 };
 
 // NOTE: Actors / Creatures
@@ -486,4 +496,11 @@ export const floorPrefab: Entity = {
     tileSet: "ascii",
   },
   name: "floor",
+
+  flammable: {
+    ignitionChance: 0.2,
+    fuel: { max: 10, current: 10 },
+    maxIntensity: 3,
+    heatTolerance: 1,
+  },
 };

@@ -129,6 +129,19 @@ export type Entity = {
   door?: true;
   effects?: Array<Effect>;
   entityKind?: EntityKind;
+  flammable?: {
+    ignitionChance: number;
+    fuel: {
+      max: number;
+      current: number;
+    };
+    maxIntensity: number;
+    heatTolerance: number;
+  };
+  onFire?: {
+    intensity: number;
+    age: number;
+  };
   health?: {
     max: number;
     current: number;
