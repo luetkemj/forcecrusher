@@ -38,7 +38,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         if (eap) {
           for (const eid of eap) {
             const entity = registry.get(eid);
-            if (entity && entity.flammable) {
+            if (entity && entity.flammable && !entity.onFire) {
               if (Math.random() < entity.flammable.ignitionChance) {
                 world.addComponent(entity, "onFire", { intensity: 1, age: 0 });
               }
