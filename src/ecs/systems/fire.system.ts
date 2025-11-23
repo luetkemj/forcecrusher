@@ -1,15 +1,15 @@
 import { IGameWorld } from "../engine";
-import { getNeighbors, isAtSamePosition, toPos } from "../../lib/grid";
+import { getNeighbors } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
+import { getEAP } from "../../lib/utils";
 
 const mapBoundary = {
   width: viewConfigs.map.width,
   height: viewConfigs.map.height,
 };
 
-export const createFireSystem = ({ world }: IGameWorld) => {
+export const createFireSystem = ({ world, registry }: IGameWorld) => {
   const onFireQuery = world.with("onFire", "flammable", "position");
-  const flammableQuery = world.with("flammable", "position").without("onFire");
 
   return function fireSystem() {
     for (const actor of onFireQuery) {
@@ -34,18 +34,18 @@ export const createFireSystem = ({ world }: IGameWorld) => {
       // if a flammable entity is not on fire and is in a neighbor position
 
       for (const pos of neighbors) {
-        for (const kindling of flammableQuery) {
-          if (
-            kindling.position &&
-            isAtSamePosition(kindling.position, toPos(pos))
-          ) {
-            if (Math.random() < kindling.flammable.ignitionChance) {
-              world.addComponent(kindling, "onFire", { intensity: 1, age: 0 });
+        const eap = getEAP(pos);
+        if (eap) {
+          for (const eid of eap) {
+            const entity = registry.get(eid);
+            if (entity && entity.flammable) {
+              if (Math.random() < entity.flammable.ignitionChance) {
+                world.addComponent(entity, "onFire", { intensity: 1, age: 0 });
+              }
             }
           }
         }
       }
-      // ignite
 
       // update fire age, intensity and fuel remaining
       if (actor.flammable.fuel.current > 0) {

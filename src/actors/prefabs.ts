@@ -498,7 +498,7 @@ export const floorPrefab: Entity = {
   name: "floor",
 
   flammable: {
-    ignitionChance: 0.2,
+    ignitionChance: 0.1,
     fuel: { max: 10, current: 10 },
     maxIntensity: 3,
     heatTolerance: 1,
