@@ -16,6 +16,7 @@ import {
   wallPrefab,
   doorPrefab,
 } from "./prefabs";
+import { updatePosition } from "../lib/utils";
 
 export const prefabs = {
   // NOTE: Player
@@ -59,6 +60,10 @@ export const spawn = (
     ...cloneDeep(prefabObj),
     ...cloneDeep(components),
   });
+
+  if (entity.position) {
+    updatePosition(gameWorld.world, entity, entity.position);
+  }
 
   return entity;
 };

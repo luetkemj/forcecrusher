@@ -1,6 +1,11 @@
 import { remove, tail } from "lodash";
 import { getState } from "../gameState";
-import { addLog, logFrozenEntity, isSamePosition } from "../../lib/utils";
+import {
+  addLog,
+  logFrozenEntity,
+  isSamePosition,
+  updatePosition,
+} from "../../lib/utils";
 import { IGameWorld, Entity } from "../engine";
 import { line, Pos } from "../../lib/grid";
 import { rangeAttack } from "../../lib/combat";
@@ -68,7 +73,7 @@ export const createThrowSystem = ({ world, registry }: IGameWorld) => {
         // put entity to be thrown on at cursor location
         const position = restingPosition;
         if (position) {
-          thrownEntity.position = { ...position };
+          updatePosition(world, thrownEntity, position);
         }
 
         if (hitEntity?.health) {
@@ -79,7 +84,7 @@ export const createThrowSystem = ({ world, registry }: IGameWorld) => {
       } else {
         // put entity to be thrown on at cursor location
         const position = getState().cursor[1];
-        thrownEntity.position = { ...position };
+        updatePosition(world, thrownEntity, position);
         logFrozenEntity(thrownEntity);
 
         addLog(`${throwerEntity.name} throws ${thrownEntity.name}`);

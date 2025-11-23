@@ -1,5 +1,10 @@
 import { remove, sample } from "lodash";
-import { colorTag, addLog, logFrozenEntity } from "../../lib/utils";
+import {
+  colorTag,
+  addLog,
+  logFrozenEntity,
+  updatePosition,
+} from "../../lib/utils";
 import { circle, toPos, toPosId } from "../../lib/grid";
 import { IGameWorld } from "../engine";
 
@@ -69,10 +74,10 @@ export const createDropSystem = ({ world, registry }: IGameWorld) => {
       if (possibleLocations.size) {
         const posId = sample([...possibleLocations]);
         if (!posId) return;
-        world.addComponent(entity, "position", { ...toPos(posId) });
+        updatePosition(world, entity, { ...toPos(posId) });
       } else {
         // if no open loc, just drop at current location
-        world.addComponent(entity, "position", { ...position });
+        updatePosition(world, entity, position);
       }
 
       // remove item from dropper's inventory

@@ -57,6 +57,7 @@ export type State = {
   interactTargets: Array<Entity>;
   interactActions: string;
   makerModePrefabSelectIndex: number;
+  eapMap: Map<PosId, Set<EntityId>>;
   odorMap: Map<PosId, Record<EntityId, { strength: number }>>;
   soundMap: Map<PosId, Record<EntityId, { strength: number }>>;
   visionMap: Array<{ fov: VisibleFov; canSeePc: boolean }>;
@@ -96,6 +97,7 @@ const state: State = {
   interactTargets: [],
   interactActions: "",
   makerModePrefabSelectIndex: 0,
+  eapMap: new Map(),
   odorMap: new Map(),
   soundMap: new Map(),
   visionMap: [],

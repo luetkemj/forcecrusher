@@ -1,8 +1,9 @@
-import { Entity, gameWorld } from "../ecs/engine";
+import { World } from "miniplex";
+import { Entity, EntityId, IGameWorld, gameWorld } from "../ecs/engine";
 import { Disposition, EntityKind } from "../ecs/enums";
 import { getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
-import { Pos } from "./grid";
+import { Pos, PosId, toPosId } from "./grid";
 import { pull, get } from "lodash";
 
 export const colorTag = (color: number) => {
@@ -136,7 +137,7 @@ export const wield = (equipper: Entity, equipment: Entity) => {
   // equip item
   if (equipper.weaponSlot?.contents) {
     equipper.weaponSlot.contents[0] = equipment.id;
-    gameWorld.world.removeComponent(equipment, "position");
+    removePosition(gameWorld.world, equipment);
 
     // remove from inventory
     if (equipper.container?.contents) {
@@ -166,9 +167,7 @@ export const unWield = (equipper: Entity) => {
         const equippedEntity = gameWorld.registry.get(equippedId);
 
         if (equippedEntity && equipper.position) {
-          gameWorld.world.addComponent(equippedEntity, "position", {
-            ...equipper.position,
-          });
+          updatePosition(gameWorld.world, equippedEntity, equipper.position);
         }
       }
     }
@@ -210,7 +209,7 @@ export const wear = (equipper: Entity, equipment: Entity) => {
   // equip item
   if (equipper.armorSlot?.contents) {
     equipper.armorSlot.contents[0] = equipment.id;
-    gameWorld.world.removeComponent(equipment, "position");
+    removePosition(gameWorld.world, equipment);
 
     // remove from inventory
     if (equipper.container?.contents) {
@@ -238,9 +237,7 @@ export const unWear = (equipper: Entity) => {
         const equippedEntity = gameWorld.registry.get(equippedId);
 
         if (equippedEntity && equipper.position) {
-          gameWorld.world.addComponent(equippedEntity, "position", {
-            ...equipper.position,
-          });
+          updatePosition(gameWorld.world, equippedEntity, equipper.position);
         }
       }
     }
@@ -288,3 +285,54 @@ export const getDisposition = (actor: Entity, target: Entity) => {
   console.log("default neutral disposition", { actor, target });
   return Disposition.Neutral;
 };
+
+export const removePosition = (world: World<Entity>, entity: Entity) => {
+  if (!entity.position) return;
+
+  removeFromEAPMap(toPosId(entity.position), entity.id);
+
+  world.removeComponent(entity, "position");
+};
+
+export const updatePosition = (
+  world: World<Entity>,
+  entity: Entity,
+  newPosition: Pos,
+) => {
+  if (!entity.position) {
+    world.addComponent(entity, "position", newPosition);
+  }
+
+  // there will be a position as we just added it but TS doesn't know
+  if (entity.position) {
+    const oldPosId = toPosId(entity.position);
+    const newPosId = toPosId(newPosition);
+
+    entity.position.x = newPosition.x;
+    entity.position.y = newPosition.y;
+
+    removeFromEAPMap(oldPosId, entity.id);
+    addToEAPMap(newPosId, entity.id);
+  }
+};
+
+function addToEAPMap(pos: PosId, id: EntityId) {
+  let set = getState().eapMap.get(pos);
+  if (!set) {
+    set = new Set();
+    getState().eapMap.set(pos, set);
+  }
+  set.add(id);
+}
+
+function removeFromEAPMap(pos: PosId, id: EntityId) {
+  const set = getState().eapMap.get(pos);
+  if (!set) return;
+
+  set.delete(id);
+  if (set.size === 0) getState().eapMap.delete(pos);
+}
+
+export function getEAP(pos: PosId): Set<EntityId> | undefined {
+  return getState().eapMap.get(pos);
+}
