@@ -20,7 +20,7 @@ const renderable: Entity = {
   appearance: {
     char: chars.default,
     tint: colors.default,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   position: { x: 0, y: 0 },
   name: "renderable",
@@ -59,7 +59,7 @@ const baseWeapon: Entity = {
   appearance: {
     char: chars.weapon,
     tint: colors.steel,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   legendable: true,
   layer200: true,
@@ -77,7 +77,7 @@ export const playerPrefab: Entity = {
   appearance: {
     char: chars.player,
     tint: colors.player,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   health: { max: 1000, current: 1000 },
   legendable: true,
@@ -128,10 +128,10 @@ export const playerPrefab: Entity = {
     heatTolerance: 1,
   },
   pathThrough: true,
-  onFire: {
-    intensity: 1,
-    age: 0,
-  },
+  // onFire: {
+  //   intensity: 1,
+  //   age: 0,
+  // },
 };
 
 // NOTE: Actors / Creatures
@@ -144,7 +144,7 @@ export const ratPrefab: Entity = {
   appearance: {
     char: chars.rat,
     tint: colors.rat,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   legendable: true,
   name: "rat",
@@ -200,7 +200,7 @@ export const skeletonPrefab: Entity = {
   appearance: {
     char: chars.skeleton,
     tint: colors.skeleton,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   legendable: true,
   name: "skeleton",
@@ -247,7 +247,7 @@ export const healthPotionPrefab: Entity = {
   appearance: {
     char: chars.potion,
     tint: colors.potion,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   consumable: true,
   legendable: true,
@@ -265,7 +265,7 @@ export const rockPrefab: Entity = {
   appearance: {
     char: chars.rock,
     tint: colors.rock,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   legendable: true,
   name: "Rock",
@@ -284,6 +284,11 @@ export const shortswordPrefab: Entity = {
   name: "Shortsword",
   description:
     "An unadorned steel shortsword. It won’t impress, but it gets the job done.",
+  appearance: {
+    char: chars.shortsword,
+    tint: colors.steel,
+    tileSet: "kenny",
+  },
   weaponClass: WeaponClass.Martial,
   attacks: [
     {
@@ -323,9 +328,9 @@ export const clubPrefab: Entity = {
   description: "A crude bludgeon, little more than a knotted branch.",
   weaponClass: WeaponClass.Simple,
   appearance: {
-    char: chars.weapon,
+    char: chars.club,
     tint: colors.wood,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   attacks: [
     {
@@ -345,6 +350,11 @@ export const daggerPrefab: Entity = {
   ...baseWeapon,
   name: "Dagger",
   description: "A rusted dagger with a chipped edge and a dark past.",
+  appearance: {
+    char: chars.dagger,
+    tint: colors.wood,
+    tileSet: "kenny",
+  },
   weaponClass: WeaponClass.Simple,
   attacks: [
     {
@@ -382,7 +392,7 @@ export const leatherArmor: Entity = {
   appearance: {
     char: chars.armor,
     tint: colors.leather,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   legendable: true,
   name: "Leather Armor",
@@ -401,7 +411,7 @@ export const doorPrefab: Entity = {
   appearance: {
     char: chars.doorClosed,
     tint: colors.wood,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   name: "door",
   legendable: true,
@@ -440,7 +450,7 @@ export const stairsDownPrefab: Entity = {
   appearance: {
     char: chars.stairsDown,
     tint: colors.stairsDown,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   name: "stairs down",
   stairsDown: true,
@@ -456,7 +466,7 @@ export const stairsUpPrefab: Entity = {
   appearance: {
     char: chars.stairsUp,
     tint: colors.stairsUp,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   name: "stairs up",
   stairsUp: true,
@@ -473,7 +483,7 @@ export const wallPrefab: Entity = {
   appearance: {
     char: chars.wall,
     tint: colors.wall,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   blocking: true,
   opaque: true,
@@ -493,7 +503,7 @@ export const floorPrefab: Entity = {
   appearance: {
     char: chars.floor,
     tint: colors.floor,
-    tileSet: "ascii",
+    tileSet: "kenny",
   },
   name: "floor",
 

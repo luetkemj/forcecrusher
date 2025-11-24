@@ -9,6 +9,7 @@ import {
 } from "pixi.js";
 import { menloBoldAlphaMap as asciiMap } from "../sprite-maps/menlo-bold.map";
 import { menloBoldHalfAlphaMap as fontMap } from "../sprite-maps/menlo-bold-half.map";
+import { kennyGFXMap } from "../sprite-maps/kenny.map";
 
 let app: Application;
 
@@ -29,6 +30,7 @@ type Textures = {
   ascii: Spritesheet;
   text: Spritesheet;
   tile: Texture;
+  kenny: Spritesheet;
 };
 const textures = {} as Textures;
 
@@ -53,6 +55,7 @@ export const loadSprites = async (): Promise<Textures> => {
   textures.ascii = await Assets.load("/forcecrusher/fonts/menlo-bold.json");
   textures.text = await Assets.load("/forcecrusher/fonts/menlo-bold-half.json");
   textures.tile = await Assets.load("/forcecrusher/tile.png");
+  textures.kenny = await Assets.load("/forcecrusher/gfx/kenny.json");
 
   return textures;
 };
@@ -67,6 +70,12 @@ const getFontTexture = (char: string): Texture => {
 
 const getTileTexture = (): Texture => {
   return textures.tile;
+};
+
+const getKennyTexture = (char: string): Texture => {
+  const charNum = [kennyGFXMap[char as keyof typeof kennyGFXMap]];
+  const key = `monochrome_packed-${charNum}.png`;
+  return textures.kenny.textures[key];
 };
 
 const namedColors: Record<string, number> = {
@@ -261,6 +270,7 @@ export class View {
     const { tileSet, char } = opts;
     if (tileSet === "ascii") return getAsciiTexture(char);
     if (tileSet === "text") return getFontTexture(char);
+    if (tileSet === "kenny") return getKennyTexture(char);
     return getTileTexture();
   };
 
