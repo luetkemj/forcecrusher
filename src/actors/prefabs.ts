@@ -189,6 +189,12 @@ export const ratPrefab: Entity = {
     maxDamageOnKick: 2,
   },
   vision: { range: 3, visible: [] },
+  flammable: {
+    ignitionChance: 0.75,
+    fuel: { max: 10, current: 10 },
+    maxIntensity: 3,
+    heatTolerance: 1,
+  },
 };
 
 export const skeletonPrefab: Entity = {
@@ -237,6 +243,12 @@ export const skeletonPrefab: Entity = {
       "A simple medium sized burlap pouch with a single shoulder strap.",
     slots: 10,
     contents: [],
+  },
+  flammable: {
+    ignitionChance: 0.25,
+    fuel: { max: 10, current: 10 },
+    maxIntensity: 3,
+    heatTolerance: 1,
   },
 };
 
