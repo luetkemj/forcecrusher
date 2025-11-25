@@ -18,7 +18,7 @@ export const renderMap = ({ views, queries }: RendererContext) => {
     // render everything in FOV
     for (const query of allLayers) {
       for (const entity of query) {
-        if (entity.inFov) renderEntity(view, entity, 1);
+        if (entity.inFov) renderEntity(view, entity, 1, 0);
       }
     }
 
@@ -26,7 +26,7 @@ export const renderMap = ({ views, queries }: RendererContext) => {
     for (const query of allLayers) {
       for (const entity of query) {
         if (!entity.inFov && entity.revealed && !entity.ai)
-          renderEntity(view, entity, 0.35);
+          renderEntity(view, entity, 0.35, 0x134d8f);
       }
     }
 
@@ -36,7 +36,7 @@ export const renderMap = ({ views, queries }: RendererContext) => {
     ) {
       for (const query of allLayers) {
         for (const entity of query) {
-          renderEntity(view, entity, 1);
+          renderEntity(view, entity, 1, 0);
         }
       }
     }

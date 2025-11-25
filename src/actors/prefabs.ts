@@ -128,10 +128,10 @@ export const playerPrefab: Entity = {
     heatTolerance: 1,
   },
   pathThrough: true,
-  // onFire: {
-  //   intensity: 1,
-  //   age: 0,
-  // },
+  onFire: {
+    intensity: 1,
+    age: 0,
+  },
 };
 
 // NOTE: Actors / Creatures

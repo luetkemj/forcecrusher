@@ -115,7 +115,12 @@ export const getAlpha = (index: number) => {
   return 1;
 };
 
-export const renderEntity = (view: View, entity: Entity, alpha: number) => {
+export const renderEntity = (
+  view: View,
+  entity: Entity,
+  alpha: number,
+  tintOverride: number,
+) => {
   const { appearance, position } = entity;
   if (!appearance || !position) return;
 
@@ -124,6 +129,6 @@ export const renderEntity = (view: View, entity: Entity, alpha: number) => {
 
   view?.updateCell({
     0: { char, tint: 0x000000, alpha: 0, tileSet: "tile", x, y },
-    1: { char, tint, alpha, tileSet, x, y },
+    1: { char, tint: tintOverride || tint, alpha, tileSet, x, y },
   });
 };
