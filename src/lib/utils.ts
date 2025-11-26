@@ -1,5 +1,5 @@
 import { World } from "miniplex";
-import { Entity, EntityId, IGameWorld, gameWorld } from "../ecs/engine";
+import { Entity, EntityId, gameWorld } from "../ecs/engine";
 import { Disposition, EntityKind } from "../ecs/enums";
 import { getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
