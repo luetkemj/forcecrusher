@@ -1,11 +1,10 @@
 import { IGameWorld } from "../engine";
-import { circle, getNeighbors, toPos, toPosId } from "../../lib/grid";
+import { getNeighbors, toPos, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
 import { DamageType } from "../enums";
 import createFOV from "../../lib/fov";
-import { map } from "lodash";
 
 const mapBoundary = {
   width: viewConfigs.map.width,

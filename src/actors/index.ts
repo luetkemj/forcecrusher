@@ -71,7 +71,7 @@ export const spawn = (
   // calculate flammability
   const { material, mass } = entity;
   if (material && mass) {
-    const flammable = calculateFlammability(entity.material, entity.mass);
+    const flammable = calculateFlammability(material, mass);
     gameWorld.world.addComponent(entity, "flammable", flammable);
   }
 
@@ -167,6 +167,7 @@ function calculateFlammability(material: Material, mass: number) {
       fuel: { max: 0, current: 0 },
       maxIntensity: 0,
       heatTolerance: base?.heatTolerance ?? 999,
+      explosive: base.explosive,
     };
   }
 

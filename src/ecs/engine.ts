@@ -138,7 +138,7 @@ export type Entity = {
     };
     maxIntensity: number;
     heatTolerance: number;
-    explosive: number;
+    explosive: boolean;
   };
   onFire?: {
     intensity: number;
