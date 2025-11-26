@@ -290,7 +290,7 @@ export const generateDungeon = () => {
     }
   });
 
-  for (let _ = 0; _ < 8; _++) {
+  for (let _ = 0; _ < 10; _++) {
     Object.keys(grassTiles).forEach((posId) => {
       const pos = toPos(posId);
       const neighbors = getNeighbors(
@@ -310,7 +310,7 @@ export const generateDungeon = () => {
           !dungeon.tiles[neighbor].tags.has("wall")
         ) {
           const newGrassPosition = toPos(neighbor);
-          if (Math.random() < 0.15) {
+          if (Math.random() < 0.2) {
             const newGrass = spawn("grass", { position: newGrassPosition });
             if (newGrass.position) {
               grassTiles[toPosId(newGrass.position)] = newGrass;
