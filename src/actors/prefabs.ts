@@ -5,6 +5,7 @@ import {
   OpenState,
   EffectType,
   EntityKind,
+  Material,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -109,6 +110,7 @@ export const playerPrefab: Entity = {
     slots: 1,
   },
   damages: [],
+  immunities: [DamageType.Fire],
   attacks: [
     {
       name: "Kick",
@@ -121,17 +123,13 @@ export const playerPrefab: Entity = {
       knockbackDistance: 2,
     },
   ],
-  flammable: {
-    ignitionChance: 50,
-    fuel: { max: 1000, current: 1000 },
-    maxIntensity: 3,
-    heatTolerance: 1,
-  },
   pathThrough: true,
   onFire: {
     intensity: 1,
     age: 0,
   },
+  mass: 180,
+  material: Material.Flesh,
 };
 
 // NOTE: Actors / Creatures
@@ -189,12 +187,8 @@ export const ratPrefab: Entity = {
     maxDamageOnKick: 2,
   },
   vision: { range: 3, visible: [] },
-  flammable: {
-    ignitionChance: 0.75,
-    fuel: { max: 10, current: 10 },
-    maxIntensity: 3,
-    heatTolerance: 1,
-  },
+  mass: 5,
+  material: Material.Flesh,
 };
 
 export const skeletonPrefab: Entity = {
@@ -244,12 +238,8 @@ export const skeletonPrefab: Entity = {
     slots: 10,
     contents: [],
   },
-  flammable: {
-    ignitionChance: 0.25,
-    fuel: { max: 10, current: 10 },
-    maxIntensity: 3,
-    heatTolerance: 1,
-  },
+  mass: 25,
+  material: Material.Bone,
 };
 
 // NOTE: Potions
@@ -268,6 +258,8 @@ export const healthPotionPrefab: Entity = {
   effects: [{ component: "health", delta: 10 }],
   layer200: true,
   pickUp: true,
+  mass: 1,
+  material: Material.Glass,
 };
 
 // NOTE: Items
@@ -288,6 +280,8 @@ export const rockPrefab: Entity = {
     noiseLevel: 3,
     breakable: true,
   },
+  mass: 1,
+  material: Material.Stone,
 };
 
 // NOTE: Weapons
@@ -331,6 +325,8 @@ export const shortswordPrefab: Entity = {
       useModifier: true,
     },
   ],
+  mass: 2,
+  material: Material.Metal,
 };
 
 // simple melee weapons
@@ -356,6 +352,8 @@ export const clubPrefab: Entity = {
       knockbackDistance: 2,
     },
   ],
+  mass: 5,
+  material: Material.Wood,
 };
 
 export const daggerPrefab: Entity = {
@@ -396,6 +394,8 @@ export const daggerPrefab: Entity = {
       useModifier: true,
     },
   ],
+  mass: 0.5,
+  material: Material.Metal,
 };
 
 export const leatherArmor: Entity = {
@@ -413,6 +413,8 @@ export const leatherArmor: Entity = {
   pickUp: true,
   armorClass: 11,
   armorClassMod: "dexterity",
+  mass: 15,
+  material: Material.Leather,
 };
 
 // NOTE: Interactive Structures
@@ -453,6 +455,8 @@ export const doorPrefab: Entity = {
   effectImmunities: [EffectType.Knockback],
   baseArmorClass: 1,
   damages: [],
+  mass: 500,
+  material: Material.Wood,
 };
 
 export const stairsDownPrefab: Entity = {
@@ -469,6 +473,8 @@ export const stairsDownPrefab: Entity = {
   legendable: true,
   description: "Stairs leading down",
   layer200: true,
+  mass: 500,
+  material: Material.Wood,
 };
 
 export const stairsUpPrefab: Entity = {
@@ -485,6 +491,8 @@ export const stairsUpPrefab: Entity = {
   legendable: true,
   description: "Stairs leading up",
   layer200: true,
+  mass: 500,
+  material: Material.Wood,
 };
 
 // NOTE: Terrain / Map Features
@@ -506,6 +514,8 @@ export const wallPrefab: Entity = {
     maxDamageOnKick: 2,
     noiseLevel: 5,
   },
+  mass: 1500,
+  material: Material.Stone,
 };
 
 export const floorPrefab: Entity = {
@@ -518,11 +528,8 @@ export const floorPrefab: Entity = {
     tileSet: "kenny",
   },
   name: "floor",
-
-  flammable: {
-    ignitionChance: 0.1,
-    fuel: { max: 10, current: 10 },
-    maxIntensity: 3,
-    heatTolerance: 1,
-  },
+  // mass: 1500,
+  // material: Material.Stone,
+  mass: 100,
+  material: Material.Oil,
 };

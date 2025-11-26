@@ -98,7 +98,7 @@ export function propagateField(
   strength: number,
   isBlocked: (p: Pos) => boolean,
   isObscured: (p: Pos) => boolean,
-  asObject: boolean = false
+  asObject: boolean = false,
 ): Map<string, number> | Map<string, { strength: number }> {
   const visited = new Map<string, number>();
   const queue: Array<{ pos: Pos; strength: number }> = [

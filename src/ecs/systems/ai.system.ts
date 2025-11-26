@@ -1,6 +1,6 @@
 import type { IGameWorld, Memory } from "../engine";
 import { aStar, wanderToward } from "../../lib/pathfinding";
-import { getDirection } from "../../lib/grid";
+import { getDirection, randomNeighbor } from "../../lib/grid";
 import { getDisposition } from "../../lib/utils";
 import { sortBy } from "lodash";
 
@@ -10,6 +10,13 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
 
   return function aiSystem() {
     for (const actor of aiQuery) {
+      // if onfire move randomly
+      if (actor.onFire) {
+        const newPos = randomNeighbor(actor.position);
+        world.addComponent(actor, "tryMove", newPos);
+        return;
+      }
+
       // path to something of interest - not JUST the player
       let target: Memory | undefined = undefined;
       let hasTarget = false;

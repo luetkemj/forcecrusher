@@ -3,6 +3,7 @@ import {
   DamageType,
   EffectType,
   EntityKind,
+  Material,
   OpenState,
   Sense,
   WeaponClass,
@@ -176,6 +177,8 @@ export type Entity = {
   layer400?: true;
   legendable?: true;
   locked?: true;
+  material?: Material;
+  mass?: number;
   memory?: {
     memories: Map<string, Memory>;
     target?: string;

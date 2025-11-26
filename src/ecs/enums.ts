@@ -68,3 +68,17 @@ export enum WeaponType {
   Melee = "melee",
   Ranged = "ranged",
 }
+
+export enum Material {
+  Flesh = "flesh",
+  Metal = "metal",
+  Bone = "bone",
+  Glass = "glass",
+  Stone = "stone",
+  Wood = "wood",
+  Leather = "leather",
+  Cloth = "cloth",
+  Paper = "paper",
+  Oil = "oil", // For barrels, slimes, traps
+  Plant = "plant", // Bushes, mushrooms, roots
+}

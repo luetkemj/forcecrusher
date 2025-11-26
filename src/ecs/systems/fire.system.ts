@@ -2,6 +2,7 @@ import { IGameWorld } from "../engine";
 import { getNeighbors } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
+import { DamageType } from "../enums";
 
 const mapBoundary = {
   width: viewConfigs.map.width,
@@ -57,8 +58,27 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         world.removeComponent(actor, "onFire");
         world.removeComponent(actor, "flammable");
 
+        const damage = {
+          attacker: null,
+          instigator: actor.id,
+          responder: null,
+          target: actor.id,
+          reason: `burned ${actor.name}`,
+          critical: false,
+          damageAmounts: [
+            {
+              type: DamageType.Fire,
+              amount: actor.health?.max || 0,
+              mod: 0,
+            },
+          ],
+        };
+
+        if (!actor.damages) actor.damages = [];
+        actor.damages.push(damage);
+
         if (actor.appearance) {
-          actor.appearance.tint = 0x111111;
+          actor.appearance.tint = 0x666666;
         }
       }
     }
