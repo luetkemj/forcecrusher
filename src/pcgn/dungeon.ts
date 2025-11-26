@@ -8,12 +8,14 @@ import {
   rectsIntersect,
   toPosId,
   getNeighbors,
+  toPos,
 } from "../lib/grid";
 import { spawn } from "../actors";
 import { spawnSkeleton, spawnRat } from "./monsters";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
+import { Entity } from "../ecs/engine";
 
 type Tile = {
   x: number;
@@ -256,7 +258,6 @@ export const generateDungeon = () => {
   });
 
   // increase number of enemies as you get deeper
-
   dungeon.rooms.forEach((room, index) => {
     const percentile = new DiceRoll("d100").total;
     if (index) {
@@ -275,6 +276,56 @@ export const generateDungeon = () => {
       spawn("stairsDown", { position: { x, y } });
     }
   });
+
+  // seed grass
+  // plant grass in room
+  type GrassMap = Record<PosId, Entity>;
+  const grassTiles: GrassMap = {};
+  dungeon.rooms.forEach((_) => {
+    const { x, y } = sample(sample(dungeon.rooms)?.tiles) || { x: 0, y: 0 };
+    const seedEntity = spawn("grass", { position: { x, y } });
+    // grow grass
+    if (seedEntity.position) {
+      grassTiles[toPosId(seedEntity.position)] = seedEntity;
+    }
+  });
+
+  for (let _ = 0; _ < 8; _++) {
+    Object.keys(grassTiles).forEach((posId) => {
+      const pos = toPos(posId);
+      const neighbors = getNeighbors(
+        { x: pos.x, y: pos.y },
+        "all",
+        {
+          width: Constants.dungeonWidth,
+          height: Constants.dungeonHeight,
+        },
+        true,
+      ) as Array<PosId>;
+
+      // if not already in the grassMap
+      for (const neighbor of neighbors) {
+        if (
+          !grassTiles[neighbor] &&
+          !dungeon.tiles[neighbor].tags.has("wall")
+        ) {
+          const newGrassPosition = toPos(neighbor);
+          if (Math.random() < 0.15) {
+            const newGrass = spawn("grass", { position: newGrassPosition });
+            if (newGrass.position) {
+              grassTiles[toPosId(newGrass.position)] = newGrass;
+            }
+          }
+        }
+      }
+      // if is dirt from the dungeon
+    });
+  }
+
+  // all floor tiles
+  // check grass neighbors
+  // on some random numb grow
+  // continute for some amount of ticks
 
   return dungeon;
 };

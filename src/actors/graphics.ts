@@ -26,7 +26,6 @@ export enum colors {
   "armor" = 0xdaa520, // #daa520
   "default" = 0x00ff77, // #00ff77
   "floor" = 0x333333, // #333333
-  "leather" = 0xa84300, // #a84300
   "player" = 0xffffff, // #ffffff
   "potion" = 0xdb1835, // #db1835
   "rat" = 0xd65a77, // #d65a77
@@ -37,5 +36,16 @@ export enum colors {
   "steel" = 0x9fa3a6, // #9fa3a6
   "wall" = 0x808080, // #808080
   "weapon" = 0xdaa520, // #daa520
-  "wood" = 0x854e25, // #854e25
+  // base materials
+  "wood" = 0x854e25,
+  "cloth" = 0xddd6cd,
+  "paper" = 0xf1e9d2,
+  "plant" = 0xa1df50,
+  "leather" = 0xa84300,
+  "flesh" = 0xd65a77,
+  "bone" = 0xfde5a4,
+  "metal" = 0x9fa3a6,
+  "stone" = 0x7f7f7f,
+  "glass" = 0xc3d4d4,
+  "oil" = 0xdfd855,
 }

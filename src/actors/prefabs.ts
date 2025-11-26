@@ -129,7 +129,7 @@ export const playerPrefab: Entity = {
     age: 0,
   },
   mass: 10,
-  material: Material.Oil,
+  material: Material.Flesh,
 };
 
 // NOTE: Actors / Creatures
@@ -531,5 +531,21 @@ export const floorPrefab: Entity = {
   // mass: 1500,
   // material: Material.Stone,
   mass: 0.1,
-  material: Material.Oil,
+  material: Material.Stone,
+};
+
+export const grassPrefab: Entity = {
+  ...base,
+  ...renderable,
+  ...tile,
+  appearance: {
+    char: chars.grass,
+    tint: colors.plant,
+    tileSet: "kenny",
+  },
+  name: "grassy",
+  description: "Dry grass",
+  layer200: true,
+  mass: 0.4,
+  material: Material.Plant,
 };
