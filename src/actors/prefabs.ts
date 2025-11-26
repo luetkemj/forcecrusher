@@ -128,8 +128,8 @@ export const playerPrefab: Entity = {
     intensity: 1,
     age: 0,
   },
-  mass: 180,
-  material: Material.Flesh,
+  mass: 10,
+  material: Material.Oil,
 };
 
 // NOTE: Actors / Creatures
@@ -187,7 +187,7 @@ export const ratPrefab: Entity = {
     maxDamageOnKick: 2,
   },
   vision: { range: 3, visible: [] },
-  mass: 5,
+  mass: 0.8,
   material: Material.Flesh,
 };
 
@@ -238,7 +238,7 @@ export const skeletonPrefab: Entity = {
     slots: 10,
     contents: [],
   },
-  mass: 25,
+  mass: 6,
   material: Material.Bone,
 };
 
@@ -258,7 +258,7 @@ export const healthPotionPrefab: Entity = {
   effects: [{ component: "health", delta: 10 }],
   layer200: true,
   pickUp: true,
-  mass: 1,
+  mass: 0.8,
   material: Material.Glass,
 };
 
@@ -325,7 +325,7 @@ export const shortswordPrefab: Entity = {
       useModifier: true,
     },
   ],
-  mass: 2,
+  mass: 1.5,
   material: Material.Metal,
 };
 
@@ -352,7 +352,7 @@ export const clubPrefab: Entity = {
       knockbackDistance: 2,
     },
   ],
-  mass: 5,
+  mass: 2,
   material: Material.Wood,
 };
 
@@ -394,7 +394,7 @@ export const daggerPrefab: Entity = {
       useModifier: true,
     },
   ],
-  mass: 0.5,
+  mass: 0.8,
   material: Material.Metal,
 };
 
@@ -413,7 +413,7 @@ export const leatherArmor: Entity = {
   pickUp: true,
   armorClass: 11,
   armorClassMod: "dexterity",
-  mass: 15,
+  mass: 2.5,
   material: Material.Leather,
 };
 
@@ -455,7 +455,7 @@ export const doorPrefab: Entity = {
   effectImmunities: [EffectType.Knockback],
   baseArmorClass: 1,
   damages: [],
-  mass: 500,
+  mass: 10,
   material: Material.Wood,
 };
 
@@ -473,7 +473,7 @@ export const stairsDownPrefab: Entity = {
   legendable: true,
   description: "Stairs leading down",
   layer200: true,
-  mass: 500,
+  mass: 10,
   material: Material.Wood,
 };
 
@@ -491,7 +491,7 @@ export const stairsUpPrefab: Entity = {
   legendable: true,
   description: "Stairs leading up",
   layer200: true,
-  mass: 500,
+  mass: 10,
   material: Material.Wood,
 };
 
@@ -514,7 +514,7 @@ export const wallPrefab: Entity = {
     maxDamageOnKick: 2,
     noiseLevel: 5,
   },
-  mass: 1500,
+  mass: 15,
   material: Material.Stone,
 };
 
@@ -530,6 +530,6 @@ export const floorPrefab: Entity = {
   name: "floor",
   // mass: 1500,
   // material: Material.Stone,
-  mass: 100,
+  mass: 0.1,
   material: Material.Oil,
 };

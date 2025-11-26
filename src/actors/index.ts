@@ -78,17 +78,83 @@ export const spawn = (
 
 function calculateFlammability(material: Material, mass: number) {
   const MATERIAL_FIRE_BASE = {
-    wood: { ignition: 0.35, fuel: 20, maxIntensity: 4, heatTolerance: 1 },
-    cloth: { ignition: 0.7, fuel: 5, maxIntensity: 2, heatTolerance: 0.5 },
-    paper: { ignition: 0.9, fuel: 3, maxIntensity: 2, heatTolerance: 0.2 },
-    plant: { ignition: 0.5, fuel: 7, maxIntensity: 3, heatTolerance: 0.7 },
-    leather: { ignition: 0.2, fuel: 10, maxIntensity: 2, heatTolerance: 1 },
-    flesh: { ignition: 0.05, fuel: 12, maxIntensity: 2, heatTolerance: 2 },
-    bone: { ignition: 0.01, fuel: 3, maxIntensity: 1, heatTolerance: 4 },
-    metal: { ignition: 0, fuel: 0, maxIntensity: 0, heatTolerance: 5 },
-    stone: { ignition: 0, fuel: 0, maxIntensity: 0, heatTolerance: 5 },
-    glass: { ignition: 0, fuel: 0, maxIntensity: 0, heatTolerance: 3 },
-    oil: { ignition: 0.9, fuel: 15, maxIntensity: 5, heatTolerance: 0.1 },
+    wood: {
+      ignition: 0.35,
+      fuel: 20,
+      maxIntensity: 4,
+      heatTolerance: 1,
+      explosive: false,
+    },
+    cloth: {
+      ignition: 0.7,
+      fuel: 5,
+      maxIntensity: 2,
+      heatTolerance: 0.5,
+      explosive: false,
+    },
+    paper: {
+      ignition: 0.9,
+      fuel: 3,
+      maxIntensity: 2,
+      heatTolerance: 0.2,
+      explosive: false,
+    },
+    plant: {
+      ignition: 0.5,
+      fuel: 7,
+      maxIntensity: 3,
+      heatTolerance: 0.7,
+      explosive: false,
+    },
+    leather: {
+      ignition: 0.2,
+      fuel: 10,
+      maxIntensity: 2,
+      heatTolerance: 1,
+      explosive: false,
+    },
+    flesh: {
+      ignition: 0.05,
+      fuel: 12,
+      maxIntensity: 2,
+      heatTolerance: 2,
+      explosive: false,
+    },
+    bone: {
+      ignition: 0.01,
+      fuel: 3,
+      maxIntensity: 1,
+      heatTolerance: 4,
+      explosive: false,
+    },
+    metal: {
+      ignition: 0,
+      fuel: 0,
+      maxIntensity: 0,
+      heatTolerance: 5,
+      explosive: false,
+    },
+    stone: {
+      ignition: 0,
+      fuel: 0,
+      maxIntensity: 0,
+      heatTolerance: 5,
+      explosive: false,
+    },
+    glass: {
+      ignition: 0,
+      fuel: 0,
+      maxIntensity: 0,
+      heatTolerance: 3,
+      explosive: false,
+    },
+    oil: {
+      ignition: 0.9,
+      fuel: 15,
+      maxIntensity: 5,
+      heatTolerance: 0.1,
+      explosive: true,
+    },
   };
 
   const base = MATERIAL_FIRE_BASE[material];
@@ -112,5 +178,6 @@ function calculateFlammability(material: Material, mass: number) {
     fuel: { max: fuelMax, current: fuelMax },
     maxIntensity: base.maxIntensity + (mass > 5 ? 1 : 0),
     heatTolerance: base.heatTolerance,
+    explosive: base.explosive,
   };
 }

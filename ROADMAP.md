@@ -313,19 +313,19 @@ Materials:
 - Oil
 - Plant
 
-| Material | Ignition | Fuel | Max Intensity | Heat Tolerance |
-| -------- | -------- | ---- | ------------- | -------------- |
-| wood     | 0.35     | 20   | 4             | 1              |
-| cloth    | 0.7      | 5    | 2             | 0.5            |
-| paper    | 0.9      | 3    | 2             | 0.2            |
-| plant    | 0.5      | 7    | 3             | 0.7            |
-| leather  | 0.2      | 10   | 2             | 1              |
-| flesh    | 0.05     | 12   | 2             | 2              |
-| bone     | 0.01     | 3    | 1             | 4              |
-| metal    | 0        | 0    | 0             | 5              |
-| stone    | 0        | 0    | 0             | 5              |
-| glass    | 0        | 0    | 0             | 3              |
-| oil      | 0.9      | 15   | 5             | 0.1            |
+| Material | Ignition | Fuel | Max Intensity | Heat Tolerance | base color       |
+| -------- | -------- | ---- | ------------- | -------------- | ---------------- |
+| wood     | 0.35     | 20   | 4             | 1              | brown            |
+| cloth    | 0.7      | 5    | 2             | 0.5            | tan              |
+| paper    | 0.9      | 3    | 2             | 0.2            | offwhite         |
+| plant    | 0.5      | 7    | 3             | 0.7            | green            |
+| leather  | 0.2      | 10   | 2             | 1              | brown            |
+| flesh    | 0.05     | 12   | 2             | 2              | brown to pink    |
+| bone     | 0.01     | 3    | 1             | 4              | off white        |
+| metal    | 0        | 0    | 0             | 5              | gray             |
+| stone    | 0        | 0    | 0             | 5              | gray black green |
+| glass    | 0        | 0    | 0             | 3              | green            |
+| oil      | 0.9      | 15   | 5             | 0.1            | olive            |
 
 | Category      | Mass Range |
 | ------------- | ---------- |
@@ -386,7 +386,11 @@ Materials:
 | Dragon (medium)              | 40        | special   |
 | Dragon (ancient)             | 60–80     | special   |
 
-Fluid dynamics
+Objects can be explosive - instantly trigger chance to light (perhaps with an increased change to ignite) over a larger area than the current 4 cardinal directions. would likely cause force damage during the explosion as well.
+
+Using a FOV alg for explosions.
+
+## Fluid dynamics
 
 Something oil should spread to a steady state. Volume & viscosity
 Volume is how much something can spread out - 1 unit per tile, so something with a volume of 20 can spread to 20 tiles
@@ -394,4 +398,8 @@ Viscosity is how quickly something spreads out. Water is very fast (low visosity
 
 Liquid can stack on items and should later according to density, so oil on water. Liquids might also spread more/differntly on top of another liquid - this could make oil spread more on top of water.
 
-Objects can be explosive - instantly trigger chance to light (perhaps with an increased change to ignite) over a larger area than the current 4 cardinal directions.
+https://chatgpt.com/share/692766c2-ba18-8009-893b-ae1ac0182e28
+
+## anatomy
+
+What happens when a body has anatomy - owlbear has feather and fur materials above flesh material. Player has leather and cloth above flesh. Heat becomes important - heat transfer, insulation, destruction of items...

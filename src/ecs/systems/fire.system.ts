@@ -1,8 +1,11 @@
 import { IGameWorld } from "../engine";
-import { getNeighbors } from "../../lib/grid";
+import { circle, getNeighbors, toPos, toPosId } from "../../lib/grid";
+import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
 import { DamageType } from "../enums";
+import createFOV from "../../lib/fov";
+import { map } from "lodash";
 
 const mapBoundary = {
   width: viewConfigs.map.width,
@@ -11,6 +14,7 @@ const mapBoundary = {
 
 export const createFireSystem = ({ world, registry }: IGameWorld) => {
   const onFireQuery = world.with("onFire", "flammable", "position");
+  const opaqueQuery = world.with("opaque", "position");
 
   return function fireSystem() {
     for (const actor of onFireQuery) {
@@ -23,19 +27,34 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         actor.appearance.tint = 0xfcc203;
       }
 
-      // spread fire
-      // for each entity that is on fire
-      // check each neighbor postition
-      const neighbors = getNeighbors(
-        actor.position,
-        "cardinal",
-        mapBoundary,
-        true,
-      ) as Array<string>;
-      // if a flammable entity is not on fire and is in a neighbor position
+      let neighbors: Pos[] = [];
 
+      if (actor.flammable.explosive) {
+        // if actor is explosive, get neighbors withing a range
+        // TODO: FOV creates a square - not the best shape.
+        const FOV = createFOV(
+          opaqueQuery,
+          viewConfigs.map.width,
+          viewConfigs.map.height,
+          actor.position,
+          3,
+        );
+        neighbors = Array.from(FOV.fov).map(toPos);
+      } else {
+        // spread fire
+        // for each entity that is on fire
+        // check each neighbor postition
+        neighbors = getNeighbors(
+          actor.position,
+          "cardinal",
+          mapBoundary,
+          false,
+        ) as Array<Pos>;
+      }
+
+      // if a flammable entity is not on fire and is in a neighbor position
       for (const pos of neighbors) {
-        const eap = getEAP(pos);
+        const eap = getEAP(toPosId(pos));
         if (eap) {
           for (const eid of eap) {
             const entity = registry.get(eid);
