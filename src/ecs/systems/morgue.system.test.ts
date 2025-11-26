@@ -32,7 +32,7 @@ describe("morgue.system", () => {
   test("marks entity as dead and changes components when health <= 0", () => {
     entity.health && (entity.health.current = 0);
     createMorgueSystem(gameWorld)();
-    expect(entity.appearance?.char).toBe("%");
+    expect(entity.appearance?.char).toBe("corpse");
     expect(entity.dead).toBe(true);
     expect(entity.layer200).toBe(true);
     expect(entity.layer300).toBeUndefined();
