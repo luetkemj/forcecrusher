@@ -403,3 +403,26 @@ https://chatgpt.com/share/692766c2-ba18-8009-893b-ae1ac0182e28
 ## anatomy
 
 What happens when a body has anatomy - owlbear has feather and fur materials above flesh material. Player has leather and cloth above flesh. Heat becomes important - heat transfer, insulation, destruction of items...
+
+## z-index
+
+enties have a layer component with the layer the component renders at.
+
+| Layer | Description                                            |
+| ----- | ------------------------------------------------------ |
+| 100   | Floor/Walls                                            |
+| 125   | terrain (grass etc)                                    |
+| 150   | liquid                                                 |
+| 200   | Pickups                                                |
+| 225   | Ground GFX (blood, stains, shadows)                    |
+| 250   | Interactive Feature (stairs, doors, etc)               |
+| 300   | PC/NPC                                                 |
+| 325   | Projectiles                                            |
+| 350   | FX (slash arcs, fire, spell glows, damage popups, etx) |
+| 400   | Volumetric VFX gas/smoke                               |
+
+350 FX (slash arcs, spell glows, damage popups)
+375 Lighting / fog-of-war overlay
+400 Gas/Smoke (volumetric)
+500 In-world UI / targeting cursor
+1000 Screen-space UI

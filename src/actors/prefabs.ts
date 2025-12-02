@@ -430,7 +430,7 @@ export const doorPrefab: Entity = {
   name: "door",
   legendable: true,
   description: "A door",
-  layer200: true,
+  layer250: true,
   opaque: true,
   pathThrough: true,
   blocking: true,
@@ -472,7 +472,7 @@ export const stairsDownPrefab: Entity = {
   stairsDown: true,
   legendable: true,
   description: "Stairs leading down",
-  layer200: true,
+  layer250: true,
   mass: 10,
   material: Material.Wood,
 };
@@ -490,7 +490,7 @@ export const stairsUpPrefab: Entity = {
   stairsUp: true,
   legendable: true,
   description: "Stairs leading up",
-  layer200: true,
+  layer250: true,
   mass: 10,
   material: Material.Wood,
 };
@@ -545,7 +545,7 @@ export const grassPrefab: Entity = {
   },
   name: "grassy",
   description: "Dry grass",
-  layer200: true,
+  layer125: true,
   mass: 0.4,
   material: Material.Plant,
 };

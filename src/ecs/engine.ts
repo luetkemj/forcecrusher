@@ -173,8 +173,14 @@ export type Entity = {
     distance: number;
   };
   layer100?: true;
+  layer125?: true;
+  layer150?: true;
   layer200?: true;
+  layer225?: true;
+  layer250?: true;
   layer300?: true;
+  layer325?: true;
+  layer350?: true;
   layer400?: true;
   legendable?: true;
   locked?: true;

@@ -25,15 +25,34 @@ export interface RendererContext {
     renderable100Query: Query<
       With<Entity, "position" | "appearance" | "layer100">
     >;
+    renderable125Query: Query<
+      With<Entity, "position" | "appearance" | "layer125">
+    >;
+    renderable150Query: Query<
+      With<Entity, "position" | "appearance" | "layer150">
+    >;
     renderable200Query: Query<
       With<Entity, "position" | "appearance" | "layer200">
+    >;
+    renderable225Query: Query<
+      With<Entity, "position" | "appearance" | "layer225">
+    >;
+    renderable250Query: Query<
+      With<Entity, "position" | "appearance" | "layer250">
     >;
     renderable300Query: Query<
       With<Entity, "position" | "appearance" | "layer300">
     >;
+    renderable325Query: Query<
+      With<Entity, "position" | "appearance" | "layer325">
+    >;
+    renderable350Query: Query<
+      With<Entity, "position" | "appearance" | "layer350">
+    >;
     renderable400Query: Query<
       With<Entity, "position" | "appearance" | "layer400">
     >;
+
     pcQuery: Query<With<Entity, "position" | "pc">>;
     inFovQuery: Query<
       With<Entity, "inFov" | "legendable" | "position" | "appearance" | "name">
@@ -44,8 +63,14 @@ export interface RendererContext {
 
 export const createRenderSystem = ({ world, registry }: IGameWorld) => {
   const renderable100Query = world.with("position", "appearance", "layer100");
+  const renderable125Query = world.with("position", "appearance", "layer125");
+  const renderable150Query = world.with("position", "appearance", "layer150");
   const renderable200Query = world.with("position", "appearance", "layer200");
+  const renderable225Query = world.with("position", "appearance", "layer225");
+  const renderable250Query = world.with("position", "appearance", "layer250");
   const renderable300Query = world.with("position", "appearance", "layer300");
+  const renderable325Query = world.with("position", "appearance", "layer325");
+  const renderable350Query = world.with("position", "appearance", "layer350");
   const renderable400Query = world.with("position", "appearance", "layer400");
   // for rendering the legend
   const inFovQuery = world.with(
@@ -61,8 +86,14 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     views: getState().views,
     queries: {
       renderable100Query,
+      renderable125Query,
+      renderable150Query,
       renderable200Query,
+      renderable225Query,
+      renderable250Query,
       renderable300Query,
+      renderable325Query,
+      renderable350Query,
       renderable400Query,
       inFovQuery,
       pcQuery,
