@@ -1,9 +1,10 @@
-import { Query, With } from "miniplex";
+import { Query, With, World } from "miniplex";
 import { IGameWorld, Entity } from "../engine";
 import { getState, Views } from "../gameState";
 import { View } from "../../lib/canvas";
 import { renderLegend } from "../renderers/renderLegend";
 import { renderMap } from "../renderers/renderMap";
+import { renderMapFire } from "../renderers/renderMapFire";
 import { renderOdorMap } from "../renderers/renderOdorMap";
 import { renderVisionMap } from "../renderers/renderVisionMap";
 import { renderSenses } from "../renderers/renderSenses";
@@ -20,6 +21,7 @@ import { renderSaving } from "../renderers/renderSaving";
 import { renderLoading } from "../renderers/renderLoading";
 
 export interface RendererContext {
+  world: World<Entity>;
   views: Views;
   queries: {
     renderable100Query: Query<
@@ -83,6 +85,7 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
   const pcQuery = world.with("pc", "position");
 
   const ctx = {
+    world,
     views: getState().views,
     queries: {
       renderable100Query,
@@ -103,6 +106,7 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
 
   return function renderSystem() {
     renderMap(ctx);
+    renderMapFire(ctx);
     renderOdorMap(ctx);
     renderSoundMap(ctx);
     renderVisionMap(ctx);

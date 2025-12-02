@@ -55,7 +55,9 @@ export const loadSprites = async (): Promise<Textures> => {
   textures.ascii = await Assets.load("/forcecrusher/fonts/menlo-bold.json");
   textures.text = await Assets.load("/forcecrusher/fonts/menlo-bold-half.json");
   textures.tile = await Assets.load("/forcecrusher/tile.png");
-  textures.kenny = await Assets.load("/forcecrusher/gfx/kenny.json");
+  textures.kenny = await Assets.load(
+    "/forcecrusher/gfx/kenny-transparent.json",
+  );
 
   return textures;
 };
@@ -74,7 +76,7 @@ const getTileTexture = (): Texture => {
 
 const getKennyTexture = (char: string): Texture => {
   const charNum = [kennyGFXMap[char as keyof typeof kennyGFXMap]];
-  const key = `monochrome_packed-${charNum}.png`;
+  const key = `monochrome-transparent_packed-${charNum}.png`;
   return textures.kenny.textures[key];
 };
 

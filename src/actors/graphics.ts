@@ -7,6 +7,7 @@ export enum chars {
   "doorClosed" = "doorClosed",
   "doorOpen" = "doorOpen",
   "floor" = "floor",
+  "fire" = "fire",
   "grass" = "grass",
   "owlbear" = "owlbear",
   "player" = "player",

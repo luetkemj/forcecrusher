@@ -23,7 +23,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       // need to store original char somewhere
       // or we render fire above the char?
       if (actor.onFire && actor.appearance) {
-        actor.appearance.tint = 0xfcc203;
+        actor.appearance.tint = 0xfc6400;
       }
 
       let neighbors: Pos[] = [];
