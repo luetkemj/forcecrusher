@@ -27,6 +27,7 @@ export type Views = {
   fps?: View;
   gitHash?: View;
   map?: View;
+  mapFire?: View;
   odorMap?: View;
   soundMap?: View;
   visionMap?: View;
