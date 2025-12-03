@@ -125,10 +125,10 @@ export const playerPrefab: Entity = {
     },
   ],
   pathThrough: true,
-  onFire: {
-    intensity: 1,
-    age: 0,
-  },
+  // onFire: {
+  //   intensity: 1,
+  //   age: 0,
+  // },
   mass: 10,
   material: Material.Flesh,
 };
@@ -534,10 +534,10 @@ export const floorPrefab: Entity = {
   fluidContainer: {
     fluidType: {
       type: Fluids.Water,
-      tint: 0xff0077,
+      tint: 0x0e87cc,
       viscosity: 0.1,
     },
-    volume: 1,
+    volume: 0,
     maxVolume: 10,
   },
 };

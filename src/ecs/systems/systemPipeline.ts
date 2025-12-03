@@ -7,6 +7,7 @@ import { createDamageSystem } from "../systems/damage.system";
 import { createDropSystem } from "../systems/drop.system";
 import { createFovSystem } from "../systems/fov.system";
 import { createFireSystem } from "../systems/fire.system";
+import { createFluidSystem } from "../systems/fluid.system";
 import { createInteractSystem } from "../systems/interact.system";
 import { createKickSystem } from "../systems/kick.system";
 import { createKnockbackSystem } from "../systems/knockback.system";
@@ -34,6 +35,7 @@ const damageSystem = createDamageSystem(gameWorld);
 const dropSystem = createDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
 const fireSystem = createFireSystem(gameWorld);
+const fluidSystem = createFluidSystem(gameWorld);
 const interactSystem = createInteractSystem(gameWorld);
 const kickSystem = createKickSystem(gameWorld);
 const knockbackSystem = createKnockbackSystem(gameWorld);
@@ -58,6 +60,7 @@ export const systems = {
   damage: damageSystem,
   drop: dropSystem,
   fire: fireSystem,
+  fluid: fluidSystem,
   fov: fovSystem,
   interact: interactSystem,
   kick: kickSystem,
@@ -134,7 +137,7 @@ export const runPipeline = (pipeline: SystemPipeline, label = "") => {
 };
 
 export const playerTurnPipeline: SystemPipeline = {
-  preInput: [systems.activeEffects, systems.fire],
+  preInput: [systems.activeEffects],
   input: [systems.userInput],
   main: [
     systems.pickUp,
@@ -152,6 +155,8 @@ export const playerTurnPipeline: SystemPipeline = {
 
 export const worldTurnPipeline: SystemPipeline = {
   preInput: [
+    systems.fluid,
+    systems.fire,
     systems.activeEffects,
     systems.morgue,
     systems.odor,
