@@ -103,11 +103,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
 
       if (!actor.onFire) continue;
 
-      // remove fire when fuel is exhausted
-      if (actor.flammable.fuel.current <= 0) {
-        world.removeComponent(actor, "onFire");
-        world.removeComponent(actor, "flammable");
-
+      if (actor.health) {
         const damage = {
           attacker: null,
           instigator: actor.id,
@@ -118,7 +114,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
           damageAmounts: [
             {
               type: DamageType.Fire,
-              amount: actor.health?.max || 0,
+              amount: actor.health.max / 5,
               mod: 0,
             },
           ],
@@ -126,6 +122,12 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
 
         if (!actor.damages) actor.damages = [];
         actor.damages.push(damage);
+      }
+
+      // remove fire when fuel is exhausted
+      if (actor.flammable.fuel.current <= 0) {
+        world.removeComponent(actor, "onFire");
+        world.removeComponent(actor, "flammable");
 
         if (actor.appearance) {
           actor.appearance.tint = 0x666666;
