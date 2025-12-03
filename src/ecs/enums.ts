@@ -82,3 +82,9 @@ export enum Material {
   Oil = "oil", // For barrels, slimes, traps
   Plant = "plant", // Bushes, mushrooms, roots
 }
+
+export enum Fluids {
+  Oil = "oil",
+  Blood = "blood",
+  Water = "water",
+}

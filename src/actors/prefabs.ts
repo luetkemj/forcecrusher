@@ -6,6 +6,7 @@ import {
   EffectType,
   EntityKind,
   Material,
+  Fluids,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -514,7 +515,7 @@ export const wallPrefab: Entity = {
     maxDamageOnKick: 2,
     noiseLevel: 5,
   },
-  mass: 15,
+  mass: 100,
   material: Material.Stone,
 };
 
@@ -528,10 +529,17 @@ export const floorPrefab: Entity = {
     tileSet: "kenny",
   },
   name: "floor",
-  // mass: 1500,
-  // material: Material.Stone,
-  mass: 0.1,
+  mass: 100,
   material: Material.Stone,
+  fluidContainer: {
+    fluidType: {
+      type: Fluids.Water,
+      tint: 0xff0077,
+      viscosity: 0.1,
+    },
+    volume: 1,
+    maxVolume: 10,
+  },
 };
 
 export const grassPrefab: Entity = {

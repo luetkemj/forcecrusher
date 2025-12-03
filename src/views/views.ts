@@ -92,6 +92,19 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     name: "mapFire",
   },
 
+  mapFluid: {
+    width: 74,
+    height: 39,
+    x: 13,
+    y: 5,
+    layers: 3,
+    tileSets: ["kenny"],
+    tints: [0x000000],
+    alphas: [1],
+    visible: true,
+    name: "mapFire",
+  },
+
   odorMap: {
     width: 74,
     height: 39,

@@ -5,6 +5,7 @@ import { View } from "../../lib/canvas";
 import { renderLegend } from "../renderers/renderLegend";
 import { renderMap } from "../renderers/renderMap";
 import { renderMapFire } from "../renderers/renderMapFire";
+import { renderMapFluid } from "../renderers/renderMapFluid";
 import { renderOdorMap } from "../renderers/renderOdorMap";
 import { renderVisionMap } from "../renderers/renderVisionMap";
 import { renderSenses } from "../renderers/renderSenses";
@@ -107,6 +108,7 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
   return function renderSystem() {
     renderMap(ctx);
     renderMapFire(ctx);
+    renderMapFluid(ctx);
     renderOdorMap(ctx);
     renderSoundMap(ctx);
     renderVisionMap(ctx);

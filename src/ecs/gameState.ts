@@ -28,6 +28,7 @@ export type Views = {
   gitHash?: View;
   map?: View;
   mapFire?: View;
+  mapFluid?: View;
   odorMap?: View;
   soundMap?: View;
   visionMap?: View;
