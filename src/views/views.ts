@@ -6,6 +6,7 @@ export type ViewId =
   | "senses"
   | "map"
   | "mapFire"
+  | "mapFluid"
   | "odorMap"
   | "soundMap"
   | "visionMap"
@@ -62,6 +63,18 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     name: "senses",
   },
 
+  mapFluid: {
+    width: 74,
+    height: 39,
+    x: 13,
+    y: 5,
+    layers: 3,
+    tileSets: ["kenny"],
+    tints: [0x000000],
+    alphas: [1],
+    visible: true,
+    name: "mapFire",
+  },
   // 3 render layers
   // 1: background - ??
   // 2: character - ascii
@@ -80,19 +93,6 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   mapFire: {
-    width: 74,
-    height: 39,
-    x: 13,
-    y: 5,
-    layers: 3,
-    tileSets: ["kenny"],
-    tints: [0x000000],
-    alphas: [1],
-    visible: true,
-    name: "mapFire",
-  },
-
-  mapFluid: {
     width: 74,
     height: 39,
     x: 13,

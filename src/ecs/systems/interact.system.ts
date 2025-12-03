@@ -45,6 +45,14 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
     }
 
     if (!interactTargets.length) {
+      for (const entity of renderable200Query) {
+        if (isAtSamePosition(entity.position, interactDirection)) {
+          interactTargets.push(entity);
+        }
+      }
+    }
+
+    if (!interactTargets.length) {
       for (const entity of renderable100Query) {
         if (isAtSamePosition(entity.position, interactDirection)) {
           interactTargets.push(entity);

@@ -1,119 +1,3 @@
-// import { IGameWorld } from "../engine";
-// import { getNeighbors, toPosId } from "../../lib/grid";
-// import type { Pos } from "../../lib/grid";
-// import { viewConfigs } from "../../views/views";
-// import { getEAP } from "../../lib/utils";
-//
-// const mapBoundary = {
-//   width: viewConfigs.map.width,
-//   height: viewConfigs.map.height,
-// };
-//
-// export const createFluidSystem = ({ world, registry }: IGameWorld) => {
-//   const fluidContainerQuery = world.with("fluidContainer", "position");
-//
-//   return function fluidSystem() {
-//     const deltas = new Map<string, number>(); // eId → delta
-//
-//     for (const actor of fluidContainerQuery) {
-//       if (!actor.fluidContainer.fluidType || actor.fluidContainer.volume <= 0) {
-//         continue;
-//       }
-//
-//       const neighbors = getNeighbors(
-//         actor.position,
-//         "cardinal",
-//         mapBoundary,
-//         false,
-//       ) as Array<Pos>;
-//
-//       for (const nPos of neighbors) {
-//         const nEIds = getEAP(toPosId(nPos));
-//         if (!nEIds) continue;
-//
-//         for (const eId of nEIds) {
-//           const entity = registry.get(eId);
-//           if (!entity) continue;
-//           if (!entity.fluidContainer) continue;
-//
-//           const a = actor.fluidContainer;
-//           const b = entity.fluidContainer;
-//
-//           if (a.fluidType !== b.fluidType) continue;
-//
-//           const diff = a.volume - b.volume;
-//           if (diff <= 0) continue; // no flow if neighbor is greater or equal
-//
-//           let flow = diff * (a.fluidType?.viscosity || 1);
-//
-//           // clamp to avialable space
-//           flow = Math.min(flow, b.maxVolume - b.volume);
-//
-//           if (flow <= 0) continue;
-//
-//           // actor.fluidContainer.volume -= flow;
-//           // entity.fluidContainer.volume += flow;
-//           deltas.set(actor.id, (deltas.get(actor.id) ?? 0) - flow);
-//           deltas.set(entity.id, (deltas.get(entity.id) ?? 0) + flow);
-//
-//           // this always fails - are they not "techically" equal?
-//           // must match fluid type
-//           // if (
-//           //   actor.fluidContainer.fluidType !== entity.fluidContainer.fluidType
-//           // ) {
-//           //   continue;
-//           // }
-//           //
-//
-//           // if (actor.fluidContainer.volume <= 1) {
-//           //   actor.fluidContainer.volume = 1;
-//           //   continue;
-//           // }
-//           //
-//           // // must have room to flow
-//           // const space =
-//           //   entity.fluidContainer.maxVolume - entity.fluidContainer.volume;
-//           //
-//           // if (space <= 0) continue;
-//           //
-//           // const flow = Math.min(
-//           //   actor.fluidContainer.volume *
-//           //     actor.fluidContainer.fluidType.viscosity,
-//           //   space,
-//           // );
-//           // //
-//           // // entity.fluidContainer.volume += Math.max(flow, 1);
-//           // // actor.fluidContainer.volume -= Math.min(flow, 1);
-//           // //
-//           // actor.fluidContainer.volume -= flow;
-//           // if (actor.fluidContainer.volume < 1) {
-//           //   actor.fluidContainer.volume = 1;
-//           // }
-//           //
-//           // entity.fluidContainer.volume += flow;
-//           // if (entity.fluidContainer.volume > entity.fluidContainer.maxVolume) {
-//           //   entity.fluidContainer.volume = entity.fluidContainer.maxVolume;
-//           // }
-//         }
-//       }
-//     }
-//
-//     console.log(deltas);
-//
-//     for (const [eId, delta] of deltas) {
-//       const entity = registry.get(eId);
-//       if (!entity?.fluidContainer) continue;
-//       entity.fluidContainer.volume += delta;
-//
-//       if (entity.fluidContainer.volume < 0.0001)
-//         entity.fluidContainer.volume = 0;
-//
-//       if (entity.fluidContainer.volume > entity.fluidContainer.maxVolume)
-//         entity.fluidContainer.volume = entity.fluidContainer.maxVolume;
-//     }
-//   };
-// };
-
 import { IGameWorld } from "../engine";
 import { getNeighbors, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
@@ -152,6 +36,15 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
       for (const nPos of neighbors) {
         const nEIds = getEAP(toPosId(nPos));
         if (!nEIds) continue;
+
+        let canFlow = true;
+        for (const eId of nEIds) {
+          const entity = registry.get(eId);
+          // if we can't see through it, we can't flow through it.
+          if (entity?.opaque) canFlow = false;
+        }
+
+        if (!canFlow) continue;
 
         for (const eId of nEIds) {
           const entity = registry.get(eId);

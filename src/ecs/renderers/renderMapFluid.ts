@@ -11,7 +11,7 @@ export const renderMapFluid = ({ views, world }: RendererContext) => {
     for (const entity of fluidContainerQuery) {
       const { x, y } = entity.position;
       const alpha =
-        (entity.fluidContainer.volume / entity.fluidContainer.maxVolume) * 5;
+        (entity.fluidContainer.volume / entity.fluidContainer.maxVolume) * 10;
       if (entity.inFov) {
         view?.updateCell({
           0: {

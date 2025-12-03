@@ -1,10 +1,11 @@
 import { Pos, toPosId } from "../../lib/grid";
 import { propagateField } from "../../lib/pathfinding";
+import { getEAP } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 import { State, getState, setState } from "../gameState";
 
 export const createOdorSystem = (gameWorld: IGameWorld) => {
-  const { world } = gameWorld;
+  const { world, registry } = gameWorld;
   const odorQuery = world.with("odor", "position");
   const blockingQuery = world.with("blocking", "position");
   const pathThroughQuery = world.with("blocking", "position", "pathThrough");
@@ -43,6 +44,21 @@ export const createOdorSystem = (gameWorld: IGameWorld) => {
     }
 
     for (const actor of odorQuery) {
+      // if actor is standing in water, don't propagate smell
+      // this should be from a cmponent - check somewhere else to add/remove a wet component
+      const eap = getEAP(toPosId(actor.position));
+      if (!eap) continue;
+      let canPropagate = true;
+
+      for (const eid of eap) {
+        const entity = registry.get(eid);
+        if (entity?.fluidContainer && entity.fluidContainer.volume > 0) {
+          canPropagate = false;
+        }
+      }
+
+      if (!canPropagate) continue;
+
       const field = propagateField(
         actor.position,
         actor.odor.strength,

@@ -55,6 +55,19 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       for (const pos of neighbors) {
         const eap = getEAP(toPosId(pos));
         if (eap) {
+          let canIgnite = true;
+
+          // if fluid is in same tile - do not ignite.
+          for (const eid of eap) {
+            const entity = registry.get(eid);
+            if (entity?.fluidContainer && entity.fluidContainer.volume > 0) {
+              canIgnite = false;
+              continue;
+            }
+          }
+
+          if (!canIgnite) continue;
+
           for (const eid of eap) {
             const entity = registry.get(eid);
             if (entity && entity.flammable && !entity.onFire) {
@@ -70,6 +83,25 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       if (actor.flammable.fuel.current > 0) {
         actor.flammable.fuel.current -= actor.onFire.intensity;
       }
+
+      // TODO: should probably tie this to a "wet" component of some sort. That will affect ability to light and length of being on fire. Not just a "fire goes out in liquid" system that we have now.
+      // remove fire if submerged
+      const eap = getEAP(toPosId(actor.position));
+      if (!eap) continue;
+
+      for (const eid of eap) {
+        const entity = registry.get(eid);
+        if (entity?.fluidContainer && entity.fluidContainer.volume > 0) {
+          world.removeComponent(actor, "onFire");
+          world.removeComponent(actor, "flammable");
+
+          if (actor.appearance) {
+            actor.appearance.tint = 0x666666;
+          }
+        }
+      }
+
+      if (!actor.onFire) continue;
 
       // remove fire when fuel is exhausted
       if (actor.flammable.fuel.current <= 0) {

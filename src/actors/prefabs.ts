@@ -125,10 +125,10 @@ export const playerPrefab: Entity = {
     },
   ],
   pathThrough: true,
-  // onFire: {
-  //   intensity: 1,
-  //   age: 0,
-  // },
+  onFire: {
+    intensity: 1,
+    age: 0,
+  },
   mass: 10,
   material: Material.Flesh,
 };
