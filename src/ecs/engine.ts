@@ -16,7 +16,6 @@ import { Pos } from "../lib/grid";
 import { saveGameData as dbSave, loadGameData as dbLoad } from "./saveStore";
 import { handleUserInput } from "./inputHandlers/KeyMap";
 import { addLog } from "../lib/utils";
-import { State } from "pixi.js";
 
 export interface IGameWorld {
   world: World<Entity>;
@@ -342,7 +341,7 @@ class GameWorld {
     // first argument is a disallow list - so we are NOT clearing the migratingEIds
     this.clearEntities(migratingEIds);
     // clear the EAP cache
-    setState((state: State) => (state.eapMap = new Map));
+    setState((state: State) => (state.eapMap = new Map()));
 
     if (this.zones.has(zoneId)) {
       // zone found - load zone
