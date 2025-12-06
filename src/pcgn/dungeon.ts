@@ -212,9 +212,11 @@ export const generateDungeon = () => {
       const entity = spawn("floor", { position: { x, y } });
       entityMap.set(toPosId({ x, y }), entity);
 
-      if (Math.random() < 0.0025) {
-        if (entity.fluidContainer) {
-          entity.fluidContainer.volume = 100;
+      if (Math.random() < 0.005) {
+        if (entity.fluids) {
+          const volume = random(10, 100);
+          entity.fluids.lava.volume = volume;
+          entity.fluids.lava.source = true;
         }
       }
     }

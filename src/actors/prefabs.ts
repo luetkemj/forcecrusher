@@ -125,10 +125,10 @@ export const playerPrefab: Entity = {
     },
   ],
   pathThrough: true,
-  onFire: {
-    intensity: 1,
-    age: 0,
-  },
+  // onFire: {
+  //   intensity: 1,
+  //   age: 0,
+  // },
   mass: 10,
   material: Material.Flesh,
 };
@@ -535,10 +535,48 @@ export const floorPrefab: Entity = {
     fluidType: {
       type: Fluids.Water,
       tint: 0x0e87cc,
-      viscosity: 0.1,
+      viscosity: 0.23,
     },
     volume: 0,
     maxVolume: 10,
+  },
+  fluids: {
+    water: {
+      fluidType: {
+        type: Fluids.Water,
+        tint: 0x0e87cc,
+        viscosity: 0.23,
+      },
+      volume: 0,
+      maxVolume: 10,
+    },
+    blood: {
+      fluidType: {
+        type: Fluids.Blood,
+        tint: 0x780606,
+        viscosity: 0.18,
+      },
+      volume: 0,
+      maxVolume: 10,
+    },
+    oil: {
+      fluidType: {
+        type: Fluids.Oil,
+        tint: 0xeed940,
+        viscosity: 0.15,
+      },
+      volume: 0,
+      maxVolume: 10,
+    },
+    lava: {
+      fluidType: {
+        type: Fluids.Lava,
+        tint: 0xf76806,
+        viscosity: 0.1,
+      },
+      volume: 0,
+      maxVolume: 10,
+    },
   },
 };
 

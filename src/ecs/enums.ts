@@ -87,4 +87,5 @@ export enum Fluids {
   Oil = "oil",
   Blood = "blood",
   Water = "water",
+  Lava = "lava",
 }

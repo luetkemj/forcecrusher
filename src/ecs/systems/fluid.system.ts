@@ -57,7 +57,7 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
           if (a.volume < MIN_FLOW) continue;
 
           // Must match fluid type
-          // if (a.fluidType !== b.fluidType) continue;
+          if (a.fluidType !== b.fluidType) continue;
 
           // Compute difference
           const diff = a.volume - b.volume;
@@ -77,7 +77,9 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
           // ---------------------------------------------
           // Accumulate deltas instead of mutating volumes
           // ---------------------------------------------
-          deltas.set(actor.id, (deltas.get(actor.id) ?? 0) - flow);
+          if (a.source) {
+            deltas.set(actor.id, (deltas.get(actor.id) ?? 0) - flow);
+          }
           deltas.set(entity.id, (deltas.get(entity.id) ?? 0) + flow);
         }
       }

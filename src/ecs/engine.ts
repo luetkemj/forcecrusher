@@ -100,6 +100,7 @@ export interface FluidContainer {
   fluidType: FluidType | null;
   volume: number;
   maxVolume: number;
+  source?: true;
 }
 
 export type EntityId = string;
