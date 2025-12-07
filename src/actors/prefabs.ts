@@ -6,7 +6,6 @@ import {
   EffectType,
   EntityKind,
   Material,
-  Fluids,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -532,51 +531,41 @@ export const floorPrefab: Entity = {
   mass: 100,
   material: Material.Stone,
   fluidContainer: {
-    fluidType: {
-      type: Fluids.Water,
-      tint: 0x0e87cc,
-      viscosity: 0.23,
-    },
-    volume: 0,
-    maxVolume: 10,
-  },
-  fluids: {
-    water: {
-      fluidType: {
-        type: Fluids.Water,
+    fluids: {
+      water: {
+        type: "water",
         tint: 0x0e87cc,
         viscosity: 0.23,
+        minFlow: 0.5,
+        volume: 0,
+        maxVolume: 10,
       },
-      volume: 0,
-      maxVolume: 10,
-    },
-    blood: {
-      fluidType: {
-        type: Fluids.Blood,
+      blood: {
+        type: "blood",
         tint: 0x780606,
         viscosity: 0.18,
+        minFlow: 0.5,
+        volume: 0,
+        maxVolume: 10,
       },
-      volume: 0,
-      maxVolume: 10,
-    },
-    oil: {
-      fluidType: {
-        type: Fluids.Oil,
+      oil: {
+        type: "oil",
         tint: 0xeed940,
         viscosity: 0.15,
+        minFlow: 0.7,
+        volume: 0,
+        maxVolume: 10,
       },
-      volume: 0,
-      maxVolume: 10,
-    },
-    lava: {
-      fluidType: {
-        type: Fluids.Lava,
+      lava: {
+        type: "lava",
         tint: 0xf76806,
-        viscosity: 0.1,
+        viscosity: 0.01,
+        minFlow: 1,
+        volume: 0,
+        maxVolume: 10,
       },
-      volume: 0,
-      maxVolume: 10,
     },
+    maxVolume: 100,
   },
 };
 

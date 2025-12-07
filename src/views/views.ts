@@ -68,12 +68,12 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     height: 39,
     x: 13,
     y: 5,
-    layers: 3,
+    layers: 4,
     tileSets: ["kenny"],
-    tints: [0x000000],
-    alphas: [1],
+    tints: [0x000, 0x000, 0x000, 0x000],
+    alphas: [0, 0, 0, 0],
     visible: true,
-    name: "mapFire",
+    name: "mapFluid",
   },
   // 3 render layers
   // 1: background - ??
