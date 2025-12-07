@@ -1,3 +1,4 @@
+import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
 export const renderMapFire = ({ views, world }: RendererContext) => {
@@ -9,6 +10,24 @@ export const renderMapFire = ({ views, world }: RendererContext) => {
 
     for (const entity of onFireQuery) {
       if (entity.inFov) {
+        const { x, y } = entity.position;
+
+        view?.updateCell({
+          0: {
+            char: "fire",
+            tint: 0xfac000,
+            tileSet: "kenny",
+            x,
+            y,
+            alpha: 0.75,
+          },
+        });
+      }
+
+      if (
+        getState().gameState.startsWith(GameState.MAKER_MODE) ||
+        getState().cheats.seeAll
+      ) {
         const { x, y } = entity.position;
 
         view?.updateCell({

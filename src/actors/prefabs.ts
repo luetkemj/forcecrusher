@@ -124,12 +124,8 @@ export const playerPrefab: Entity = {
     },
   ],
   pathThrough: true,
-  // onFire: {
-  //   intensity: 1,
-  //   age: 0,
-  // },
-  mass: 10,
-  material: Material.Flesh,
+  mass: 1,
+  material: Material.Paper,
 };
 
 // NOTE: Actors / Creatures
@@ -530,6 +526,19 @@ export const floorPrefab: Entity = {
   name: "floor",
   mass: 100,
   material: Material.Stone,
+};
+
+export const fluidContainerPrefab: Entity = {
+  ...base,
+  ...renderable,
+  name: "fluidContainer",
+  layer150: true,
+  appearance: {
+    char: "",
+    tint: 0x000,
+    tileSet: "kenny",
+  },
+  mass: 0,
   fluidContainer: {
     fluids: {
       water: {

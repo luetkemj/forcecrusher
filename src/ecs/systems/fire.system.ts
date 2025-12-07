@@ -57,7 +57,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         if (eap) {
           let canIgnite = true;
 
-          // if fluid is in same tile - do not ignite.
+          // if fluid is in same tile
           for (const eid of eap) {
             const entity = registry.get(eid);
 
@@ -69,7 +69,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
               if (blood.volume > 0 || water.volume > 0) {
                 canIgnite = false;
               }
-              continue;
+              // continue;
             }
           }
 
@@ -89,24 +89,28 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       // update fire age, intensity and fuel remaining
       if (actor.flammable.fuel.current > 0) {
         actor.flammable.fuel.current -= actor.onFire.intensity;
+
+        if (actor.fluidContainer) {
+          actor.fluidContainer.fluids.oil.volume -= actor.onFire.intensity;
+        }
       }
 
       // TODO: should probably tie this to a "wet" component of some sort. That will affect ability to light and length of being on fire. Not just a "fire goes out in liquid" system that we have now.
       // remove fire if submerged
-      const eap = getEAP(toPosId(actor.position));
-      if (!eap) continue;
-
-      for (const eid of eap) {
-        const entity = registry.get(eid);
-        if (entity?.fluidContainer && entity.fluidContainer.volume > 0) {
-          world.removeComponent(actor, "onFire");
-          world.removeComponent(actor, "flammable");
-
-          if (actor.appearance) {
-            actor.appearance.tint = 0x666666;
-          }
-        }
-      }
+      // const eap = getEAP(toPosId(actor.position));
+      // if (!eap) continue;
+      //
+      // for (const eid of eap) {
+      //   const entity = registry.get(eid);
+      //   if (entity?.fluidContainer && entity.fluidContainer.volume > 0) {
+      //     world.removeComponent(actor, "onFire");
+      //     world.removeComponent(actor, "flammable");
+      //
+      //     if (actor.appearance) {
+      //       actor.appearance.tint = 0x666666;
+      //     }
+      //   }
+      // }
 
       if (!actor.onFire) continue;
 

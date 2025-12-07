@@ -3,6 +3,8 @@ import { getNeighbors, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
+import { calculateFlammability } from "../../actors";
+import { Material } from "../enums";
 
 const mapBoundary = {
   width: viewConfigs.map.width,
@@ -116,13 +118,25 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
           c.fluids[fluidType].volume = c.fluids[fluidType].maxVolume;
         }
 
+        if (fluidType === "oil") {
+          entity.flammable = calculateFlammability(
+            Material.Oil,
+            c.fluids[fluidType].volume,
+          );
+        }
+        if (fluidType === "lava") {
+          entity.flammable = {
+            ...calculateFlammability(Material.Lava, c.fluids[fluidType].volume),
+          };
+        }
+
         // special case overrides
         if (fluidType === "lava") {
           if (!deltas[entity.id]) deltas[entity.id] = {};
           // if also water, cell should turn to lavarock
           c.fluids.water.volume = 0;
           // if also oil, cell should catch fire
-          c.fluids.oil.volume = 0;
+          // c.fluids.oil.volume = 0;
           // if also blood, blood should disappear
           c.fluids.blood.volume = 0;
 

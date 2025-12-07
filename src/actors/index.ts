@@ -2,6 +2,7 @@ import { cloneDeep } from "lodash";
 import { gameWorld, type Entity } from "../ecs/engine";
 import {
   floorPrefab,
+  fluidContainerPrefab,
   healthPotionPrefab,
   leatherArmor,
   playerPrefab,
@@ -50,6 +51,7 @@ export const prefabs = {
   // NOTE: Terrain / Map Features
   wall: wallPrefab,
   floor: floorPrefab,
+  fluidContainer: fluidContainerPrefab,
   grass: grassPrefab,
 };
 
@@ -78,7 +80,7 @@ export const spawn = (
   return entity;
 };
 
-function calculateFlammability(material: Material, mass: number) {
+export function calculateFlammability(material: Material, mass: number) {
   const MATERIAL_FIRE_BASE = {
     wood: {
       ignition: 0.35,
@@ -156,6 +158,13 @@ function calculateFlammability(material: Material, mass: number) {
       maxIntensity: 5,
       heatTolerance: 0.1,
       explosive: true,
+    },
+    lava: {
+      ignition: 1,
+      fuel: 100,
+      maxIntensity: 5,
+      heatTolerance: 0.1,
+      explosive: false,
     },
   };
 
