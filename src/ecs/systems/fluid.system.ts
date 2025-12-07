@@ -3,7 +3,6 @@ import { getNeighbors, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
-import { aF } from "vitest/dist/reporters-LqC_WI4d.js";
 
 const mapBoundary = {
   width: viewConfigs.map.width,
@@ -85,24 +84,6 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
               if (!deltas[entity.id]) deltas[entity.id] = {};
               deltas[entity.id][fluidType] =
                 (deltas[entity.id][fluidType] || 0) + flow;
-            } else {
-              // Target doesn't have this fluid type, but we can still transfer
-              // This would be for mixing scenarios
-              const flow = Math.min(
-                aFluid.volume,
-                (bFluid && bFluid.maxVolume) || 0, // Assuming target has max capacity for new fluid
-                10,
-              );
-
-              // Apply delta to source
-              if (!deltas[actor.id]) deltas[actor.id] = {};
-              deltas[actor.id][fluidType] =
-                (deltas[actor.id][fluidType] || 0) - flow;
-
-              // Apply delta to target (add new fluid)
-              if (!deltas[entity.id]) deltas[entity.id] = {};
-              deltas[entity.id][fluidType] =
-                (deltas[entity.id][fluidType] || 0) + flow;
             }
           }
         }
@@ -133,6 +114,19 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
         // Clamp to container capacity
         if (c.fluids[fluidType].volume > c.fluids[fluidType].maxVolume) {
           c.fluids[fluidType].volume = c.fluids[fluidType].maxVolume;
+        }
+
+        // special case overrides
+        if (fluidType === "lava") {
+          if (!deltas[entity.id]) deltas[entity.id] = {};
+          // if also water, cell should turn to lavarock
+          c.fluids.water.volume = 0;
+          // if also oil, cell should catch fire
+          c.fluids.oil.volume = 0;
+          // if also blood, blood should disappear
+          c.fluids.blood.volume = 0;
+
+          world.addComponent(entity, "onFire", { intensity: 1, age: 0 });
         }
       }
     }

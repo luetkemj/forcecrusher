@@ -60,8 +60,15 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
           // if fluid is in same tile - do not ignite.
           for (const eid of eap) {
             const entity = registry.get(eid);
-            if (entity?.fluidContainer && entity.fluidContainer.volume > 0) {
-              canIgnite = false;
+
+            if (entity?.fluidContainer) {
+              const { lava, oil, blood, water } = entity.fluidContainer.fluids;
+
+              if (lava.volume > 0 || oil.volume) continue;
+
+              if (blood.volume > 0 || water.volume > 0) {
+                canIgnite = false;
+              }
               continue;
             }
           }
