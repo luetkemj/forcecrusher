@@ -5,6 +5,7 @@ import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
 import { DamageType } from "../enums";
 import createFOV from "../../lib/fov";
+import { colors } from "../../actors/graphics";
 
 const mapBoundary = {
   width: viewConfigs.map.width,
@@ -141,7 +142,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         world.removeComponent(actor, "flammable");
 
         if (actor.appearance) {
-          actor.appearance.tint = 0x666666;
+          actor.appearance.tint = colors.ash;
         }
       }
     }

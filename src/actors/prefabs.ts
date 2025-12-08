@@ -543,7 +543,7 @@ export const fluidContainerPrefab: Entity = {
     fluids: {
       water: {
         type: "water",
-        tint: 0x0e87cc,
+        tint: colors.water,
         viscosity: 0.23,
         minFlow: 0.5,
         volume: 0,
@@ -551,7 +551,7 @@ export const fluidContainerPrefab: Entity = {
       },
       blood: {
         type: "blood",
-        tint: 0x780606,
+        tint: colors.blood,
         viscosity: 0.18,
         minFlow: 0.5,
         volume: 0,
@@ -559,7 +559,7 @@ export const fluidContainerPrefab: Entity = {
       },
       oil: {
         type: "oil",
-        tint: 0xeed940,
+        tint: colors.oil,
         viscosity: 0.15,
         minFlow: 0.7,
         volume: 0,
@@ -567,7 +567,7 @@ export const fluidContainerPrefab: Entity = {
       },
       lava: {
         type: "lava",
-        tint: 0xf76806,
+        tint: colors.lava,
         viscosity: 0.01,
         minFlow: 1,
         volume: 0,

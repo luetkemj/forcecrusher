@@ -1,3 +1,4 @@
+import { chars, colors } from "../../actors/graphics";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
@@ -14,8 +15,8 @@ export const renderMapFire = ({ views, world }: RendererContext) => {
 
         view?.updateCell({
           0: {
-            char: "fire",
-            tint: 0xfac000,
+            char: chars.fire,
+            tint: colors.fire,
             tileSet: "kenny",
             x,
             y,
@@ -32,8 +33,8 @@ export const renderMapFire = ({ views, world }: RendererContext) => {
 
         view?.updateCell({
           0: {
-            char: "fire",
-            tint: 0xfac000,
+            char: chars.fire,
+            tint: colors.fire,
             tileSet: "kenny",
             x,
             y,
