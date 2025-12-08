@@ -217,7 +217,7 @@ export const generateDungeon = () => {
 
       const fluidTypes = ["lava", "oil", "blood", "water"];
 
-      if (Math.random() < 0.005) {
+      if (Math.random() < 0.05) {
         if (fEntity.fluidContainer) {
           const volume = random(10, 10);
           fEntity.fluidContainer.fluids[sample(fluidTypes) || "water"].volume =

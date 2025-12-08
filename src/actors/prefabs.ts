@@ -125,7 +125,7 @@ export const playerPrefab: Entity = {
   ],
   pathThrough: true,
   mass: 1,
-  material: Material.Paper,
+  material: Material.Flesh,
 };
 
 // NOTE: Actors / Creatures

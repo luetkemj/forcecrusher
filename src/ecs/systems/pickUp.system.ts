@@ -1,5 +1,10 @@
 import { isUndefined } from "lodash";
-import { addLog, colorTag, logFrozenEntity } from "../../lib/utils";
+import {
+  addLog,
+  colorTag,
+  logFrozenEntity,
+  removePosition,
+} from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
 export const createPickUpSystem = ({ world, registry }: IGameWorld) => {
@@ -59,7 +64,7 @@ export const createPickUpSystem = ({ world, registry }: IGameWorld) => {
       // put pickUp in container
       container.contents.push(pickupId);
       world.removeComponent(entity, "tryPickUp");
-      world.removeComponent(entity, "position");
+      removePosition(world, entity);
 
       const pickerTint = pickerEntity.appearance?.tint || 0x00ff00;
       const pickedTint = entity.appearance?.tint || 0x00ff00;
