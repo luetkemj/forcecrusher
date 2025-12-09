@@ -70,7 +70,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     y: 5,
     layers: 4,
     tileSets: ["kenny"],
-    tints: [0x000, 0x000, 0x000, 0x000],
+    tints: [0x000000, 0x000000, 0x000000, 0x000000],
     alphas: [0, 0, 0, 0],
     visible: true,
     name: "mapFluid",

@@ -574,7 +574,6 @@ export const fluidContainerPrefab: Entity = {
         maxVolume: 10,
       },
     },
-    maxVolume: 100,
   },
 };
 

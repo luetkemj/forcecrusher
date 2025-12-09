@@ -101,7 +101,6 @@ interface Fluid {
 
 export interface FluidContainer {
   fluids: Record<string, Fluid>;
-  maxVolume: number;
 }
 
 export type EntityId = string;

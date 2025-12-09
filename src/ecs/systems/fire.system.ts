@@ -70,7 +70,6 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
               if (blood.volume > 0 || water.volume > 0) {
                 canIgnite = false;
               }
-              // continue;
             }
           }
 
@@ -98,6 +97,8 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
 
       // TODO: should probably tie this to a "wet" component of some sort. That will affect ability to light and length of being on fire. Not just a "fire goes out in liquid" system that we have now.
       // remove fire if submerged
+      // Should def have a wet component or something.
+      //
       // const eap = getEAP(toPosId(actor.position));
       // if (!eap) continue;
       //

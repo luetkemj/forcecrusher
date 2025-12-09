@@ -133,10 +133,10 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
         // special case overrides
         if (fluidType === "lava") {
           if (!deltas[entity.id]) deltas[entity.id] = {};
+          // water and blood in the presence of lava - disappear - as if they have turned to steam.
+          // oil remains as it is a flamable material and will burn up
           // if also water, cell should turn to lavarock
           c.fluids.water.volume = 0;
-          // if also oil, cell should catch fire
-          // c.fluids.oil.volume = 0;
           // if also blood, blood should disappear
           c.fluids.blood.volume = 0;
 
