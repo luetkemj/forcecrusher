@@ -65,7 +65,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
             if (entity?.fluidContainer) {
               const { lava, oil, blood, water } = entity.fluidContainer.fluids;
 
-              if (lava.volume > 0 || oil.volume) continue;
+              if (lava.volume > 0 || oil.volume > 0) continue;
 
               if (blood.volume > 0 || water.volume > 0) {
                 canIgnite = false;

@@ -48,9 +48,6 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
 
           const b = entity.fluidContainer;
 
-          // Check if target has fluids
-          if (!b.fluids || Object.keys(b.fluids).length <= 0) continue;
-
           // Process fluid interactions
           for (const fluidType in a.fluids) {
             const aFluid = a.fluids[fluidType];
@@ -119,20 +116,20 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
         }
 
         if (fluidType === "oil") {
+          // TODO: this will be overwritten by lava flamability below
           entity.flammable = calculateFlammability(
             Material.Oil,
             c.fluids[fluidType].volume,
           );
         }
         if (fluidType === "lava") {
+          // TODO: this will overwrite the oil's flammability
+          // Does each fluid need it's own flammability component?
+          // Or maybe the function needs to calculate the total somehow?
           entity.flammable = {
             ...calculateFlammability(Material.Lava, c.fluids[fluidType].volume),
           };
-        }
 
-        // special case overrides
-        if (fluidType === "lava") {
-          if (!deltas[entity.id]) deltas[entity.id] = {};
           // water and blood in the presence of lava - disappear - as if they have turned to steam.
           // oil remains as it is a flamable material and will burn up
           // if also water, cell should turn to lavarock
