@@ -213,7 +213,7 @@ export const skeletonPrefab: Entity = {
   intelligence: 6,
   wisdom: 8,
   charisma: 5,
-  immunities: [DamageType.Poison],
+  immunities: [DamageType.Poison, DamageType.Fire],
   resistances: [DamageType.Piercing],
   vulnerabilities: [DamageType.Bludgeoning],
   weaponSlot: {
@@ -235,7 +235,7 @@ export const skeletonPrefab: Entity = {
     contents: [],
   },
   mass: 6,
-  material: Material.Bone,
+  material: Material.Lava,
 };
 
 // NOTE: Potions

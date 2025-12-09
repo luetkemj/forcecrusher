@@ -72,6 +72,7 @@ export enum WeaponType {
 export enum Material {
   Flesh = "flesh",
   Metal = "metal",
+  Blood = "blood",
   Bone = "bone",
   Glass = "glass",
   Stone = "stone",
@@ -82,6 +83,7 @@ export enum Material {
   Paper = "paper",
   Oil = "oil", // For barrels, slimes, traps
   Plant = "plant", // Bushes, mushrooms, roots
+  Water = "water",
 }
 
 export enum Fluids {

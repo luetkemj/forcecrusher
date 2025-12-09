@@ -3,6 +3,7 @@ import { aStar, wanderToward } from "../../lib/pathfinding";
 import { getDirection, randomNeighbor } from "../../lib/grid";
 import { getDisposition } from "../../lib/utils";
 import { sortBy } from "lodash";
+import { DamageType } from "../enums";
 
 export const createAiSystem = ({ world, registry }: IGameWorld) => {
   const aiQuery = world.with("ai", "position", "memory");
@@ -11,7 +12,7 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
   return function aiSystem() {
     for (const actor of aiQuery) {
       // if onfire move randomly
-      if (actor.onFire) {
+      if (actor.onFire && !actor.immunities?.includes(DamageType.Fire)) {
         const newPos = randomNeighbor(actor.position);
         world.addComponent(actor, "tryMove", newPos);
         return;

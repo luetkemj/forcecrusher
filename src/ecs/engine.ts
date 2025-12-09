@@ -157,6 +157,7 @@ export type Entity = {
   onFire?: {
     intensity: number;
     age: number;
+    source?: true;
   };
   health?: {
     max: number;
