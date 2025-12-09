@@ -11,7 +11,7 @@ export const renderMap = ({ views, queries }: RendererContext) => {
     const allLayers = [
       queries.renderable100Query,
       queries.renderable125Query,
-      queries.renderable150Query,
+      // queries.renderable150Query, Fluids - rendered in renderMapFluids
       queries.renderable200Query,
       queries.renderable225Query,
       queries.renderable250Query,

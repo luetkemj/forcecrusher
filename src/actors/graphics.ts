@@ -48,5 +48,13 @@ export enum colors {
   "metal" = 0x9fa3a6,
   "stone" = 0x7f7f7f,
   "glass" = 0xc3d4d4,
+  // fluids
   "oil" = 0xdfd855,
+  "lava" = 0xf76806,
+  // these should also be a material (oil and lava already are)
+  "water" = 0x0e87cc,
+  "blood" = 0x780606,
+
+  "fire" = 0xfac000,
+  "ash" = 0x666666,
 }

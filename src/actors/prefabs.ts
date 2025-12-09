@@ -6,7 +6,6 @@ import {
   EffectType,
   EntityKind,
   Material,
-  Fluids,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -125,11 +124,7 @@ export const playerPrefab: Entity = {
     },
   ],
   pathThrough: true,
-  onFire: {
-    intensity: 1,
-    age: 0,
-  },
-  mass: 10,
+  mass: 1,
   material: Material.Flesh,
 };
 
@@ -531,14 +526,54 @@ export const floorPrefab: Entity = {
   name: "floor",
   mass: 100,
   material: Material.Stone,
+};
+
+export const fluidContainerPrefab: Entity = {
+  ...base,
+  ...renderable,
+  name: "fluidContainer",
+  layer150: true,
+  appearance: {
+    char: "",
+    tint: 0x000,
+    tileSet: "kenny",
+  },
+  mass: 0,
   fluidContainer: {
-    fluidType: {
-      type: Fluids.Water,
-      tint: 0x0e87cc,
-      viscosity: 0.1,
+    fluids: {
+      water: {
+        type: "water",
+        tint: colors.water,
+        viscosity: 0.23,
+        minFlow: 0.5,
+        volume: 0,
+        maxVolume: 10,
+      },
+      blood: {
+        type: "blood",
+        tint: colors.blood,
+        viscosity: 0.18,
+        minFlow: 0.5,
+        volume: 0,
+        maxVolume: 10,
+      },
+      oil: {
+        type: "oil",
+        tint: colors.oil,
+        viscosity: 0.15,
+        minFlow: 0.7,
+        volume: 0,
+        maxVolume: 10,
+      },
+      lava: {
+        type: "lava",
+        tint: colors.lava,
+        viscosity: 0.01,
+        minFlow: 1,
+        volume: 0,
+        maxVolume: 10,
+      },
     },
-    volume: 0,
-    maxVolume: 10,
   },
 };
 

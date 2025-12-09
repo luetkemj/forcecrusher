@@ -1,4 +1,4 @@
-import { addLog, getDisposition } from "../../lib/utils";
+import { addLog, getDisposition, updatePosition } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
 export const createMovementSystem = ({ world }: IGameWorld) => {
@@ -7,7 +7,7 @@ export const createMovementSystem = ({ world }: IGameWorld) => {
 
   return function movementSystem() {
     for (const actor of moveableQuery) {
-      const { position, tryMove } = actor;
+      const { tryMove } = actor;
 
       let blocked = false;
 
@@ -41,8 +41,7 @@ export const createMovementSystem = ({ world }: IGameWorld) => {
       }
 
       if (!blocked) {
-        position.x = tryMove.x;
-        position.y = tryMove.y;
+        updatePosition(world, actor, tryMove);
 
         world.addComponent(actor, "sound", { strength: 10 });
         world.removeComponent(actor, "tryMove");

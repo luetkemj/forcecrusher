@@ -5,7 +5,7 @@ import { toPosId } from "./lib/grid";
 import { getFrozenEntity } from "./lib/utils";
 import { generateDungeon } from "./pcgn/dungeon";
 import { spawnPlayer } from "./pcgn/player";
-import { gameWorld } from "./ecs/engine";
+import { gameWorld, IGameWorld } from "./ecs/engine";
 import {
   type State,
   GameState,
@@ -29,12 +29,14 @@ declare global {
     skulltooth: {
       state: State;
       debug: boolean;
+      gameWorld: IGameWorld;
     };
   }
 }
 window.skulltooth = window.skulltooth || {};
 window.skulltooth.debug = false;
 window.skulltooth.state = getState();
+window.skulltooth.gameWorld = gameWorld;
 
 const init = async () => {
   // setup canvas

@@ -3,6 +3,8 @@ import { getNeighbors, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
+import { calculateFlammability } from "../../actors";
+import { Material } from "../enums";
 
 const mapBoundary = {
   width: viewConfigs.map.width,
@@ -14,9 +16,9 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
 
   return function fluidSystem() {
     // ---------------------------------------------
-    // 1. Prepare delta accumulator (id → deltaVolume)
+    // 1. Prepare delta accumulator (entityID → fluidType → deltaVolume)
     // ---------------------------------------------
-    const deltas = new Map<string, number>();
+    const deltas: Record<string, Record<string, number>> = {}; // entityID → fluidType → delta
 
     // ------------------------------------------------------
     // 2. READ PHASE — compute flows but don't apply them yet
@@ -24,7 +26,8 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
     for (const actor of fluidContainerQuery) {
       const a = actor.fluidContainer;
 
-      if (!a.fluidType || a.volume <= 0) continue;
+      // Check if we have fluids object and it's not empty
+      if (!a.fluids || Object.keys(a.fluids).length <= 0) continue;
 
       const neighbors = getNeighbors(
         actor.position,
@@ -34,51 +37,54 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
       ) as Array<Pos>;
 
       for (const nPos of neighbors) {
-        const nEIds = getEAP(toPosId(nPos));
-        if (!nEIds) continue;
+        const nEids = getEAP(toPosId(nPos));
+        if (!nEids || !nEids.size) continue;
 
-        let canFlow = true;
-        for (const eId of nEIds) {
-          const entity = registry.get(eId);
-          // if we can't see through it, we can't flow through it.
-          if (entity?.opaque) canFlow = false;
-        }
-
-        if (!canFlow) continue;
-
-        for (const eId of nEIds) {
-          const entity = registry.get(eId);
-          if (!entity) continue;
+        for (const nEid of nEids) {
+          const entity = registry.get(nEid);
+          // Skip if no entity, no fluid container or same entity
+          if (!entity || !entity.fluidContainer || entity.id === actor.id)
+            continue;
 
           const b = entity.fluidContainer;
-          if (!b) continue;
 
-          const MIN_FLOW = 0.5; // tweak to taste
-          if (a.volume < MIN_FLOW) continue;
+          // Process fluid interactions
+          for (const fluidType in a.fluids) {
+            const aFluid = a.fluids[fluidType];
 
-          // Must match fluid type
-          // if (a.fluidType !== b.fluidType) continue;
+            if (aFluid.volume < aFluid.minFlow) continue;
 
-          // Compute difference
-          const diff = a.volume - b.volume;
-          // console.log({ a, b, diff });
-          if (diff <= 0) continue; // no flow if neighbor >=
+            let bFluid;
 
-          // Attempt to equalize a fraction of the difference
-          let flow = diff * (a.fluidType.viscosity || 1);
+            // Check if target has this fluid type
+            if (b.fluids[fluidType]) {
+              bFluid = b.fluids[fluidType];
 
-          // Clamp to neighbor's remaining capacity
-          const space = b.maxVolume - b.volume;
-          if (space <= 0) continue;
+              // Calculate flow based on volume difference and viscosity
+              const volumeDiff = aFluid.volume - bFluid.volume;
+              if (Math.abs(volumeDiff) < 0.001) continue; // No significant difference
 
-          flow = Math.min(flow, space);
-          if (flow <= 0) continue;
+              // Attempt to equalize a fraction of the difference
+              let flow = volumeDiff * (aFluid.viscosity || 1);
 
-          // ---------------------------------------------
-          // Accumulate deltas instead of mutating volumes
-          // ---------------------------------------------
-          deltas.set(actor.id, (deltas.get(actor.id) ?? 0) - flow);
-          deltas.set(entity.id, (deltas.get(entity.id) ?? 0) + flow);
+              // Clamp to neighbor's remaining capacity
+              const space = bFluid.maxVolume - bFluid.volume;
+              if (space <= 0) continue;
+
+              flow = Math.min(flow, space);
+              if (flow <= 0) continue;
+
+              // Apply delta to source (negative)
+              if (!deltas[actor.id]) deltas[actor.id] = {};
+              deltas[actor.id][fluidType] =
+                (deltas[actor.id][fluidType] || 0) - flow;
+
+              // Apply delta to target (positive)
+              if (!deltas[entity.id]) deltas[entity.id] = {};
+              deltas[entity.id][fluidType] =
+                (deltas[entity.id][fluidType] || 0) + flow;
+            }
+          }
         }
       }
     }
@@ -86,18 +92,54 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
     // ---------------------------------------------
     // 3. WRITE PHASE — apply all deltas at once
     // ---------------------------------------------
-    for (const [eId, delta] of deltas) {
+    for (const eId in deltas) {
       const entity = registry.get(eId);
       if (!entity?.fluidContainer) continue;
 
       const c = entity.fluidContainer;
-      c.volume += delta;
+      if (!c.fluids) continue;
 
-      // Avoid floating noise
-      if (c.volume < 0.0001) entity.fluidContainer.volume = 0;
+      for (const fluidType in deltas[eId]) {
+        if (!c.fluids[fluidType]) continue;
 
-      // Clamp to container capacity
-      if (c.volume > c.maxVolume) entity.fluidContainer.volume = c.maxVolume;
+        const delta = deltas[eId][fluidType];
+        c.fluids[fluidType].volume += delta;
+
+        // Avoid floating noise
+        if (c.fluids[fluidType].volume < 0.0001) {
+          c.fluids[fluidType].volume = 0;
+        }
+
+        // Clamp to container capacity
+        if (c.fluids[fluidType].volume > c.fluids[fluidType].maxVolume) {
+          c.fluids[fluidType].volume = c.fluids[fluidType].maxVolume;
+        }
+
+        if (fluidType === "oil") {
+          // TODO: this will be overwritten by lava flamability below
+          entity.flammable = calculateFlammability(
+            Material.Oil,
+            c.fluids[fluidType].volume,
+          );
+        }
+        if (fluidType === "lava") {
+          // TODO: this will overwrite the oil's flammability
+          // Does each fluid need it's own flammability component?
+          // Or maybe the function needs to calculate the total somehow?
+          entity.flammable = {
+            ...calculateFlammability(Material.Lava, c.fluids[fluidType].volume),
+          };
+
+          // water and blood in the presence of lava - disappear - as if they have turned to steam.
+          // oil remains as it is a flamable material and will burn up
+          // if also water, cell should turn to lavarock
+          c.fluids.water.volume = 0;
+          // if also blood, blood should disappear
+          c.fluids.blood.volume = 0;
+
+          world.addComponent(entity, "onFire", { intensity: 1, age: 0 });
+        }
+      }
     }
   };
 };

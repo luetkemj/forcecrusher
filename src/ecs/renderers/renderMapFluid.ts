@@ -1,3 +1,5 @@
+import { View } from "../../lib/canvas";
+import { Entity } from "../engine";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
@@ -10,21 +12,14 @@ export const renderMapFluid = ({ views, world }: RendererContext) => {
 
     for (const entity of fluidContainerQuery) {
       const { x, y } = entity.position;
-      const alpha =
-        (entity.fluidContainer.volume / entity.fluidContainer.maxVolume) * 10;
+
       if (entity.inFov) {
-        view?.updateCell({
-          0: {
-            char: "",
-            tint: entity.fluidContainer.fluidType?.tint || 0xffffff,
-            tileSet: "tile",
-            x,
-            y,
-            alpha,
-          },
-        });
+        renderCell(view, entity);
       }
+
       if (!entity.inFov && entity.revealed) {
+        const { alpha } = getCellAlphas(entity);
+
         view?.updateCell({
           0: {
             char: "",
@@ -32,7 +27,7 @@ export const renderMapFluid = ({ views, world }: RendererContext) => {
             tileSet: "tile",
             x,
             y,
-            alpha: Math.min(0.35, alpha),
+            alpha: Math.min(0.15, alpha),
           },
         });
       }
@@ -41,17 +36,75 @@ export const renderMapFluid = ({ views, world }: RendererContext) => {
         getState().gameState.startsWith(GameState.MAKER_MODE) ||
         getState().cheats.seeAll
       ) {
-        view?.updateCell({
-          0: {
-            char: "",
-            tint: entity.fluidContainer.fluidType?.tint || 0xffffff,
-            tileSet: "tile",
-            x,
-            y,
-            alpha,
-          },
-        });
+        renderCell(view, entity);
       }
     }
   }
 };
+
+function getCellAlphas(entity: Entity) {
+  const alphas = {
+    lavaAlpha: 0,
+    oilAlpha: 0,
+    bloodAlpha: 0,
+    waterAlpha: 0,
+    alpha: 0,
+  };
+
+  if (!entity.fluidContainer) return alphas;
+
+  const { lava, oil, blood, water } = entity.fluidContainer.fluids;
+
+  alphas.lavaAlpha = (lava.volume / lava.maxVolume) * 10;
+  alphas.oilAlpha = (oil.volume / oil.maxVolume) * 10;
+  alphas.bloodAlpha = (blood.volume / blood.maxVolume) * 10;
+  alphas.waterAlpha = (water.volume / water.maxVolume) * 10;
+  alphas.alpha =
+    alphas.lavaAlpha + alphas.oilAlpha + alphas.bloodAlpha + alphas.waterAlpha;
+
+  return alphas;
+}
+
+function renderCell(view: View, entity: Entity) {
+  if (!entity.position || !entity.fluidContainer) return;
+  const { x, y } = entity.position;
+
+  const { lava, oil, blood, water } = entity.fluidContainer.fluids;
+  const { lavaAlpha, oilAlpha, waterAlpha, bloodAlpha } = getCellAlphas(entity);
+
+  view?.updateCell({
+    // lava
+    0: {
+      char: "",
+      tint: lava.tint || 0xffffff,
+      tileSet: "tile",
+      x,
+      y,
+      alpha: lavaAlpha,
+    },
+    1: {
+      char: "",
+      tint: oil.tint || 0xffffff,
+      tileSet: "tile",
+      x,
+      y,
+      alpha: oilAlpha,
+    },
+    2: {
+      char: "",
+      tint: blood.tint || 0xffffff,
+      tileSet: "tile",
+      x,
+      y,
+      alpha: bloodAlpha,
+    },
+    3: {
+      char: "",
+      tint: water.tint || 0xffffff,
+      tileSet: "tile",
+      x,
+      y,
+      alpha: waterAlpha,
+    },
+  });
+}

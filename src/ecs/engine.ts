@@ -3,7 +3,6 @@ import {
   DamageType,
   EffectType,
   EntityKind,
-  Fluids,
   Material,
   OpenState,
   Sense,
@@ -90,16 +89,18 @@ export interface DetectedSound {
   posId: string;
 }
 
-export interface FluidType {
-  type: Fluids;
-  tint: number;
+interface Fluid {
+  type: string;
+  volume: number;
+  maxVolume: number;
+  minFlow: number;
   viscosity: number;
+  tint: number;
+  source?: boolean;
 }
 
 export interface FluidContainer {
-  fluidType: FluidType | null;
-  volume: number;
-  maxVolume: number;
+  fluids: Record<string, Fluid>;
 }
 
 export type EntityId = string;

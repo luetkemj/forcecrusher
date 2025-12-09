@@ -76,6 +76,7 @@ export enum Material {
   Glass = "glass",
   Stone = "stone",
   Wood = "wood",
+  Lava = "lava",
   Leather = "leather",
   Cloth = "cloth",
   Paper = "paper",
@@ -87,4 +88,5 @@ export enum Fluids {
   Oil = "oil",
   Blood = "blood",
   Water = "water",
+  Lava = "lava",
 }
