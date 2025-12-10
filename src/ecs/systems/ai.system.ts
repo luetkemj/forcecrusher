@@ -15,7 +15,7 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
       if (actor.onFire && !actor.immunities?.includes(DamageType.Fire)) {
         const newPos = randomNeighbor(actor.position);
         world.addComponent(actor, "tryMove", newPos);
-        return;
+        continue;
       }
 
       // path to something of interest - not JUST the player

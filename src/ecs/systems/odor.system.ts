@@ -3,6 +3,7 @@ import { propagateField } from "../../lib/pathfinding";
 import { getEAP } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 import { State, getState, setState } from "../gameState";
+import { some } from "lodash";
 
 export const createOdorSystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
@@ -52,7 +53,10 @@ export const createOdorSystem = (gameWorld: IGameWorld) => {
 
       for (const eid of eap) {
         const entity = registry.get(eid);
-        if (entity?.fluidContainer && entity.fluidContainer.volume > 0) {
+        if (
+          entity?.fluidContainer &&
+          some(entity.fluidContainer.fluids, (fluid) => fluid.volume > 0)
+        ) {
           canPropagate = false;
         }
       }
