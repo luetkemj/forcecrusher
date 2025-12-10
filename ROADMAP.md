@@ -403,6 +403,7 @@ https://chatgpt.com/share/692766c2-ba18-8009-893b-ae1ac0182e28
 - [ ] wet component to handle extinguishing flames
 - [ ] all liquids should just be materials
 - [ ] need to add a concept of source block for fill large areas or creating rivers etc.
+- [ ] add a lava monster that is made of lava, drips lava, and explodes into a splash of lava on death
 
 ## anatomy
 

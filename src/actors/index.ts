@@ -7,6 +7,7 @@ import {
   leatherArmor,
   playerPrefab,
   ratPrefab,
+  lavaGolemPrefab,
   rockPrefab,
   skeletonPrefab,
   shortswordPrefab,
@@ -26,6 +27,7 @@ export const prefabs = {
   player: playerPrefab,
 
   // NOTE: Actors / Creatures
+  lavaGolem: lavaGolemPrefab,
   rat: ratPrefab,
   skeleton: skeletonPrefab,
 

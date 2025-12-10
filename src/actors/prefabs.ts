@@ -187,6 +187,49 @@ export const ratPrefab: Entity = {
   material: Material.Flesh,
 };
 
+export const lavaGolemPrefab: Entity = {
+  ...base,
+  ...renderable,
+  ...being,
+  entityKind: EntityKind.Humanoid,
+  ai: true,
+  appearance: {
+    char: chars.golem,
+    tint: colors.lava,
+    tileSet: "kenny",
+  },
+  legendable: true,
+  name: "lava golem",
+  ears: { sensitivity: 3, detected: [] },
+  nose: { sensitivity: 0, detected: [] },
+  description: "A humanoid mass of lava, animated by forgotten magic.",
+  pathThrough: true,
+  health: { max: 15, current: 15 },
+  baseArmorClass: 10,
+  strength: 10,
+  dexterity: 14,
+  constitution: 15,
+  intelligence: 6,
+  wisdom: 8,
+  charisma: 5,
+  immunities: [DamageType.Fire, DamageType.Poison, DamageType.Acid],
+  resistances: [DamageType.Bludgeoning, DamageType.Piercing],
+  vulnerabilities: [DamageType.Cold],
+  attacks: [
+    {
+      name: "Lava Punch",
+      verb: "punches",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d6",
+      damageType: DamageType.Fire,
+    },
+  ],
+  damages: [],
+  mass: 6,
+  material: Material.Lava,
+};
+
 export const skeletonPrefab: Entity = {
   ...base,
   ...renderable,
@@ -213,7 +256,7 @@ export const skeletonPrefab: Entity = {
   intelligence: 6,
   wisdom: 8,
   charisma: 5,
-  immunities: [DamageType.Poison, DamageType.Fire],
+  immunities: [DamageType.Poison],
   resistances: [DamageType.Piercing],
   vulnerabilities: [DamageType.Bludgeoning],
   weaponSlot: {
@@ -235,7 +278,7 @@ export const skeletonPrefab: Entity = {
     contents: [],
   },
   mass: 6,
-  material: Material.Lava,
+  material: Material.Bone,
 };
 
 // NOTE: Potions

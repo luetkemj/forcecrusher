@@ -11,6 +11,13 @@ export const spawnRat = (position: Pos) => {
   return rat;
 };
 
+export const spawnLavaGolem = (position: Pos) => {
+  const golem = spawn("lavaGolem", { position });
+  golem.averageDamage = calcAverageDamage(golem);
+
+  return golem;
+};
+
 export const spawnSkeleton = (position: Pos) => {
   const skeleton = spawn("skeleton", { position });
   const randomWeapons = ["shortsword", "club", "dagger"] as const;
