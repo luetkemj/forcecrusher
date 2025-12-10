@@ -8,6 +8,7 @@ export const kennyGFXMap = {
   doorOpen: 550,
   fire: 504,
   floor: 1,
+  golem: 321,
   grass: 4,
   tallGrass: 97,
   owlbear: 421,

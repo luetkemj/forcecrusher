@@ -100,8 +100,6 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
       if (!c.fluids) continue;
 
       for (const fluidType in deltas[eId]) {
-        if (!c.fluids[fluidType]) continue;
-
         const delta = deltas[eId][fluidType];
         c.fluids[fluidType].volume += delta;
 
@@ -115,29 +113,63 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
           c.fluids[fluidType].volume = c.fluids[fluidType].maxVolume;
         }
 
-        if (fluidType === "oil") {
-          // TODO: this will be overwritten by lava flamability below
-          entity.flammable = calculateFlammability(
-            Material.Oil,
-            c.fluids[fluidType].volume,
-          );
-        }
         if (fluidType === "lava") {
-          // TODO: this will overwrite the oil's flammability
-          // Does each fluid need it's own flammability component?
-          // Or maybe the function needs to calculate the total somehow?
-          entity.flammable = {
-            ...calculateFlammability(Material.Lava, c.fluids[fluidType].volume),
-          };
-
-          // water and blood in the presence of lava - disappear - as if they have turned to steam.
+          // water and blood in the presence of lava - disappear - as if they have turned to steam. (need an actual system for that)
           // oil remains as it is a flamable material and will burn up
           // if also water, cell should turn to lavarock
           c.fluids.water.volume = 0;
           // if also blood, blood should disappear
           c.fluids.blood.volume = 0;
+        }
+      }
+    }
 
-          world.addComponent(entity, "onFire", { intensity: 1, age: 0 });
+    // recalculate flammability
+    const fluidLayers = ["lava", "water", "blood", "oil"];
+    for (const entity of fluidContainerQuery) {
+      const c = entity.fluidContainer;
+
+      for (const fluidType of fluidLayers) {
+        // need to do these in order...
+        if (fluidType === "water") {
+          if (c.fluids[fluidType].volume > 0) {
+            entity.flammable = calculateFlammability(
+              Material.Water,
+              c.fluids[fluidType].volume,
+            );
+          }
+        }
+
+        if (fluidType === "blood") {
+          if (c.fluids[fluidType].volume > 0) {
+            entity.flammable = calculateFlammability(
+              Material.Blood,
+              c.fluids[fluidType].volume,
+            );
+          }
+        }
+
+        if (fluidType === "oil") {
+          if (c.fluids[fluidType].volume > 0) {
+            entity.flammable = calculateFlammability(
+              Material.Oil,
+              c.fluids[fluidType].volume,
+            );
+          }
+        }
+
+        if (fluidType === "lava") {
+          if (c.fluids[fluidType].volume > 0) {
+            entity.flammable = calculateFlammability(
+              Material.Lava,
+              c.fluids[fluidType].volume,
+            );
+            world.addComponent(entity, "onFire", {
+              intensity: 1,
+              age: 0,
+              source: true,
+            });
+          }
         }
       }
     }

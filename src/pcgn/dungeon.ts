@@ -11,7 +11,7 @@ import {
   toPos,
 } from "../lib/grid";
 import { spawn } from "../actors";
-import { spawnSkeleton, spawnRat } from "./monsters";
+import { spawnSkeleton, spawnRat, spawnLavaGolem } from "./monsters";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
@@ -214,10 +214,10 @@ export const generateDungeon = () => {
 
       // add fluidContainers to every open floor tile
       const fEntity = spawn("fluidContainer", { position: { x, y } });
-      const fluidTypes = ["lava", "oil", "blood", "water"];
-      if (Math.random() < 0.05) {
+      const fluidTypes = ["oil", "blood", "water"];
+      if (Math.random() < 0.005) {
         if (fEntity.fluidContainer) {
-          const volume = random(10, 10);
+          const volume = random(5, 20);
           fEntity.fluidContainer.fluids[sample(fluidTypes) || "water"].volume =
             volume;
         }
@@ -261,9 +261,13 @@ export const generateDungeon = () => {
     const position = { x: openTile.x, y: openTile.y };
     const percentile = new DiceRoll("d100").total;
 
-    if (percentile < 30) {
+    if (percentile <= 5) {
+      spawnLavaGolem(position);
+    }
+    if (percentile > 5 && percentile <= 30) {
       spawnSkeleton(position);
-    } else {
+    }
+    if (percentile > 30) {
       spawnRat(position);
     }
   });

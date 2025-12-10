@@ -9,6 +9,7 @@ export enum chars {
   "floor" = "floor",
   "fire" = "fire",
   "grass" = "grass",
+  "golem" = "golem",
   "owlbear" = "owlbear",
   "player" = "player",
   "potion" = "potion",

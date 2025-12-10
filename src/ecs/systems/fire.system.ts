@@ -137,6 +137,8 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         actor.damages.push(damage);
       }
 
+      if (actor.onFire.source) continue;
+
       // remove fire when fuel is exhausted
       if (actor.flammable.fuel.current <= 0) {
         world.removeComponent(actor, "onFire");

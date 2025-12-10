@@ -153,10 +153,12 @@ export type Entity = {
     maxIntensity: number;
     heatTolerance: number;
     explosive: boolean;
+    source?: boolean;
   };
   onFire?: {
     intensity: number;
     age: number;
+    source?: boolean;
   };
   health?: {
     max: number;
