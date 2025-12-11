@@ -14,6 +14,7 @@ const base: Entity = {
   id: "",
   version: 1,
   name: "base",
+  postProcess: [],
 };
 
 const renderable: Entity = {
@@ -634,4 +635,32 @@ export const grassPrefab: Entity = {
   layer125: true,
   mass: 0.4,
   material: Material.Plant,
+
+  growth: {
+    chanceToGrow: 0.001,
+    currentStage: 0,
+    maxStage: 1,
+    stages: [
+      {
+        addComponents: {
+          appearance: {
+            char: chars.grass,
+            tint: colors.plant,
+            tileSet: "kenny",
+          },
+        },
+        removeComponents: [],
+      },
+      {
+        addComponents: {
+          appearance: {
+            char: chars.tallGrass,
+            tint: colors.plant,
+            tileSet: "kenny",
+          },
+        },
+        removeComponents: [],
+      },
+    ],
+  },
 };

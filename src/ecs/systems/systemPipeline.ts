@@ -8,6 +8,7 @@ import { createDropSystem } from "../systems/drop.system";
 import { createFovSystem } from "../systems/fov.system";
 import { createFireSystem } from "../systems/fire.system";
 import { createFluidSystem } from "../systems/fluid.system";
+import { createGrowthSystem } from "../systems/growth.system";
 import { createInteractSystem } from "../systems/interact.system";
 import { createKickSystem } from "../systems/kick.system";
 import { createKnockbackSystem } from "../systems/knockback.system";
@@ -18,6 +19,7 @@ import { createOdorSystem } from "../systems/odor.system";
 import { createOpenSystem } from "../systems/open.system";
 import { createPerceptionSystem } from "./perception.system";
 import { createPickUpSystem } from "../systems/pickUp.system";
+import { createPostProcessSystem } from "../systems/postProcess.system";
 import { createRenderSystem } from "../systems/render.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createThrowSystem } from "../systems/throw.system";
@@ -36,6 +38,7 @@ const dropSystem = createDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
 const fireSystem = createFireSystem(gameWorld);
 const fluidSystem = createFluidSystem(gameWorld);
+const growthSystem = createGrowthSystem(gameWorld);
 const interactSystem = createInteractSystem(gameWorld);
 const kickSystem = createKickSystem(gameWorld);
 const knockbackSystem = createKnockbackSystem(gameWorld);
@@ -46,6 +49,7 @@ const odorSystem = createOdorSystem(gameWorld);
 const openSystem = createOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
 const pickUpSystem = createPickUpSystem(gameWorld);
+const postProcessSystem = createPostProcessSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const throwSystem = createThrowSystem(gameWorld);
@@ -62,6 +66,7 @@ export const systems = {
   fire: fireSystem,
   fluid: fluidSystem,
   fov: fovSystem,
+  growth: growthSystem,
   interact: interactSystem,
   kick: kickSystem,
   knockback: knockbackSystem,
@@ -72,6 +77,7 @@ export const systems = {
   open: openSystem,
   perception: perceptionSystem,
   pickUp: pickUpSystem,
+  postProcess: postProcessSystem,
   render: renderSystem,
   sound: soundSystem,
   throw: throwSystem,
@@ -155,6 +161,7 @@ export const playerTurnPipeline: SystemPipeline = {
 
 export const worldTurnPipeline: SystemPipeline = {
   preInput: [
+    systems.growth,
     systems.fluid,
     systems.fire,
     systems.activeEffects,
@@ -173,7 +180,7 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.morgue,
     systems.drop,
   ],
-  postMain: [systems.fov],
+  postMain: [systems.fov, systems.postProcess],
   render: [systems.render],
 };
 

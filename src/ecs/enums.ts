@@ -1,3 +1,8 @@
+export enum PostProcess {
+  UpdateAppearance = "update_appearance",
+  CalculateFlammability = "calculate_flammability",
+}
+
 export enum DamageType {
   Acid = "acid",
   Bludgeoning = "bludgeoning",

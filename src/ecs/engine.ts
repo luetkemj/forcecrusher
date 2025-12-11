@@ -8,6 +8,7 @@ import {
   Sense,
   WeaponClass,
   WeaponType,
+  PostProcess,
 } from "./enums";
 import { type State, getState, setState } from "./gameState";
 import { generateDungeon } from "../pcgn/dungeon";
@@ -99,6 +100,11 @@ interface Fluid {
   source?: boolean;
 }
 
+interface GrowthStage {
+  addComponents?: Partial<Entity>;
+  removeComponents?: Array<Partial<keyof Entity>>;
+}
+
 export interface FluidContainer {
   fluids: Record<string, Fluid>;
 }
@@ -142,8 +148,17 @@ export type Entity = {
   description?: string;
   dexterity?: number;
   door?: true;
+  ears?: {
+    sensitivity: number;
+    detected: Array<DetectedSound>;
+  };
+  effectImmunities?: Array<EffectType>;
   effects?: Array<Effect>;
+  evolveTo?: {
+    stage: number;
+  };
   entityKind?: EntityKind;
+  fluidContainer?: FluidContainer;
   flammable?: {
     ignitionChance: number;
     fuel: {
@@ -155,10 +170,11 @@ export type Entity = {
     explosive: boolean;
     source?: boolean;
   };
-  onFire?: {
-    intensity: number;
-    age: number;
-    source?: boolean;
+  growth?: {
+    chanceToGrow: number;
+    currentStage: number;
+    maxStage: number;
+    stages: Array<GrowthStage>;
   };
   health?: {
     max: number;
@@ -166,11 +182,6 @@ export type Entity = {
   };
   id: EntityId;
   immunities?: Array<DamageType>;
-  ears?: {
-    sensitivity: number;
-    detected: Array<DetectedSound>;
-  };
-  effectImmunities?: Array<EffectType>;
   inFov?: true;
   intelligence?: number;
   interactDirection?: Pos;
@@ -199,7 +210,6 @@ export type Entity = {
   layer350?: true;
   layer400?: true;
   legendable?: true;
-  fluidContainer?: FluidContainer;
   locked?: true;
   material?: Material;
   mass?: number;
@@ -212,6 +222,11 @@ export type Entity = {
     detected: Array<DetectedOdor>;
   };
   odor?: { strength: number };
+  onFire?: {
+    intensity: number;
+    age: number;
+    source?: boolean;
+  };
   opaque?: true;
   open?: true;
   openable?: {
@@ -226,6 +241,13 @@ export type Entity = {
   };
   pathThrough?: true;
   pickUp?: true;
+  postProcess: Array<{
+    delay: number;
+    process: {
+      name: PostProcess;
+      payload: any;
+    };
+  }>;
   name: string;
   paused?: true; // TODO: is this used anywhere?
   pc?: true;

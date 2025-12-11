@@ -3,7 +3,7 @@ import { getNeighbors, toPos, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
-import { DamageType } from "../enums";
+import { DamageType, PostProcess } from "../enums";
 import createFOV from "../../lib/fov";
 import { colors } from "../../actors/graphics";
 
@@ -140,12 +140,35 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       if (actor.onFire.source) continue;
 
       // remove fire when fuel is exhausted
-      if (actor.flammable.fuel.current <= 0) {
+      if (actor.flammable.fuel.current <= 0 && actor.onFire) {
+        // TODO:
+        // this should be triggered by some component - evolve in fire or something
+        // not everything that can grow will change stages from fire.
+
         world.removeComponent(actor, "onFire");
         world.removeComponent(actor, "flammable");
 
         if (actor.appearance) {
           actor.appearance.tint = colors.ash;
+        }
+
+        if (actor.growth) {
+          world.addComponent(actor, "evolveTo", { stage: 0 });
+
+          actor.postProcess.push({
+            delay: 2,
+            process: {
+              name: PostProcess.UpdateAppearance,
+              payload: { tint: colors.blood },
+            },
+          });
+
+          actor.postProcess.push({
+            delay: 10,
+            process: {
+              name: PostProcess.CalculateFlammability,
+            },
+          });
         }
       }
     }
