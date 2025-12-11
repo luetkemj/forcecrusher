@@ -645,6 +645,16 @@ export const grassPrefab: Entity = {
         addComponents: {
           appearance: {
             char: chars.grass,
+            tint: colors.ash,
+            tileSet: "kenny",
+          },
+        },
+        removeComponents: [],
+      },
+      {
+        addComponents: {
+          appearance: {
+            char: chars.grass,
             tint: colors.plant,
             tileSet: "kenny",
           },

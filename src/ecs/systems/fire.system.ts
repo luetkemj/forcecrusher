@@ -159,12 +159,12 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
             delay: 2,
             process: {
               name: PostProcess.UpdateAppearance,
-              payload: { tint: colors.blood },
+              payload: { tint: colors.ash },
             },
           });
 
           actor.postProcess.push({
-            delay: 10,
+            delay: 100,
             process: {
               name: PostProcess.CalculateFlammability,
             },
