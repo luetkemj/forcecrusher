@@ -146,22 +146,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
 
         if (actor.mutable) {
           world.addComponent(actor, "mutateTo", { name: "burnt" });
-
-          // actor.postProcess.push({
-          //   delay: 2,
-          //   process: {
-          //     name: PostProcess.UpdateAppearance,
-          //     payload: { tint: colors.ash },
-          //   },
-          // });
-          //
-          // actor.postProcess.push({
-          //   delay: 100,
-          //   process: {
-          //     name: PostProcess.CalculateFlammability,
-          //   },
-          // });
-        } else {
+        } else if (actor.appearance) {
           actor.appearance.tint = colors.ash;
         }
       }
