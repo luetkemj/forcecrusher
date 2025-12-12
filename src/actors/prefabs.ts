@@ -6,7 +6,6 @@ import {
   EffectType,
   EntityKind,
   Material,
-  PostProcess,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -15,7 +14,6 @@ const base: Entity = {
   id: "",
   version: 1,
   name: "base",
-  postProcess: [],
 };
 
 const renderable: Entity = {
