@@ -100,9 +100,19 @@ interface Fluid {
   source?: boolean;
 }
 
-interface GrowthStage {
+export interface Mutation {
+  name: string;
+  next?: string;
+  chanceToMutate: number;
   addComponents?: Partial<Entity>;
   removeComponents?: Array<Partial<keyof Entity>>;
+  processes?: Array<Process>;
+}
+
+interface Process {
+  name: PostProcess;
+  payload: any;
+  delay: number;
 }
 
 export interface FluidContainer {
@@ -154,9 +164,6 @@ export type Entity = {
   };
   effectImmunities?: Array<EffectType>;
   effects?: Array<Effect>;
-  evolveTo?: {
-    stage: number;
-  };
   entityKind?: EntityKind;
   fluidContainer?: FluidContainer;
   flammable?: {
@@ -170,11 +177,12 @@ export type Entity = {
     explosive: boolean;
     source?: boolean;
   };
-  growth?: {
-    chanceToGrow: number;
-    currentStage: number;
-    maxStage: number;
-    stages: Array<GrowthStage>;
+  mutable?: {
+    current: string;
+    mutations: Array<Mutation>;
+  };
+  mutateTo?: {
+    name: string;
   };
   health?: {
     max: number;
@@ -241,13 +249,7 @@ export type Entity = {
   };
   pathThrough?: true;
   pickUp?: true;
-  postProcess: Array<{
-    delay: number;
-    process: {
-      name: PostProcess;
-      payload: any;
-    };
-  }>;
+  postProcess: Array<Process>;
   name: string;
   paused?: true; // TODO: is this used anywhere?
   pc?: true;

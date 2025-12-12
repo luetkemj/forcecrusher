@@ -141,34 +141,28 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
 
       // remove fire when fuel is exhausted
       if (actor.flammable.fuel.current <= 0 && actor.onFire) {
-        // TODO:
-        // this should be triggered by some component - evolve in fire or something
-        // not everything that can grow will change stages from fire.
-
         world.removeComponent(actor, "onFire");
         world.removeComponent(actor, "flammable");
 
-        if (actor.appearance) {
+        if (actor.mutable) {
+          world.addComponent(actor, "mutateTo", { name: "burnt" });
+
+          // actor.postProcess.push({
+          //   delay: 2,
+          //   process: {
+          //     name: PostProcess.UpdateAppearance,
+          //     payload: { tint: colors.ash },
+          //   },
+          // });
+          //
+          // actor.postProcess.push({
+          //   delay: 100,
+          //   process: {
+          //     name: PostProcess.CalculateFlammability,
+          //   },
+          // });
+        } else {
           actor.appearance.tint = colors.ash;
-        }
-
-        if (actor.growth) {
-          world.addComponent(actor, "evolveTo", { stage: 0 });
-
-          actor.postProcess.push({
-            delay: 2,
-            process: {
-              name: PostProcess.UpdateAppearance,
-              payload: { tint: colors.ash },
-            },
-          });
-
-          actor.postProcess.push({
-            delay: 100,
-            process: {
-              name: PostProcess.CalculateFlammability,
-            },
-          });
         }
       }
     }

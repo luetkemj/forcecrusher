@@ -6,6 +6,7 @@ import {
   EffectType,
   EntityKind,
   Material,
+  PostProcess,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -635,13 +636,13 @@ export const grassPrefab: Entity = {
   layer125: true,
   mass: 0.4,
   material: Material.Plant,
-
-  growth: {
-    chanceToGrow: 0.001,
-    currentStage: 0,
-    maxStage: 1,
-    stages: [
+  mutable: {
+    current: "young",
+    mutations: [
       {
+        next: "young",
+        name: "burnt",
+        chanceToMutate: 0.01,
         addComponents: {
           appearance: {
             char: chars.grass,
@@ -650,8 +651,12 @@ export const grassPrefab: Entity = {
           },
         },
         removeComponents: [],
+        processes: [],
       },
       {
+        next: "mature",
+        name: "young",
+        chanceToMutate: 0.01,
         addComponents: {
           appearance: {
             char: chars.grass,
@@ -660,8 +665,17 @@ export const grassPrefab: Entity = {
           },
         },
         removeComponents: [],
+        processes: [
+          {
+            name: PostProcess.CalculateFlammability,
+            delay: 0,
+            payload: {},
+          },
+        ],
       },
       {
+        name: "mature",
+        chanceToMutate: 0.01,
         addComponents: {
           appearance: {
             char: chars.tallGrass,

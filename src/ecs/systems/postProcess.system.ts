@@ -17,14 +17,14 @@ export const createPostProcessSystem = ({ world }: IGameWorld) => {
 
         // run when delay hits exactly 0
         if (process.delay === 0) {
-          if (process.process.name === PostProcess.UpdateAppearance) {
+          if (process.name === PostProcess.UpdateAppearance) {
             actor.appearance = {
               ...actor.appearance,
-              ...process.process.payload,
+              ...process.payload,
             };
           }
 
-          if (process.process.name === PostProcess.CalculateFlammability) {
+          if (process.name === PostProcess.CalculateFlammability) {
             const { material, mass } = actor;
             if (material && mass) {
               const flammable = calculateFlammability(material, mass);

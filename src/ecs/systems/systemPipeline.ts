@@ -8,7 +8,7 @@ import { createDropSystem } from "../systems/drop.system";
 import { createFovSystem } from "../systems/fov.system";
 import { createFireSystem } from "../systems/fire.system";
 import { createFluidSystem } from "../systems/fluid.system";
-import { createGrowthSystem } from "../systems/growth.system";
+import { createMutableSystem } from "./mutable.system";
 import { createInteractSystem } from "../systems/interact.system";
 import { createKickSystem } from "../systems/kick.system";
 import { createKnockbackSystem } from "../systems/knockback.system";
@@ -38,7 +38,7 @@ const dropSystem = createDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
 const fireSystem = createFireSystem(gameWorld);
 const fluidSystem = createFluidSystem(gameWorld);
-const growthSystem = createGrowthSystem(gameWorld);
+const mutableSystem = createMutableSystem(gameWorld);
 const interactSystem = createInteractSystem(gameWorld);
 const kickSystem = createKickSystem(gameWorld);
 const knockbackSystem = createKnockbackSystem(gameWorld);
@@ -66,7 +66,7 @@ export const systems = {
   fire: fireSystem,
   fluid: fluidSystem,
   fov: fovSystem,
-  growth: growthSystem,
+  mutable: mutableSystem,
   interact: interactSystem,
   kick: kickSystem,
   knockback: knockbackSystem,
@@ -161,7 +161,7 @@ export const playerTurnPipeline: SystemPipeline = {
 
 export const worldTurnPipeline: SystemPipeline = {
   preInput: [
-    systems.growth,
+    systems.mutable,
     systems.fluid,
     systems.fire,
     systems.activeEffects,
