@@ -431,3 +431,19 @@ enties have a layer component with the layer the component renders at.
 400 Gas/Smoke (volumetric)
 500 In-world UI / targeting cursor
 1000 Screen-space UI
+
+## Growth
+
+Trying to get grass to grow so I made a growth sytem that will update compoents in stages.
+
+Wanted to make grass go back to stage 0 but that caused issues so I ended up making a postProcess system that runs processes later but that's causing issues in that I what I REALLY want is to have a way to say, go to this state - burnt to a crisp. When you grow, look this way and also update your flamability. So when you grow, you should also run these processess.
+
+Is that just another component on stages? Some processes to run? Or is that too complex - maybe just a delay could work? But what woudl I be dealying... Grass grows - go from short to tall - when green, calculate flamability.
+
+I think it's a combination of things. Stages should just be a an array of mutations - they can be evolved to or selected as an array to grow through... something like 0 is burnt to a crisp, 1,2,3 are growth stages. At 1, you should calculate flamability... Something like this.
+
+THought this would be easy... it's very much not.
+
+---
+
+Add processes to growth stages (maybe call the whole thing mutations instead?) Add id's to each stage (mutation) and any processes that need to run. Change to mutate should be on each mutation not on the overall component. That way it can be controlled how quickly you mutate from one to another.

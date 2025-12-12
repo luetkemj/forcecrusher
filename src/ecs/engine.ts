@@ -99,6 +99,14 @@ interface Fluid {
   source?: boolean;
 }
 
+export interface Mutation {
+  name: string;
+  next?: string;
+  chanceToMutate: number;
+  addComponents?: Partial<Entity>;
+  removeComponents?: Array<Partial<keyof Entity>>;
+}
+
 export interface FluidContainer {
   fluids: Record<string, Fluid>;
 }
@@ -125,6 +133,7 @@ export type Entity = {
   averageDamage?: number;
   baseArmorClass?: number;
   blocking?: true;
+  calculateFlammability?: true;
   charisma?: number;
   consumable?: true;
   constitution?: number;
@@ -142,8 +151,14 @@ export type Entity = {
   description?: string;
   dexterity?: number;
   door?: true;
+  ears?: {
+    sensitivity: number;
+    detected: Array<DetectedSound>;
+  };
+  effectImmunities?: Array<EffectType>;
   effects?: Array<Effect>;
   entityKind?: EntityKind;
+  fluidContainer?: FluidContainer;
   flammable?: {
     ignitionChance: number;
     fuel: {
@@ -155,10 +170,12 @@ export type Entity = {
     explosive: boolean;
     source?: boolean;
   };
-  onFire?: {
-    intensity: number;
-    age: number;
-    source?: boolean;
+  mutable?: {
+    current: string;
+    mutations: Array<Mutation>;
+  };
+  mutateTo?: {
+    name: string;
   };
   health?: {
     max: number;
@@ -166,11 +183,6 @@ export type Entity = {
   };
   id: EntityId;
   immunities?: Array<DamageType>;
-  ears?: {
-    sensitivity: number;
-    detected: Array<DetectedSound>;
-  };
-  effectImmunities?: Array<EffectType>;
   inFov?: true;
   intelligence?: number;
   interactDirection?: Pos;
@@ -199,7 +211,6 @@ export type Entity = {
   layer350?: true;
   layer400?: true;
   legendable?: true;
-  fluidContainer?: FluidContainer;
   locked?: true;
   material?: Material;
   mass?: number;
@@ -212,6 +223,11 @@ export type Entity = {
     detected: Array<DetectedOdor>;
   };
   odor?: { strength: number };
+  onFire?: {
+    intensity: number;
+    age: number;
+    source?: boolean;
+  };
   opaque?: true;
   open?: true;
   openable?: {

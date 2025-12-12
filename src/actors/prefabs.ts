@@ -634,4 +634,49 @@ export const grassPrefab: Entity = {
   layer125: true,
   mass: 0.4,
   material: Material.Plant,
+  mutable: {
+    current: "young",
+    mutations: [
+      {
+        next: "young",
+        name: "burnt",
+        chanceToMutate: 0.01,
+        addComponents: {
+          appearance: {
+            char: chars.grass,
+            tint: colors.ash,
+            tileSet: "kenny",
+          },
+        },
+        removeComponents: ["flammable"],
+      },
+      {
+        next: "mature",
+        name: "young",
+        chanceToMutate: 0.00025,
+        addComponents: {
+          appearance: {
+            char: chars.grass,
+            tint: colors.plant,
+            tileSet: "kenny",
+          },
+          calculateFlammability: true,
+        },
+        removeComponents: [],
+      },
+      {
+        name: "mature",
+        chanceToMutate: 0.01,
+        addComponents: {
+          appearance: {
+            char: chars.tallGrass,
+            tint: colors.plant,
+            tileSet: "kenny",
+          },
+          calculateFlammability: true,
+        },
+        removeComponents: [],
+      },
+    ],
+  },
 };

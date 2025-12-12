@@ -140,11 +140,13 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       if (actor.onFire.source) continue;
 
       // remove fire when fuel is exhausted
-      if (actor.flammable.fuel.current <= 0) {
+      if (actor.flammable.fuel.current <= 0 && actor.onFire) {
         world.removeComponent(actor, "onFire");
         world.removeComponent(actor, "flammable");
 
-        if (actor.appearance) {
+        if (actor.mutable) {
+          world.addComponent(actor, "mutateTo", { name: "burnt" });
+        } else if (actor.appearance) {
           actor.appearance.tint = colors.ash;
         }
       }

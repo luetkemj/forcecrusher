@@ -1,6 +1,7 @@
 import { createActiveEffectsSystem } from "../systems/activeEffects.system";
 import { createAiSystem } from "../systems/ai.system";
 import { createAttackSystem } from "../systems/attack.system";
+import { createCalculateFlammabilitySystem } from "../systems/calculateFlammability.system";
 import { createCloseSystem } from "../systems/close.system";
 import { createCursorSystem } from "../systems/cursor.system";
 import { createDamageSystem } from "../systems/damage.system";
@@ -8,6 +9,7 @@ import { createDropSystem } from "../systems/drop.system";
 import { createFovSystem } from "../systems/fov.system";
 import { createFireSystem } from "../systems/fire.system";
 import { createFluidSystem } from "../systems/fluid.system";
+import { createMutableSystem } from "./mutable.system";
 import { createInteractSystem } from "../systems/interact.system";
 import { createKickSystem } from "../systems/kick.system";
 import { createKnockbackSystem } from "../systems/knockback.system";
@@ -29,6 +31,8 @@ import { styleDuration } from "./debug-utils";
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
 const aiSystem = createAiSystem(gameWorld);
 const attackSystem = createAttackSystem(gameWorld);
+const calculateFlammabilitySystem =
+  createCalculateFlammabilitySystem(gameWorld);
 const closeSystem = createCloseSystem(gameWorld);
 const cursorSystem = createCursorSystem(gameWorld);
 const damageSystem = createDamageSystem(gameWorld);
@@ -36,6 +40,7 @@ const dropSystem = createDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
 const fireSystem = createFireSystem(gameWorld);
 const fluidSystem = createFluidSystem(gameWorld);
+const mutableSystem = createMutableSystem(gameWorld);
 const interactSystem = createInteractSystem(gameWorld);
 const kickSystem = createKickSystem(gameWorld);
 const knockbackSystem = createKnockbackSystem(gameWorld);
@@ -55,6 +60,7 @@ export const systems = {
   activeEffects: activeEffectsSystem,
   ai: aiSystem,
   attack: attackSystem,
+  calculateFlammability: calculateFlammabilitySystem,
   close: closeSystem,
   cursor: cursorSystem,
   damage: damageSystem,
@@ -62,6 +68,7 @@ export const systems = {
   fire: fireSystem,
   fluid: fluidSystem,
   fov: fovSystem,
+  mutable: mutableSystem,
   interact: interactSystem,
   kick: kickSystem,
   knockback: knockbackSystem,
@@ -155,6 +162,7 @@ export const playerTurnPipeline: SystemPipeline = {
 
 export const worldTurnPipeline: SystemPipeline = {
   preInput: [
+    systems.mutable,
     systems.fluid,
     systems.fire,
     systems.activeEffects,
@@ -173,7 +181,7 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.morgue,
     systems.drop,
   ],
-  postMain: [systems.fov],
+  postMain: [systems.fov, systems.calculateFlammability],
   render: [systems.render],
 };
 
