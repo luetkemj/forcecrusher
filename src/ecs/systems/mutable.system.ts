@@ -5,7 +5,6 @@ import { cloneDeep } from "lodash";
 
 export const createMutableSystem = ({ world }: IGameWorld) => {
   const mutableQuery = world.with("mutable");
-  // TODO: change neame to "mutateTo";
   const mutateToQuery = world.with("mutateTo");
 
   return function mutableSystem() {

@@ -648,7 +648,7 @@ export const grassPrefab: Entity = {
             tileSet: "kenny",
           },
         },
-        removeComponents: [],
+        removeComponents: ["flammable"],
       },
       {
         next: "mature",

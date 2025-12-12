@@ -17,6 +17,8 @@ export const createCalculateFlammabilitySystem = ({ world }: IGameWorld) => {
             world.addComponent(actor, "flammable", flammability);
           }
         }
+      } else {
+        world.removeComponent(actor, "flammable");
       }
 
       world.removeComponent(actor, "calculateFlammability");
