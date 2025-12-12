@@ -651,7 +651,6 @@ export const grassPrefab: Entity = {
           },
         },
         removeComponents: [],
-        processes: [],
       },
       {
         next: "mature",
@@ -666,13 +665,6 @@ export const grassPrefab: Entity = {
           calculateFlammability: true,
         },
         removeComponents: [],
-        processes: [
-          // {
-          //   name: PostProcess.CalculateFlammability,
-          //   delay: 0,
-          //   payload: {},
-          // },
-        ],
       },
       {
         name: "mature",
