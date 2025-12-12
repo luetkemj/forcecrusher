@@ -3,7 +3,7 @@ import { getNeighbors, toPos, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
-import { DamageType, PostProcess } from "../enums";
+import { DamageType } from "../enums";
 import createFOV from "../../lib/fov";
 import { colors } from "../../actors/graphics";
 
