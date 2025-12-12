@@ -663,14 +663,15 @@ export const grassPrefab: Entity = {
             tint: colors.plant,
             tileSet: "kenny",
           },
+          calculateFlammability: true,
         },
         removeComponents: [],
         processes: [
-          {
-            name: PostProcess.CalculateFlammability,
-            delay: 0,
-            payload: {},
-          },
+          // {
+          //   name: PostProcess.CalculateFlammability,
+          //   delay: 0,
+          //   payload: {},
+          // },
         ],
       },
       {

@@ -1,6 +1,7 @@
 import { World } from "miniplex";
 import { IGameWorld } from "../engine";
 import type { Entity, Mutation } from "../engine";
+import { cloneDeep } from "lodash";
 
 export const createMutableSystem = ({ world }: IGameWorld) => {
   const mutableQuery = world.with("mutable");
@@ -51,15 +52,16 @@ function evolveEntity(
 
   const componentsToAdd = mutation.addComponents;
   if (componentsToAdd) {
-    // add components from mutation
+    const nonObjectTypes = ["boolean", "number", "string"];
+
     for (const [key, value] of Object.entries(componentsToAdd)) {
-      // world.removeComponent(entity, key as keyof Entity);
-      // world.addComponent(entity, key as keyof Entity, value);
-      if (entity[key as keyof Entity]) {
-        entity[key as keyof Entity] = {
-          ...entity[key as keyof Entity],
-          ...value,
-        };
+      world.removeComponent(entity, key as keyof Entity);
+
+      if (nonObjectTypes.includes(typeof value)) {
+        world.addComponent(entity, key as keyof Entity, value);
+      } else {
+        const clone = cloneDeep(value);
+        world.addComponent(entity, key as keyof Entity, clone);
       }
     }
   }
@@ -68,14 +70,6 @@ function evolveEntity(
   if (componentsToRemove) {
     for (const key of componentsToRemove) {
       world.removeComponent(entity, key as keyof Entity);
-    }
-  }
-
-  // call processes
-  const processes = mutation.processes;
-  if (processes) {
-    for (const process of processes) {
-      entity.postProcess.push(process);
     }
   }
 }

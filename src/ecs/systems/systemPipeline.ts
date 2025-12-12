@@ -1,6 +1,7 @@
 import { createActiveEffectsSystem } from "../systems/activeEffects.system";
 import { createAiSystem } from "../systems/ai.system";
 import { createAttackSystem } from "../systems/attack.system";
+import { createCalculateFlammabilitySystem } from "../systems/calculateFlammability.system";
 import { createCloseSystem } from "../systems/close.system";
 import { createCursorSystem } from "../systems/cursor.system";
 import { createDamageSystem } from "../systems/damage.system";
@@ -31,6 +32,8 @@ import { styleDuration } from "./debug-utils";
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
 const aiSystem = createAiSystem(gameWorld);
 const attackSystem = createAttackSystem(gameWorld);
+const calculateFlammabilitySystem =
+  createCalculateFlammabilitySystem(gameWorld);
 const closeSystem = createCloseSystem(gameWorld);
 const cursorSystem = createCursorSystem(gameWorld);
 const damageSystem = createDamageSystem(gameWorld);
@@ -59,6 +62,7 @@ export const systems = {
   activeEffects: activeEffectsSystem,
   ai: aiSystem,
   attack: attackSystem,
+  calculateFlammability: calculateFlammabilitySystem,
   close: closeSystem,
   cursor: cursorSystem,
   damage: damageSystem,
@@ -180,7 +184,7 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.morgue,
     systems.drop,
   ],
-  postMain: [systems.fov, systems.postProcess],
+  postMain: [systems.fov, systems.calculateFlammability],
   render: [systems.render],
 };
 

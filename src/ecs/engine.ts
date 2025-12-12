@@ -141,6 +141,7 @@ export type Entity = {
   averageDamage?: number;
   baseArmorClass?: number;
   blocking?: true;
+  calculateFlammability?: true;
   charisma?: number;
   consumable?: true;
   constitution?: number;
