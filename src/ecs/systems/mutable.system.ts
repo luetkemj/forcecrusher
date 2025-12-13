@@ -4,8 +4,8 @@ import type { Entity, Mutation } from "../engine";
 import { cloneDeep } from "lodash";
 
 export const createMutableSystem = ({ world }: IGameWorld) => {
-  const mutableQuery = world.with("mutable");
-  const mutateToQuery = world.with("mutateTo");
+  const mutableQuery = world.with("mutable").without("paused");
+  const mutateToQuery = world.with("mutateTo").without("paused");
 
   return function mutableSystem() {
     for (const entity of mutableQuery) {

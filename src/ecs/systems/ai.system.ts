@@ -6,8 +6,8 @@ import { sortBy } from "lodash";
 import { DamageType } from "../enums";
 
 export const createAiSystem = ({ world, registry }: IGameWorld) => {
-  const aiQuery = world.with("ai", "position", "memory");
-  const positionQuery = world.with("position");
+  const aiQuery = world.with("ai", "position", "memory").without("paused");
+  const positionQuery = world.with("position").without("paused");
 
   return function aiSystem() {
     for (const actor of aiQuery) {

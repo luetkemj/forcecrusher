@@ -6,6 +6,7 @@ import { VisibleFov } from "../lib/fov";
 export const enum Turn {
   PLAYER = "PLAYER",
   WORLD = "WORLD",
+  SIM = "SIM",
 }
 
 export const enum GameState {
@@ -70,6 +71,7 @@ export type State = {
     taste: string;
     touch: string;
   };
+  simulationTurnsLeft: number;
   turn: Turn;
   turnNumber: number;
   userInput: KeyboardEvent | null;
@@ -110,7 +112,8 @@ const state: State = {
     taste: "",
     touch: "",
   },
-  turn: Turn.PLAYER,
+  simulationTurnsLeft: 25,
+  turn: Turn.SIM,
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,
   views: {},

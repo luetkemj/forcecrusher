@@ -8,7 +8,7 @@ import { sample } from "lodash";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 
 export const createAttackSystem = ({ world, registry }: IGameWorld) => {
-  const attackQuery = world.with("tryAttack");
+  const attackQuery = world.with("tryAttack").without("paused");
 
   const cleanUp = (actor: Entity) => {
     world.removeComponent(actor, "tryAttack");

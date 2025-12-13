@@ -6,19 +6,19 @@ import { type State, getState, setState } from "../gameState";
 
 export const createInteractSystem = ({ world, registry }: IGameWorld) => {
   const renderableQueries = [
-    world.with("position", "appearance", "layer400"),
-    world.with("position", "appearance", "layer350"),
-    world.with("position", "appearance", "layer325"),
-    world.with("position", "appearance", "layer300"),
-    world.with("position", "appearance", "layer250"),
-    world.with("position", "appearance", "layer225"),
-    world.with("position", "appearance", "layer200"),
+    world.with("position", "appearance", "layer400").without("paused"),
+    world.with("position", "appearance", "layer350").without("paused"),
+    world.with("position", "appearance", "layer325").without("paused"),
+    world.with("position", "appearance", "layer300").without("paused"),
+    world.with("position", "appearance", "layer250").without("paused"),
+    world.with("position", "appearance", "layer225").without("paused"),
+    world.with("position", "appearance", "layer200").without("paused"),
     // TODO: figure out what to do with the fluid layer (150)
     // It currently breaks interaction below it as it's an entity but doens't
     // have a name or normal means of interaction...
-    // world.with("position", "appearance", "layer150"),
-    world.with("position", "appearance", "layer125"),
-    world.with("position", "appearance", "layer100"),
+    // world.with("position", "appearance", "layer150").without("paused"),
+    world.with("position", "appearance", "layer125").without("paused"),
+    world.with("position", "appearance", "layer100").without("paused"),
   ];
 
   function findTopRenderableAtPosition(

@@ -11,8 +11,8 @@ import { line, Pos } from "../../lib/grid";
 import { rangeAttack } from "../../lib/combat";
 
 export const createThrowSystem = ({ world, registry }: IGameWorld) => {
-  const tryThrowQuery = world.with("tryThrow");
-  const blockingQuery = world.with("blocking", "position");
+  const tryThrowQuery = world.with("tryThrow").without("paused");
+  const blockingQuery = world.with("blocking", "position").without("paused");
 
   return function throwSystem() {
     for (const entity of tryThrowQuery) {

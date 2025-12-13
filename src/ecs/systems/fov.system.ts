@@ -4,12 +4,16 @@ import { toPosId } from "../../lib/grid";
 import { addSenseLog } from "../../lib/utils";
 
 export const createFovSystem = ({ world }: IGameWorld) => {
-  const inFovQuery = world.with("inFov", "position");
-  const opaqueQuery = world.with("opaque", "position");
-  const playerQuery = world.with("pc", "position");
-  const renderableQuery = world.with("appearance", "position");
-  const aiQuery = world.with("ai", "inFov").without("pc");
-  const pickupQuery = world.with("pickUp", "inFov", "position").without("pc");
+  const inFovQuery = world.with("inFov", "position").without("paused");
+  const opaqueQuery = world.with("opaque", "position").without("paused");
+  const playerQuery = world.with("pc", "position").without("paused");
+  const renderableQuery = world
+    .with("appearance", "position")
+    .without("paused");
+  const aiQuery = world.with("ai", "inFov").without("pc", "paused");
+  const pickupQuery = world
+    .with("pickUp", "inFov", "position")
+    .without("pc", "paused");
 
   return function fovSystem() {
     let player;

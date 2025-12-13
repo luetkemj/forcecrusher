@@ -8,8 +8,8 @@ import {
 import { IGameWorld } from "../engine";
 
 export const createPickUpSystem = ({ world, registry }: IGameWorld) => {
-  const pcQuery = world.with("pc");
-  const pickUpQuery = world.with("tryPickUp");
+  const pcQuery = world.with("pc").without("paused");
+  const pickUpQuery = world.with("tryPickUp").without("paused");
 
   return function pickUpSystem() {
     const [player] = pcQuery;

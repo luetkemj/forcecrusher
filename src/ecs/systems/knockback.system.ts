@@ -6,8 +6,8 @@ import { isSamePosition } from "../../lib/utils";
 import { rangeAttack } from "../../lib/combat";
 
 export const createKnockbackSystem = ({ world, registry }: IGameWorld) => {
-  const knockbackQuery = world.with("knockback");
-  const blockingQuery = world.with("blocking", "position");
+  const knockbackQuery = world.with("knockback").without("paused");
+  const blockingQuery = world.with("blocking", "position").without("paused");
 
   return function knockbackSystem() {
     for (const target of knockbackQuery) {

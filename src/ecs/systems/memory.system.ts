@@ -5,10 +5,10 @@ import { Sense } from "../enums";
 
 export const createMemorySystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
-  const visionQuery = world.with("vision", "memory").without("dead");
-  const noseQuery = world.with("nose", "memory").without("dead");
-  const earsQuery = world.with("ears", "memory").without("dead");
-  const memoryQuery = world.with("memory").without("dead");
+  const visionQuery = world.with("vision", "memory").without("dead", "paused");
+  const noseQuery = world.with("nose", "memory").without("dead", "paused");
+  const earsQuery = world.with("ears", "memory").without("dead", "paused");
+  const memoryQuery = world.with("memory").without("dead", "paused");
 
   return function memorySystem() {
     for (const actor of earsQuery) {

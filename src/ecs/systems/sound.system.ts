@@ -5,9 +5,11 @@ import { State, getState, setState } from "../gameState";
 
 export const createSoundSystem = (gameWorld: IGameWorld) => {
   const { world } = gameWorld;
-  const soundQuery = world.with("sound", "position");
-  const blockingQuery = world.with("blocking", "position");
-  const pathThroughQuery = world.with("blocking", "position", "pathThrough");
+  const soundQuery = world.with("sound", "position").without("paused");
+  const blockingQuery = world.with("blocking", "position").without("paused");
+  const pathThroughQuery = world
+    .with("blocking", "position", "pathThrough")
+    .without("paused");
 
   return function soundSystem() {
     // NOTE: OLFACTORY

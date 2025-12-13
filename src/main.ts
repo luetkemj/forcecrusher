@@ -1,5 +1,5 @@
 import "./style.css";
-import { mean } from "lodash";
+import { mean, times } from "lodash";
 import { pxToPosId, setupCanvas } from "./lib/canvas";
 import { toPosId } from "./lib/grid";
 import { getFrozenEntity } from "./lib/utils";
@@ -145,6 +145,18 @@ function gameLoop() {
     if (getState().gameState === GameState.GAME) {
       setState((state: State) => {
         state.turn = Turn.WORLD;
+      });
+    }
+
+    return;
+  }
+
+  if (state.turn === Turn.SIM) {
+    runPipeline(worldTurnPipeline, "WorldTurn");
+
+    if (state.simulationTurnsLeft === 0) {
+      setState((state: State) => {
+        state.turn = Turn.PLAYER;
       });
     }
 

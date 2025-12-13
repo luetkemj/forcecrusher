@@ -12,7 +12,9 @@ const mapBoundary = {
 };
 
 export const createFluidSystem = ({ world, registry }: IGameWorld) => {
-  const fluidContainerQuery = world.with("fluidContainer", "position");
+  const fluidContainerQuery = world
+    .with("fluidContainer", "position")
+    .without("paused");
 
   return function fluidSystem() {
     // ---------------------------------------------

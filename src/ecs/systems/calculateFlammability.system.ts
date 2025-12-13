@@ -2,7 +2,9 @@ import { IGameWorld } from "../engine";
 import { calculateFlammability } from "../../actors";
 
 export const createCalculateFlammabilitySystem = ({ world }: IGameWorld) => {
-  const calculateFlammabilityQuery = world.with("calculateFlammability");
+  const calculateFlammabilityQuery = world
+    .with("calculateFlammability")
+    .without("paused");
 
   return function calculateFlammabilitySystem() {
     for (const actor of calculateFlammabilityQuery) {
