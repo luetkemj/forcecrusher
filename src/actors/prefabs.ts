@@ -629,11 +629,12 @@ export const grassPrefab: Entity = {
     tint: colors.plant,
     tileSet: "kenny",
   },
-  name: "grassy",
+  name: "grass",
   description: "Dry grass",
   layer125: true,
   mass: 0.4,
   material: Material.Plant,
+  pickUp: true,
   mutable: {
     current: "young",
     mutations: [

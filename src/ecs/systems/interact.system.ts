@@ -1,15 +1,49 @@
-import { isAtSamePosition } from "../../lib/grid";
+import { Pos, isAtSamePosition } from "../../lib/grid";
 import { addLog, em } from "../../lib/utils";
 import { IGameWorld, type Entity } from "../engine";
 import { OpenState } from "../enums";
 import { type State, getState, setState } from "../gameState";
 
 export const createInteractSystem = ({ world, registry }: IGameWorld) => {
-  const renderable100Query = world.with("position", "appearance", "layer100");
-  const renderable200Query = world.with("position", "appearance", "layer200");
-  const renderable250Query = world.with("position", "appearance", "layer250");
-  const renderable300Query = world.with("position", "appearance", "layer300");
-  const renderable400Query = world.with("position", "appearance", "layer400");
+  const renderableQueries = [
+    world.with("position", "appearance", "layer400"),
+    world.with("position", "appearance", "layer350"),
+    world.with("position", "appearance", "layer325"),
+    world.with("position", "appearance", "layer300"),
+    world.with("position", "appearance", "layer250"),
+    world.with("position", "appearance", "layer225"),
+    world.with("position", "appearance", "layer200"),
+    // TODO: figure out what to do with the fluid layer (150)
+    // It currently breaks interaction below it as it's an entity but doens't
+    // have a name or normal means of interaction...
+    // world.with("position", "appearance", "layer150"),
+    world.with("position", "appearance", "layer125"),
+    world.with("position", "appearance", "layer100"),
+  ];
+
+  function findTopRenderableAtPosition(
+    queries: Iterable<Entity>[],
+    pos: Pos,
+  ): Entity[] {
+    for (const query of queries) {
+      const matches: Entity[] = [];
+      for (const entity of query) {
+        if (entity.position) {
+          if (isAtSamePosition(entity.position, pos)) {
+            // TODO:
+            // check if it's a liquid layer
+            // if it is, check if there's any liquid
+            // if there is... say what it is somehow.
+            // if there isn't, continue to the next layer...
+            // for now I'm just skipping that layer...
+            matches.push(entity);
+          }
+        }
+      }
+      if (matches.length) return matches;
+    }
+    return [];
+  }
 
   return function interactSystem() {
     const playerId = getState().playerId;
@@ -21,45 +55,10 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
     if (!interactDirection) return;
 
     // get entities at interactDirection;
-    const interactTargets: Entity[] = [];
-
-    for (const entity of renderable400Query) {
-      if (isAtSamePosition(entity.position, interactDirection)) {
-        interactTargets.push(entity);
-      }
-    }
-
-    if (!interactTargets.length) {
-      for (const entity of renderable300Query) {
-        if (isAtSamePosition(entity.position, interactDirection)) {
-          interactTargets.push(entity);
-        }
-      }
-    }
-
-    if (!interactTargets.length) {
-      for (const entity of renderable250Query) {
-        if (isAtSamePosition(entity.position, interactDirection)) {
-          interactTargets.push(entity);
-        }
-      }
-    }
-
-    if (!interactTargets.length) {
-      for (const entity of renderable200Query) {
-        if (isAtSamePosition(entity.position, interactDirection)) {
-          interactTargets.push(entity);
-        }
-      }
-    }
-
-    if (!interactTargets.length) {
-      for (const entity of renderable100Query) {
-        if (isAtSamePosition(entity.position, interactDirection)) {
-          interactTargets.push(entity);
-        }
-      }
-    }
+    const interactTargets = findTopRenderableAtPosition(
+      renderableQueries,
+      interactDirection,
+    );
 
     if (interactTargets.length) {
       const interactActions = getInteractActions(interactTargets[0]);
