@@ -243,7 +243,7 @@ export type Entity = {
   pathThrough?: true;
   pickUp?: true;
   name: string;
-  excludeFromSim?: true; // TODO: is this used anywhere?
+  excludeFromSim?: true;
   pc?: true;
   position?: Pos;
   resistances?: Array<DamageType>;

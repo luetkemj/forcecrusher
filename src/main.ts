@@ -1,5 +1,5 @@
 import "./style.css";
-import { mean, times } from "lodash";
+import { mean } from "lodash";
 import { pxToPosId, setupCanvas } from "./lib/canvas";
 import { toPosId } from "./lib/grid";
 import { getFrozenEntity } from "./lib/utils";
