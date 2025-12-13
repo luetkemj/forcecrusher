@@ -14,7 +14,7 @@ const mapBoundary = {
 export const createFluidSystem = ({ world, registry }: IGameWorld) => {
   const fluidContainerQuery = world
     .with("fluidContainer", "position")
-    .without("paused");
+    .without("excludeFromSim");
 
   return function fluidSystem() {
     // ---------------------------------------------

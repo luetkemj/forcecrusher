@@ -4,7 +4,7 @@ import { toPosId } from "../../lib/grid";
 import { addSenseLog } from "../../lib/utils";
 
 export const createCursorSystem = ({ world }: IGameWorld) => {
-  const inspectableQuery = world.with("revealed", "position").without("paused");
+  const inspectableQuery = world.with("revealed", "position").without("excludeFromSim");
 
   return function cursorSystem() {
     const cursorPosId = toPosId(getState().cursor[1]);

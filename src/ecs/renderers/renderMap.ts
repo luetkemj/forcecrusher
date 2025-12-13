@@ -9,7 +9,7 @@ export const renderMap = ({ views, queries }: RendererContext) => {
     view.clearView();
 
     const [player] = queries.pcQuery;
-    if (player.paused) {
+    if (player.excludeFromSim) {
       return;
     }
 

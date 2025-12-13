@@ -12,9 +12,9 @@ export const createSimulationSystem = (gameWorld: IGameWorld) => {
 
     for (const actor of playerQuery) {
       if (getState().simulationTurnsLeft <= 0) {
-        world.removeComponent(actor, "paused");
+        world.removeComponent(actor, "excludeFromSim");
       } else {
-        world.addComponent(actor, "paused", true);
+        world.addComponent(actor, "excludeFromSim", true);
       }
     }
   };

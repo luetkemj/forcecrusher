@@ -4,7 +4,7 @@ import { OpenState } from "../enums";
 import { chars } from "../../actors/graphics";
 
 export const createCloseSystem = ({ world }: IGameWorld) => {
-  const tryCloseQuery = world.with("tryClose").without("paused");
+  const tryCloseQuery = world.with("tryClose").without("excludeFromSim");
 
   return function closeSystem() {
     for (const actor of tryCloseQuery) {

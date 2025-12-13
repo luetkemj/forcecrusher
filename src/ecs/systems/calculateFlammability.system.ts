@@ -4,7 +4,7 @@ import { calculateFlammability } from "../../actors";
 export const createCalculateFlammabilitySystem = ({ world }: IGameWorld) => {
   const calculateFlammabilityQuery = world
     .with("calculateFlammability")
-    .without("paused");
+    .without("excludeFromSim");
 
   return function calculateFlammabilitySystem() {
     for (const actor of calculateFlammabilityQuery) {

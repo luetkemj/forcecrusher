@@ -15,8 +15,8 @@ const mapBoundary = {
 export const createFireSystem = ({ world, registry }: IGameWorld) => {
   const onFireQuery = world
     .with("onFire", "flammable", "position")
-    .without("paused");
-  const opaqueQuery = world.with("opaque", "position").without("paused");
+    .without("excludeFromSim");
+  const opaqueQuery = world.with("opaque", "position").without("excludeFromSim");
 
   return function fireSystem() {
     for (const actor of onFireQuery) {

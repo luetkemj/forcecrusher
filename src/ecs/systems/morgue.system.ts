@@ -3,7 +3,7 @@ import { setState, State, GameState } from "../gameState";
 import { addLog, unWield, unWear, colorTag } from "../../lib/utils";
 
 export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
-  const livingQuery = world.with("health").without("dead", "paused");
+  const livingQuery = world.with("health").without("dead", "excludeFromSim");
 
   return function morgueSystem() {
     for (const entity of livingQuery) {
