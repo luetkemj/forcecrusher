@@ -7,6 +7,7 @@ import { type State, getState, setState } from "../gameState";
 export const createInteractSystem = ({ world, registry }: IGameWorld) => {
   const renderable100Query = world.with("position", "appearance", "layer100");
   const renderable200Query = world.with("position", "appearance", "layer200");
+  const renderable250Query = world.with("position", "appearance", "layer250");
   const renderable300Query = world.with("position", "appearance", "layer300");
   const renderable400Query = world.with("position", "appearance", "layer400");
 
@@ -37,7 +38,7 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
     }
 
     if (!interactTargets.length) {
-      for (const entity of renderable200Query) {
+      for (const entity of renderable250Query) {
         if (isAtSamePosition(entity.position, interactDirection)) {
           interactTargets.push(entity);
         }
