@@ -320,7 +320,7 @@ export const updatePosition = (
   }
 };
 
-function addToEAPMap(pos: PosId, id: EntityId) {
+export function addToEAPMap(pos: PosId, id: EntityId) {
   let set = getState().eapMap.get(pos);
   if (!set) {
     set = new Set();
