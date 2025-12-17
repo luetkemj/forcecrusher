@@ -6,7 +6,6 @@ import { VisibleFov } from "../lib/fov";
 export const enum Turn {
   PLAYER = "PLAYER",
   WORLD = "WORLD",
-  SIM = "SIM",
 }
 
 export const enum GameState {
@@ -22,6 +21,7 @@ export const enum GameState {
   MAKER_MODE_PREFAB_SELECT = "MAKER_MODE_PREFAB_SELECT",
   SAVING = "SAVING",
   LOADING = "LOADING",
+  SIM = "SIM",
 }
 
 export type Views = {
@@ -93,7 +93,7 @@ const state: State = {
     { x: 0, y: 0 },
   ],
   fps: 0,
-  gameState: GameState.GAME,
+  gameState: GameState.SIM,
   log: ["hello world", "your adventure begins anew!"],
   logActiveIndex: 0,
   inventoryActiveIndex: 0,
@@ -113,7 +113,7 @@ const state: State = {
     touch: "",
   },
   simulationTurnsLeft: 25,
-  turn: Turn.SIM,
+  turn: Turn.PLAYER,
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,
   views: {},

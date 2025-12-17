@@ -190,6 +190,10 @@ export const worldTurnPipeline: SystemPipeline = {
 };
 
 export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
+  [GameState.SIM]: {
+    ...worldTurnPipeline,
+  },
+
   [GameState.INSPECT]: {
     preInput: [],
     input: [systems.userInput],

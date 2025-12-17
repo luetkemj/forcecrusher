@@ -132,6 +132,16 @@ function gameLoop() {
   const playerCanAct = state.turn === Turn.PLAYER && state.userInput !== null;
 
   if (state.gameState !== GameState.GAME) {
+    if (state.gameState === GameState.SIM) {
+      if (state.simulationTurnsLeft === 0) {
+        setState((state: State) => {
+          state.gameState = GameState.GAME;
+        });
+      } else {
+        runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
+      }
+    }
+
     if (playerCanAct) {
       runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
     }
@@ -145,18 +155,6 @@ function gameLoop() {
     if (getState().gameState === GameState.GAME) {
       setState((state: State) => {
         state.turn = Turn.WORLD;
-      });
-    }
-
-    return;
-  }
-
-  if (state.turn === Turn.SIM) {
-    runPipeline(worldTurnPipeline, "WorldTurn");
-
-    if (state.simulationTurnsLeft === 0) {
-      setState((state: State) => {
-        state.turn = Turn.PLAYER;
       });
     }
 

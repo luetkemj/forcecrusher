@@ -93,7 +93,7 @@ export const handleGameModeInput = async ({
         changeZone(targetZoneId, ChangeZoneDirections.down);
         world.addComponent(player, "excludeFromSim", true);
         setState((state: State) => {
-          state.turn = Turn.SIM;
+          state.gameState = GameState.SIM;
           state.simulationTurnsLeft = 25;
         });
       }
@@ -112,7 +112,7 @@ export const handleGameModeInput = async ({
         changeZone(targetZoneId, ChangeZoneDirections.up);
         world.addComponent(player, "excludeFromSim", true);
         setState((state: State) => {
-          state.turn = Turn.SIM;
+          state.gameState = GameState.SIM;
           state.simulationTurnsLeft = 25;
         });
       }
