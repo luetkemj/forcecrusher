@@ -75,6 +75,7 @@ export const createUserInputSystem = ({
     const inputDispatchers = {
       [GameState.GAME]: handleGameModeInput,
       [GameState.GAME_OVER]: () => true,
+      [GameState.SIM]: () => true,
       [GameState.INSPECT]: handleInspectModeInput,
       [GameState.INTERACT]: handleInteractModeInput,
       [GameState.INTERACT_ACTION]: handleInteractActionModeInput,

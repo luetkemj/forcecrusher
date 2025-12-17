@@ -1,8 +1,9 @@
 import { InputContext } from "../systems/userInput.system";
-import { GameState, State, Turn } from "../gameState";
+import { GameState, State } from "../gameState";
 import { toPosId, isAtSamePosition, toZone, toZoneId } from "../../lib/grid";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 import { ChangeZoneDirections } from "../engine";
+import { isUndefined } from "lodash";
 
 export const handleGameModeInput = async ({
   key,
