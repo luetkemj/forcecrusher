@@ -1,9 +1,8 @@
-import { isUndefined } from "lodash";
-import { ChangeZoneDirections } from "../engine";
 import { InputContext } from "../systems/userInput.system";
-import { GameState, State } from "../gameState";
+import { GameState, State, Turn } from "../gameState";
 import { toPosId, isAtSamePosition, toZone, toZoneId } from "../../lib/grid";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
+import { ChangeZoneDirections } from "../engine";
 
 export const handleGameModeInput = async ({
   key,
@@ -92,6 +91,11 @@ export const handleGameModeInput = async ({
         const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
         const targetZoneId = toZoneId(targetZonePos);
         changeZone(targetZoneId, ChangeZoneDirections.down);
+        world.addComponent(player, "excludeFromSim", true);
+        setState((state: State) => {
+          state.turn = Turn.SIM;
+          state.simulationTurnsLeft = 25;
+        });
       }
 
       return true;
@@ -106,6 +110,11 @@ export const handleGameModeInput = async ({
         const targetZonePos = { ...zonePos, z: zonePos.z + 1 };
         const targetZoneId = toZoneId(targetZonePos);
         changeZone(targetZoneId, ChangeZoneDirections.up);
+        world.addComponent(player, "excludeFromSim", true);
+        setState((state: State) => {
+          state.turn = Turn.SIM;
+          state.simulationTurnsLeft = 25;
+        });
       }
 
       return true;
