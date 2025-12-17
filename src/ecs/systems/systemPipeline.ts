@@ -174,9 +174,9 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.odor,
     systems.sound,
   ],
-  input: [systems.perception, systems.memory],
+  input: [systems.perception, systems.memory, systems.ai],
   main: [
-    systems.ai,
+    systems.pickUp,
     systems.movement,
     systems.open,
     systems.attack,
