@@ -11,10 +11,10 @@ import {
 } from "./enums";
 import { type State, getState, setState } from "./gameState";
 import { generateDungeon } from "../pcgn/dungeon";
-import { Pos } from "../lib/grid";
+import { Pos, toPosId } from "../lib/grid";
 import { saveGameData as dbSave, loadGameData as dbLoad } from "./saveStore";
 import { handleUserInput } from "./inputHandlers/KeyMap";
-import { addLog } from "../lib/utils";
+import { addLog, addToEAPMap, updatePosition } from "../lib/utils";
 
 export interface IGameWorld {
   world: World<Entity>;
@@ -388,7 +388,7 @@ class GameWorld {
           if (!stairsEntities) return;
 
           for (const stairsEntity of stairsEntities) {
-            playerEntity.position = { ...stairsEntity.position };
+            updatePosition(this.world, playerEntity, stairsEntity.position);
           }
           break;
         }
@@ -403,7 +403,7 @@ class GameWorld {
         if (!stairsEntities) return;
 
         for (const stairsEntity of stairsEntities) {
-          playerEntity.position = { ...stairsEntity.position };
+          updatePosition(this.world, playerEntity, stairsEntity.position);
         }
       }
     }
@@ -424,6 +424,9 @@ class GameWorld {
     this.registry.clear();
     this.zones.clear();
     this.clearEntities();
+    setState((state: State) => {
+      state.eapMap = new Map();
+    });
 
     // NOTE: this loads ALL entities in to the world - we want all entities in register, but NOT all in world.
     //
@@ -449,6 +452,7 @@ class GameWorld {
         if (entity) this.world.add(entity);
       }
     }
+
     // load state
     const { log, zoneId, playerId, version, turnNumber } = state;
     setState((state: State) => {
@@ -470,12 +474,19 @@ export const gameWorld = new GameWorld();
 gameWorld.world.onEntityAdded.subscribe((entity: Entity) => {
   let uuid = self.crypto.randomUUID();
 
+  // add an id if entity doesn't already have one
   if (!entity.id) {
     entity.id = uuid;
   }
 
+  // set entity into game registry
   if (entity.id) {
     gameWorld.registry.set(entity.id, entity);
+  }
+
+  // set entity position into EAP cache
+  if (entity.position) {
+    addToEAPMap(toPosId(entity.position), entity.id);
   }
 });
 
