@@ -7,9 +7,11 @@ import { some } from "lodash";
 
 export const createOdorSystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
-  const odorQuery = world.with("odor", "position");
-  const blockingQuery = world.with("blocking", "position");
-  const pathThroughQuery = world.with("blocking", "position", "pathThrough");
+  const odorQuery = world.with("odor", "position").without("excludeFromSim");
+  const blockingQuery = world.with("blocking", "position").without("excludeFromSim");
+  const pathThroughQuery = world
+    .with("blocking", "position", "pathThrough")
+    .without("excludeFromSim");
 
   return function odorSystem() {
     // NOTE: OLFACTORY

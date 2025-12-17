@@ -1,10 +1,12 @@
 import { describe, test, expect, afterEach, beforeEach } from "vitest";
 import { addLog } from "./utils";
 import { getState, setState } from "../ecs/gameState";
+import { setupTestGameWorld } from "../ecs/systems/test-utils";
 
 describe("addLog", () => {
   let originalLog: string[];
   beforeEach(() => {
+    setupTestGameWorld();
     // Save and clear log
     originalLog = [...getState().log];
     setState((state: any) => {

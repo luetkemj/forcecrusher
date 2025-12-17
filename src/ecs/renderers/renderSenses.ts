@@ -1,7 +1,11 @@
 import { RendererContext, concatRow } from "../systems/render.system";
-import { getState } from "../gameState";
+import { GameState, getState } from "../gameState";
 
 export const renderSenses = ({ views }: RendererContext) => {
+  // don't render when in SIM mode.
+  const { gameState, simulationTurnsLeft } = getState();
+  if (gameState === GameState.SIM && simulationTurnsLeft > 0) return;
+
   const view = views.senses;
   if (view) {
     // render sensory perception

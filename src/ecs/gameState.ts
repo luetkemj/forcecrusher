@@ -21,6 +21,7 @@ export const enum GameState {
   MAKER_MODE_PREFAB_SELECT = "MAKER_MODE_PREFAB_SELECT",
   SAVING = "SAVING",
   LOADING = "LOADING",
+  SIM = "SIM",
 }
 
 export type Views = {
@@ -70,6 +71,7 @@ export type State = {
     taste: string;
     touch: string;
   };
+  simulationTurnsLeft: number;
   turn: Turn;
   turnNumber: number;
   userInput: KeyboardEvent | null;
@@ -91,7 +93,7 @@ const state: State = {
     { x: 0, y: 0 },
   ],
   fps: 0,
-  gameState: GameState.GAME,
+  gameState: GameState.SIM,
   log: ["hello world", "your adventure begins anew!"],
   logActiveIndex: 0,
   inventoryActiveIndex: 0,
@@ -110,6 +112,7 @@ const state: State = {
     taste: "",
     touch: "",
   },
+  simulationTurnsLeft: 25,
   turn: Turn.PLAYER,
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,

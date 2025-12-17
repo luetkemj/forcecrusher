@@ -21,6 +21,7 @@ import { createOpenSystem } from "../systems/open.system";
 import { createPerceptionSystem } from "./perception.system";
 import { createPickUpSystem } from "../systems/pickUp.system";
 import { createRenderSystem } from "../systems/render.system";
+import { createSimulationSystem } from "../systems/simulation.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createThrowSystem } from "../systems/throw.system";
 import { createUserInputSystem } from "../systems/userInput.system";
@@ -52,6 +53,7 @@ const openSystem = createOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
 const pickUpSystem = createPickUpSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
+const simulationSystem = createSimulationSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const throwSystem = createThrowSystem(gameWorld);
 const userInputSystem = createUserInputSystem(gameWorld);
@@ -80,6 +82,7 @@ export const systems = {
   perception: perceptionSystem,
   pickUp: pickUpSystem,
   render: renderSystem,
+  simulation: simulationSystem,
   sound: soundSystem,
   throw: throwSystem,
   userInput: userInputSystem,
@@ -162,6 +165,7 @@ export const playerTurnPipeline: SystemPipeline = {
 
 export const worldTurnPipeline: SystemPipeline = {
   preInput: [
+    systems.simulation,
     systems.mutable,
     systems.fluid,
     systems.fire,
@@ -170,9 +174,9 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.odor,
     systems.sound,
   ],
-  input: [systems.perception, systems.memory],
+  input: [systems.perception, systems.memory, systems.ai],
   main: [
-    systems.ai,
+    systems.pickUp,
     systems.movement,
     systems.open,
     systems.attack,
@@ -186,6 +190,10 @@ export const worldTurnPipeline: SystemPipeline = {
 };
 
 export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
+  [GameState.SIM]: {
+    ...worldTurnPipeline,
+  },
+
   [GameState.INSPECT]: {
     preInput: [],
     input: [systems.userInput],

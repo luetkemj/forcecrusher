@@ -2,10 +2,15 @@ import { chars, colors } from "../../actors/graphics";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
-export const renderMapFire = ({ views, world }: RendererContext) => {
+export const renderMapFire = ({ views, world, queries }: RendererContext) => {
   const view = views.mapFire;
   if (view) {
     view.clearView();
+
+    const [player] = queries.pcQuery;
+    if (player.excludeFromSim) {
+      return;
+    }
 
     const onFireQuery = world.with("onFire", "position");
 

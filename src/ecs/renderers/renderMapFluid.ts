@@ -3,10 +3,15 @@ import { Entity } from "../engine";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
-export const renderMapFluid = ({ views, world }: RendererContext) => {
+export const renderMapFluid = ({ views, world, queries }: RendererContext) => {
   const view = views.mapFluid;
   if (view) {
     view.clearView();
+
+    const [player] = queries.pcQuery;
+    if (player.excludeFromSim) {
+      return;
+    }
 
     const fluidContainerQuery = world.with("fluidContainer", "position");
 

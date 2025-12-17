@@ -4,7 +4,7 @@ import { type IGameWorld, type Entity } from "../engine";
 import { OpenState } from "../enums";
 
 export const createOpenSystem = ({ world, registry }: IGameWorld) => {
-  const tryOpenQuery = world.with("tryOpen");
+  const tryOpenQuery = world.with("tryOpen").without("excludeFromSim");
 
   return function openSystem() {
     for (const actor of tryOpenQuery) {

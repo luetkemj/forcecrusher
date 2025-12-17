@@ -132,6 +132,16 @@ function gameLoop() {
   const playerCanAct = state.turn === Turn.PLAYER && state.userInput !== null;
 
   if (state.gameState !== GameState.GAME) {
+    if (state.gameState === GameState.SIM) {
+      if (state.simulationTurnsLeft === 0) {
+        setState((state: State) => {
+          state.gameState = GameState.GAME;
+        });
+      } else {
+        runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
+      }
+    }
+
     if (playerCanAct) {
       runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
     }

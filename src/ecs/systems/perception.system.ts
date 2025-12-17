@@ -14,11 +14,13 @@ import { State, getState, setState } from "../gameState";
 
 export const createPerceptionSystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
-  const aiQuery = world.with("ai");
-  const opaqueQuery = world.with("opaque", "position");
-  const renderableQuery = world.with("appearance", "position");
-  const noseQuery = world.with("nose", "position", "ai");
-  const earsQuery = world.with("ears", "position", "ai");
+  const aiQuery = world.with("ai").without("excludeFromSim");
+  const opaqueQuery = world.with("opaque", "position").without("excludeFromSim");
+  const renderableQuery = world
+    .with("appearance", "position")
+    .without("excludeFromSim");
+  const noseQuery = world.with("nose", "position", "ai").without("excludeFromSim");
+  const earsQuery = world.with("ears", "position", "ai").without("excludeFromSim");
 
   return function perceptionSystem() {
     setState((state: State) => (state.visionMap = []));

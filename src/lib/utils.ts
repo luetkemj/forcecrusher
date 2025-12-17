@@ -1,7 +1,7 @@
 import { World } from "miniplex";
 import { Entity, EntityId, gameWorld } from "../ecs/engine";
 import { Disposition, EntityKind } from "../ecs/enums";
-import { getState, setState, State } from "../ecs/gameState";
+import { GameState, getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos, PosId, toPosId } from "./grid";
 import { pull, get } from "lodash";
@@ -58,6 +58,10 @@ export const logFrozenEntity = (entity: Entity) => {
 };
 
 export const addLog = (newLog: string) => {
+  // don't log when in SIM mode.
+  const { gameState, simulationTurnsLeft } = getState();
+  if (gameState === GameState.SIM && simulationTurnsLeft > 0) return;
+
   const logs = getState().log;
 
   if (logs.length === 0) {

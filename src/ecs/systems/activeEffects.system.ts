@@ -1,7 +1,7 @@
 import { IGameWorld } from "../engine";
 
 export const createActiveEffectsSystem = ({ world }: IGameWorld) => {
-  const activeEffectsQuery = world.with("activeEffects");
+  const activeEffectsQuery = world.with("activeEffects").without("excludeFromSim");
 
   return function activeEffectsSystem() {
     for (const entity of activeEffectsQuery) {

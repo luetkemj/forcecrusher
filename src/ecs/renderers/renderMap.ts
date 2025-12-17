@@ -8,6 +8,11 @@ export const renderMap = ({ views, queries }: RendererContext) => {
     // Do this only when needed as it's kinda expensive.
     view.clearView();
 
+    const [player] = queries.pcQuery;
+    if (player.excludeFromSim) {
+      return;
+    }
+
     const allLayers = [
       queries.renderable100Query,
       queries.renderable125Query,

@@ -2,8 +2,8 @@ import { addLog, getDisposition, updatePosition } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
 export const createMovementSystem = ({ world }: IGameWorld) => {
-  const moveableQuery = world.with("position", "tryMove");
-  const blockingQuery = world.with("blocking", "position");
+  const moveableQuery = world.with("position", "tryMove").without("excludeFromSim");
+  const blockingQuery = world.with("blocking", "position").without("excludeFromSim");
 
   return function movementSystem() {
     for (const actor of moveableQuery) {
