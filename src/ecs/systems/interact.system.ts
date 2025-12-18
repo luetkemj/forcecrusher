@@ -67,7 +67,11 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
         );
 
         if (fluids.length) {
-          let interactTarget = { name: "", appearance: { tint: 0x000000 } };
+          let interactTarget = {
+            ...target,
+            name: "",
+            appearance: { tint: 0x000000, char: "", tileSet: "" },
+          };
 
           if (fluids.length === 1) {
             interactTarget.name = `some ${fluids[0].type}`;
@@ -91,18 +95,14 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
 
           setState((state: State) => {
             state.interactTargets = [interactTarget];
-            state.interactActions = ``;
+            state.interactActions = getInteractActions(target);
           });
         }
       } else {
-        const interactActions = getInteractActions(target);
         setState((state: State) => {
           state.interactTargets = interactTargets;
-          state.interactActions = interactActions;
+          state.interactActions = getInteractActions(target);
         });
-
-        console.log(interactTargets);
-        console.log(interactActions);
       }
     } else {
       addLog("There is nothing there.");

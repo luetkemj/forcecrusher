@@ -5,6 +5,7 @@ import { Keys } from "./KeyMap";
 export const handleInteractActionModeInput = ({
   key,
   world,
+  registry,
   state,
   player,
   setState,
@@ -16,8 +17,13 @@ export const handleInteractActionModeInput = ({
   }
 
   const { interactActions, interactTargets } = state;
-  const [target] = interactTargets;
+  // targets can be an entity or a pseudo entity (like with fluids)
+  // a pseudo entity has the id of the actual entity, so we need to get that
+  const [maybeTarget] = interactTargets;
+  const target = registry.get(maybeTarget.id);
   const actor = player;
+
+  if (!target) return;
 
   const afterInteractCleanUp = () => {
     setState((state: State) => {
