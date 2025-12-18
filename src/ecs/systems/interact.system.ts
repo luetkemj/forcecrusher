@@ -1,3 +1,4 @@
+import { filter } from "lodash";
 import { Pos, isAtSamePosition } from "../../lib/grid";
 import { addLog, em } from "../../lib/utils";
 import { IGameWorld, type Entity } from "../engine";
@@ -13,10 +14,7 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
     world.with("position", "appearance", "layer250").without("excludeFromSim"),
     world.with("position", "appearance", "layer225").without("excludeFromSim"),
     world.with("position", "appearance", "layer200").without("excludeFromSim"),
-    // TODO: figure out what to do with the fluid layer (150)
-    // It currently breaks interaction below it as it's an entity but doens't
-    // have a name or normal means of interaction...
-    // world.with("position", "appearance", "layer150").without("excludeFromSim"),
+    world.with("position", "appearance", "layer150").without("excludeFromSim"),
     world.with("position", "appearance", "layer125").without("excludeFromSim"),
     world.with("position", "appearance", "layer100").without("excludeFromSim"),
   ];
@@ -61,11 +59,42 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
     );
 
     if (interactTargets.length) {
-      const interactActions = getInteractActions(interactTargets[0]);
-      setState((state: State) => {
-        state.interactTargets = interactTargets;
-        state.interactActions = interactActions;
-      });
+      const target = interactTargets[0];
+      if (target.fluidContainer) {
+        const fluids = filter(
+          target.fluidContainer.fluids,
+          (x) => x.volume > 0,
+        );
+
+        if (fluids.length) {
+          let interactTarget = { name: "", tint: 0x000000 };
+
+          if (fluids.length === 1) {
+            interactTarget.name = `some ${fluids[0].type}`;
+          } else if (fluids.length === 2) {
+            interactTarget.name = `mixture of ${fluids[0].type} and ${fluids[1].type}`;
+          } else {
+            const lastIndex = fluids.length - 1;
+            const last = fluids[lastIndex];
+            const most = fluids.slice(0, lastIndex);
+            interactTarget.name = `mixture of ${most.map((x) => x.type).join(", ")} and ${last.type}`;
+          }
+
+          setState((state: State) => {
+            state.interactTargets = [interactTarget];
+            state.interactActions = ``;
+          });
+        }
+      } else {
+        const interactActions = getInteractActions(target);
+        setState((state: State) => {
+          state.interactTargets = interactTargets;
+          state.interactActions = interactActions;
+        });
+
+        console.log(interactTargets);
+        console.log(interactActions);
+      }
     } else {
       addLog("There is nothing there.");
     }

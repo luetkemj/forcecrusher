@@ -24,6 +24,8 @@ export const colorEntityName = (entity: Entity) => {
   if (tint && name) {
     return `${colorTag(tint)}${name}§reset§`;
   }
+
+  return `${name}§reset§`;
 };
 
 export const entityNamePlate = (entity?: Entity) => {
