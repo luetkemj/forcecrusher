@@ -1,6 +1,6 @@
 import { filter } from "lodash";
 import { Pos, isAtSamePosition } from "../../lib/grid";
-import { addLog, em } from "../../lib/utils";
+import { addLog, em, mixHexWeighted } from "../../lib/utils";
 import { IGameWorld, type Entity } from "../engine";
 import { OpenState } from "../enums";
 import { type State, getState, setState } from "../gameState";
@@ -67,17 +67,26 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
         );
 
         if (fluids.length) {
-          let interactTarget = { name: "", tint: 0x000000 };
+          let interactTarget = { name: "", appearance: { tint: 0x000000 } };
 
           if (fluids.length === 1) {
             interactTarget.name = `some ${fluids[0].type}`;
+            interactTarget.appearance.tint = fluids[0].tint;
           } else if (fluids.length === 2) {
             interactTarget.name = `mixture of ${fluids[0].type} and ${fluids[1].type}`;
+            interactTarget.appearance.tint = mixHexWeighted(
+              fluids.map((x) => x.tint),
+              fluids.map((x) => x.volume),
+            );
           } else {
             const lastIndex = fluids.length - 1;
             const last = fluids[lastIndex];
             const most = fluids.slice(0, lastIndex);
             interactTarget.name = `mixture of ${most.map((x) => x.type).join(", ")} and ${last.type}`;
+            interactTarget.appearance.tint = mixHexWeighted(
+              fluids.map((x) => x.tint),
+              fluids.map((x) => x.volume),
+            );
           }
 
           setState((state: State) => {

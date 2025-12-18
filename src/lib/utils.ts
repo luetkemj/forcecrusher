@@ -342,3 +342,34 @@ function removeFromEAPMap(pos: PosId, id: EntityId) {
 export function getEAP(pos: PosId): Set<EntityId> | undefined {
   return getState().eapMap.get(pos);
 }
+
+/**
+ * Mix N colors with weights
+ * Usage: mixHexWeighted([0xff0000, 0xffff00, 0x000000], [0.5, 0.3, 0.2]);
+ */
+
+export function mixHexWeighted(colors: number[], weights?: number[]): number {
+  if (colors.length === 0) return 0x000000;
+
+  let r = 0,
+    g = 0,
+    b = 0;
+  let total = 0;
+
+  for (let i = 0; i < colors.length; i++) {
+    const w = weights ? weights[i] ?? 0 : 1;
+    total += w;
+
+    r += ((colors[i] >> 16) & 0xff) * w;
+    g += ((colors[i] >> 8) & 0xff) * w;
+    b += (colors[i] & 0xff) * w;
+  }
+
+  if (total === 0) return 0x000000;
+
+  r = (r / total) | 0;
+  g = (g / total) | 0;
+  b = (b / total) | 0;
+
+  return (r << 16) | (g << 8) | b;
+}
