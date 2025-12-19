@@ -9,6 +9,43 @@ import {
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
+const fluidContainerComponent = {
+  fluids: {
+    water: {
+      type: "water",
+      tint: colors.water,
+      viscosity: 0.23,
+      minFlow: 0.5,
+      volume: 0,
+      maxVolume: 10,
+    },
+    blood: {
+      type: "blood",
+      tint: colors.blood,
+      viscosity: 0.18,
+      minFlow: 0.5,
+      volume: 0,
+      maxVolume: 10,
+    },
+    oil: {
+      type: "oil",
+      tint: colors.oil,
+      viscosity: 0.15,
+      minFlow: 0.7,
+      volume: 0,
+      maxVolume: 10,
+    },
+    lava: {
+      type: "lava",
+      tint: colors.lava,
+      viscosity: 0.01,
+      minFlow: 1,
+      volume: 0,
+      maxVolume: 10,
+    },
+  },
+};
+
 // NOTE: generics
 const base: Entity = {
   id: "",
@@ -301,6 +338,24 @@ export const healthPotionPrefab: Entity = {
   material: Material.Glass,
 };
 
+export const bottlePrefab: Entity = {
+  ...base,
+  ...renderable,
+  appearance: {
+    char: chars.bottleEmpty,
+    tint: colors.glass,
+    tileSet: "kenny",
+  },
+  legendable: true,
+  name: "Empty Bottle",
+  description: "An empty glass bottle",
+  layer200: true,
+  pickUp: true,
+  mass: 0.8,
+  material: Material.Glass,
+  fluidContainer: { ...fluidContainerComponent },
+};
+
 // NOTE: Items
 export const rockPrefab: Entity = {
   ...base,
@@ -582,42 +637,7 @@ export const fluidContainerPrefab: Entity = {
     tileSet: "kenny",
   },
   mass: 0,
-  fluidContainer: {
-    fluids: {
-      water: {
-        type: "water",
-        tint: colors.water,
-        viscosity: 0.23,
-        minFlow: 0.5,
-        volume: 0,
-        maxVolume: 10,
-      },
-      blood: {
-        type: "blood",
-        tint: colors.blood,
-        viscosity: 0.18,
-        minFlow: 0.5,
-        volume: 0,
-        maxVolume: 10,
-      },
-      oil: {
-        type: "oil",
-        tint: colors.oil,
-        viscosity: 0.15,
-        minFlow: 0.7,
-        volume: 0,
-        maxVolume: 10,
-      },
-      lava: {
-        type: "lava",
-        tint: colors.lava,
-        viscosity: 0.01,
-        minFlow: 1,
-        volume: 0,
-        maxVolume: 10,
-      },
-    },
-  },
+  fluidContainer: { ...fluidContainerComponent },
 };
 
 export const grassPrefab: Entity = {

@@ -276,10 +276,10 @@ export const generateDungeon = () => {
   dungeon.rooms.forEach((room, index) => {
     const percentile = new DiceRoll("d100").total;
     if (index) {
-      if (percentile >= 50) {
+      if (percentile >= 90) {
         spawn("rock", { position: room.center });
       } else {
-        spawn("healthPotion", { position: room.center });
+        spawn("bottleEmpty", { position: room.center });
       }
     }
     if (index === 1) {

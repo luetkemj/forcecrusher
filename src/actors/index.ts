@@ -18,6 +18,7 @@ import {
   wallPrefab,
   doorPrefab,
   grassPrefab,
+  bottlePrefab,
 } from "./prefabs";
 import { updatePosition } from "../lib/utils";
 import { Material } from "../ecs/enums";
@@ -33,6 +34,7 @@ export const prefabs = {
 
   // NOTE: Potions
   healthPotion: healthPotionPrefab,
+  bottleEmpty: bottlePrefab,
 
   // NOTE: Items
   rock: rockPrefab,

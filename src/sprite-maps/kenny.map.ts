@@ -1,5 +1,8 @@
 export const kennyGFXMap = {
   armor: 80,
+  bottleEmpty: 578,
+  bottleHalfFull: 579,
+  bottleFull: 580,
   club: 129,
   corpse: 734,
   dagger: 329,
