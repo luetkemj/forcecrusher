@@ -145,8 +145,6 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
     target: Entity | null,
     applicator: Entity | null,
   ) {
-    console.log({ target, applicator });
-
     let actions = ``;
     if (
       target &&
