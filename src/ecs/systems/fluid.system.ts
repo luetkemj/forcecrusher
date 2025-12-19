@@ -115,6 +115,11 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
           c.fluids[fluidType].volume = c.fluids[fluidType].maxVolume;
         }
 
+        // Avoide negative volume
+        if (c.fluids[fluidType].volume < 0) {
+          c.fluids[fluidType].volume = 0;
+        }
+
         if (fluidType === "lava") {
           // water and blood in the presence of lava - disappear - as if they have turned to steam. (need an actual system for that)
           // oil remains as it is a flamable material and will burn up
