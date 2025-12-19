@@ -7,7 +7,6 @@ export const handleInteractActionModeInput = ({
   world,
   registry,
   state,
-  player,
   setState,
 }: InputContext) => {
   if (key === Keys.INTERACT || key === Keys.CANCEL) {
@@ -16,18 +15,25 @@ export const handleInteractActionModeInput = ({
     });
   }
 
-  const { interactActions, interactTargets } = state;
-  // targets can be an entity or a pseudo entity (like with fluids)
-  // a pseudo entity has the id of the actual entity, so we need to get that
-  const [maybeTarget] = interactTargets;
-  const target = registry.get(maybeTarget.id);
-  const actor = player;
+  const { interaction, interactActions } = state;
+
+  const interactor = interaction.interactor
+    ? registry.get(interaction.interactor)
+    : undefined;
+
+  const target = interaction.target
+    ? registry.get(interaction.target)
+    : undefined;
+
+  const applicator = interaction.applicator
+    ? registry.get(interaction.applicator)
+    : undefined;
 
   if (!target) return;
 
   const afterInteractCleanUp = () => {
     setState((state: State) => {
-      state.interactActions = "";
+      state.interaction = {};
       state.interactTargets = [];
       state.gameState = GameState.GAME;
       state.turn = Turn.WORLD;
@@ -37,7 +43,9 @@ export const handleInteractActionModeInput = ({
   // attack
   if (interactActions.includes(`§${Keys.ATTACK}§`)) {
     if (key === Keys.ATTACK) {
-      world.addComponent(actor, "tryAttack", { targetId: target.id });
+      if (interactor && target) {
+        world.addComponent(interactor, "tryAttack", { targetId: target.id });
+      }
       afterInteractCleanUp();
       return true;
     }
@@ -45,7 +53,9 @@ export const handleInteractActionModeInput = ({
   // close
   if (interactActions.includes(`§${Keys.CONSUME}§`)) {
     if (key === Keys.CONSUME) {
-      world.addComponent(actor, "tryClose", target);
+      if (interactor && target) {
+        world.addComponent(interactor, "tryClose", target);
+      }
       afterInteractCleanUp();
       return true;
     }
@@ -53,9 +63,11 @@ export const handleInteractActionModeInput = ({
   // get
   if (interactActions.includes(`§${Keys.PICK_UP}§`)) {
     if (key === Keys.PICK_UP) {
-      world.addComponent(target, "tryPickUp", {
-        pickerId: actor.id,
-      });
+      if (interactor && target) {
+        world.addComponent(target, "tryPickUp", {
+          pickerId: interactor.id,
+        });
+      }
       afterInteractCleanUp();
       return true;
     }
@@ -63,15 +75,34 @@ export const handleInteractActionModeInput = ({
   // kick
   if (interactActions.includes(`§${Keys.KICK}§`)) {
     if (key === Keys.KICK) {
-      world.addComponent(actor, "tryKick", { targetId: target.id });
+      if (interactor && target) {
+        world.addComponent(interactor, "tryKick", { targetId: target.id });
+      }
       afterInteractCleanUp();
       return true;
     }
   }
+
+  // fill
+  // need the fluid container target and source (source is floor, target is bottle)
+  if (interactActions.includes(`§${Keys.FILL}§`)) {
+    if (key === Keys.FILL) {
+      if (applicator && target) {
+        world.addComponent(applicator, "tryFill", {
+          targetId: target.id,
+        });
+      }
+      afterInteractCleanUp();
+      return true;
+    }
+  }
+
   // open
   if (interactActions.includes(`§${Keys.OPEN}§`)) {
     if (key === Keys.OPEN) {
-      world.addComponent(actor, "tryOpen", { id: target.id });
+      if (interactor && target) {
+        world.addComponent(interactor, "tryOpen", { id: target.id });
+      }
       afterInteractCleanUp();
       return true;
     }

@@ -24,6 +24,7 @@ import { createRenderSystem } from "../systems/render.system";
 import { createSimulationSystem } from "../systems/simulation.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createThrowSystem } from "../systems/throw.system";
+import { createTryFillSystem } from "../systems/tryFill.system";
 import { createUserInputSystem } from "../systems/userInput.system";
 import { gameWorld } from "../engine";
 import { GameState } from "../gameState";
@@ -56,6 +57,7 @@ const renderSystem = createRenderSystem(gameWorld);
 const simulationSystem = createSimulationSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const throwSystem = createThrowSystem(gameWorld);
+const tryFillSystem = createTryFillSystem(gameWorld);
 const userInputSystem = createUserInputSystem(gameWorld);
 
 export const systems = {
@@ -85,6 +87,7 @@ export const systems = {
   simulation: simulationSystem,
   sound: soundSystem,
   throw: throwSystem,
+  tryFill: tryFillSystem,
   userInput: userInputSystem,
 };
 
@@ -151,6 +154,7 @@ export const playerTurnPipeline: SystemPipeline = {
   input: [systems.userInput],
   main: [
     systems.pickUp,
+    systems.tryFill,
     systems.movement,
     systems.open,
     systems.attack,
@@ -177,6 +181,7 @@ export const worldTurnPipeline: SystemPipeline = {
   input: [systems.perception, systems.memory, systems.ai],
   main: [
     systems.pickUp,
+    systems.tryFill,
     systems.movement,
     systems.open,
     systems.attack,

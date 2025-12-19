@@ -259,6 +259,7 @@ export type Entity = {
   };
   tryClose?: Entity;
   tryDrop?: { dropperId: EntityId };
+  tryFill?: { targetId: EntityId };
   tryKick?: { targetId: EntityId };
   tryMove?: Pos;
   tryOpen?: { id: EntityId };

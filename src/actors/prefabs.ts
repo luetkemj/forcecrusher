@@ -15,7 +15,7 @@ const fluidContainerComponent = {
       type: "water",
       tint: colors.water,
       viscosity: 0.23,
-      minFlow: 0.5,
+      minFlow: 0.23,
       volume: 0,
       maxVolume: 10,
     },

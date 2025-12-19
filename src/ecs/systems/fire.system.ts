@@ -16,7 +16,9 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
   const onFireQuery = world
     .with("onFire", "flammable", "position")
     .without("excludeFromSim");
-  const opaqueQuery = world.with("opaque", "position").without("excludeFromSim");
+  const opaqueQuery = world
+    .with("opaque", "position")
+    .without("excludeFromSim");
 
   return function fireSystem() {
     for (const actor of onFireQuery) {
@@ -94,6 +96,9 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
 
         if (actor.fluidContainer) {
           actor.fluidContainer.fluids.oil.volume -= actor.onFire.intensity;
+          if (actor.fluidContainer.fluids.oil.volume <= 0) {
+            actor.fluidContainer.fluids.oil.volume = 0;
+          }
         }
       }
 

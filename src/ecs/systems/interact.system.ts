@@ -94,14 +94,44 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
           }
 
           setState((state: State) => {
+            // Get any fluid containers from player inventory
+            const fluidContainersInInventory = [];
+            if (actor.container) {
+              for (const eId of actor.container.contents) {
+                const item = registry.get(eId);
+                if (item && item.fluidContainer) {
+                  fluidContainersInInventory.push(item);
+                }
+              }
+            }
+
+            // Get first found fluidContainerInInvetory
+            // TODO: find first with room or allow player to select
+            const applicator = fluidContainersInInventory[0];
+            if (applicator) {
+              state.interaction = {
+                interactor: actor.id,
+                target: interactTarget.id,
+                applicator: applicator.id,
+              };
+            } else {
+              state.interaction = {
+                interactor: actor.id,
+                target: interactTarget.id,
+              };
+            }
             state.interactTargets = [interactTarget];
-            state.interactActions = getInteractActions(target);
+            state.interactActions = getInteractActions(target, applicator);
           });
         }
       } else {
         setState((state: State) => {
+          state.interaction = {
+            interactor: actor.id,
+            target: interactTargets[0].id,
+          };
           state.interactTargets = interactTargets;
-          state.interactActions = getInteractActions(target);
+          state.interactActions = getInteractActions(target, null);
         });
       }
     } else {
@@ -111,18 +141,31 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
     world.removeComponent(actor, "interactDirection");
   };
 
-  function getInteractActions(target: Entity) {
+  function getInteractActions(
+    target: Entity | null,
+    applicator: Entity | null,
+  ) {
+    console.log({ target, applicator });
+
     let actions = ``;
-    if (target.pickUp) {
+    if (
+      target &&
+      target.fluidContainer &&
+      applicator &&
+      applicator.fluidContainer
+    ) {
+      actions += `(${em("f")})fill `;
+    }
+    if (target && target.pickUp) {
       actions += `(${em("g")})get `;
     }
-    if (target.health && target.health.current > 0) {
+    if (target && target.health && target.health.current > 0) {
       actions += `(${em("a")})attack `;
     }
-    if (target.kickable) {
+    if (target && target.kickable) {
       actions += `(${em("k")})kick `;
     }
-    if (target.openable) {
+    if (target && target.openable) {
       if (target.openable.state === OpenState.Open) {
         actions += `(${em("c")})close `;
       }
