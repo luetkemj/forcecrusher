@@ -1,5 +1,20 @@
 # Dev Log
 
+## 121925
+
+Skulltooth 2: Forcecrusher [github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher)
+
+- interactive fluid layers
+- SIM mode to run world pipeline during zone generation
+- desiccation
+- bugfixes
+
+Biggest change (still in progress) is interactive fluid layers. Bottles exist that can be filled with any liquid in a tile. You can then throw the bottle to spill the liquid somewhere else. Useful for things like collecting oil and tossing it near lava or fire to create a bit of a firestorm.
+
+Once I got the interactive fluid layers working the gears started turning on what else I could do with it. So far I've only added a desiccate component that absorbs fluid from containers withing range. The idea is to have a "gelatinous sponge" mob that wanders the dungeon absorbing all the liquid. On death it will release it all. That idea could pretty easily be used for spells that would do the same sort of thing over AOE. This got me thinking about how entities could have a fluid container of blood that could be used instead of health. Attacks would spill it, death would spill all of it. Vampires might drink it to refill their own blood container... lots of ideas.
+
+So much fun now that the systems are reaching a critical mass!
+
 ## 121225
 
 Skulltooth 2: Forcecrusher [github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher) | [devlog](https://luetkemj.github.io/251205/mutable)

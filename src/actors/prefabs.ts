@@ -10,6 +10,7 @@ import {
 import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
+  open: true,
   fluids: {
     water: {
       type: "water",
@@ -108,6 +109,7 @@ const baseWeapon: Entity = {
 export const playerPrefab: Entity = {
   ...renderable,
   ...being,
+  desiccate: { range: 0, rate: 0.2, absorb: true },
   odor: {
     strength: 10,
   },

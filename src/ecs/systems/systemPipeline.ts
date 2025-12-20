@@ -5,6 +5,7 @@ import { createCalculateFlammabilitySystem } from "../systems/calculateFlammabil
 import { createCloseSystem } from "../systems/close.system";
 import { createCursorSystem } from "../systems/cursor.system";
 import { createDamageSystem } from "../systems/damage.system";
+import { createDesiccateSystem } from "../systems/desiccate.system";
 import { createDropSystem } from "../systems/drop.system";
 import { createFovSystem } from "../systems/fov.system";
 import { createFireSystem } from "../systems/fire.system";
@@ -38,6 +39,7 @@ const calculateFlammabilitySystem =
 const closeSystem = createCloseSystem(gameWorld);
 const cursorSystem = createCursorSystem(gameWorld);
 const damageSystem = createDamageSystem(gameWorld);
+const desiccateSystem = createDesiccateSystem(gameWorld);
 const dropSystem = createDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
 const fireSystem = createFireSystem(gameWorld);
@@ -68,6 +70,7 @@ export const systems = {
   close: closeSystem,
   cursor: cursorSystem,
   damage: damageSystem,
+  desiccate: desiccateSystem,
   drop: dropSystem,
   fire: fireSystem,
   fluid: fluidSystem,
@@ -173,6 +176,7 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.mutable,
     systems.fluid,
     systems.fire,
+    systems.desiccate,
     systems.activeEffects,
     systems.morgue,
     systems.odor,

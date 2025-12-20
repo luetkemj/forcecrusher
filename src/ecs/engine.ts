@@ -108,6 +108,7 @@ export interface Mutation {
 }
 
 export interface FluidContainer {
+  open: boolean;
   fluids: Record<string, Fluid>;
 }
 
@@ -149,6 +150,7 @@ export type Entity = {
   damageRoll?: string;
   dead?: true;
   description?: string;
+  desiccate?: { range: number; rate: number; absorb: boolean };
   dexterity?: number;
   door?: true;
   ears?: {

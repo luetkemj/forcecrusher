@@ -35,6 +35,12 @@ export const createTryFillSystem = ({ world, registry }: IGameWorld) => {
             containerFluid.volume = containerFluid.maxVolume;
             sourceFluid.volume -= containerSpace;
           }
+
+          // if fluidType is lava and there is no more lava at source, remove fire components
+          if (fluidType === "lava" && sourceFluid.volume <= 0) {
+            world.removeComponent(source, "onFire");
+            world.removeComponent(source, "flammable");
+          }
         }
       }
 
