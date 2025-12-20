@@ -28,12 +28,19 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
       for (const entity of query) {
         if (entity.position) {
           if (isAtSamePosition(entity.position, pos)) {
-            // TODO:
-            // check if it's a liquid layer
-            // if it is, check if there's any liquid
-            // if there is... say what it is somehow.
-            // if there isn't, continue to the next layer...
-            // for now I'm just skipping that layer...
+            // check of it's a fluid container and only add to matches if there is fluid there
+            if (entity.name === "fluidContainer" && entity.fluidContainer) {
+              const fluids = filter(
+                entity.fluidContainer.fluids,
+                (x) => x.volume > 0,
+              );
+
+              if (fluids.length) {
+                matches.push(entity);
+              } else {
+                continue;
+              }
+            }
             matches.push(entity);
           }
         }
@@ -135,7 +142,6 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
         });
       }
     } else {
-      // TODO: if a fluid container is empty, we don't get here. Eve though there isn't anything to do.
       addLog("There is nothing there.");
     }
 
