@@ -89,7 +89,7 @@ export interface DetectedSound {
   posId: string;
 }
 
-interface Fluid {
+export interface Fluid {
   type: string;
   volume: number;
   maxVolume: number;

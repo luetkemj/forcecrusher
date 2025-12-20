@@ -1,3 +1,4 @@
+import { transferFluid } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
 export const createTryFillSystem = ({ world, registry }: IGameWorld) => {
@@ -18,23 +19,7 @@ export const createTryFillSystem = ({ world, registry }: IGameWorld) => {
           const containerFluid = container.fluidContainer.fluids[fluidType];
           const sourceFluid = source.fluidContainer.fluids[fluidType];
 
-          const containerSpace =
-            containerFluid.maxVolume - containerFluid.volume;
-
-          // if no space in container or nothing to transfer from source
-          if (containerSpace <= 0 || sourceFluid.volume <= 0) continue;
-
-          // if space in container is greater than the fluid in the source, transfer all fluid from source to container
-          if (containerSpace >= sourceFluid.volume) {
-            containerFluid.volume += sourceFluid.volume;
-            sourceFluid.volume = 0;
-          }
-
-          // if space in container for some but not all fluid from source, transfer enough to fill space in container
-          if (containerSpace < sourceFluid.volume) {
-            containerFluid.volume = containerFluid.maxVolume;
-            sourceFluid.volume -= containerSpace;
-          }
+          if (!transferFluid(containerFluid, sourceFluid)) continue;
 
           // if fluidType is lava and there is no more lava at source, remove fire components
           if (fluidType === "lava" && sourceFluid.volume <= 0) {

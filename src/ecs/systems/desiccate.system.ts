@@ -27,10 +27,6 @@ export const createDesiccateSystem = ({ world, registry }: IGameWorld) => {
           // desiccate!
           for (const fluid in target.fluidContainer.fluids) {
             target.fluidContainer.fluids[fluid].volume -= actor.desiccate.rate;
-            // TODO:
-            // handle the absorb flag. If absorb is true and entity has a fluid Container, all fluid should transfer like a bottle
-            // thinking about having a sponge mob absorb all fluid and then on death spill it all back out.
-
             if (target.fluidContainer.fluids[fluid].volume <= 0) {
               target.fluidContainer.fluids[fluid].volume = 0;
               if (fluid === "lava") {

@@ -135,6 +135,7 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
         });
       }
     } else {
+      // TODO: if a fluid container is empty, we don't get here. Eve though there isn't anything to do.
       addLog("There is nothing there.");
     }
 

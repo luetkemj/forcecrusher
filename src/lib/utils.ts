@@ -1,5 +1,5 @@
 import { World } from "miniplex";
-import { Entity, EntityId, gameWorld } from "../ecs/engine";
+import { Entity, EntityId, Fluid, gameWorld } from "../ecs/engine";
 import { Disposition, EntityKind } from "../ecs/enums";
 import { GameState, getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
@@ -372,4 +372,40 @@ export function mixHexWeighted(colors: number[], weights?: number[]): number {
   b = (b / total) | 0;
 
   return (r << 16) | (g << 8) | b;
+}
+
+export function transferFluid(
+  containerFluid: Fluid,
+  sourceFluid: Fluid,
+  rate?: number,
+) {
+  const containerSpace = containerFluid.maxVolume - containerFluid.volume;
+
+  // if no space in container or nothing to transfer from source
+  if (containerSpace <= 0 || sourceFluid.volume <= 0) return false;
+
+  if (rate && containerSpace >= rate && sourceFluid.volume >= rate) {
+    containerFluid.volume += rate;
+    sourceFluid.volume -= rate;
+
+    return true;
+  }
+
+  // if space in container is greater than the fluid in the source, transfer all fluid from source to container
+  if (containerSpace >= sourceFluid.volume) {
+    containerFluid.volume += sourceFluid.volume;
+    sourceFluid.volume = 0;
+
+    return true;
+  }
+
+  // if space in container for some but not all fluid from source, transfer enough to fill space in container
+  if (containerSpace < sourceFluid.volume) {
+    containerFluid.volume = containerFluid.maxVolume;
+    sourceFluid.volume -= containerSpace;
+
+    return true;
+  }
+
+  return false;
 }
