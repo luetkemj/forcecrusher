@@ -14,10 +14,5 @@ export const spawnPlayer = (position: Pos) => {
   calcAverageDamage(player, weapon);
   calcAverageDamage(player, armor);
 
-  spawn("bottleEmpty", {
-    position,
-    tryPickUp: { pickerId: player.id },
-  });
-
   return player;
 };

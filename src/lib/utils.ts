@@ -1,6 +1,6 @@
 import { World } from "miniplex";
 import { Entity, EntityId, Fluid, gameWorld } from "../ecs/engine";
-import { Disposition, EntityKind } from "../ecs/enums";
+import { Disposition, EntityKind, Fluids } from "../ecs/enums";
 import { GameState, getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos, PosId, toPosId } from "./grid";
@@ -377,8 +377,14 @@ export function mixHexWeighted(colors: number[], weights?: number[]): number {
 export function transferFluid(
   containerFluid: Fluid,
   sourceFluid: Fluid,
+  allowList: Array<Fluids>,
+  denyList: Array<Fluids>,
   rate?: number,
 ) {
+  const fluidType = containerFluid.type;
+  if (allowList.length && !allowList.includes(fluidType)) return false;
+  if (denyList.length && denyList.includes(fluidType)) return false;
+
   const containerSpace = containerFluid.maxVolume - containerFluid.volume;
 
   // if no space in container or nothing to transfer from source

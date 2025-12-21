@@ -44,6 +44,11 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
         world.addComponent(entity, "pickUp", true);
         world.addComponent(entity, "layer200", true);
 
+        if (entity.fluidContainer) {
+          world.removeComponent(entity, "desiccate");
+          entity.fluidContainer.corked = false;
+        }
+
         if (entity.pc) {
           setState((state: State) => (state.gameState = GameState.GAME_OVER));
           console.log("Game Over!");

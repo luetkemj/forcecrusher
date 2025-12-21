@@ -6,14 +6,15 @@ import {
   EffectType,
   EntityKind,
   Material,
+  Fluids,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
-  open: true,
+  corked: false,
   fluids: {
     water: {
-      type: "water",
+      type: Fluids.Water,
       tint: colors.water,
       viscosity: 0.23,
       minFlow: 0.23,
@@ -21,7 +22,7 @@ const fluidContainerComponent = {
       maxVolume: 10,
     },
     blood: {
-      type: "blood",
+      type: Fluids.Blood,
       tint: colors.blood,
       viscosity: 0.18,
       minFlow: 0.5,
@@ -29,7 +30,7 @@ const fluidContainerComponent = {
       maxVolume: 10,
     },
     oil: {
-      type: "oil",
+      type: Fluids.Oil,
       tint: colors.oil,
       viscosity: 0.15,
       minFlow: 0.7,
@@ -37,7 +38,7 @@ const fluidContainerComponent = {
       maxVolume: 10,
     },
     lava: {
-      type: "lava",
+      type: Fluids.Lava,
       tint: colors.lava,
       viscosity: 0.01,
       minFlow: 1,
@@ -109,7 +110,6 @@ const baseWeapon: Entity = {
 export const playerPrefab: Entity = {
   ...renderable,
   ...being,
-  desiccate: { range: 0, rate: 0.2, absorb: true },
   odor: {
     strength: 10,
   },
@@ -267,6 +267,52 @@ export const lavaGolemPrefab: Entity = {
   damages: [],
   mass: 6,
   material: Material.Lava,
+};
+
+export const livingSpongePrefab: Entity = {
+  ...base,
+  ...renderable,
+  ...being,
+  entityKind: EntityKind.Beast,
+  ai: true,
+  appearance: {
+    char: chars.sponge,
+    tint: colors.paper,
+    tileSet: "kenny",
+  },
+  legendable: true,
+  name: "Living Sponge",
+  ears: { sensitivity: 0, detected: [] },
+  nose: { sensitivity: 0, detected: [] },
+  description: "A living sponge with an unquenchable thirst",
+  pathThrough: true,
+  health: { max: 150, current: 150 },
+  baseArmorClass: 10,
+  strength: 10,
+  dexterity: 14,
+  constitution: 15,
+  intelligence: 6,
+  wisdom: 8,
+  charisma: 5,
+  immunities: [DamageType.Fire],
+  resistances: [],
+  vulnerabilities: [],
+  attacks: [],
+  damages: [],
+  mass: 6,
+  material: Material.Bone,
+  desiccate: {
+    range: 1,
+    rate: 0.5,
+    absorb: true,
+    allowList: [],
+    denyList: [Fluids.Lava],
+  },
+  fluidContainer: {
+    ...fluidContainerComponent,
+    corked: true,
+    renderFluidColor: true,
+  },
 };
 
 export const skeletonPrefab: Entity = {

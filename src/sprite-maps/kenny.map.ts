@@ -21,6 +21,7 @@ export const kennyGFXMap = {
   rock: 565,
   shortsword: 327,
   skeleton: 322,
+  sponge: 60,
   stairsDown: 296,
   stairsUp: 295,
   wall: 842,

@@ -30,7 +30,9 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
     // ---------------------------------------------
     for (const actor of fluidContainerQuery) {
       const a = actor.fluidContainer;
-      if (!a.fluids || !a.open || Object.keys(a.fluids).length === 0) continue;
+      if (!a.fluids || a.corked || Object.keys(a.fluids).length === 0) {
+        continue;
+      }
 
       const neighbors = getNeighbors(
         actor.position,
@@ -45,7 +47,12 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
 
         for (const nEid of nEids) {
           const entity = registry.get(nEid);
-          if (!entity || !entity.fluidContainer || entity.id === actor.id)
+          if (
+            !entity ||
+            !entity.fluidContainer ||
+            entity?.fluidContainer?.corked ||
+            entity.id === actor.id
+          )
             continue;
 
           const b = entity.fluidContainer;

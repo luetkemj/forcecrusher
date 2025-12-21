@@ -20,6 +20,7 @@ export enum chars {
   "rock" = "rock",
   "shortsword" = "shortsword",
   "skeleton" = "skeleton",
+  "sponge" = "sponge",
   "stairsDown" = "stairsDown",
   "stairsUp" = "stairsUp",
   "tallGrass" = "tallGrass",
