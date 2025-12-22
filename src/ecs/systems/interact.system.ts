@@ -68,7 +68,7 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
 
     if (interactTargets.length) {
       const target = interactTargets[0];
-      if (target.fluidContainer) {
+      if (target.fluidContainer && target.name === "fluidContainer") {
         const fluids = filter(
           target.fluidContainer.fluids,
           (x) => x.volume > 0,
