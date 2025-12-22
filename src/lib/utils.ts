@@ -1,6 +1,6 @@
 import { World } from "miniplex";
-import { Entity, EntityId, gameWorld } from "../ecs/engine";
-import { Disposition, EntityKind } from "../ecs/enums";
+import { Entity, EntityId, Fluid, gameWorld } from "../ecs/engine";
+import { Disposition, EntityKind, Fluids } from "../ecs/enums";
 import { GameState, getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos, PosId, toPosId } from "./grid";
@@ -24,6 +24,8 @@ export const colorEntityName = (entity: Entity) => {
   if (tint && name) {
     return `${colorTag(tint)}${name}§reset§`;
   }
+
+  return `${name}§reset§`;
 };
 
 export const entityNamePlate = (entity?: Entity) => {
@@ -339,4 +341,76 @@ function removeFromEAPMap(pos: PosId, id: EntityId) {
 
 export function getEAP(pos: PosId): Set<EntityId> | undefined {
   return getState().eapMap.get(pos);
+}
+
+/**
+ * Mix N colors with weights
+ * Usage: mixHexWeighted([0xff0000, 0xffff00, 0x000000], [0.5, 0.3, 0.2]);
+ */
+
+export function mixHexWeighted(colors: number[], weights?: number[]): number {
+  if (colors.length === 0) return 0x000000;
+
+  let r = 0,
+    g = 0,
+    b = 0;
+  let total = 0;
+
+  for (let i = 0; i < colors.length; i++) {
+    const w = weights ? weights[i] ?? 0 : 1;
+    total += w;
+
+    r += ((colors[i] >> 16) & 0xff) * w;
+    g += ((colors[i] >> 8) & 0xff) * w;
+    b += (colors[i] & 0xff) * w;
+  }
+
+  if (total === 0) return 0x000000;
+
+  r = (r / total) | 0;
+  g = (g / total) | 0;
+  b = (b / total) | 0;
+
+  return (r << 16) | (g << 8) | b;
+}
+
+export function transferFluid(
+  containerFluid: Fluid,
+  sourceFluid: Fluid,
+  allowList: Array<Fluids>,
+  denyList: Array<Fluids>,
+  rate?: number,
+) {
+  const fluidType = containerFluid.type;
+  if (allowList.length && !allowList.includes(fluidType)) return false;
+  if (denyList.length && denyList.includes(fluidType)) return false;
+
+  const containerSpace = containerFluid.maxVolume - containerFluid.volume;
+
+  // if no space in container or nothing to transfer from source
+  if (containerSpace <= 0 || sourceFluid.volume <= 0) return false;
+
+  // if there is both enough containerSpace and sourceFluid for transfer - do the transfer
+  if (rate && containerSpace >= rate && sourceFluid.volume >= rate) {
+    containerFluid.volume += rate;
+    sourceFluid.volume -= rate;
+
+    return true;
+  }
+
+  // if space in container is greater than the fluid in the source, transfer all fluid from source to container
+  if (containerSpace >= sourceFluid.volume) {
+    containerFluid.volume += sourceFluid.volume;
+    sourceFluid.volume = 0;
+
+    return true;
+  }
+
+  // if space in container for some but not all fluid from source, transfer enough to fill space in container
+  if (containerSpace < sourceFluid.volume) {
+    containerFluid.volume = containerFluid.maxVolume;
+    sourceFluid.volume -= containerSpace;
+
+    return true;
+  }
 }

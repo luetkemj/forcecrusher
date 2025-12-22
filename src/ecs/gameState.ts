@@ -59,6 +59,13 @@ export type State = {
   interactKey: string;
   interactTargets: Array<Entity>;
   interactActions: string;
+  interaction: {
+    interactKey?: string;
+    interactActions?: string;
+    interactor?: EntityId;
+    target?: EntityId;
+    applicator?: EntityId;
+  };
   makerModePrefabSelectIndex: number;
   eapMap: Map<PosId, Set<EntityId>>;
   odorMap: Map<PosId, Record<EntityId, { strength: number }>>;
@@ -100,6 +107,7 @@ const state: State = {
   interactKey: "",
   interactTargets: [],
   interactActions: "",
+  interaction: {},
   makerModePrefabSelectIndex: 0,
   eapMap: new Map(),
   odorMap: new Map(),

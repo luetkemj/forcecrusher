@@ -11,6 +11,9 @@ const mapBoundary = {
   height: viewConfigs.map.height,
 };
 
+const EPSILON_FLOW = 0.001;
+const MAX_EQUALIZE_RATE = 0.49;
+
 export const createFluidSystem = ({ world, registry }: IGameWorld) => {
   const fluidContainerQuery = world
     .with("fluidContainer", "position")
@@ -18,18 +21,18 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
 
   return function fluidSystem() {
     // ---------------------------------------------
-    // 1. Prepare delta accumulator (entityID → fluidType → deltaVolume)
+    // 1. Prepare delta accumulator
     // ---------------------------------------------
-    const deltas: Record<string, Record<string, number>> = {}; // entityID → fluidType → delta
+    const deltas: Record<string, Record<string, number>> = {};
 
-    // ------------------------------------------------------
-    // 2. READ PHASE — compute flows but don't apply them yet
-    // ------------------------------------------------------
+    // ---------------------------------------------
+    // 2. READ PHASE — compute flows
+    // ---------------------------------------------
     for (const actor of fluidContainerQuery) {
       const a = actor.fluidContainer;
-
-      // Check if we have fluids object and it's not empty
-      if (!a.fluids || Object.keys(a.fluids).length <= 0) continue;
+      if (!a.fluids || a.corked || Object.keys(a.fluids).length === 0) {
+        continue;
+      }
 
       const neighbors = getNeighbors(
         actor.position,
@@ -44,55 +47,55 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
 
         for (const nEid of nEids) {
           const entity = registry.get(nEid);
-          // Skip if no entity, no fluid container or same entity
-          if (!entity || !entity.fluidContainer || entity.id === actor.id)
+          if (
+            !entity ||
+            !entity.fluidContainer ||
+            entity?.fluidContainer?.corked ||
+            entity.id === actor.id
+          )
             continue;
 
           const b = entity.fluidContainer;
 
-          // Process fluid interactions
           for (const fluidType in a.fluids) {
             const aFluid = a.fluids[fluidType];
+            const bFluid = b.fluids[fluidType];
+            if (!bFluid) continue;
 
-            if (aFluid.volume < aFluid.minFlow) continue;
+            // Only flow from higher → lower volume
+            if (aFluid.volume <= bFluid.volume) continue;
 
-            let bFluid;
+            // Stable equalization rate (viscosity)
+            const rate = Math.min(aFluid.viscosity ?? 0.25, MAX_EQUALIZE_RATE);
 
-            // Check if target has this fluid type
-            if (b.fluids[fluidType]) {
-              bFluid = b.fluids[fluidType];
+            let flow = (aFluid.volume - bFluid.volume) * rate;
 
-              // Calculate flow based on volume difference and viscosity
-              const volumeDiff = aFluid.volume - bFluid.volume;
-              if (Math.abs(volumeDiff) < 0.001) continue; // No significant difference
+            // Do not drain below residue
+            const maxDrain = aFluid.volume - aFluid.minFlow;
+            if (maxDrain <= 0) continue;
 
-              // Attempt to equalize a fraction of the difference
-              let flow = volumeDiff * (aFluid.viscosity || 1);
+            // Clamp to available drain and target capacity
+            const space = bFluid.maxVolume - bFluid.volume;
+            if (space <= 0) continue;
 
-              // Clamp to neighbor's remaining capacity
-              const space = bFluid.maxVolume - bFluid.volume;
-              if (space <= 0) continue;
+            flow = Math.min(flow, maxDrain, space);
+            if (flow <= EPSILON_FLOW) continue;
 
-              flow = Math.min(flow, space);
-              if (flow <= 0) continue;
+            // Apply deltas
+            deltas[actor.id] ??= {};
+            deltas[actor.id][fluidType] =
+              (deltas[actor.id][fluidType] || 0) - flow;
 
-              // Apply delta to source (negative)
-              if (!deltas[actor.id]) deltas[actor.id] = {};
-              deltas[actor.id][fluidType] =
-                (deltas[actor.id][fluidType] || 0) - flow;
-
-              // Apply delta to target (positive)
-              if (!deltas[entity.id]) deltas[entity.id] = {};
-              deltas[entity.id][fluidType] =
-                (deltas[entity.id][fluidType] || 0) + flow;
-            }
+            deltas[entity.id] ??= {};
+            deltas[entity.id][fluidType] =
+              (deltas[entity.id][fluidType] || 0) + flow;
           }
         }
       }
     }
 
     // ---------------------------------------------
-    // 3. WRITE PHASE — apply all deltas at once
+    // 3. WRITE PHASE — apply deltas
     // ---------------------------------------------
     for (const eId in deltas) {
       const entity = registry.get(eId);
@@ -102,76 +105,57 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
       if (!c.fluids) continue;
 
       for (const fluidType in deltas[eId]) {
-        const delta = deltas[eId][fluidType];
-        c.fluids[fluidType].volume += delta;
+        const f = c.fluids[fluidType];
+        if (!f) continue;
 
-        // Avoid floating noise
-        if (c.fluids[fluidType].volume < 0.0001) {
-          c.fluids[fluidType].volume = 0;
-        }
+        f.volume += deltas[eId][fluidType];
 
-        // Clamp to container capacity
-        if (c.fluids[fluidType].volume > c.fluids[fluidType].maxVolume) {
-          c.fluids[fluidType].volume = c.fluids[fluidType].maxVolume;
-        }
+        // Numerical stability
+        if (f.volume < EPSILON_FLOW) f.volume = 0;
+        if (f.volume > f.maxVolume) f.volume = f.maxVolume;
+        if (f.volume < 0) f.volume = 0;
 
+        // Lava interactions
         if (fluidType === "lava") {
-          // water and blood in the presence of lava - disappear - as if they have turned to steam. (need an actual system for that)
-          // oil remains as it is a flamable material and will burn up
-          // if also water, cell should turn to lavarock
-          c.fluids.water.volume = 0;
-          // if also blood, blood should disappear
-          c.fluids.blood.volume = 0;
+          if (c.fluids.water) c.fluids.water.volume = 0;
+          if (c.fluids.blood) c.fluids.blood.volume = 0;
         }
       }
     }
 
-    // recalculate flammability
+    // ---------------------------------------------
+    // 4. Recalculate flammability
+    // ---------------------------------------------
     const fluidLayers = ["lava", "water", "blood", "oil"];
+
     for (const entity of fluidContainerQuery) {
       const c = entity.fluidContainer;
 
       for (const fluidType of fluidLayers) {
-        // need to do these in order...
-        if (fluidType === "water") {
-          if (c.fluids[fluidType].volume > 0) {
-            entity.flammable = calculateFlammability(
-              Material.Water,
-              c.fluids[fluidType].volume,
-            );
-          }
-        }
+        const f = c.fluids[fluidType];
+        if (!f || f.volume <= 0) continue;
 
-        if (fluidType === "blood") {
-          if (c.fluids[fluidType].volume > 0) {
-            entity.flammable = calculateFlammability(
-              Material.Blood,
-              c.fluids[fluidType].volume,
-            );
-          }
-        }
+        switch (fluidType) {
+          case "water":
+            entity.flammable = calculateFlammability(Material.Water, f.volume);
+            break;
 
-        if (fluidType === "oil") {
-          if (c.fluids[fluidType].volume > 0) {
-            entity.flammable = calculateFlammability(
-              Material.Oil,
-              c.fluids[fluidType].volume,
-            );
-          }
-        }
+          case "blood":
+            entity.flammable = calculateFlammability(Material.Blood, f.volume);
+            break;
 
-        if (fluidType === "lava") {
-          if (c.fluids[fluidType].volume > 0) {
-            entity.flammable = calculateFlammability(
-              Material.Lava,
-              c.fluids[fluidType].volume,
-            );
+          case "oil":
+            entity.flammable = calculateFlammability(Material.Oil, f.volume);
+            break;
+
+          case "lava":
+            entity.flammable = calculateFlammability(Material.Lava, f.volume);
             world.addComponent(entity, "onFire", {
               intensity: 1,
               age: 0,
               source: true,
             });
-          }
+            break;
         }
       }
     }

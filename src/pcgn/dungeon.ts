@@ -11,7 +11,12 @@ import {
   toPos,
 } from "../lib/grid";
 import { spawn } from "../actors";
-import { spawnSkeleton, spawnRat, spawnLavaGolem } from "./monsters";
+import {
+  spawnSkeleton,
+  spawnRat,
+  spawnLavaGolem,
+  spawnLivingSponge,
+} from "./monsters";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
@@ -214,7 +219,8 @@ export const generateDungeon = () => {
 
       // add fluidContainers to every open floor tile
       const fEntity = spawn("fluidContainer", { position: { x, y } });
-      const fluidTypes = ["lava", "oil", "blood", "water"];
+      // randomly fill containers with fluid to create pools
+      const fluidTypes = ["lava", "oil", "water"];
       if (Math.random() < 0.005) {
         if (fEntity.fluidContainer) {
           const volume = random(5, 20);
@@ -264,10 +270,13 @@ export const generateDungeon = () => {
     if (percentile <= 5) {
       spawnLavaGolem(position);
     }
-    if (percentile > 5 && percentile <= 30) {
+    if (percentile > 5 && percentile <= 10) {
+      spawnLivingSponge(position);
+    }
+    if (percentile > 10 && percentile <= 20) {
       spawnSkeleton(position);
     }
-    if (percentile > 30) {
+    if (percentile > 20) {
       spawnRat(position);
     }
   });
@@ -276,10 +285,10 @@ export const generateDungeon = () => {
   dungeon.rooms.forEach((room, index) => {
     const percentile = new DiceRoll("d100").total;
     if (index) {
-      if (percentile >= 50) {
+      if (percentile >= 90) {
         spawn("rock", { position: room.center });
       } else {
-        spawn("healthPotion", { position: room.center });
+        spawn("bottleEmpty", { position: room.center });
       }
     }
     if (index === 1) {

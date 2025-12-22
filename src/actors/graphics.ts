@@ -1,5 +1,8 @@
 export enum chars {
   "armor" = "armor",
+  "bottleEmpty" = "bottleEmpty",
+  "bottleHalfFull" = "bottleHalfFull",
+  "bottleFull" = "bottleFull",
   "club" = "club",
   "corpse" = "corpse",
   "dagger" = "dagger",
@@ -17,6 +20,7 @@ export enum chars {
   "rock" = "rock",
   "shortsword" = "shortsword",
   "skeleton" = "skeleton",
+  "sponge" = "sponge",
   "stairsDown" = "stairsDown",
   "stairsUp" = "stairsUp",
   "tallGrass" = "tallGrass",

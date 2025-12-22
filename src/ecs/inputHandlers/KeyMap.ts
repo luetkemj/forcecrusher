@@ -14,16 +14,19 @@ export const Keys = {
   ATTACK: "a",
   KICK: "k",
   OPEN: "o",
+  CLOSE: "c",
   PICK_UP: "g",
   INTERACT: "e",
   INSPECT: "L",
   INVENTORY: "i",
   TARGET: "t",
+  // should be quaff?
   CONSUME: "c",
   DROP: "d",
   WIELD: "w",
   WEAR: "W",
   REMOVE: "r",
+  FILL: "f",
 
   STAIRS_DOWN: ">",
   STAIRS_UP: "<",
@@ -70,6 +73,9 @@ export const handleUserInput = (input: KeyboardEvent | string) => {
   if (IGNORED_KEYS.includes(key)) return;
 
   setState((state: State) => {
-    state.userInput = input instanceof KeyboardEvent ? input : new KeyboardEvent('keydown', { key });
+    state.userInput =
+      input instanceof KeyboardEvent
+        ? input
+        : new KeyboardEvent("keydown", { key });
   });
 };

@@ -18,6 +18,9 @@ export const renderMapFluid = ({ views, world, queries }: RendererContext) => {
     for (const entity of fluidContainerQuery) {
       const { x, y } = entity.position;
 
+      // we only want to render fluidContainer entities, not all entities that happen to have one
+      if (entity.name !== "fluidContainer") continue;
+
       if (entity.inFov) {
         renderCell(view, entity);
       }

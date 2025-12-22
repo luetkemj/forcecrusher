@@ -18,6 +18,8 @@ import {
   wallPrefab,
   doorPrefab,
   grassPrefab,
+  bottlePrefab,
+  livingSpongePrefab,
 } from "./prefabs";
 import { updatePosition } from "../lib/utils";
 import { Material } from "../ecs/enums";
@@ -30,9 +32,11 @@ export const prefabs = {
   lavaGolem: lavaGolemPrefab,
   rat: ratPrefab,
   skeleton: skeletonPrefab,
+  livingSponge: livingSpongePrefab,
 
   // NOTE: Potions
   healthPotion: healthPotionPrefab,
+  bottleEmpty: bottlePrefab,
 
   // NOTE: Items
   rock: rockPrefab,

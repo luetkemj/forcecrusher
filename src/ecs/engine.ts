@@ -3,6 +3,7 @@ import {
   DamageType,
   EffectType,
   EntityKind,
+  Fluids,
   Material,
   OpenState,
   Sense,
@@ -89,8 +90,8 @@ export interface DetectedSound {
   posId: string;
 }
 
-interface Fluid {
-  type: string;
+export interface Fluid {
+  type: Fluids;
   volume: number;
   maxVolume: number;
   minFlow: number;
@@ -108,6 +109,8 @@ export interface Mutation {
 }
 
 export interface FluidContainer {
+  corked: boolean;
+  renderFluidColor?: true;
   fluids: Record<string, Fluid>;
 }
 
@@ -149,6 +152,13 @@ export type Entity = {
   damageRoll?: string;
   dead?: true;
   description?: string;
+  desiccate?: {
+    range: number;
+    rate: number;
+    absorb: boolean;
+    allowList: Array<Fluids>;
+    denyList: Array<Fluids>;
+  };
   dexterity?: number;
   door?: true;
   ears?: {
@@ -259,6 +269,7 @@ export type Entity = {
   };
   tryClose?: Entity;
   tryDrop?: { dropperId: EntityId };
+  tryFill?: { targetId: EntityId };
   tryKick?: { targetId: EntityId };
   tryMove?: Pos;
   tryOpen?: { id: EntityId };

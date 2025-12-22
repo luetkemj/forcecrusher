@@ -1,5 +1,6 @@
+import { filter } from "lodash";
 import { Pos, isAtSamePosition } from "../../lib/grid";
-import { addLog, em } from "../../lib/utils";
+import { addLog, em, mixHexWeighted } from "../../lib/utils";
 import { IGameWorld, type Entity } from "../engine";
 import { OpenState } from "../enums";
 import { type State, getState, setState } from "../gameState";
@@ -13,10 +14,7 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
     world.with("position", "appearance", "layer250").without("excludeFromSim"),
     world.with("position", "appearance", "layer225").without("excludeFromSim"),
     world.with("position", "appearance", "layer200").without("excludeFromSim"),
-    // TODO: figure out what to do with the fluid layer (150)
-    // It currently breaks interaction below it as it's an entity but doens't
-    // have a name or normal means of interaction...
-    // world.with("position", "appearance", "layer150").without("excludeFromSim"),
+    world.with("position", "appearance", "layer150").without("excludeFromSim"),
     world.with("position", "appearance", "layer125").without("excludeFromSim"),
     world.with("position", "appearance", "layer100").without("excludeFromSim"),
   ];
@@ -30,13 +28,21 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
       for (const entity of query) {
         if (entity.position) {
           if (isAtSamePosition(entity.position, pos)) {
-            // TODO:
-            // check if it's a liquid layer
-            // if it is, check if there's any liquid
-            // if there is... say what it is somehow.
-            // if there isn't, continue to the next layer...
-            // for now I'm just skipping that layer...
-            matches.push(entity);
+            // check of it's a fluid container and only add to matches if there is fluid there
+            if (entity.name === "fluidContainer" && entity.fluidContainer) {
+              const fluids = filter(
+                entity.fluidContainer.fluids,
+                (x) => x.volume > 0,
+              );
+
+              if (fluids.length) {
+                matches.push(entity);
+              } else {
+                continue;
+              }
+            } else {
+              matches.push(entity);
+            }
           }
         }
       }
@@ -61,11 +67,81 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
     );
 
     if (interactTargets.length) {
-      const interactActions = getInteractActions(interactTargets[0]);
-      setState((state: State) => {
-        state.interactTargets = interactTargets;
-        state.interactActions = interactActions;
-      });
+      const target = interactTargets[0];
+      if (target.fluidContainer && target.name === "fluidContainer") {
+        const fluids = filter(
+          target.fluidContainer.fluids,
+          (x) => x.volume > 0,
+        );
+
+        if (fluids.length) {
+          let interactTarget = {
+            ...target,
+            name: "",
+            appearance: { tint: 0x000000, char: "", tileSet: "" },
+          };
+
+          if (fluids.length === 1) {
+            interactTarget.name = `some ${fluids[0].type}`;
+            interactTarget.appearance.tint = fluids[0].tint;
+          } else if (fluids.length === 2) {
+            interactTarget.name = `mixture of ${fluids[0].type} and ${fluids[1].type}`;
+            interactTarget.appearance.tint = mixHexWeighted(
+              fluids.map((x) => x.tint),
+              fluids.map((x) => x.volume),
+            );
+          } else {
+            const lastIndex = fluids.length - 1;
+            const last = fluids[lastIndex];
+            const most = fluids.slice(0, lastIndex);
+            interactTarget.name = `mixture of ${most.map((x) => x.type).join(", ")} and ${last.type}`;
+            interactTarget.appearance.tint = mixHexWeighted(
+              fluids.map((x) => x.tint),
+              fluids.map((x) => x.volume),
+            );
+          }
+
+          setState((state: State) => {
+            // Get any fluid containers from player inventory
+            const fluidContainersInInventory = [];
+            if (actor.container) {
+              for (const eId of actor.container.contents) {
+                const item = registry.get(eId);
+                if (item && item.fluidContainer) {
+                  fluidContainersInInventory.push(item);
+                }
+              }
+            }
+
+            // Get first found fluidContainerInInvetory
+            // TODO: find first with room or allow player to select
+            const applicator = fluidContainersInInventory[0];
+            if (applicator) {
+              state.interaction = {
+                interactor: actor.id,
+                target: interactTarget.id,
+                applicator: applicator.id,
+              };
+            } else {
+              state.interaction = {
+                interactor: actor.id,
+                target: interactTarget.id,
+              };
+            }
+            state.interactTargets = [interactTarget];
+            state.interactActions = getInteractActions(target, applicator);
+          });
+        }
+      } else {
+        setState((state: State) => {
+          state.interaction = {
+            interactor: actor.id,
+            target: interactTargets[0].id,
+          };
+          state.interactTargets = interactTargets;
+          state.interactActions = getInteractActions(target, null);
+        });
+      }
     } else {
       addLog("There is nothing there.");
     }
@@ -73,18 +149,29 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
     world.removeComponent(actor, "interactDirection");
   };
 
-  function getInteractActions(target: Entity) {
+  function getInteractActions(
+    target: Entity | null,
+    applicator: Entity | null,
+  ) {
     let actions = ``;
-    if (target.pickUp) {
+    if (
+      target &&
+      target.fluidContainer &&
+      applicator &&
+      applicator.fluidContainer
+    ) {
+      actions += `(${em("f")})fill `;
+    }
+    if (target && target.pickUp) {
       actions += `(${em("g")})get `;
     }
-    if (target.health && target.health.current > 0) {
+    if (target && target.health && target.health.current > 0) {
       actions += `(${em("a")})attack `;
     }
-    if (target.kickable) {
+    if (target && target.kickable) {
       actions += `(${em("k")})kick `;
     }
-    if (target.openable) {
+    if (target && target.openable) {
       if (target.openable.state === OpenState.Open) {
         actions += `(${em("c")})close `;
       }

@@ -6,8 +6,47 @@ import {
   EffectType,
   EntityKind,
   Material,
+  Fluids,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
+
+const fluidContainerComponent = {
+  corked: false,
+  fluids: {
+    water: {
+      type: Fluids.Water,
+      tint: colors.water,
+      viscosity: 0.23,
+      minFlow: 0.23,
+      volume: 0,
+      maxVolume: 10,
+    },
+    blood: {
+      type: Fluids.Blood,
+      tint: colors.blood,
+      viscosity: 0.18,
+      minFlow: 0.5,
+      volume: 0,
+      maxVolume: 10,
+    },
+    oil: {
+      type: Fluids.Oil,
+      tint: colors.oil,
+      viscosity: 0.15,
+      minFlow: 0.7,
+      volume: 0,
+      maxVolume: 10,
+    },
+    lava: {
+      type: Fluids.Lava,
+      tint: colors.lava,
+      viscosity: 0.01,
+      minFlow: 1,
+      volume: 0,
+      maxVolume: 10,
+    },
+  },
+};
 
 // NOTE: generics
 const base: Entity = {
@@ -185,6 +224,19 @@ export const ratPrefab: Entity = {
   vision: { range: 3, visible: [] },
   mass: 0.8,
   material: Material.Flesh,
+  fluidContainer: {
+    corked: true,
+    fluids: {
+      blood: {
+        type: Fluids.Blood,
+        tint: colors.blood,
+        viscosity: 0.18,
+        minFlow: 0.5,
+        volume: 2,
+        maxVolume: 10,
+      },
+    },
+  },
 };
 
 export const lavaGolemPrefab: Entity = {
@@ -228,6 +280,52 @@ export const lavaGolemPrefab: Entity = {
   damages: [],
   mass: 6,
   material: Material.Lava,
+};
+
+export const livingSpongePrefab: Entity = {
+  ...base,
+  ...renderable,
+  ...being,
+  entityKind: EntityKind.Beast,
+  ai: true,
+  appearance: {
+    char: chars.sponge,
+    tint: colors.paper,
+    tileSet: "kenny",
+  },
+  legendable: true,
+  name: "Living Sponge",
+  ears: { sensitivity: 0, detected: [] },
+  nose: { sensitivity: 0, detected: [] },
+  description: "A living sponge with an unquenchable thirst",
+  pathThrough: true,
+  health: { max: 150, current: 150 },
+  baseArmorClass: 10,
+  strength: 10,
+  dexterity: 14,
+  constitution: 15,
+  intelligence: 6,
+  wisdom: 8,
+  charisma: 5,
+  immunities: [DamageType.Fire],
+  resistances: [],
+  vulnerabilities: [],
+  attacks: [],
+  damages: [],
+  mass: 6,
+  material: Material.Bone,
+  desiccate: {
+    range: 1,
+    rate: 0.5,
+    absorb: true,
+    allowList: [],
+    denyList: [],
+  },
+  fluidContainer: {
+    ...fluidContainerComponent,
+    corked: true,
+    renderFluidColor: true,
+  },
 };
 
 export const skeletonPrefab: Entity = {
@@ -299,6 +397,24 @@ export const healthPotionPrefab: Entity = {
   pickUp: true,
   mass: 0.8,
   material: Material.Glass,
+};
+
+export const bottlePrefab: Entity = {
+  ...base,
+  ...renderable,
+  appearance: {
+    char: chars.bottleEmpty,
+    tint: colors.glass,
+    tileSet: "kenny",
+  },
+  legendable: true,
+  name: "Empty Bottle",
+  description: "An empty glass bottle",
+  layer200: true,
+  pickUp: true,
+  mass: 0.8,
+  material: Material.Glass,
+  fluidContainer: { ...fluidContainerComponent },
 };
 
 // NOTE: Items
@@ -582,42 +698,7 @@ export const fluidContainerPrefab: Entity = {
     tileSet: "kenny",
   },
   mass: 0,
-  fluidContainer: {
-    fluids: {
-      water: {
-        type: "water",
-        tint: colors.water,
-        viscosity: 0.23,
-        minFlow: 0.5,
-        volume: 0,
-        maxVolume: 10,
-      },
-      blood: {
-        type: "blood",
-        tint: colors.blood,
-        viscosity: 0.18,
-        minFlow: 0.5,
-        volume: 0,
-        maxVolume: 10,
-      },
-      oil: {
-        type: "oil",
-        tint: colors.oil,
-        viscosity: 0.15,
-        minFlow: 0.7,
-        volume: 0,
-        maxVolume: 10,
-      },
-      lava: {
-        type: "lava",
-        tint: colors.lava,
-        viscosity: 0.01,
-        minFlow: 1,
-        volume: 0,
-        maxVolume: 10,
-      },
-    },
-  },
+  fluidContainer: { ...fluidContainerComponent },
 };
 
 export const grassPrefab: Entity = {

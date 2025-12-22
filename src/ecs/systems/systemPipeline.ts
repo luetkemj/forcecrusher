@@ -5,6 +5,7 @@ import { createCalculateFlammabilitySystem } from "../systems/calculateFlammabil
 import { createCloseSystem } from "../systems/close.system";
 import { createCursorSystem } from "../systems/cursor.system";
 import { createDamageSystem } from "../systems/damage.system";
+import { createDesiccateSystem } from "../systems/desiccate.system";
 import { createDropSystem } from "../systems/drop.system";
 import { createFovSystem } from "../systems/fov.system";
 import { createFireSystem } from "../systems/fire.system";
@@ -24,6 +25,7 @@ import { createRenderSystem } from "../systems/render.system";
 import { createSimulationSystem } from "../systems/simulation.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createThrowSystem } from "../systems/throw.system";
+import { createTryFillSystem } from "../systems/tryFill.system";
 import { createUserInputSystem } from "../systems/userInput.system";
 import { gameWorld } from "../engine";
 import { GameState } from "../gameState";
@@ -37,6 +39,7 @@ const calculateFlammabilitySystem =
 const closeSystem = createCloseSystem(gameWorld);
 const cursorSystem = createCursorSystem(gameWorld);
 const damageSystem = createDamageSystem(gameWorld);
+const desiccateSystem = createDesiccateSystem(gameWorld);
 const dropSystem = createDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
 const fireSystem = createFireSystem(gameWorld);
@@ -56,6 +59,7 @@ const renderSystem = createRenderSystem(gameWorld);
 const simulationSystem = createSimulationSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const throwSystem = createThrowSystem(gameWorld);
+const tryFillSystem = createTryFillSystem(gameWorld);
 const userInputSystem = createUserInputSystem(gameWorld);
 
 export const systems = {
@@ -66,6 +70,7 @@ export const systems = {
   close: closeSystem,
   cursor: cursorSystem,
   damage: damageSystem,
+  desiccate: desiccateSystem,
   drop: dropSystem,
   fire: fireSystem,
   fluid: fluidSystem,
@@ -85,6 +90,7 @@ export const systems = {
   simulation: simulationSystem,
   sound: soundSystem,
   throw: throwSystem,
+  tryFill: tryFillSystem,
   userInput: userInputSystem,
 };
 
@@ -151,6 +157,7 @@ export const playerTurnPipeline: SystemPipeline = {
   input: [systems.userInput],
   main: [
     systems.pickUp,
+    systems.tryFill,
     systems.movement,
     systems.open,
     systems.attack,
@@ -169,6 +176,7 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.mutable,
     systems.fluid,
     systems.fire,
+    systems.desiccate,
     systems.activeEffects,
     systems.morgue,
     systems.odor,
@@ -177,6 +185,7 @@ export const worldTurnPipeline: SystemPipeline = {
   input: [systems.perception, systems.memory, systems.ai],
   main: [
     systems.pickUp,
+    systems.tryFill,
     systems.movement,
     systems.open,
     systems.attack,

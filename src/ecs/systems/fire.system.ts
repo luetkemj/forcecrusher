@@ -16,7 +16,9 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
   const onFireQuery = world
     .with("onFire", "flammable", "position")
     .without("excludeFromSim");
-  const opaqueQuery = world.with("opaque", "position").without("excludeFromSim");
+  const opaqueQuery = world
+    .with("opaque", "position")
+    .without("excludeFromSim");
 
   return function fireSystem() {
     for (const actor of onFireQuery) {
@@ -67,9 +69,14 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
             if (entity?.fluidContainer) {
               const { lava, oil, blood, water } = entity.fluidContainer.fluids;
 
-              if (lava.volume > 0 || oil.volume > 0) continue;
+              if (lava && lava.volume > 0) continue;
+              if (oil && oil.volume > 0) continue;
 
-              if (blood.volume > 0 || water.volume > 0) {
+              if (blood && blood.volume > 0) {
+                canIgnite = false;
+              }
+
+              if (water && water.volume > 0) {
                 canIgnite = false;
               }
             }
@@ -92,8 +99,11 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       if (actor.flammable.fuel.current > 0) {
         actor.flammable.fuel.current -= actor.onFire.intensity;
 
-        if (actor.fluidContainer) {
+        if (actor.fluidContainer && actor.fluidContainer.fluids.oil) {
           actor.fluidContainer.fluids.oil.volume -= actor.onFire.intensity;
+          if (actor.fluidContainer.fluids.oil.volume <= 0) {
+            actor.fluidContainer.fluids.oil.volume = 0;
+          }
         }
       }
 
