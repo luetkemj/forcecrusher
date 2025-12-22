@@ -390,6 +390,7 @@ export function transferFluid(
   // if no space in container or nothing to transfer from source
   if (containerSpace <= 0 || sourceFluid.volume <= 0) return false;
 
+  // if there is both enough containerSpace and sourceFluid for transfer - do the transfer
   if (rate && containerSpace >= rate && sourceFluid.volume >= rate) {
     containerFluid.volume += rate;
     sourceFluid.volume -= rate;
@@ -412,6 +413,4 @@ export function transferFluid(
 
     return true;
   }
-
-  return false;
 }

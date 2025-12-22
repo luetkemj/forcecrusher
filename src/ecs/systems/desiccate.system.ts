@@ -24,6 +24,9 @@ export const createDesiccateSystem = ({ world, registry }: IGameWorld) => {
           const target = registry.get(eId);
           if (!target || !target.fluidContainer) continue;
 
+          // if fluidContainer is corked, don't allow desiccation
+          if (target.fluidContainer.corked) continue;
+
           // absorb!
           if (actor.desiccate.absorb && actor.fluidContainer) {
             const source = target;
