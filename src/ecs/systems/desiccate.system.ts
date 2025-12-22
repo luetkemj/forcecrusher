@@ -36,6 +36,8 @@ export const createDesiccateSystem = ({ world, registry }: IGameWorld) => {
                 const sourceFluid = source.fluidContainer.fluids[fluidType];
                 const { allowList, denyList } = actor.desiccate;
 
+                if (!containerFluid || !sourceFluid) continue;
+
                 if (
                   !transferFluid(
                     containerFluid,

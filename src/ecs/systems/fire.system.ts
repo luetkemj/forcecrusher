@@ -99,7 +99,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       if (actor.flammable.fuel.current > 0) {
         actor.flammable.fuel.current -= actor.onFire.intensity;
 
-        if (actor.fluidContainer) {
+        if (actor.fluidContainer && actor.fluidContainer.fluids.oil) {
           actor.fluidContainer.fluids.oil.volume -= actor.onFire.intensity;
           if (actor.fluidContainer.fluids.oil.volume <= 0) {
             actor.fluidContainer.fluids.oil.volume = 0;

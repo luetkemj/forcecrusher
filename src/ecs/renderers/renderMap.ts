@@ -37,7 +37,7 @@ export const renderMap = ({ views, queries }: RendererContext) => {
           const weights = map(entity.fluidContainer.fluids, (x) => x.volume);
           const fluidColor = mixHexWeighted(colors, weights);
           if (fluidColor) {
-            entity.appearance.tint = mixHexWeighted(colors, weights);
+            entity.appearance.tint = fluidColor;
           }
         }
 

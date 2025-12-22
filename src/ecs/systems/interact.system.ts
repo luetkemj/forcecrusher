@@ -40,8 +40,9 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
               } else {
                 continue;
               }
+            } else {
+              matches.push(entity);
             }
-            matches.push(entity);
           }
         }
       }
