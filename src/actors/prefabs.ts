@@ -224,6 +224,19 @@ export const ratPrefab: Entity = {
   vision: { range: 3, visible: [] },
   mass: 0.8,
   material: Material.Flesh,
+  fluidContainer: {
+    corked: true,
+    fluids: {
+      blood: {
+        type: Fluids.Blood,
+        tint: colors.blood,
+        viscosity: 0.18,
+        minFlow: 0.5,
+        volume: 2,
+        maxVolume: 10,
+      },
+    },
+  },
 };
 
 export const lavaGolemPrefab: Entity = {
@@ -306,7 +319,7 @@ export const livingSpongePrefab: Entity = {
     rate: 0.5,
     absorb: true,
     allowList: [],
-    denyList: [Fluids.Lava],
+    denyList: [],
   },
   fluidContainer: {
     ...fluidContainerComponent,
