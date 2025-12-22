@@ -47,7 +47,7 @@ export const spawnLivingSponge = (position: Pos) => {
 
   const fluid = sample(Object.values(Fluids));
   if (fluid) {
-    monster.desiccate?.allowList.push(Fluids.Blood);
+    monster.desiccate?.allowList.push(fluid);
   }
 
   return monster;
