@@ -93,7 +93,6 @@ export interface DetectedSound {
 export interface Fluid {
   type: Fluids;
   volume: number;
-  maxVolume: number;
   minFlow: number;
   viscosity: number;
   tint: number;
@@ -110,6 +109,7 @@ export interface Mutation {
 
 export interface FluidContainer {
   corked: boolean;
+  maxVolume: number;
   renderFluidColor?: true;
   fluids: Record<string, Fluid>;
 }
@@ -256,6 +256,7 @@ export type Entity = {
   excludeFromSim?: true;
   pc?: true;
   position?: Pos;
+  renderFluidColor?: true;
   resistances?: Array<DamageType>;
   revealed?: true;
   sound?: { strength: number };

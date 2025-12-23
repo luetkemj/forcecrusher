@@ -40,9 +40,7 @@ export const spawnSkeleton = (position: Pos) => {
 export const spawnLivingSponge = (position: Pos) => {
   const monster = spawn("livingSponge", { position });
   if (monster.fluidContainer) {
-    for (const fluidType in monster.fluidContainer.fluids) {
-      monster.fluidContainer.fluids[fluidType].maxVolume = 1000;
-    }
+    monster.fluidContainer.maxVolume = 5;
   }
 
   const fluid = sample(Object.values(Fluids));

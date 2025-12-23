@@ -2,7 +2,7 @@ import { IGameWorld } from "../engine";
 import { getNeighbors, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
-import { getEAP } from "../../lib/utils";
+import { getEAP, getTotalVolume } from "../../lib/utils";
 import { calculateFlammability } from "../../actors";
 import { Material } from "../enums";
 
@@ -75,7 +75,8 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
             if (maxDrain <= 0) continue;
 
             // Clamp to available drain and target capacity
-            const space = bFluid.maxVolume - bFluid.volume;
+            const totalB = getTotalVolume(b);
+            const space = b.maxVolume - totalB;
             if (space <= 0) continue;
 
             flow = Math.min(flow, maxDrain, space);
@@ -112,7 +113,6 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
 
         // Numerical stability
         if (f.volume < EPSILON_FLOW) f.volume = 0;
-        if (f.volume > f.maxVolume) f.volume = f.maxVolume;
         if (f.volume < 0) f.volume = 0;
 
         // Lava interactions

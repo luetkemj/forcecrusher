@@ -43,6 +43,7 @@ export const createDesiccateSystem = ({ world, registry }: IGameWorld) => {
 
                 if (
                   !transferFluid(
+                    container.fluidContainer,
                     containerFluid,
                     sourceFluid,
                     allowList,

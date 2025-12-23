@@ -62,11 +62,12 @@ function getCellAlphas(entity: Entity) {
   if (!entity.fluidContainer) return alphas;
 
   const { lava, oil, blood, water } = entity.fluidContainer.fluids;
+  const { maxVolume } = entity.fluidContainer;
 
-  alphas.lavaAlpha = (lava.volume / lava.maxVolume) * 10;
-  alphas.oilAlpha = (oil.volume / oil.maxVolume) * 10;
-  alphas.bloodAlpha = (blood.volume / blood.maxVolume) * 10;
-  alphas.waterAlpha = (water.volume / water.maxVolume) * 10;
+  alphas.lavaAlpha = (lava.volume / maxVolume) * 10;
+  alphas.oilAlpha = (oil.volume / maxVolume) * 10;
+  alphas.bloodAlpha = (blood.volume / maxVolume) * 10;
+  alphas.waterAlpha = (water.volume / maxVolume) * 10;
   alphas.alpha =
     alphas.lavaAlpha + alphas.oilAlpha + alphas.bloodAlpha + alphas.waterAlpha;
 

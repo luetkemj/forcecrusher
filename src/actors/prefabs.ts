@@ -12,6 +12,7 @@ import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
   corked: false,
+  maxVolume: 10,
   fluids: {
     water: {
       type: Fluids.Water,
@@ -19,7 +20,6 @@ const fluidContainerComponent = {
       viscosity: 0.23,
       minFlow: 0.23,
       volume: 0,
-      maxVolume: 10,
     },
     blood: {
       type: Fluids.Blood,
@@ -27,7 +27,6 @@ const fluidContainerComponent = {
       viscosity: 0.18,
       minFlow: 0.5,
       volume: 0,
-      maxVolume: 10,
     },
     oil: {
       type: Fluids.Oil,
@@ -35,7 +34,6 @@ const fluidContainerComponent = {
       viscosity: 0.15,
       minFlow: 0.7,
       volume: 0,
-      maxVolume: 10,
     },
     lava: {
       type: Fluids.Lava,
@@ -43,7 +41,6 @@ const fluidContainerComponent = {
       viscosity: 0.01,
       minFlow: 1,
       volume: 0,
-      maxVolume: 10,
     },
   },
 };
@@ -226,6 +223,7 @@ export const ratPrefab: Entity = {
   material: Material.Flesh,
   fluidContainer: {
     corked: true,
+    maxVolume: 10,
     fluids: {
       blood: {
         type: Fluids.Blood,
@@ -233,7 +231,6 @@ export const ratPrefab: Entity = {
         viscosity: 0.18,
         minFlow: 0.5,
         volume: 2,
-        maxVolume: 10,
       },
     },
   },
@@ -324,8 +321,9 @@ export const livingSpongePrefab: Entity = {
   fluidContainer: {
     ...fluidContainerComponent,
     corked: true,
-    renderFluidColor: true,
+    maxVolume: 2,
   },
+  renderFluidColor: true,
 };
 
 export const skeletonPrefab: Entity = {
@@ -408,13 +406,73 @@ export const bottlePrefab: Entity = {
     tileSet: "kenny",
   },
   legendable: true,
-  name: "Empty Bottle",
+  name: "Bottle",
   description: "An empty glass bottle",
   layer200: true,
   pickUp: true,
   mass: 0.8,
   material: Material.Glass,
-  fluidContainer: { ...fluidContainerComponent },
+  fluidContainer: {
+    ...fluidContainerComponent,
+    corked: true,
+  },
+  mutable: {
+    current: "empty",
+    mutations: [
+      {
+        name: "empty",
+        chanceToMutate: 0,
+        addComponents: {
+          appearance: {
+            char: chars.bottleEmpty,
+            tint: colors.glass,
+            tileSet: "kenny",
+          },
+          description: "An empty glass bottle",
+        },
+        removeComponents: ["renderFluidColor"],
+      },
+      {
+        name: "mostlyEmpty",
+        chanceToMutate: 0,
+        addComponents: {
+          appearance: {
+            char: chars.bottleHalfFull,
+            tint: colors.glass,
+            tileSet: "kenny",
+          },
+          renderFluidColor: true,
+          description: "A mostly empty glass bottle",
+        },
+      },
+      {
+        name: "mostlyFull",
+        chanceToMutate: 0,
+        addComponents: {
+          appearance: {
+            char: chars.bottleHalfFull,
+            tint: colors.glass,
+            tileSet: "kenny",
+          },
+          renderFluidColor: true,
+          description: "A mostly full glass bottle",
+        },
+      },
+      {
+        name: "full",
+        chanceToMutate: 0,
+        addComponents: {
+          appearance: {
+            char: chars.bottleFull,
+            tint: colors.glass,
+            tileSet: "kenny",
+          },
+          renderFluidColor: true,
+          description: "A full glass bottle",
+        },
+      },
+    ],
+  },
 };
 
 // NOTE: Items

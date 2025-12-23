@@ -31,16 +31,6 @@ export const renderMap = ({ views, queries }: RendererContext) => {
     // render everything in FOV
     for (const query of allLayers) {
       for (const entity of query) {
-        if (entity.fluidContainer && entity.fluidContainer.renderFluidColor) {
-          // get composite fluid color
-          const colors = map(entity.fluidContainer.fluids, (x) => x.tint);
-          const weights = map(entity.fluidContainer.fluids, (x) => x.volume);
-          const fluidColor = mixHexWeighted(colors, weights);
-          if (fluidColor) {
-            entity.appearance.tint = fluidColor;
-          }
-        }
-
         if (entity.inFov) renderEntity(view, entity, 1, 0);
       }
     }
