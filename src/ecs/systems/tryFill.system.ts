@@ -21,7 +21,16 @@ export const createTryFillSystem = ({ world, registry }: IGameWorld) => {
 
           if (!containerFluid || !sourceFluid) continue;
 
-          if (!transferFluid(containerFluid, sourceFluid, [], [])) continue;
+          if (
+            !transferFluid(
+              container.fluidContainer,
+              containerFluid,
+              sourceFluid,
+              [],
+              [],
+            )
+          )
+            continue;
 
           // if fluidType is lava and there is no more lava at source, remove fire components
           if (fluidType === "lava" && sourceFluid.volume <= 0) {

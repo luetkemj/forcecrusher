@@ -12,6 +12,7 @@ import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
   corked: false,
+  maxVolume: 10,
   fluids: {
     water: {
       type: Fluids.Water,
@@ -19,7 +20,6 @@ const fluidContainerComponent = {
       viscosity: 0.23,
       minFlow: 0.23,
       volume: 0,
-      maxVolume: 10,
     },
     blood: {
       type: Fluids.Blood,
@@ -27,7 +27,6 @@ const fluidContainerComponent = {
       viscosity: 0.18,
       minFlow: 0.5,
       volume: 0,
-      maxVolume: 10,
     },
     oil: {
       type: Fluids.Oil,
@@ -35,7 +34,6 @@ const fluidContainerComponent = {
       viscosity: 0.15,
       minFlow: 0.7,
       volume: 0,
-      maxVolume: 10,
     },
     lava: {
       type: Fluids.Lava,
@@ -43,7 +41,6 @@ const fluidContainerComponent = {
       viscosity: 0.01,
       minFlow: 1,
       volume: 0,
-      maxVolume: 10,
     },
   },
 };
@@ -226,6 +223,7 @@ export const ratPrefab: Entity = {
   material: Material.Flesh,
   fluidContainer: {
     corked: true,
+    maxVolume: 10,
     fluids: {
       blood: {
         type: Fluids.Blood,
@@ -233,7 +231,6 @@ export const ratPrefab: Entity = {
         viscosity: 0.18,
         minFlow: 0.5,
         volume: 2,
-        maxVolume: 10,
       },
     },
   },
@@ -324,6 +321,7 @@ export const livingSpongePrefab: Entity = {
   fluidContainer: {
     ...fluidContainerComponent,
     corked: true,
+    maxVolume: 2,
   },
   renderFluidColor: true,
 };
