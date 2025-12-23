@@ -1,7 +1,5 @@
-import { map } from "lodash";
 import { GameState, getState } from "../gameState";
 import { RendererContext, renderEntity } from "../systems/render.system";
-import { mixHexWeighted } from "../../lib/utils";
 
 export const renderMap = ({ views, queries }: RendererContext) => {
   const view = views.map;
