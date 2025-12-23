@@ -428,11 +428,12 @@ export const bottlePrefab: Entity = {
             tint: colors.glass,
             tileSet: "kenny",
           },
+          name: "Empty bottle",
         },
         removeComponents: ["renderFluidColor"],
       },
       {
-        name: "halfFull",
+        name: "mostlyEmpty",
         chanceToMutate: 0,
         addComponents: {
           appearance: {
@@ -441,6 +442,20 @@ export const bottlePrefab: Entity = {
             tileSet: "kenny",
           },
           renderFluidColor: true,
+          name: "Mostly empty bottle",
+        },
+      },
+      {
+        name: "mostlyFull",
+        chanceToMutate: 0,
+        addComponents: {
+          appearance: {
+            char: chars.bottleHalfFull,
+            tint: colors.glass,
+            tileSet: "kenny",
+          },
+          renderFluidColor: true,
+          name: "Mostly full bottle",
         },
       },
       {
@@ -453,6 +468,7 @@ export const bottlePrefab: Entity = {
             tileSet: "kenny",
           },
           renderFluidColor: true,
+          name: "Full bottle",
         },
       },
     ],

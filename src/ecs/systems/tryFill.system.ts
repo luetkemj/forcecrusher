@@ -1,4 +1,4 @@
-import { transferFluid } from "../../lib/utils";
+import { getTotalVolume, transferFluid } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
 export const createTryFillSystem = ({ world, registry }: IGameWorld) => {
@@ -41,6 +41,39 @@ export const createTryFillSystem = ({ world, registry }: IGameWorld) => {
       }
 
       world.removeComponent(actor, "tryFill");
+
+      if (actor.mutable) {
+        console.log("mutable", actor);
+        const totalVolume = getTotalVolume(actor.fluidContainer);
+        const { mutations } = actor.mutable;
+
+        if (mutations.find((m) => m.name === "empty") && totalVolume <= 0) {
+          world.addComponent(actor, "mutateTo", { name: "empty" });
+        }
+
+        if (
+          mutations.find((m) => m.name === "mostlyEmpty") &&
+          totalVolume > 0 &&
+          totalVolume < actor.fluidContainer.maxVolume / 2
+        ) {
+          world.addComponent(actor, "mutateTo", { name: "mostlyEmpty" });
+        }
+
+        if (
+          mutations.find((m) => m.name === "mostlyFull") &&
+          totalVolume > 0 &&
+          totalVolume >= actor.fluidContainer.maxVolume / 2
+        ) {
+          world.addComponent(actor, "mutateTo", { name: "mostlyFull" });
+        }
+
+        if (
+          mutations.find((m) => m.name === "full") &&
+          totalVolume >= actor.fluidContainer.maxVolume
+        ) {
+          world.addComponent(actor, "mutateTo", { name: "full" });
+        }
+      }
     }
   };
 };
