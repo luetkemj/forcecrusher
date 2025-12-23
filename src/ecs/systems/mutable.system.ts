@@ -4,8 +4,12 @@ import type { Entity, Mutation } from "../engine";
 import { cloneDeep } from "lodash";
 
 export const createMutableSystem = ({ world }: IGameWorld) => {
-  const mutableQuery = world.with("mutable").without("excludeFromSim");
-  const mutateToQuery = world.with("mutateTo").without("excludeFromSim");
+  const mutableQuery = world
+    .with("mutable")
+    .without("mutateTo", "excludeFromSim");
+  const mutateToQuery = world
+    .with("mutateTo", "mutable")
+    .without("excludeFromSim");
 
   return function mutableSystem() {
     for (const entity of mutableQuery) {
@@ -28,14 +32,12 @@ export const createMutableSystem = ({ world }: IGameWorld) => {
     }
 
     for (const entity of mutateToQuery) {
-      if (entity.mutable) {
-        const mutation = entity.mutable.mutations.find(
-          (x) => x.name === entity.mutateTo.name,
-        );
-        if (mutation) {
-          evolveEntity(world, entity, mutation);
-          entity.mutable.current = mutation.name;
-        }
+      const mutation = entity.mutable.mutations.find(
+        (x) => x.name === entity.mutateTo.name,
+      );
+      if (mutation) {
+        evolveEntity(world, entity, mutation);
+        entity.mutable.current = mutation.name;
       }
       world.removeComponent(entity, "mutateTo");
     }

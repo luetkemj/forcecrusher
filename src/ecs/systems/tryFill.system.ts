@@ -43,7 +43,6 @@ export const createTryFillSystem = ({ world, registry }: IGameWorld) => {
       world.removeComponent(actor, "tryFill");
 
       if (actor.mutable) {
-        console.log("mutable", actor);
         const totalVolume = getTotalVolume(actor.fluidContainer);
         const { mutations } = actor.mutable;
 

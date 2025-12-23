@@ -15,6 +15,7 @@ import { createInteractSystem } from "../systems/interact.system";
 import { createKickSystem } from "../systems/kick.system";
 import { createKnockbackSystem } from "../systems/knockback.system";
 import { createMemorySystem } from "./memory.system";
+import { createMixTintsSystem } from "./mixTints.system";
 import { createMorgueSystem } from "../systems/morgue.system";
 import { createMovementSystem } from "../systems/movement.system";
 import { createOdorSystem } from "../systems/odor.system";
@@ -49,6 +50,7 @@ const interactSystem = createInteractSystem(gameWorld);
 const kickSystem = createKickSystem(gameWorld);
 const knockbackSystem = createKnockbackSystem(gameWorld);
 const memorySystem = createMemorySystem(gameWorld);
+const mixTintsSystem = createMixTintsSystem(gameWorld);
 const morgueSystem = createMorgueSystem(gameWorld);
 const movementSystem = createMovementSystem(gameWorld);
 const odorSystem = createOdorSystem(gameWorld);
@@ -75,13 +77,14 @@ export const systems = {
   fire: fireSystem,
   fluid: fluidSystem,
   fov: fovSystem,
-  mutable: mutableSystem,
   interact: interactSystem,
   kick: kickSystem,
   knockback: knockbackSystem,
   memory: memorySystem,
+  mixTints: mixTintsSystem,
   morgue: morgueSystem,
   movement: movementSystem,
+  mutable: mutableSystem,
   odor: odorSystem,
   open: openSystem,
   perception: perceptionSystem,
@@ -166,14 +169,13 @@ export const playerTurnPipeline: SystemPipeline = {
     systems.morgue,
     systems.drop,
   ],
-  postMain: [systems.fov],
+  postMain: [systems.fov, systems.mutable, systems.mixTints],
   render: [systems.render],
 };
 
 export const worldTurnPipeline: SystemPipeline = {
   preInput: [
     systems.simulation,
-    systems.mutable,
     systems.fluid,
     systems.fire,
     systems.desiccate,
@@ -194,7 +196,12 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.morgue,
     systems.drop,
   ],
-  postMain: [systems.fov, systems.calculateFlammability],
+  postMain: [
+    systems.fov,
+    systems.calculateFlammability,
+    systems.mutable,
+    systems.mixTints,
+  ],
   render: [systems.render],
 };
 
@@ -240,6 +247,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     input: [systems.userInput],
     main: [
       systems.interact,
+      systems.tryFill,
       systems.activeEffects,
       systems.pickUp,
       systems.movement,
@@ -252,7 +260,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
       systems.morgue,
       systems.drop,
     ],
-    postMain: [systems.fov],
+    postMain: [systems.fov, systems.mutable, systems.mixTints],
     render: [systems.render],
   },
 
