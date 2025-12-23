@@ -82,14 +82,18 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
             flow = Math.min(flow, maxDrain, space);
             if (flow <= EPSILON_FLOW) continue;
 
-            // Apply deltas
-            deltas[actor.id] ??= {};
-            deltas[actor.id][fluidType] =
-              (deltas[actor.id][fluidType] || 0) - flow;
+            if (actor.fluidContainer.outflow && entity.fluidContainer.inflow) {
+              // Apply deltas
+              // outflow
+              deltas[actor.id] ??= {};
+              deltas[actor.id][fluidType] =
+                (deltas[actor.id][fluidType] || 0) - flow;
 
-            deltas[entity.id] ??= {};
-            deltas[entity.id][fluidType] =
-              (deltas[entity.id][fluidType] || 0) + flow;
+              // inflow
+              deltas[entity.id] ??= {};
+              deltas[entity.id][fluidType] =
+                (deltas[entity.id][fluidType] || 0) + flow;
+            }
           }
         }
       }
@@ -114,12 +118,6 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
         // Numerical stability
         if (f.volume < EPSILON_FLOW) f.volume = 0;
         if (f.volume < 0) f.volume = 0;
-
-        // Lava interactions
-        if (fluidType === "lava") {
-          if (c.fluids.water) c.fluids.water.volume = 0;
-          if (c.fluids.blood) c.fluids.blood.volume = 0;
-        }
       }
     }
 
@@ -155,6 +153,10 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
               age: 0,
               source: true,
             });
+            // Lava interactions (lava deletes other fluid
+            if (c.fluids.water) c.fluids.water.volume = 0;
+            if (c.fluids.blood) c.fluids.blood.volume = 0;
+
             break;
         }
       }

@@ -13,6 +13,8 @@ import { colors, chars } from "./graphics";
 const fluidContainerComponent = {
   corked: false,
   maxVolume: 10,
+  inflow: true,
+  outflow: true,
   fluids: {
     water: {
       type: Fluids.Water,
@@ -224,6 +226,8 @@ export const ratPrefab: Entity = {
   fluidContainer: {
     corked: true,
     maxVolume: 10,
+    outflow: true,
+    inflow: false,
     fluids: {
       blood: {
         type: Fluids.Blood,
@@ -322,6 +326,8 @@ export const livingSpongePrefab: Entity = {
     ...fluidContainerComponent,
     corked: true,
     maxVolume: 2,
+    inflow: false,
+    outflow: true,
   },
   renderFluidColor: true,
 };
@@ -415,6 +421,8 @@ export const bottlePrefab: Entity = {
   fluidContainer: {
     ...fluidContainerComponent,
     corked: true,
+    inflow: false,
+    outflow: false,
   },
   mutable: {
     current: "empty",
