@@ -256,6 +256,7 @@ export type Entity = {
   excludeFromSim?: true;
   pc?: true;
   position?: Pos;
+  renderFluidColor?: true;
   resistances?: Array<DamageType>;
   revealed?: true;
   sound?: { strength: number };

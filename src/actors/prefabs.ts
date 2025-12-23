@@ -324,8 +324,8 @@ export const livingSpongePrefab: Entity = {
   fluidContainer: {
     ...fluidContainerComponent,
     corked: true,
-    renderFluidColor: true,
   },
+  renderFluidColor: true,
 };
 
 export const skeletonPrefab: Entity = {
@@ -414,7 +414,51 @@ export const bottlePrefab: Entity = {
   pickUp: true,
   mass: 0.8,
   material: Material.Glass,
-  fluidContainer: { ...fluidContainerComponent },
+  fluidContainer: {
+    ...fluidContainerComponent,
+    corked: true,
+  },
+  mutable: {
+    current: "empty",
+    mutations: [
+      {
+        name: "empty",
+        chanceToMutate: 0,
+        addComponents: {
+          appearance: {
+            char: chars.bottleEmpty,
+            tint: colors.glass,
+            tileSet: "kenny",
+          },
+        },
+        removeComponents: ["renderFluidColor"],
+      },
+      {
+        name: "halfFull",
+        chanceToMutate: 0,
+        addComponents: {
+          appearance: {
+            char: chars.bottleHalfFull,
+            tint: colors.glass,
+            tileSet: "kenny",
+          },
+          renderFluidColor: true,
+        },
+      },
+      {
+        name: "full",
+        chanceToMutate: 0,
+        addComponents: {
+          appearance: {
+            char: chars.bottleFull,
+            tint: colors.glass,
+            tileSet: "kenny",
+          },
+          renderFluidColor: true,
+        },
+      },
+    ],
+  },
 };
 
 // NOTE: Items
