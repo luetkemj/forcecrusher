@@ -124,7 +124,7 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
     }
 
     // ---------------------------------------------
-    // 4. Recalculate flammability && mutate as needed
+    // 4. Recalculate flammability
     // ---------------------------------------------
     const fluidLayers = ["lava", "water", "blood", "oil"];
 

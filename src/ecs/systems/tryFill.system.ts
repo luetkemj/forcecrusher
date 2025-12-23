@@ -60,8 +60,8 @@ export const createTryFillSystem = ({ world, registry }: IGameWorld) => {
 
         if (
           mutations.find((m) => m.name === "mostlyFull") &&
-          totalVolume > 0 &&
-          totalVolume >= actor.fluidContainer.maxVolume / 2
+          totalVolume >= actor.fluidContainer.maxVolume / 2 &&
+          totalVolume < actor.fluidContainer.maxVolume
         ) {
           world.addComponent(actor, "mutateTo", { name: "mostlyFull" });
         }
