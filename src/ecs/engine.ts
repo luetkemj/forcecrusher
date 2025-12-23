@@ -112,6 +112,8 @@ export interface FluidContainer {
   maxVolume: number;
   renderFluidColor?: true;
   fluids: Record<string, Fluid>;
+  outflow?: boolean;
+  inflow?: boolean;
 }
 
 export type EntityId = string;
