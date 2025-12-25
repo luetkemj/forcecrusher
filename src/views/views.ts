@@ -357,12 +357,12 @@ export function createViews() {
     const view =
       config.kind === "map" ? new MapView(config) : new UIPanelView(config);
 
-    if (id === "fps") {
-      view.updateRow?.({ string: "FPS: calc..." });
+    if (id === "fps" && config.kind === "ui") {
+      (view as UIPanelView).updateRow({ string: "FPS: calc..." });
     }
 
-    if (id === "gitHash") {
-      view.updateRow?.({ string: "TAG: GITHASH" });
+    if (id === "gitHash" && config.kind === "ui") {
+      (view as UIPanelView).updateRow({ string: "TAG: GITHASH" });
     }
 
     views[id] = view;
