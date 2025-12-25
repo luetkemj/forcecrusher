@@ -343,12 +343,14 @@ export class MapView extends BaseView {
  */
 
 export class UIPanelView extends BaseView {
-  sprites: Sprite[][] = [];
+  sprites: Sprite[][][] = [];
 
   constructor(opts: ViewOptions) {
     super(opts);
     _.times(opts.layers, () => {
-      this.sprites.push(Array.from({ length: this.height }, () => []));
+      this.sprites.push(
+        Array.from({ length: this.height }, () => [] as Sprite[]),
+      );
     });
   }
 
@@ -377,7 +379,7 @@ export class UIPanelView extends BaseView {
   }
 
   clearRow(layer: number, y: number) {
-    this.sprites[layer][y].forEach((s) => s.destroy());
+    this.sprites[layer][y].forEach((s: Sprite) => s.destroy());
     this.sprites[layer][y] = [];
   }
 

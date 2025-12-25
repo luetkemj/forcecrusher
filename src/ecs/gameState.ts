@@ -1,5 +1,5 @@
 import { PosId, type Pos } from "../lib/grid";
-import { View } from "../lib/canvas";
+import { MapView, UIPanelView } from "../lib/canvas";
 import { Entity, EntityId } from "./engine";
 import { VisibleFov } from "../lib/fov";
 
@@ -25,28 +25,28 @@ export const enum GameState {
 }
 
 export type Views = {
-  fps?: View;
-  gitHash?: View;
-  map?: View;
-  mapFire?: View;
-  mapFluid?: View;
-  odorMap?: View;
-  soundMap?: View;
-  visionMap?: View;
-  log?: View;
-  senses?: View;
-  legend?: View;
-  inventory?: View;
-  menuUnderlay?: View;
-  controls?: View;
-  cursor?: View;
-  hud?: View;
-  logHistory?: View;
-  makerModeLeft?: View;
-  makerModeRight?: View;
-  makerModeTop?: View;
-  saving?: View;
-  loading?: View;
+  fps?: UIPanelView;
+  gitHash?: UIPanelView;
+  map?: MapView;
+  mapFire?: MapView;
+  mapFluid?: MapView;
+  odorMap?: MapView;
+  soundMap?: MapView;
+  visionMap?: MapView;
+  log?: UIPanelView;
+  senses?: UIPanelView;
+  legend?: UIPanelView;
+  inventory?: UIPanelView;
+  menuUnderlay?: MapView;
+  controls?: UIPanelView;
+  cursor?: MapView;
+  hud?: UIPanelView;
+  logHistory?: UIPanelView;
+  makerModeLeft?: UIPanelView;
+  makerModeRight?: UIPanelView;
+  makerModeTop?: UIPanelView;
+  saving?: UIPanelView;
+  loading?: UIPanelView;
 };
 
 export type State = {
