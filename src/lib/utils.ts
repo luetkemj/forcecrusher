@@ -138,7 +138,7 @@ export const getWielding = (entity: Entity) => {
     }
   }
 
-  return false;
+  return undefined;
 };
 
 export const wield = (equipper: Entity, equipment: Entity) => {

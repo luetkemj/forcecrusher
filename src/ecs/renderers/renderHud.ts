@@ -11,25 +11,25 @@ export const renderHud = ({ views, queries }: RendererContext) => {
     const wielding = getWielding(player);
 
     let wieldingName = "unarmed";
-    let wieldingChar = chars.weapon;
-    let wieldingTint = chars.weapon;
+    let wieldingChar: string = chars.weapon;
+    let wieldingTint: number = colors.weapon;
 
     if (wielding) {
       wieldingName = wielding.name;
-      wieldingChar = wielding.appearance?.char;
-      wieldingTint = wielding.appearance?.tint;
+      wieldingChar = wielding.appearance?.char ?? chars.weapon;
+      wieldingTint = wielding.appearance?.tint ?? colors.weapon;
     }
 
     const wearing = getWearing(player);
 
     let wearingName = "unarmed";
-    let wearingChar = chars.armor;
-    let wearingTint = chars.armor;
+    let wearingChar: string = chars.armor;
+    let wearingTint: number = colors.armor;
 
     if (wearing) {
       wearingName = wearing.name;
-      wearingChar = wearing.appearance?.char;
-      wearingTint = wearing.appearance?.tint;
+      wearingChar = wearing.appearance?.char ?? chars.armor;
+      wearingTint = wearing.appearance?.tint ?? colors.armor;
     }
 
     if (view) {
