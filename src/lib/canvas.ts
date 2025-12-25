@@ -392,7 +392,6 @@ export class UIPanelView extends BaseView {
             parseTags,
           });
         } else if (row && row.tokens) {
-          console.log(row);
           this.updateRowTokens({
             y,
             tokens: row.tokens,

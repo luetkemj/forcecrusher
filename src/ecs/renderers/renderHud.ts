@@ -1,33 +1,35 @@
 import { RendererContext } from "../systems/render.system";
-import { colorTag } from "../../lib/utils";
 import { getWearing, getWielding } from "../../lib/utils";
 import { getArmorClass } from "../../lib/combat";
 import { getState } from "../gameState";
+import { chars, colors } from "../../actors/graphics";
 
 export const renderHud = ({ views, queries }: RendererContext) => {
   const view = views.hud;
   const [player] = queries.pcQuery;
   if (view && player) {
-    let weapon = "unarmed";
     const wielding = getWielding(player);
-    let weaponString;
+
+    let wieldingName = "unarmed";
+    let wieldingChar = chars.weapon;
+    let wieldingTint = chars.weapon;
+
     if (wielding) {
-      weapon = wielding.name;
-      const tint = wielding.appearance?.tint || 0x00ff00;
-      weaponString = `${colorTag(tint)}): ${weapon}`;
-    } else {
-      weaponString = `): ${weapon}`;
+      wieldingName = wielding.name;
+      wieldingChar = wielding.appearance?.char;
+      wieldingTint = wielding.appearance?.tint;
     }
 
-    let armor = "unarmored";
     const wearing = getWearing(player);
-    let armorString;
+
+    let wearingName = "unarmed";
+    let wearingChar = chars.armor;
+    let wearingTint = chars.armor;
+
     if (wearing) {
-      armor = wearing.name;
-      const tint = wearing.appearance?.tint || 0x00ff00;
-      armorString = `${colorTag(tint)}]: ${armor}`;
-    } else {
-      armorString = `]: ${armor}`;
+      wearingName = wearing.name;
+      wearingChar = wearing.appearance?.char;
+      wearingTint = wearing.appearance?.tint;
     }
 
     if (view) {
@@ -41,8 +43,53 @@ export const renderHud = ({ views, queries }: RendererContext) => {
         [{ string: `LV: 1` }],
         [{ string: `HP: ${player?.health?.current}/${player?.health?.max}` }],
         [],
-        [{ string: `${weaponString}§reset§ (${player.averageDamage})` }],
-        [{ string: `${armorString}§reset§ [${getArmorClass(player)}]` }],
+        // wielding
+        [
+          {
+            tokens: [
+              {
+                type: "text",
+                value: `WP: `,
+                tint: colors.text,
+              },
+
+              {
+                type: "glyph",
+                tileSet: "kenny",
+                char: wieldingChar,
+                tint: wieldingTint,
+              },
+              {
+                type: "text",
+                value: ` ${wieldingName}`,
+                tint: colors.text,
+              },
+            ],
+          },
+        ],
+        [
+          {
+            tokens: [
+              {
+                type: "text",
+                value: `AR: `,
+                tint: colors.text,
+              },
+
+              {
+                type: "glyph",
+                tileSet: "kenny",
+                char: wearingChar,
+                tint: wearingTint,
+              },
+              {
+                type: "text",
+                value: ` ${wearingName}`,
+                tint: colors.text,
+              },
+            ],
+          },
+        ],
         [],
         [{ string: `AC: ${getArmorClass(player)}` }],
         [{ string: `DM: ${player.averageDamage}` }],
