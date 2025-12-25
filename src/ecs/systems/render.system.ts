@@ -131,6 +131,8 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
 // this in now a NOOP
 // TODO: update this to remove colorTags
 // the width calculation includes color tags (which aren't rendered)
+// NOTE: can probably parse the tags, then do this,
+// Or possible now because now we have cursor based rendering, not cell based.
 export const concatRow = (str: string, length: number): string => {
   let newStr = str;
   if (newStr.length > length) {

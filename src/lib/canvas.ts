@@ -55,6 +55,9 @@ export async function setupCanvas(element: HTMLCanvasElement): Promise<void> {
   });
 
   await loadSprites();
+
+  // to enable devtools
+  // globalThis.__PIXI_APP__ = app;
 }
 
 export const loadSprites = async (): Promise<Textures> => {
@@ -328,6 +331,23 @@ export class UIPanelView extends BaseView {
   clearRow(layer: number, y: number) {
     this.sprites[layer][y].forEach((s) => s.destroy());
     this.sprites[layer][y] = [];
+  }
+
+  updateRows(rows: Array<Array<UpdateRow>>, parseTags = true) {
+    rows.forEach((layers, y) => {
+      layers.forEach((row, layer) => {
+        if (row) {
+          this.updateRow({
+            string: row.string,
+            layer: layer,
+            y: y,
+            parseTags: parseTags,
+          });
+        } else {
+          this.clearRow(layer, y);
+        }
+      });
+    });
   }
 
   updateRow(opts: UpdateRow) {

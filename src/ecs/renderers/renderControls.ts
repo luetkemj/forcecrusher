@@ -54,7 +54,12 @@ export const renderControls = ({ views, queries }: RendererContext) => {
         controls = `(${em("e/escape")})Exit  (${em("arrows/jk")})Select Prefab`;
       }
 
-      view?.updateRows([[{ string: context }], [{ string: controls }]], true);
+      const rows = [
+        [{ string: context, y: 0, parseTags: true }],
+        [{ string: controls, y: 1, parseTags: true }],
+      ];
+
+      view?.updateRows(rows);
     }
   }
 };

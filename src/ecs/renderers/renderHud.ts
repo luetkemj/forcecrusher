@@ -56,7 +56,7 @@ export const renderHud = ({ views, queries }: RendererContext) => {
       ];
 
       view?.clearView();
-      view?.updateRows(rows, true);
+      view?.updateRows(rows);
     }
   }
 };
