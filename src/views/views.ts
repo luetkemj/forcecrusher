@@ -1,4 +1,9 @@
-import { View } from "../lib/canvas";
+import { MapView, UIPanelView } from "../lib/canvas";
+
+/* ============================================================================
+ * View IDs
+ * ============================================================================
+ */
 
 export type ViewId =
   | "legend"
@@ -23,10 +28,27 @@ export type ViewId =
   | "saving"
   | "loading";
 
-type ViewConfig = ConstructorParameters<typeof View>[0];
+/* ============================================================================
+ * View Config Types
+ * ============================================================================
+ */
+
+type ViewKind = "map" | "ui";
+
+type BaseViewConfig = ConstructorParameters<typeof MapView>[0];
+
+interface ViewConfig extends BaseViewConfig {
+  kind: ViewKind;
+}
+
+/* ============================================================================
+ * View Configs
+ * ============================================================================
+ */
 
 export const viewConfigs: Record<ViewId, ViewConfig> = {
   legend: {
+    kind: "ui",
     width: 25,
     height: 44,
     x: 0,
@@ -38,7 +60,9 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     visible: true,
     name: "legend",
   },
+
   log: {
+    kind: "ui",
     width: 74,
     height: 5,
     x: 26,
@@ -50,7 +74,9 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     visible: true,
     name: "log",
   },
+
   senses: {
+    kind: "ui",
     width: 74,
     height: 5,
     x: 100,
@@ -64,6 +90,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   mapFluid: {
+    kind: "map",
     width: 74,
     height: 39,
     x: 13,
@@ -75,11 +102,9 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     visible: true,
     name: "mapFluid",
   },
-  // 3 render layers
-  // 1: background - ??
-  // 2: character - ascii
-  // 3: foreground - cursor
+
   map: {
+    kind: "map",
     width: 74,
     height: 39,
     x: 13,
@@ -93,6 +118,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   mapFire: {
+    kind: "map",
     width: 74,
     height: 39,
     x: 13,
@@ -106,6 +132,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   odorMap: {
+    kind: "map",
     width: 74,
     height: 39,
     x: 13,
@@ -119,6 +146,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   soundMap: {
+    kind: "map",
     width: 74,
     height: 39,
     x: 13,
@@ -128,10 +156,11 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x000000],
     alphas: [1],
     visible: true,
-    name: "odorMap",
+    name: "soundMap",
   },
 
   visionMap: {
+    kind: "map",
     width: 74,
     height: 39,
     x: 13,
@@ -145,6 +174,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   fps: {
+    kind: "ui",
     width: 12,
     height: 1,
     x: 0,
@@ -158,6 +188,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   gitHash: {
+    kind: "ui",
     width: 12,
     height: 1,
     x: 0,
@@ -171,6 +202,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   hud: {
+    kind: "ui",
     width: 26,
     height: 46,
     x: 174,
@@ -183,8 +215,8 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     name: "hud",
   },
 
-  // keyboard controls
   controls: {
+    kind: "ui",
     width: 148,
     height: 2,
     x: 26,
@@ -197,9 +229,8 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     name: "controls",
   },
 
-  // MENUS
-  // menu underlay (goes over game view, below menu views)
   menuUnderlay: {
+    kind: "map",
     width: 100,
     height: 44,
     x: 0,
@@ -212,8 +243,8 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     name: "menuUnderlay",
   },
 
-  // Inventory Menu
   inventory: {
+    kind: "ui",
     width: 148,
     height: 39,
     x: 26,
@@ -227,6 +258,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   logHistory: {
+    kind: "ui",
     width: 148,
     height: 44,
     x: 26,
@@ -240,6 +272,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   makerModeRight: {
+    kind: "ui",
     width: 26,
     height: 46,
     x: 174,
@@ -253,6 +286,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
   },
 
   makerModeLeft: {
+    kind: "ui",
     width: 25,
     height: 44,
     x: 0,
@@ -264,7 +298,9 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     visible: false,
     name: "makerModeLeft",
   },
+
   makerModeTop: {
+    kind: "ui",
     width: 148,
     height: 5,
     x: 26,
@@ -276,8 +312,9 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     visible: false,
     name: "makerModeTop",
   },
-  // saving screen
+
   saving: {
+    kind: "ui",
     width: 148,
     height: 39,
     x: 26,
@@ -289,8 +326,9 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     visible: false,
     name: "saving",
   },
-  // loading screen
+
   loading: {
+    kind: "ui",
     width: 148,
     height: 39,
     x: 26,
@@ -300,27 +338,35 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0xffffff],
     alphas: [1],
     visible: false,
-    name: "saving",
+    name: "loading",
   },
 };
 
+/* ============================================================================
+ * View Creation
+ * ============================================================================
+ */
+
 export function createViews() {
-  const views: Partial<Record<ViewId, View>> = {};
+  const views: Partial<Record<ViewId, MapView | UIPanelView>> = {};
 
   for (const [id, config] of Object.entries(viewConfigs) as [
     ViewId,
     ViewConfig,
   ][]) {
-    const view = new View(config);
+    const view =
+      config.kind === "map" ? new MapView(config) : new UIPanelView(config);
 
     if (id === "fps") {
-      view.updateRows([[{ string: "FPS: calc..." }]]);
+      view.updateRow?.({ string: "FPS: calc..." });
     }
+
     if (id === "gitHash") {
-      view.updateRows([[{ string: "TAG: GITHASH" }]]);
+      view.updateRow?.({ string: "TAG: GITHASH" });
     }
 
     views[id] = view;
   }
+
   return views;
 }
