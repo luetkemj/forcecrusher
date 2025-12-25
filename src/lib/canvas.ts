@@ -299,7 +299,7 @@ export class MapView extends BaseView {
       const sprite = this.sprites[layer][y][x];
       sprite.texture = this.getTexture(this.tileSets[layer], "");
       sprite.tint = this.tints[layer];
-      sprite.alpha = this.alphas[layer];
+      sprite.alpha = 0;
     }
   }
 
