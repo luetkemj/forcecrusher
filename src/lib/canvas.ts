@@ -80,7 +80,7 @@ const getFontTexture = (char: string): Texture =>
 const getTileTexture = (): Texture => textures.tile;
 
 const getKennyTexture = (char: string): Texture => {
-  const charNum = [kennyGFXMap[char as keyof typeof kennyGFXMap]];
+  const charNum = kennyGFXMap[char as keyof typeof kennyGFXMap];
   const key = `monochrome-transparent_packed-${charNum}.png`;
   return textures.kenny.textures[key];
 };
@@ -173,6 +173,7 @@ interface ViewOptions {
 
 export interface UpdateRow {
   string?: string;
+  tokens?: Array<RowToken>;
   layer?: number;
   x?: number;
   y?: number;
@@ -196,7 +197,30 @@ type LayerMap = {
 };
 
 /* ============================================================================
- * BaseView (shared plumbing)
+ * UI Row Tokens
+ * ============================================================================
+ */
+
+export type RowToken =
+  | {
+      type: "text";
+      value: string;
+      tileSet?: string;
+      tint?: number;
+      alpha?: number;
+      parseTags?: boolean;
+    }
+  | {
+      type: "glyph";
+      char: string;
+      tileSet: string;
+      width?: number;
+      tint?: number;
+      alpha?: number;
+    };
+
+/* ============================================================================
+ * BaseView
  * ============================================================================
  */
 
@@ -249,22 +273,22 @@ abstract class BaseView {
 }
 
 /* ============================================================================
- * MapView — fixed grid, preallocated (unchanged semantics)
+ * MapView — fixed grid, preallocated
  * ============================================================================
  */
 
 export class MapView extends BaseView {
-  sprites: Sprite[][][] = [];
+  spriteGrid: Sprite[][][] = [];
 
   constructor(opts: ViewOptions) {
     super(opts);
 
     _.times(opts.layers, () => {
-      this.sprites.push(
-        Array.from({ length: this.height }, () =>
-          Array.from({ length: this.width }),
-        ),
+      const layerGrid: Sprite[][] = Array.from(
+        { length: this.height },
+        () => new Array<Sprite>(this.width),
       );
+      this.spriteGrid.push(layerGrid);
     });
 
     _.times(opts.layers, (layer) => {
@@ -278,7 +302,7 @@ export class MapView extends BaseView {
           sprite.tint = this.tints[layer];
           sprite.alpha = this.alphas[layer];
 
-          this.sprites[layer][y][x] = sprite;
+          this.spriteGrid[layer][y][x] = sprite;
           this.layers[layer].addChild(sprite);
         });
       });
@@ -288,7 +312,7 @@ export class MapView extends BaseView {
   updateCell(layerMap: LayerMap) {
     Object.entries(layerMap).forEach(([layerStr, data]) => {
       const layer = Number(layerStr);
-      const sprite = this.sprites[layer]?.[data.y]?.[data.x];
+      const sprite = this.spriteGrid[layer]?.[data.y]?.[data.x];
       if (!sprite) return;
 
       sprite.texture = this.getTexture(data.tileSet, data.char);
@@ -299,7 +323,7 @@ export class MapView extends BaseView {
 
   clearRow(layer: number, y: number) {
     for (let x = 0; x < this.width; x++) {
-      const sprite = this.sprites[layer][y][x];
+      const sprite = this.spriteGrid[layer][y][x];
       sprite.texture = this.getTexture(this.tileSets[layer], "");
       sprite.tint = this.tints[layer];
       sprite.alpha = 0;
@@ -328,6 +352,30 @@ export class UIPanelView extends BaseView {
     });
   }
 
+  private drawGlyph(opts: {
+    layer: number;
+    x: number;
+    y: number;
+    char: string;
+    tileSet: string;
+    tint?: number;
+    alpha?: number;
+    width?: number;
+  }) {
+    const width = opts.width ?? TILE_WIDTH[opts.tileSet] ?? 1;
+
+    const sprite = new Sprite(this.getTexture(opts.tileSet, opts.char));
+    sprite.width = width * cellWidth;
+    sprite.height = cellWidth;
+    sprite.x = opts.x * cellWidth;
+    sprite.y = opts.y * cellWidth;
+    sprite.tint = opts.tint ?? this.tints[opts.layer];
+    sprite.alpha = opts.alpha ?? this.alphas[opts.layer];
+
+    this.layers[opts.layer].addChild(sprite);
+    this.sprites[opts.layer][opts.y].push(sprite);
+  }
+
   clearRow(layer: number, y: number) {
     this.sprites[layer][y].forEach((s) => s.destroy());
     this.sprites[layer][y] = [];
@@ -336,12 +384,18 @@ export class UIPanelView extends BaseView {
   updateRows(rows: Array<Array<UpdateRow>>, parseTags = true) {
     rows.forEach((layers, y) => {
       layers.forEach((row, layer) => {
-        if (row) {
+        if (row && row.string) {
           this.updateRow({
             string: row.string,
-            layer: layer,
-            y: y,
-            parseTags: parseTags,
+            layer,
+            y,
+            parseTags,
+          });
+        } else if (row && row.tokens) {
+          console.log(row);
+          this.updateRowTokens({
+            y,
+            tokens: row.tokens,
           });
         } else {
           this.clearRow(layer, y);
@@ -376,20 +430,80 @@ export class UIPanelView extends BaseView {
         };
 
     chars.forEach((char, i) => {
-      const sprite = new Sprite(this.getTexture(ts, char));
-
-      sprite.width = glyphWidth * cellWidth;
-      sprite.height = cellWidth;
-      sprite.x = cursorX * cellWidth;
-      sprite.y = y * cellWidth;
-      sprite.tint = tints[i];
-      sprite.alpha = alpha ?? this.alphas[layer];
-
-      this.layers[layer].addChild(sprite);
-      this.sprites[layer][y].push(sprite);
+      this.drawGlyph({
+        layer,
+        x: cursorX,
+        y,
+        char,
+        tileSet: ts,
+        tint: tints[i],
+        alpha,
+        width: glyphWidth,
+      });
 
       cursorX += glyphWidth;
     });
+  }
+
+  updateRowTokens(opts: {
+    layer?: number;
+    y: number;
+    x?: number;
+    tokens: RowToken[];
+  }) {
+    const layer = opts.layer ?? 0;
+    const y = opts.y;
+    let cursorX = opts.x ?? 0;
+
+    this.clearRow(layer, y);
+
+    for (const token of opts.tokens) {
+      if (token.type === "text") {
+        const ts = token.tileSet ?? this.tileSets[layer];
+        const defaultTint = token.tint ?? this.tints[layer];
+
+        const { chars, tints } = token.parseTags
+          ? parseTaggedColors(token.value, defaultTint)
+          : {
+              chars: [...token.value],
+              tints: [...token.value].map(() => defaultTint),
+            };
+
+        const glyphWidth = TILE_WIDTH[ts] ?? 1;
+
+        chars.forEach((char, i) => {
+          this.drawGlyph({
+            layer,
+            x: cursorX,
+            y,
+            char,
+            tileSet: ts,
+            tint: tints[i],
+            alpha: token.alpha,
+            width: glyphWidth,
+          });
+
+          cursorX += glyphWidth;
+        });
+      }
+
+      if (token.type === "glyph") {
+        const width = token.width ?? TILE_WIDTH[token.tileSet] ?? 1;
+
+        this.drawGlyph({
+          layer,
+          x: cursorX,
+          y,
+          char: token.char,
+          tileSet: token.tileSet,
+          tint: token.tint,
+          alpha: token.alpha,
+          width,
+        });
+
+        cursorX += width;
+      }
+    }
   }
 
   clearView() {
