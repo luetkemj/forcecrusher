@@ -55,8 +55,8 @@ export const renderControls = ({ views, queries }: RendererContext) => {
       }
 
       const rows = [
-        [{ string: context, y: 0, parseTags: true }],
-        [{ string: controls, y: 1, parseTags: true }],
+        [{ string: context, parseTags: true }],
+        [{ string: controls, parseTags: true }],
       ];
 
       view?.updateRows(rows);

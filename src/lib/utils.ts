@@ -127,7 +127,7 @@ export const isWielding = (equipper: Entity) => {
   return false;
 };
 
-export const getWielding = (entity: Entity) => {
+export const getWieldedEntity = (entity: Entity) => {
   if (entity.weaponSlot?.contents) {
     // if something is already equipped, put in inventory or drop
     const equippedId = entity.weaponSlot.contents[0];

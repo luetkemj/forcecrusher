@@ -1,5 +1,5 @@
 import { RendererContext } from "../systems/render.system";
-import { getWearing, getWielding } from "../../lib/utils";
+import { getWearing, getWieldedEntity } from "../../lib/utils";
 import { getArmorClass } from "../../lib/combat";
 import { getState } from "../gameState";
 import { chars, colors } from "../../actors/graphics";
@@ -9,7 +9,7 @@ export const renderHud = ({ views, queries }: RendererContext) => {
   const view = views.hud;
   const [player] = queries.pcQuery;
   if (view && player) {
-    const wielding = getWielding(player);
+    const wielding = getWieldedEntity(player);
 
     let wieldingName = "unarmed";
     let wieldingChar: string = chars.weapon;
@@ -23,7 +23,7 @@ export const renderHud = ({ views, queries }: RendererContext) => {
 
     const wearing = getWearing(player);
 
-    let wearingName = "unarmed";
+    let wearingName = "unarmored";
     let wearingChar: string = chars.armor;
     let wearingTint: number = colors.armor;
 

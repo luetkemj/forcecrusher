@@ -65,9 +65,9 @@ const renderEquipped = (wieldedEntity?: Entity) => {
   return [
     {
       tokens: [
-        wieldedEntity && getTokenGlyph(wieldedEntity),
-        wieldedEntity && getTokenText(` ${wieldedEntity.name}: `),
-        wieldedEntity && getTokenText(`${wieldedEntity.description}`),
+        getTokenGlyph(wieldedEntity),
+        getTokenText(` ${wieldedEntity.name}: `),
+        getTokenText(`${wieldedEntity.description}`),
       ],
     },
   ];

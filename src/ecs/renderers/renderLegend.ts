@@ -1,6 +1,6 @@
 import { RendererContext } from "../systems/render.system";
 import { distance } from "../../lib/grid";
-import { UpdateRow } from "../../lib/canvas";
+import { TokenType, UpdateRow } from "../../lib/canvas";
 import { GameState, getState } from "../gameState";
 import { colors } from "../../actors/graphics";
 
@@ -23,23 +23,22 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
     view.clearView();
 
     const rows: Array<Array<UpdateRow>> = [];
-    entities.forEach((entity, index) => {
+    entities.forEach((entity) => {
       const entityChar = entity.appearance.char;
       const entityTint = entity.appearance.tint;
       const entityName = entity.name;
 
       rows.push([
         {
-          y: index,
           tokens: [
             {
-              type: "glyph",
+              type: TokenType.Glyph,
               tileSet: "kenny",
               char: entityChar,
               tint: entityTint,
             },
             {
-              type: "text",
+              type: TokenType.Text,
               value: ` ${entityName}`,
               tint: colors.text,
               parseTags: true,
@@ -47,8 +46,8 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
           ],
         },
       ]);
-
-      view.updateRows(rows);
     });
+
+    view.updateRows(rows);
   }
 };
