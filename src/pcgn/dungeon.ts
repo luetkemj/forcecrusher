@@ -224,8 +224,7 @@ export const generateDungeon = () => {
       if (Math.random() < 0.005) {
         if (fEntity.fluidContainer) {
           const volume = random(5, 20);
-          fEntity.fluidContainer.fluids[sample(fluidTypes) || "water"].volume =
-            volume;
+          fEntity.fluidContainer.fluids["water"].volume = volume;
         }
       }
     }
@@ -267,17 +266,19 @@ export const generateDungeon = () => {
     const position = { x: openTile.x, y: openTile.y };
     const percentile = new DiceRoll("d100").total;
 
+    spawnLivingSponge(position);
+
     if (percentile <= 5) {
-      spawnLavaGolem(position);
+      // spawnLavaGolem(position);
     }
     if (percentile > 5 && percentile <= 10) {
       spawnLivingSponge(position);
     }
     if (percentile > 10 && percentile <= 20) {
-      spawnSkeleton(position);
+      // spawnSkeleton(position);
     }
     if (percentile > 20) {
-      spawnRat(position);
+      // spawnRat(position);
     }
   });
 
