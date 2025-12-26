@@ -1,5 +1,28 @@
 # Dev Log
 
+## 122625
+
+Skulltooth 2: Forcecrusher [github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher)
+
+- project management in github
+- wrapped up interactive fluid layers
+- added living sponges that collect select fluids and release it upon death
+- fixed bug where rat death could cause a runaway blood flood
+- improved bottle ui - their name and color now reflect the contents
+- added support for mixed width rendering to fix legend and inventory UIs
+
+Got sick of managing this project from a loose markdown file and setup a github project. Feels much more... official.
+
+Wrapped up interactive fluid layers for now. Still some work to do but got most of the worst bugs fixed. The biggest bug being a case where upon killing multiple rats in the same vicinity, the spilled blood would multiply exponentially and flood the entire dungeon. Turns out having multiple bi-directional fluid containers at the same position is bad. Fluid containers are now directional and only the "floor" fluid containers are bi-directional. A dead read can bleed but won't try and absorb anything anymore.
+
+Living sponges are now a thing. They randomly select a fluid to absorb on spawn and will only absorb that fluid. Their color reflects their contents. Would be good to spawn then with a bit of fluid inside so it's more obvious what fluid they will absorb. Might also be a good idea to limit the possible fluid to those that are available in the dungeon. It's possible to spawn a water sponge on a level with no water and it ends up just being a useless mob.
+
+Bottles UI has been improved. They also render with the color of their contents. They can contain multiple fluid types so the color is a weighted mix of those fluids. The sprite will change from empty, half full, and full bottles based on volume. Not yet displaying the actual fluid mix (seen when inspecting a puddle) in inventory but should. Bottles also are corked, so they can be put down without spilling everything but do not yet break when thrown so at the moment... bottles are only useful for removing a fluid hazard like lava or oil.
+
+The addition of graphics a while ago broke the legend and inventory UIs - that's now fixed. Had to refactor the canvas.ts file to add support for mixed-width rendering. This sort of work is where AI has really shined for me. I wrote the canvas.ts rendering logic years ago and have ported it to every game since. I dropped the file in chatGPT with an explanation of what I needed to do instead and it acted as a thought partner explaining how and what to change. I'd been setting tile width on the canvas itself and using array indexing to find and update tiles, which only works if your tiles are a reliable width and height. ChatGPT suggested implementing a cursor based positioning system where instead of setting tile width on the canvas it's stored on the token. Tokens can be a glyph (graphic) or text. A couple helper functions understand the various token types and handle the actual rendering and cursor progression.
+
+I'm not a fan of vibe coding but I have found AI as thought partnership to be extremely valuable. I started partering with it over the past year and have learned a TON! A lot of refactors and some of the more complex systems would have taken much much longer without what amounts to an extremely detailed manual on roguelike development. AI is a much larger discussion to be sure but the more I use it the more I recognize and understand it's value as a very powerful tool and the less I worry about the impending robot apocolypse and the false promises of tech entreprenuers just trying to sell me something.
+
 ## 121925
 
 Skulltooth 2: Forcecrusher [github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher)
