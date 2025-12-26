@@ -1,8 +1,8 @@
 import { RendererContext } from "../systems/render.system";
 import { distance } from "../../lib/grid";
-import { UpdateRow } from "../../lib/canvas";
-import { colorTag } from "../../lib/utils";
+import { TokenType, UpdateRow } from "../../lib/canvas";
 import { GameState, getState } from "../gameState";
+import { colors } from "../../actors/graphics";
 
 export const renderLegend = ({ views, queries }: RendererContext) => {
   // don't render when in SIM mode.
@@ -28,10 +28,26 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
       const entityTint = entity.appearance.tint;
       const entityName = entity.name;
 
-      const string = `${colorTag(entityTint)}${entityChar} ${entityName}`;
-      rows.push([{ string }]);
+      rows.push([
+        {
+          tokens: [
+            {
+              type: TokenType.Glyph,
+              tileSet: "kenny",
+              char: entityChar,
+              tint: entityTint,
+            },
+            {
+              type: TokenType.Text,
+              value: ` ${entityName}`,
+              tint: colors.text,
+              parseTags: true,
+            },
+          ],
+        },
+      ]);
     });
 
-    view?.updateRows(rows, true);
+    view.updateRows(rows);
   }
 };

@@ -1,6 +1,10 @@
 import { RendererContext } from "../systems/render.system";
 import { getState, GameState } from "../gameState";
-import { entityNamePlate, getWearing } from "../../lib/utils";
+import { getWearing } from "../../lib/utils";
+import { Entity } from "../engine";
+import { TokenType } from "../../lib/canvas";
+import { compact } from "lodash";
+import { colors } from "../../actors/graphics";
 
 export const renderInventory = ({
   views,
@@ -13,7 +17,9 @@ export const renderInventory = ({
   if (view && player) {
     if (getState().gameState === GameState.INVENTORY) {
       const playerInventory = player.container?.contents || [];
-      const itemsInInventory = playerInventory.map((id) => registry.get(id));
+      const itemsInInventory = compact(
+        playerInventory.map((id) => registry.get(id)),
+      );
       const activeIndex = getState().inventoryActiveIndex;
 
       const wieldingEId = player.weaponSlot?.contents[0] || "";
@@ -21,46 +27,28 @@ export const renderInventory = ({
       const armor = getWearing(player);
 
       const rows = [
-        [{}, { string: "Inventory" }],
+        [{ string: "Inventory" }],
         [],
         [
-          {},
           {
             string: `${player.container?.name} [${player.container?.contents.length}/${player.container?.slots}]`,
           },
         ],
-        ...itemsInInventory.map((item, index) => [
-          {},
-          {
-            string: `${activeIndex === index ? "*" : " "} ${entityNamePlate(item)} ${item?.description}`,
-          },
-        ]),
+        ...renderItemsInInventory(itemsInInventory, activeIndex),
         [],
         [
-          {},
           {
             string: `Wielding [${player.weaponSlot?.contents.length}/${player.weaponSlot?.slots}]`,
           },
         ],
-        [
-          {},
-          {
-            string: `  ${entityNamePlate(wieldedEntity)} ${wieldedEntity?.description}`,
-          },
-        ],
+        renderEquipped(wieldedEntity),
         [],
         [
-          {},
           {
             string: `Wearing [${player.armorSlot?.contents.length}/${player.armorSlot?.slots}]`,
           },
         ],
-        [
-          {},
-          {
-            string: `  ${armor && entityNamePlate(armor)} ${armor && armor?.description}`,
-          },
-        ],
+        renderEquipped(armor),
       ];
 
       view?.clearView();
@@ -70,4 +58,61 @@ export const renderInventory = ({
       view?.hide();
     }
   }
+};
+
+const renderEquipped = (wieldedEntity?: Entity) => {
+  if (!wieldedEntity) return [];
+  return [
+    {
+      tokens: [
+        getTokenGlyph(wieldedEntity),
+        getTokenText(` ${wieldedEntity.name}: `),
+        getTokenText(`${wieldedEntity.description}`),
+      ],
+    },
+  ];
+};
+
+const renderItemsInInventory = (items: Array<Entity>, activeIndex: number) => {
+  const rows = [];
+
+  for (const [index, item] of items.entries()) {
+    const tokenRow: {
+      tokens: (
+        | ReturnType<typeof getTokenText>
+        | ReturnType<typeof getTokenGlyph>
+      )[];
+    } = { tokens: [] };
+    if (activeIndex === index) {
+      tokenRow.tokens.push(getTokenText("* "));
+    } else {
+      tokenRow.tokens.push(getTokenText("  "));
+    }
+    if (item) {
+      tokenRow.tokens.push(getTokenGlyph(item));
+      tokenRow.tokens.push(getTokenText(` ${item.name}: `));
+      tokenRow.tokens.push(getTokenText(`${item.description}`));
+    }
+
+    rows.push([tokenRow]);
+  }
+
+  return rows;
+};
+
+const getTokenText = (string: string) => {
+  return {
+    type: TokenType.Text,
+    value: string,
+    tint: colors.text,
+  };
+};
+
+const getTokenGlyph = (entity: Entity) => {
+  return {
+    type: TokenType.Glyph,
+    tileSet: entity.appearance?.tileSet || "kenny",
+    char: entity.appearance?.char || "?",
+    tint: entity.appearance?.tint || 0x00ff00,
+  };
 };

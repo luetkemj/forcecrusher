@@ -29,6 +29,9 @@ export enum chars {
 }
 
 export enum colors {
+  // UI
+  "text" = 0xdddddd,
+  // items
   "armor" = 0xdaa520, // #daa520
   "default" = 0x00ff77, // #00ff77
   "floor" = 0x333333, // #333333

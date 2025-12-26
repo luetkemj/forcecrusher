@@ -48,7 +48,7 @@ const init = async () => {
   // store views
   setState((state: State) => {
     for (const id of Object.keys(views) as ViewId[]) {
-      state.views[id] = views[id]!;
+      state.views[id] = views[id]! as any;
     }
   });
 

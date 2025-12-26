@@ -1,4 +1,4 @@
-import { View } from "../../lib/canvas";
+import { MapView } from "../../lib/canvas";
 import { Entity } from "../engine";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
@@ -74,7 +74,7 @@ function getCellAlphas(entity: Entity) {
   return alphas;
 }
 
-function renderCell(view: View, entity: Entity) {
+function renderCell(view: MapView, entity: Entity) {
   if (!entity.position || !entity.fluidContainer) return;
   const { x, y } = entity.position;
 
