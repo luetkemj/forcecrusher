@@ -1,7 +1,7 @@
 import { Query, With, World } from "miniplex";
 import { IGameWorld, Entity } from "../engine";
 import { getState, Views } from "../gameState";
-import { View } from "../../lib/canvas";
+import { MapView } from "../../lib/canvas";
 import { renderLegend } from "../renderers/renderLegend";
 import { renderMap } from "../renderers/renderMap";
 import { renderMapFire } from "../renderers/renderMapFire";
@@ -155,7 +155,7 @@ export const getAlpha = (index: number) => {
 };
 
 export const renderEntity = (
-  view: View,
+  view: MapView,
   entity: Entity,
   alpha: number,
   tintOverride: number,

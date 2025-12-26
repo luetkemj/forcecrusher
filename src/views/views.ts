@@ -1,3 +1,4 @@
+import { Views } from "../ecs/gameState";
 import { MapView, UIPanelView } from "../lib/canvas";
 
 /* ============================================================================
@@ -347,8 +348,8 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
  * ============================================================================
  */
 
-export function createViews() {
-  const views: Partial<Record<ViewId, MapView | UIPanelView>> = {};
+export function createViews(): Partial<Views> {
+  const views: Partial<Views> = {};
 
   for (const [id, config] of Object.entries(viewConfigs) as [
     ViewId,
@@ -365,7 +366,7 @@ export function createViews() {
       (view as UIPanelView).updateRow({ string: "TAG: GITHASH" });
     }
 
-    views[id] = view;
+    views[id as keyof Views] = view as any;
   }
 
   return views;
