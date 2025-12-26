@@ -200,10 +200,14 @@ type LayerMap = {
  * UI Row Tokens
  * ============================================================================
  */
+export const TokenType = {
+  Text: "text",
+  Glyph: "glyph",
+} as const;
 
 export type RowToken =
   | {
-      type: "text";
+      type: typeof TokenType.Text;
       value: string;
       tileSet?: string;
       tint?: number;
@@ -211,7 +215,7 @@ export type RowToken =
       parseTags?: boolean;
     }
   | {
-      type: "glyph";
+      type: typeof TokenType.Glyph;
       char: string;
       tileSet: string;
       width?: number;

@@ -3,6 +3,7 @@ import { getWearing, getWielding } from "../../lib/utils";
 import { getArmorClass } from "../../lib/combat";
 import { getState } from "../gameState";
 import { chars, colors } from "../../actors/graphics";
+import { TokenType } from "../../lib/canvas";
 
 export const renderHud = ({ views, queries }: RendererContext) => {
   const view = views.hud;
@@ -48,19 +49,19 @@ export const renderHud = ({ views, queries }: RendererContext) => {
           {
             tokens: [
               {
-                type: "text",
+                type: TokenType.Text,
                 value: `WP: `,
                 tint: colors.text,
               },
 
               {
-                type: "glyph",
+                type: TokenType.Glyph,
                 tileSet: "kenny",
                 char: wieldingChar,
                 tint: wieldingTint,
               },
               {
-                type: "text",
+                type: TokenType.Text,
                 value: ` ${wieldingName}`,
                 tint: colors.text,
               },
@@ -71,19 +72,19 @@ export const renderHud = ({ views, queries }: RendererContext) => {
           {
             tokens: [
               {
-                type: "text",
+                type: TokenType.Text,
                 value: `AR: `,
                 tint: colors.text,
               },
 
               {
-                type: "glyph",
+                type: TokenType.Glyph,
                 tileSet: "kenny",
                 char: wearingChar,
                 tint: wearingTint,
               },
               {
-                type: "text",
+                type: TokenType.Text,
                 value: ` ${wearingName}`,
                 tint: colors.text,
               },
