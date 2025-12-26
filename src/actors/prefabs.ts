@@ -300,7 +300,7 @@ export const livingSpongePrefab: Entity = {
   nose: { sensitivity: 0, detected: [] },
   description: "A living sponge with an unquenchable thirst",
   pathThrough: true,
-  health: { max: 10, current: 10 },
+  health: { max: 150, current: 150 },
   baseArmorClass: 10,
   strength: 10,
   dexterity: 14,
