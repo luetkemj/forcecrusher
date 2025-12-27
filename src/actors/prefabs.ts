@@ -234,7 +234,7 @@ export const ratPrefab: Entity = {
         tint: colors.blood,
         viscosity: 0.18,
         minFlow: 0.5,
-        volume: 2,
+        volume: 1,
       },
     },
   },
@@ -281,6 +281,20 @@ export const lavaGolemPrefab: Entity = {
   damages: [],
   mass: 6,
   material: Material.Lava,
+  fluidContainer: {
+    corked: true,
+    maxVolume: 10,
+    outflow: true,
+    inflow: false,
+    fluids: {
+      lava: {
+        ...fluidContainerComponent.fluids.lava,
+        viscosity: 0.01,
+        minFlow: 1,
+        volume: 8,
+      },
+    },
+  },
 };
 
 export const livingSpongePrefab: Entity = {
