@@ -35,11 +35,14 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
         continue;
       }
 
-      const fluidBudget = Object.keys(a.fluids).reduce((acc, cur) => {
-        const fluid = a.fluids[cur];
-        acc[fluid.type] = Math.max(fluid.volume - fluid.minFlow, 0);
-        return acc;
-      }, {} as Record<string, number>);
+      const fluidBudget = Object.keys(a.fluids).reduce(
+        (acc, cur) => {
+          const fluid = a.fluids[cur];
+          acc[cur] = Math.max(fluid.volume - fluid.minFlow, 0);
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
 
       const neighbors = [
         actor.position,
@@ -77,9 +80,6 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
 
             let flow = (aFluid.volume - bFluid.volume) * rate;
 
-            // Do not flow if there isn't enough budget
-            if (flow > fluidBudget[fluidType]) continue;
-
             // Do not drain below residue
             const maxDrain = aFluid.volume - aFluid.minFlow;
             if (maxDrain <= 0) continue;
@@ -91,6 +91,9 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
 
             flow = Math.min(flow, maxDrain, space);
             if (flow <= EPSILON_FLOW) continue;
+
+            // Do not flow if there isn't enough budget
+            if (flow > fluidBudget[fluidType]) continue;
 
             if (actor.fluidContainer.outflow && entity.fluidContainer.inflow) {
               // Apply deltas

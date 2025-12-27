@@ -289,8 +289,6 @@ export const lavaGolemPrefab: Entity = {
     fluids: {
       lava: {
         ...fluidContainerComponent.fluids.lava,
-        viscosity: 0.01,
-        minFlow: 1,
         volume: 8,
       },
     },
