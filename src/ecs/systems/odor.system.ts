@@ -8,7 +8,9 @@ import { some } from "lodash";
 export const createOdorSystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
   const odorQuery = world.with("odor", "position").without("excludeFromSim");
-  const blockingQuery = world.with("blocking", "position").without("excludeFromSim");
+  const blockingQuery = world
+    .with("blocking", "position")
+    .without("excludeFromSim");
   const pathThroughQuery = world
     .with("blocking", "position", "pathThrough")
     .without("excludeFromSim");
@@ -56,6 +58,7 @@ export const createOdorSystem = (gameWorld: IGameWorld) => {
       for (const eid of eap) {
         const entity = registry.get(eid);
         if (
+          entity?.id !== actor.id &&
           entity?.fluidContainer &&
           some(entity.fluidContainer.fluids, (fluid) => fluid.volume > 0)
         ) {
