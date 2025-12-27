@@ -39,7 +39,7 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
         const fluid = a.fluids[cur];
         acc[fluid.type] = Math.max(fluid.volume - fluid.minFlow, 0);
         return acc;
-      }, {});
+      }, {} as Record<string, number>);
 
       const neighbors = [
         actor.position,
