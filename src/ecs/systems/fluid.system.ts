@@ -5,6 +5,7 @@ import { viewConfigs } from "../../views/views";
 import { getEAP, getTotalVolume } from "../../lib/utils";
 import { calculateFlammability } from "../../actors";
 import { Material } from "../enums";
+import { shuffle } from "lodash";
 
 const mapBoundary = {
   width: viewConfigs.map.width,
@@ -34,14 +35,23 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
         continue;
       }
 
-      const neighbors = getNeighbors(
-        actor.position,
-        "cardinal",
-        mapBoundary,
-        false,
-      ) as Array<Pos>;
+      const fluidBudget = Object.keys(a.fluids).reduce(
+        (acc, cur) => {
+          const fluid = a.fluids[cur];
+          acc[cur] = Math.max(fluid.volume - fluid.minFlow, 0);
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
 
-      for (const nPos of neighbors) {
+      const neighbors = [
+        actor.position,
+        ...shuffle(getNeighbors(actor.position, "all", mapBoundary, false)),
+      ] as Array<Pos>;
+
+      // adjust number of neighbors to shape
+      // low = less regular, 9 max
+      for (const nPos of neighbors.slice(0, 2)) {
         const nEids = getEAP(toPosId(nPos));
         if (!nEids || !nEids.size) continue;
 
@@ -82,12 +92,17 @@ export const createFluidSystem = ({ world, registry }: IGameWorld) => {
             flow = Math.min(flow, maxDrain, space);
             if (flow <= EPSILON_FLOW) continue;
 
+            // Do not flow if there isn't enough budget
+            if (flow > fluidBudget[fluidType]) continue;
+
             if (actor.fluidContainer.outflow && entity.fluidContainer.inflow) {
               // Apply deltas
               // outflow
               deltas[actor.id] ??= {};
               deltas[actor.id][fluidType] =
                 (deltas[actor.id][fluidType] || 0) - flow;
+
+              fluidBudget[fluidType] -= flow;
 
               // inflow
               deltas[entity.id] ??= {};
