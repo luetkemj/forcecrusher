@@ -15,12 +15,18 @@ import { State, getState, setState } from "../gameState";
 export const createPerceptionSystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
   const aiQuery = world.with("ai").without("excludeFromSim");
-  const opaqueQuery = world.with("opaque", "position").without("excludeFromSim");
+  const opaqueQuery = world
+    .with("opaque", "position")
+    .without("excludeFromSim");
   const renderableQuery = world
     .with("appearance", "position")
     .without("excludeFromSim");
-  const noseQuery = world.with("nose", "position", "ai").without("excludeFromSim");
-  const earsQuery = world.with("ears", "position", "ai").without("excludeFromSim");
+  const noseQuery = world
+    .with("nose", "position", "ai")
+    .without("excludeFromSim");
+  const earsQuery = world
+    .with("ears", "position", "ai")
+    .without("excludeFromSim");
 
   return function perceptionSystem() {
     setState((state: State) => (state.visionMap = []));
@@ -61,9 +67,7 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
       if (!odors) return addSenseLog("", "smell");
       const smell = getStrongestOdor(odors, getState().playerId);
 
-      if (smell) {
-        processPlayerDetectedSmells(smell, gameWorld);
-      }
+      processPlayerDetectedSmells(smell, gameWorld);
     }
 
     for (const actor of noseQuery) {
@@ -90,9 +94,7 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
       if (!sounds) return addSenseLog("", "hearing");
       const sound = getLoudestSound(sounds, getState().playerId);
 
-      if (sound) {
-        processPlayerDetectedSounds(sound, gameWorld);
-      }
+      processPlayerDetectedSounds(sound, gameWorld);
     }
 
     for (const actor of earsQuery) {
@@ -143,6 +145,8 @@ function processPlayerDetectedSmells(
   smell: Smell,
   gameWorld: IGameWorld,
 ): void {
+  if (!smell) return addSenseLog("", "smell");
+
   const entityId = smell[0];
   const strength = smell[1].strength;
   const entity = gameWorld.registry.get(entityId) as Entity | undefined;
@@ -172,6 +176,8 @@ function processPlayerDetectedSounds(
   sound: Sound,
   gameWorld: IGameWorld,
 ): void {
+  if (!sound) return addSenseLog("", "hearing");
+
   const entityId = sound[0];
   const strength = sound[1].strength;
   const entity = gameWorld.registry.get(entityId) as Entity | undefined;
