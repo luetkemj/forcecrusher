@@ -120,7 +120,7 @@ const state: State = {
     taste: "",
     touch: "",
   },
-  simulationTurnsLeft: 25,
+  simulationTurnsLeft: 0,
   turn: Turn.PLAYER,
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,
@@ -129,7 +129,7 @@ const state: State = {
   playerId: "",
   version: 1,
   cheats: {
-    seeAll: false,
+    seeAll: true,
     seeOdorMap: false,
     seeSoundMap: false,
     seeVisionMap: false,

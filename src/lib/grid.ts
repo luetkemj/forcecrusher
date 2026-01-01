@@ -56,7 +56,11 @@ export const circle = (center: Pos, radius: number) => {
 
   return {
     posIds,
-    center: toPosId(center),
+    tiles: posIds.reduce((acc, cur) => {
+      acc[cur] = toPos(cur);
+      return acc;
+    }, {}),
+    center,
     diameter,
     top,
     bottom,

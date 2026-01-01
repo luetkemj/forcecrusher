@@ -3,7 +3,7 @@ import { mean } from "lodash";
 import { pxToPosId, setupCanvas } from "./lib/canvas";
 import { toPosId } from "./lib/grid";
 import { getFrozenEntity } from "./lib/utils";
-import { generateDungeon } from "./pcgn/dungeon";
+import { generateDungeon } from "./pcgn/dungeon-v2";
 import { spawnPlayer } from "./pcgn/player";
 import { gameWorld, IGameWorld } from "./ecs/engine";
 import {
@@ -56,6 +56,7 @@ const init = async () => {
   const dungeon = generateDungeon();
   if (!dungeon) return;
   const startPos = dungeon.rooms[0].center;
+  // const startPos = { x: 0, y: 0 };
   const player = spawnPlayer(startPos);
 
   // add playerId to state
