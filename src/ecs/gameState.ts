@@ -26,7 +26,7 @@ export const enum GameState {
 
 export type Views = {
   fps?: UIPanelView;
-  gitHash?: UIPanelView;
+  gitTag?: UIPanelView;
   map?: MapView;
   mapFire?: MapView;
   mapFluid?: MapView;

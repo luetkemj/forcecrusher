@@ -1,23 +1,29 @@
-import fs from 'fs/promises';
-import cp from 'child_process'
-import chalk from 'chalk'
+import fs from "fs/promises";
+import cp from "child_process";
+import chalk from "chalk";
 
-const gitHash = cp.execSync('git rev-parse --short HEAD').toString().trim()
+const gitTag = cp
+  .execSync("git describe --tags --abbrev=0")
+  .toString()
+  .trim()
+  .replace("v", "");
 
 async function example() {
   try {
-    const dir = await fs.readdir('./dist/assets')
-    const files = dir.filter(fn => fn.endsWith('.js'))
-    const file = files[0]
+    const dir = await fs.readdir("./dist/assets");
+    const files = dir.filter((fn) => fn.endsWith(".js"));
+    const file = files[0];
 
-    const pathToFile = `./dist/assets/${file}`
+    const pathToFile = `./dist/assets/${file}`;
 
-    const data = await fs.readFile(pathToFile, { encoding: 'utf8' });
-    const content = data.replace('GITHASH', gitHash)
+    const data = await fs.readFile(pathToFile, { encoding: "utf8" });
+    const content = data.replace("GITTAG", gitTag);
 
-    await fs.writeFile(pathToFile, content)
+    await fs.writeFile(pathToFile, content);
 
-    console.log(`gitHash ${chalk.green(gitHash)} written to ${chalk.green(file)}`)
+    console.log(
+      `gitTag ${chalk.green(gitTag)} written to ${chalk.green(file)}`,
+    );
   } catch (err) {
     console.log(err);
   }

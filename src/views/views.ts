@@ -17,7 +17,7 @@ export type ViewId =
   | "soundMap"
   | "visionMap"
   | "fps"
-  | "gitHash"
+  | "gitTag"
   | "hud"
   | "controls"
   | "menuUnderlay"
@@ -188,7 +188,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     name: "fps",
   },
 
-  gitHash: {
+  gitTag: {
     kind: "ui",
     width: 12,
     height: 1,
@@ -199,7 +199,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x333333],
     alphas: [1],
     visible: true,
-    name: "gitHash",
+    name: "gitTag",
   },
 
   hud: {
@@ -362,8 +362,8 @@ export function createViews(): Partial<Views> {
       (view as UIPanelView).updateRow({ string: "FPS: calc..." });
     }
 
-    if (id === "gitHash" && config.kind === "ui") {
-      (view as UIPanelView).updateRow({ string: "TAG: GITHASH" });
+    if (id === "gitTag" && config.kind === "ui") {
+      (view as UIPanelView).updateRow({ string: "VER: GITTAG" });
     }
 
     views[id as keyof Views] = view as any;
