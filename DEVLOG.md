@@ -1,5 +1,9 @@
 # Dev Log
 
+**Skulltooth 2: Forcecrusher** ([github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher))
+
+The holidays and getting sick resulted in a slow week. Fixed a few bugs, removed some old dependencies, added some QOL scripts in CI. Got lost down a rabbit hole trying to redo dungeon gen that went nowhere.
+
 ## 122625
 
 Skulltooth 2: Forcecrusher [github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher)
