@@ -27,6 +27,7 @@ export type ViewId =
   | "makerModeLeft"
   | "makerModeTop"
   | "saving"
+  | "spellbook"
   | "loading";
 
 /* ============================================================================
@@ -256,6 +257,20 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     alphas: [1],
     visible: false,
     name: "inventory",
+  },
+
+  spellbook: {
+    kind: "ui",
+    width: 148,
+    height: 39,
+    x: 13,
+    y: 5,
+    layers: 1,
+    tileSets: ["text"],
+    tints: [0xffffff],
+    alphas: [1],
+    visible: false,
+    name: "spellbook",
   },
 
   logHistory: {

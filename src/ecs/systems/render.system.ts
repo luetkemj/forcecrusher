@@ -18,6 +18,7 @@ import { renderHud } from "../renderers/renderHud";
 import { renderControls } from "../renderers/renderControls";
 import { renderMakerMode } from "../renderers/renderMakerMode";
 import { renderSoundMap } from "../renderers/renderSoundMap";
+import { renderSpellBook } from "../renderers/renderSpellBook";
 import { renderSaving } from "../renderers/renderSaving";
 import { renderLoading } from "../renderers/renderLoading";
 
@@ -117,6 +118,7 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     renderMenuUnderlay(ctx);
     renderLogHistory(ctx);
     renderInventory(ctx);
+    renderSpellBook(ctx);
     renderLog(ctx);
     renderCursor(ctx);
     renderHud(ctx);

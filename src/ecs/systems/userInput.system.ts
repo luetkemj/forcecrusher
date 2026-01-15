@@ -3,6 +3,7 @@ import { GameState, State, getState, setState } from "../gameState";
 import { addLog } from "../../lib/utils";
 
 import { handleGameModeInput } from "../inputHandlers/gameMode";
+import { handleCastSpellModeInput } from "../inputHandlers/castSpellMode";
 import { handleInspectModeInput } from "../inputHandlers/inspectMode";
 import { handleInteractActionModeInput } from "../inputHandlers/interactActionMode";
 import { handleInteractModeInput } from "../inputHandlers/interactMode";
@@ -12,6 +13,7 @@ import { handleMakerModeInput } from "../inputHandlers/makerMode";
 import { handleTargetModeInput } from "../inputHandlers/targetMode";
 import { handleMakerModePrefabSelectInput } from "../inputHandlers/makerModePrefabSelect";
 import { handleSavingModeInput } from "../inputHandlers/savingMode";
+import { handleSpellbookModeInput } from "../inputHandlers/spellbookMode";
 import { handleLoadingModeInput } from "../inputHandlers/loadingMode";
 
 export interface InputContext {
@@ -73,6 +75,7 @@ export const createUserInputSystem = ({
     };
 
     const inputDispatchers = {
+      [GameState.CAST_SPELL]: handleCastSpellModeInput,
       [GameState.GAME]: handleGameModeInput,
       [GameState.GAME_OVER]: () => true,
       [GameState.SIM]: () => true,
@@ -85,6 +88,7 @@ export const createUserInputSystem = ({
       [GameState.MAKER_MODE_PREFAB_SELECT]: handleMakerModePrefabSelectInput,
       [GameState.TARGET]: handleTargetModeInput,
       [GameState.SAVING]: handleSavingModeInput,
+      [GameState.SPELLBOOK]: handleSpellbookModeInput,
       [GameState.LOADING]: handleLoadingModeInput,
     };
 

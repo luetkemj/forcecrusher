@@ -9,6 +9,8 @@ export const enum Turn {
 }
 
 export const enum GameState {
+  CAST_SPELL = "CAST_SPELL",
+  SPELLBOOK = "SPELLBOOK",
   GAME = "GAME",
   GAME_OVER = "GAME_OVER",
   INVENTORY = "INVENTORY",
@@ -46,6 +48,7 @@ export type Views = {
   makerModeRight?: UIPanelView;
   makerModeTop?: UIPanelView;
   saving?: UIPanelView;
+  spellbook?: UIPanelView;
   loading?: UIPanelView;
 };
 
@@ -79,6 +82,7 @@ export type State = {
     touch: string;
   };
   simulationTurnsLeft: number;
+  spellbookActiveIndex: number;
   turn: Turn;
   turnNumber: number;
   userInput: KeyboardEvent | null;
@@ -121,6 +125,7 @@ const state: State = {
     touch: "",
   },
   simulationTurnsLeft: 25,
+  spellbookActiveIndex: 0,
   turn: Turn.PLAYER,
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,

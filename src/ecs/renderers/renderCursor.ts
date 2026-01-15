@@ -14,6 +14,7 @@ export const renderCursor = ({ views }: RendererContext) => {
       y: pos0.y,
     };
     if (
+      getState().gameState === GameState.CAST_SPELL ||
       getState().gameState === GameState.INSPECT ||
       getState().gameState === GameState.TARGET ||
       getState().gameState.startsWith(GameState.MAKER_MODE)

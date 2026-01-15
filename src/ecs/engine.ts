@@ -7,6 +7,7 @@ import {
   Material,
   OpenState,
   Sense,
+  SpellName,
   WeaponClass,
   WeaponType,
 } from "./enums";
@@ -116,6 +117,12 @@ export interface FluidContainer {
   inflow?: boolean;
 }
 
+export interface Spell {
+  name: SpellName;
+  displayName: string;
+  payload: any;
+}
+
 export type EntityId = string;
 
 export type Entity = {
@@ -212,6 +219,7 @@ export type Entity = {
     targetId: EntityId;
     distance: number;
   };
+  knownSpells?: SpellName[];
   layer100?: true;
   layer125?: true;
   layer150?: true;
@@ -270,6 +278,7 @@ export type Entity = {
     attack?: Attack;
     immovableTarget?: boolean;
   };
+  tryCastSpell?: { spellName: SpellName };
   tryClose?: Entity;
   tryDrop?: { dropperId: EntityId };
   tryFill?: { targetId: EntityId };

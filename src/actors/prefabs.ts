@@ -7,6 +7,7 @@ import {
   EntityKind,
   Material,
   Fluids,
+  SpellName,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -164,6 +165,12 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
+  knownSpells: [
+    SpellName.CreateBlood,
+    SpellName.CreateOil,
+    SpellName.CreateLava,
+    SpellName.CreateWater,
+  ],
 };
 
 // NOTE: Actors / Creatures

@@ -447,3 +447,41 @@ THought this would be easy... it's very much not.
 ---
 
 Add processes to growth stages (maybe call the whole thing mutations instead?) Add id's to each stage (mutation) and any processes that need to run. Change to mutate should be on each mutation not on the overall component. That way it can be controlled how quickly you mutate from one to another.
+
+
+---
+
+spells
+
+need to support targeting
+
+currnet have looking (examine) which goes into a taeger mode. Also have throwing. Both of these are pretty specific to what they do. Targeget mode assumes you want to throw and have enter target mode from the inventory and will return to the inventory.
+
+how qill you enter the spell casting state?
+
+from a spell menu
+from a quick menu
+from inventory (scrolls)
+
+so we need to track where you came fromto know where to return you
+
+MVP
+
+hit C to cast spell.
+- [x] hit C
+- [ ] store spell to cast in game state
+- [x] enetr target mode
+- [ ] select target
+- [ ] spell system
+- [ ] this will eventually be spell shapes so select AOE (cone, cube, circle, etc)
+- [x] cast spell (log to console)
+- [ ] log to game result
+- [x] return to game
+- [x] from target mode, escape to cancel spell and return to game
+
+spell
+- name
+- effect (components to add/remove/modify on target(s))
+- range
+- shape (aoe)
+- mana
