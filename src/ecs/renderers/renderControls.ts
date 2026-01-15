@@ -11,6 +11,14 @@ export const renderControls = ({ views, queries }: RendererContext) => {
       let controls = "";
       let context = "";
 
+      if (getState().gameState === GameState.CAST_SPELL) {
+        controls = `(${em("C/escape")})Return to Game (${em("arrows/hjkl")})Move cursor (${em("enter")})Cast spell`;
+      }
+
+      if (getState().gameState === GameState.SPELLBOOK) {
+        controls = `(${em("C/escape")})Return to Game (${em("arrows/hjkl")})Select Spell (${em("enter")})Cast spell`;
+      }
+
       if (getState().gameState === GameState.GAME) {
         controls = `(${em("arrows/hjkl")})Move (${em("e")})Interact (${em("g")})Get (${em("H")})History (${em("i")})Inventory (${em("L")})Look (${em("M")})MakerMode`;
       }
@@ -24,7 +32,7 @@ export const renderControls = ({ views, queries }: RendererContext) => {
       }
 
       if (getState().gameState === GameState.INVENTORY) {
-        controls = `(${em("i/escape")})Return to Game (${em("c")})Consume (${em("d")})Drop (${em("t")})Throw (${em("W")})Wear (${em("w")})Wield (${em("r")})Remove`;
+        controls = `(${em("i/escape")})Return to Game (${em("arrows/hjkl")})Select Item (${em("c")})Consume (${em("d")})Drop (${em("t")})Throw (${em("W")})Wear (${em("w")})Wield (${em("r")})Remove`;
       }
 
       if (getState().gameState === GameState.LOG_HISTORY) {

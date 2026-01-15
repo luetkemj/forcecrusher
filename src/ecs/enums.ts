@@ -92,3 +92,10 @@ export enum Fluids {
   Water = "water",
   Lava = "lava",
 }
+
+export enum SpellName {
+  CreateBlood = "createBlood",
+  CreateLava = "createLava",
+  CreateOil = "createOil",
+  CreateWater = "createWater",
+}

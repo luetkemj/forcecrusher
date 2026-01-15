@@ -22,6 +22,7 @@ export const Keys = {
   TARGET: "t",
   // should be quaff?
   CONSUME: "c",
+  CAST: "C",
   DROP: "d",
   WIELD: "w",
   WEAR: "W",

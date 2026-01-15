@@ -121,6 +121,17 @@ export const handleGameModeInput = async ({
       return true;
     }
 
+    if (key === Keys.CAST) {
+      setState((state: State) => {
+        state.gameState = GameState.SPELLBOOK;
+        const pos = player.position;
+        if (pos) {
+          state.cursor = [pos, pos];
+        }
+      });
+      return true;
+    }
+
     if (key === Keys.INVENTORY) {
       setState((state: State) => (state.gameState = GameState.INVENTORY));
       setState((state: State) => (state.inventoryActiveIndex = 0));

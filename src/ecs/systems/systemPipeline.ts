@@ -27,6 +27,7 @@ import { createSimulationSystem } from "../systems/simulation.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createThrowSystem } from "../systems/throw.system";
 import { createTryFillSystem } from "../systems/tryFill.system";
+import { createTryCastSpellSystem } from "../systems/tryCastSpell.system";
 import { createUserInputSystem } from "../systems/userInput.system";
 import { gameWorld } from "../engine";
 import { GameState } from "../gameState";
@@ -62,6 +63,7 @@ const simulationSystem = createSimulationSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const throwSystem = createThrowSystem(gameWorld);
 const tryFillSystem = createTryFillSystem(gameWorld);
+const tryCastSpellSystem = createTryCastSpellSystem(gameWorld);
 const userInputSystem = createUserInputSystem(gameWorld);
 
 export const systems = {
@@ -93,6 +95,7 @@ export const systems = {
   simulation: simulationSystem,
   sound: soundSystem,
   throw: throwSystem,
+  tryCastSpell: tryCastSpellSystem,
   tryFill: tryFillSystem,
   userInput: userInputSystem,
 };
@@ -161,6 +164,7 @@ export const playerTurnPipeline: SystemPipeline = {
   main: [
     systems.pickUp,
     systems.tryFill,
+    systems.tryCastSpell,
     systems.movement,
     systems.open,
     systems.attack,
@@ -188,6 +192,7 @@ export const worldTurnPipeline: SystemPipeline = {
   main: [
     systems.pickUp,
     systems.tryFill,
+    systems.tryCastSpell,
     systems.movement,
     systems.open,
     systems.attack,
@@ -208,6 +213,14 @@ export const worldTurnPipeline: SystemPipeline = {
 export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
   [GameState.SIM]: {
     ...worldTurnPipeline,
+  },
+
+  [GameState.CAST_SPELL]: {
+    preInput: [],
+    input: [systems.userInput],
+    main: [systems.cursor],
+    postMain: [],
+    render: [systems.render],
   },
 
   [GameState.INSPECT]: {
@@ -289,6 +302,14 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
   },
 
   [GameState.SAVING]: {
+    preInput: [],
+    input: [systems.userInput],
+    main: [],
+    postMain: [],
+    render: [systems.render],
+  },
+
+  [GameState.SPELLBOOK]: {
     preInput: [],
     input: [systems.userInput],
     main: [],
