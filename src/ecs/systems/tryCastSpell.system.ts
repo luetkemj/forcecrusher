@@ -24,7 +24,7 @@ export const createTryCastSpellSystem = ({ world, registry }: IGameWorld) => {
         targets,
       };
 
-      // castSpell should be slected by user from a UI
+      // castSpell should be selected by user from a UI
       castSpell[spellName](spellContext);
 
       world.removeComponent(entity, "tryCastSpell");

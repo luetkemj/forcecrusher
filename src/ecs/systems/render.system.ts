@@ -125,7 +125,6 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     renderControls(ctx);
     renderMakerMode(ctx);
     renderSaving(ctx);
-    renderSpellBook(ctx);
     renderLoading(ctx);
   };
 };

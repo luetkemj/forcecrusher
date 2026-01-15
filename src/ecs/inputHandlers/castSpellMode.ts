@@ -31,7 +31,7 @@ export const handleCastSpellModeInput = ({
     return true;
   }
 
-  if (Keys.CONFIRM) {
+  if (key === Keys.CONFIRM) {
     const index = getState().spellbookActiveIndex;
     const spellName = player?.knownSpells?.[index];
     if (spellName) {
