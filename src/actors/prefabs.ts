@@ -805,8 +805,8 @@ export const grassPrefab: Entity = {
     current: "young",
     mutations: [
       {
-        next: "young",
         name: "burnt",
+        next: "young",
         chanceToMutate: 0.01,
         addComponents: {
           appearance: {
@@ -815,15 +815,29 @@ export const grassPrefab: Entity = {
             tileSet: "kenny",
           },
         },
-        removeComponents: ["flammable"],
+        removeComponents: ["flammable", "opaque"],
       },
       {
-        next: "mature",
         name: "young",
-        chanceToMutate: 0.00025,
+        next: "medium",
+        chanceToMutate: 0.0025,
         addComponents: {
           appearance: {
             char: chars.grass,
+            tint: colors.plant,
+            tileSet: "kenny",
+          },
+          calculateFlammability: true,
+        },
+        removeComponents: [],
+      },
+      {
+        name: "medium",
+        next: "mature",
+        chanceToMutate: 0.0025,
+        addComponents: {
+          appearance: {
+            char: chars.mediumGrass,
             tint: colors.plant,
             tileSet: "kenny",
           },
@@ -833,7 +847,7 @@ export const grassPrefab: Entity = {
       },
       {
         name: "mature",
-        chanceToMutate: 0.01,
+        chanceToMutate: 0.0025,
         addComponents: {
           appearance: {
             char: chars.tallGrass,
@@ -841,8 +855,22 @@ export const grassPrefab: Entity = {
             tileSet: "kenny",
           },
           calculateFlammability: true,
+          opaque: true,
         },
         removeComponents: [],
+      },
+      {
+        name: "trampled",
+        next: "mature",
+        chanceToMutate: 0.005,
+        addComponents: {
+          appearance: {
+            char: chars.grass,
+            tint: colors.plant,
+            tileSet: "kenny",
+          },
+        },
+        removeComponents: ["opaque"],
       },
     ],
   },

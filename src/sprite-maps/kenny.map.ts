@@ -13,6 +13,7 @@ export const kennyGFXMap = {
   floor: 1,
   golem: 321,
   grass: 4,
+  mediumGrass: 0,
   tallGrass: 97,
   owlbear: 421,
   player: 75,

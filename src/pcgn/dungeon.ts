@@ -220,7 +220,7 @@ export const generateDungeon = () => {
       // add fluidContainers to every open floor tile
       const fEntity = spawn("fluidContainer", { position: { x, y } });
       // randomly fill containers with fluid to create pools
-      const fluidTypes = ["lava", "oil", "water"];
+      const fluidTypes = ["blood", "oil", "water"];
       if (Math.random() < 0.005) {
         if (fEntity.fluidContainer) {
           const volume = random(5, 20);
