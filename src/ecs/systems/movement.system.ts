@@ -1,9 +1,19 @@
-import { addLog, getDisposition, updatePosition } from "../../lib/utils";
+import { toPosId } from "../../lib/grid";
+import {
+  addLog,
+  getDisposition,
+  getEAP,
+  updatePosition,
+} from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
-export const createMovementSystem = ({ world }: IGameWorld) => {
-  const moveableQuery = world.with("position", "tryMove").without("excludeFromSim");
-  const blockingQuery = world.with("blocking", "position").without("excludeFromSim");
+export const createMovementSystem = ({ world, registry }: IGameWorld) => {
+  const moveableQuery = world
+    .with("position", "tryMove")
+    .without("excludeFromSim");
+  const blockingQuery = world
+    .with("blocking", "position")
+    .without("excludeFromSim");
 
   return function movementSystem() {
     for (const actor of moveableQuery) {
@@ -37,6 +47,19 @@ export const createMovementSystem = ({ world }: IGameWorld) => {
           blocked = true;
 
           break;
+        }
+      }
+
+      // Trample entities at location
+      for (const eId of getEAP(toPosId(tryMove)) || []) {
+        const entity = registry.get(eId);
+        if (entity) {
+          if (
+            entity.mutable &&
+            entity.mutable.mutations.find((x) => x.name === "trampled")
+          ) {
+            world.addComponent(entity, "mutateTo", { name: "trampled" });
+          }
         }
       }
 

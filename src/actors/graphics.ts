@@ -13,6 +13,7 @@ export enum chars {
   "fire" = "fire",
   "grass" = "grass",
   "golem" = "golem",
+  "mediumGrass" = "mediumGrass",
   "owlbear" = "owlbear",
   "player" = "player",
   "potion" = "potion",
