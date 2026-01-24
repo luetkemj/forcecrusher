@@ -1,6 +1,6 @@
 import { RendererContext } from "../systems/render.system";
 import { getState, GameState } from "../gameState";
-import { Entity } from "../engine";
+import { Entity, Spell } from "../engine";
 import { TokenType } from "../../lib/canvas";
 import { colors } from "../../actors/graphics";
 import { SpellName } from "../enums";
@@ -31,7 +31,7 @@ export const renderSpellBook = ({ views, queries }: RendererContext) => {
   }
 };
 
-const renderKnownSpells = (spells: SpellName[], activeIndex: number) => {
+const renderKnownSpells = (spells: Spell[], activeIndex: number) => {
   const rows = [];
 
   for (const [index, spell] of spells.entries()) {
@@ -47,9 +47,9 @@ const renderKnownSpells = (spells: SpellName[], activeIndex: number) => {
       tokenRow.tokens.push(getTokenText("  "));
     }
     if (spell) {
-      // tokenRow.tokens.push(getTokenGlyph(item));
-      tokenRow.tokens.push(getTokenText(` ${spell}`));
-      // tokenRow.tokens.push(getTokenText(`${item.description}`));
+      tokenRow.tokens.push(getTokenGlyph(spell));
+      tokenRow.tokens.push(getTokenText(` ${spell.displayName}: `));
+      tokenRow.tokens.push(getTokenText(`${spell.description}`));
     }
 
     rows.push([tokenRow]);
@@ -66,7 +66,7 @@ const getTokenText = (string: string) => {
   };
 };
 
-const getTokenGlyph = (entity: Entity) => {
+const getTokenGlyph = (entity: Entity | Spell) => {
   return {
     type: TokenType.Glyph,
     tileSet: entity.appearance?.tileSet || "kenny",

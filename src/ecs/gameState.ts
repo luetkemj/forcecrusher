@@ -30,6 +30,7 @@ export type Views = {
   fps?: UIPanelView;
   gitTag?: UIPanelView;
   map?: MapView;
+  targeting?: MapView;
   mapFire?: MapView;
   mapFluid?: MapView;
   odorMap?: MapView;

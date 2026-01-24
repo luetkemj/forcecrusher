@@ -7,8 +7,9 @@ import {
   EntityKind,
   Material,
   Fluids,
-  SpellName,
 } from "../ecs/enums";
+import { createBlood } from "../spells/spellbook/createBlood";
+import { createLava } from "../spells/spellbook/createLava";
 import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
@@ -166,10 +167,10 @@ export const playerPrefab: Entity = {
   mass: 1,
   material: Material.Flesh,
   knownSpells: [
-    SpellName.CreateBlood,
-    SpellName.CreateOil,
-    SpellName.CreateLava,
-    SpellName.CreateWater,
+    createBlood,
+    createLava,
+    // createOil,
+    // createWater,
   ],
 };
 
