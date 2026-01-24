@@ -268,7 +268,7 @@ export const generateDungeon = () => {
     const percentile = new DiceRoll("d100").total;
 
     if (percentile <= 5) {
-      // spawnLavaGolem(position);
+      spawnLavaGolem(position);
     }
     if (percentile > 5 && percentile <= 10) {
       spawnLivingSponge(position);

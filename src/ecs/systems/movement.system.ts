@@ -50,20 +50,20 @@ export const createMovementSystem = ({ world, registry }: IGameWorld) => {
         }
       }
 
-      // Trample entities at location
-      for (const eId of getEAP(toPosId(tryMove)) || []) {
-        const entity = registry.get(eId);
-        if (entity) {
-          if (
-            entity.mutable &&
-            entity.mutable.mutations.find((x) => x.name === "trampled")
-          ) {
-            world.addComponent(entity, "mutateTo", { name: "trampled" });
+      if (!blocked) {
+        // Trample entities at location
+        for (const eId of getEAP(toPosId(tryMove)) || []) {
+          const entity = registry.get(eId);
+          if (entity) {
+            if (
+              entity.mutable &&
+              entity.mutable.mutations.find((x) => x.name === "trampled")
+            ) {
+              world.addComponent(entity, "mutateTo", { name: "trampled" });
+            }
           }
         }
-      }
 
-      if (!blocked) {
         updatePosition(world, actor, tryMove);
 
         world.addComponent(actor, "sound", { strength: 10 });
