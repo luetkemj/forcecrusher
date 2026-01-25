@@ -9,18 +9,19 @@ export const createFluid = (
 ) => {
   let success = false;
 
-  const fluidContainer = targets.find((t) => t?.name === "fluidContainer");
-
-  if (fluidContainer) {
-    if (fluidContainer.fluidContainer?.fluids[payload.fluidType]) {
-      fluidContainer.fluidContainer.fluids[payload.fluidType].volume =
-        fluidContainer.fluidContainer?.maxVolume;
-      success = true;
-      addLog(`${caster.name} casts ${name}`);
+  for (const target of targets) {
+    if (target.name === "fluidContainer") {
+      if (target.fluidContainer?.fluids[payload.fluidType]) {
+        target.fluidContainer.fluids[payload.fluidType].volume =
+          target.fluidContainer?.maxVolume;
+        success = true;
+      }
     }
   }
 
-  if (!success) {
+  if (success) {
+    addLog(`${caster.name} casts ${name}`);
+  } else {
     addLog(`${caster.name} fails to cast ${name}`);
   }
 };

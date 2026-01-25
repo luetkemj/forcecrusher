@@ -83,6 +83,7 @@ export type State = {
     touch: string;
   };
   simulationTurnsLeft: number;
+  spellAoe: PosId[];
   spellbookActiveIndex: number;
   turn: Turn;
   turnNumber: number;
@@ -126,6 +127,7 @@ const state: State = {
     touch: "",
   },
   simulationTurnsLeft: 25,
+  spellAoe: [],
   spellbookActiveIndex: 0,
   turn: Turn.PLAYER,
   turnNumber: 0, // this needs to be stored in game saves

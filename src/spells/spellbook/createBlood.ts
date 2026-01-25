@@ -1,5 +1,5 @@
 import { SpellContext } from "..";
-import { Fluids, SpellName } from "../../ecs/enums";
+import { Fluids, SpellName, SpellShape } from "../../ecs/enums";
 import { createFluid } from "../utils";
 import { colors } from "../../actors/graphics";
 import { Spell } from "../../ecs/engine";
@@ -8,6 +8,7 @@ export const createBlood: Spell = {
   name: SpellName.CreateBlood,
   displayName: "Create Blood",
   description: "Creates a pool of blood",
+  shape: SpellShape.Circle,
   appearance: {
     char: "spellTypeFluid",
     tint: colors.blood,
@@ -15,7 +16,7 @@ export const createBlood: Spell = {
   },
   payload: {
     fluidType: Fluids.Blood,
-    shape: "circle",
+    shapeArgs: { radius: 1 },
   },
 };
 

@@ -3,7 +3,6 @@ import { getState, GameState } from "../gameState";
 import { Entity, Spell } from "../engine";
 import { TokenType } from "../../lib/canvas";
 import { colors } from "../../actors/graphics";
-import { SpellName } from "../enums";
 
 export const renderSpellBook = ({ views, queries }: RendererContext) => {
   const view = views.spellbook;

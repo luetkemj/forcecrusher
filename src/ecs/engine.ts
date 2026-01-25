@@ -8,6 +8,7 @@ import {
   OpenState,
   Sense,
   SpellName,
+  SpellShape,
   WeaponClass,
   WeaponType,
 } from "./enums";
@@ -121,6 +122,7 @@ export interface Spell {
   name: SpellName;
   displayName: string;
   description: string;
+  shape: SpellShape;
   appearance?: {
     char: string;
     tint: number;

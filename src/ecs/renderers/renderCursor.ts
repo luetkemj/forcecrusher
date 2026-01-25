@@ -1,6 +1,8 @@
 import { RendererContext } from "../systems/render.system";
-import { getState, GameState } from "../gameState";
+import { getState, GameState, setState, State } from "../gameState";
 import { chars } from "../../actors/graphics";
+import { SpellShape } from "../enums";
+import { circle, toPos, toPosId } from "../../lib/grid";
 
 export const renderCursor = ({ views, queries }: RendererContext) => {
   const view = views.targeting;
@@ -26,26 +28,38 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
       if (getState().gameState === GameState.CAST_SPELL) {
         const [player] = queries.pcQuery;
 
-        const currentSpell =
-          player.knownSpells?.[getState().spellbookActiveIndex];
-        if (currentSpell && currentSpell.appearance) {
-          cursorProps.char = currentSpell.appearance.char;
-          cursorProps.tint = currentSpell.appearance.tint;
-          view.updateCell({
-            0: {
-              ...cursorProps,
-              alpha: 0.25,
-              x: pos1.x,
-              y: pos1.y,
-            },
-            1: {
-              ...cursorProps,
-              alpha: 1,
-              x: pos1.x,
-              y: pos1.y,
-              tileSet: currentSpell.appearance.tileSet,
-            },
-          });
+        const spell = player.knownSpells?.[getState().spellbookActiveIndex];
+
+        if (spell && spell.appearance) {
+          cursorProps.char = spell.appearance.char;
+          cursorProps.tint = spell.appearance.tint;
+
+          let aoe = [toPosId(pos1)];
+
+          if (spell.shape === SpellShape.Circle) {
+            aoe = circle(pos1, spell.payload.shapeArgs.radius || 1).posIds;
+          }
+
+          setState((state: State) => (state.spellAoe = aoe));
+
+          for (const posId of aoe) {
+            const pos = toPos(posId);
+            view.updateCell({
+              0: {
+                ...cursorProps,
+                alpha: 0.25,
+                x: pos.x,
+                y: pos.y,
+              },
+              1: {
+                ...cursorProps,
+                alpha: 1,
+                x: pos.x,
+                y: pos.y,
+                tileSet: spell.appearance.tileSet,
+              },
+            });
+          }
         }
       }
 
