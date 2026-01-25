@@ -10,6 +10,8 @@ import {
 } from "../ecs/enums";
 import { createBlood } from "../spells/spellbook/createBlood";
 import { createLava } from "../spells/spellbook/createLava";
+import { createOil } from "../spells/spellbook/createOil";
+import { createWater } from "../spells/spellbook/createWater";
 import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
@@ -166,12 +168,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [
-    createBlood,
-    createLava,
-    // createOil,
-    // createWater,
-  ],
+  knownSpells: [createBlood, createLava, createOil, createWater],
 };
 
 // NOTE: Actors / Creatures
