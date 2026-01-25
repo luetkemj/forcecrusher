@@ -8,14 +8,14 @@ export const createWater: Spell = {
   name: SpellName.CreateWater,
   displayName: "Create Water",
   description: "Creates a pool of liquid water",
-  shape: SpellShape.Circle,
+  shape: SpellShape.Line,
   appearance: {
     char: "spellTypeFluid",
     tint: colors.water,
     tileSet: "kenny",
   },
   payload: {
-    fluidType: Fluids.Oil,
+    fluidType: Fluids.Water,
     shapeArgs: { radius: 1 },
   },
 };

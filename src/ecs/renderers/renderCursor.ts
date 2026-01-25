@@ -2,7 +2,9 @@ import { RendererContext } from "../systems/render.system";
 import { getState, GameState, setState, State } from "../gameState";
 import { chars } from "../../actors/graphics";
 import { SpellShape } from "../enums";
-import { circle, toPos, toPosId } from "../../lib/grid";
+import { circle, line, toPos, toPosId } from "../../lib/grid";
+import { isPosBlocked } from "../../lib/utils";
+import { tail } from "lodash";
 
 export const renderCursor = ({ views, queries }: RendererContext) => {
   const view = views.targeting;
@@ -40,6 +42,34 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
             aoe = circle(pos1, spell.payload.shapeArgs.radius || 1).posIds;
           }
 
+          if (spell.shape === SpellShape.Cone) {
+          }
+
+          if (spell.shape === SpellShape.Line) {
+            const path = tail(
+              line(player.position, pos1).map((pos) => toPosId(pos)),
+            );
+            const ray = [];
+            let blocked = false;
+
+            for (const posId of path) {
+              if (!blocked && !isPosBlocked(posId)) {
+                ray.push(posId);
+              } else {
+                blocked = true;
+              }
+            }
+
+            aoe = ray;
+          }
+
+          if (spell.shape === SpellShape.Point) {
+            aoe = aoe;
+          }
+
+          if (spell.shape === SpellShape.Rectangle) {
+          }
+
           setState((state: State) => (state.spellAoe = aoe));
 
           for (const posId of aoe) {
@@ -60,6 +90,17 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
               },
             });
           }
+
+          view.updateCell({
+            0: {
+              ...cursorProps,
+              char: chars.cursor,
+              alpha: 1,
+              x: pos1.x,
+              y: pos1.y,
+              tileSet: "kenny",
+            },
+          });
         }
       }
 
