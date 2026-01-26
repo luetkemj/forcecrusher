@@ -53,9 +53,16 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
             let blocked = false;
 
             for (const posId of path) {
-              if (!blocked && !isPosBlocked(posId)) {
+              if (blocked) break;
+
+              const blocker = isPosBlocked(posId);
+
+              if (!blocker) {
                 ray.push(posId);
               } else {
+                if (blocker.ai) {
+                  ray.push(posId);
+                }
                 blocked = true;
               }
             }
