@@ -8,7 +8,7 @@ export const createOil: Spell = {
   name: SpellName.CreateOil,
   displayName: "Create Oil",
   description: "Creates a pool of flammable oil",
-  shape: SpellShape.Circle,
+  shape: { name: SpellShape.Line, radius: 1 },
   appearance: {
     char: "spellTypeFluid",
     tint: colors.oil,
@@ -16,7 +16,6 @@ export const createOil: Spell = {
   },
   payload: {
     fluidType: Fluids.Oil,
-    shapeArgs: { radius: 1 },
   },
 };
 

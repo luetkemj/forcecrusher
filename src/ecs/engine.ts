@@ -122,7 +122,10 @@ export interface Spell {
   name: SpellName;
   displayName: string;
   description: string;
-  shape: SpellShape;
+  shape: {
+    name: SpellShape;
+    radius?: number;
+  };
   appearance?: {
     char: string;
     tint: number;

@@ -71,7 +71,7 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
           }
 
           if (spell.shape === SpellShape.Point) {
-            aoe = aoe;
+            aoe = [toPosId(pos1)];
           }
 
           if (spell.shape === SpellShape.Rectangle) {
