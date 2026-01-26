@@ -350,20 +350,13 @@ export function getEAP(pos: PosId): Set<EntityId> | undefined {
 }
 
 export function isPosBlocked(posId: PosId): Entity | undefined {
-  let blockingEntity;
-
   const eAP = getEAP(posId);
-  if (eAP) {
-    Array.from(eAP).find((eId) => {
-      const candidate = gameWorld.registry.get(eId);
-
-      if (candidate?.blocking) {
-        blockingEntity = candidate;
-      }
-    });
+  if (!eAP) {
+    return undefined;
   }
-
-  return blockingEntity;
+  return Array.from(eAP)
+    .map((eId) => gameWorld.registry.get(eId))
+    .find((candidate) => candidate?.blocking);
 }
 
 /**

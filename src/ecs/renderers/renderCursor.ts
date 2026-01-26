@@ -29,6 +29,7 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
 
       if (getState().gameState === GameState.CAST_SPELL) {
         const [player] = queries.pcQuery;
+        if (!player?.position) return;
 
         const spell = player.knownSpells?.[getState().spellbookActiveIndex];
 
@@ -38,14 +39,14 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
 
           let aoe = [toPosId(pos1)];
 
-          if (spell.shape === SpellShape.Circle) {
-            aoe = circle(pos1, spell.payload.shapeArgs.radius || 1).posIds;
+          if (spell.shape.name === SpellShape.Circle) {
+            aoe = circle(pos1, spell.shape.radius || 1).posIds;
           }
 
-          if (spell.shape === SpellShape.Cone) {
+          if (spell.shape.name === SpellShape.Cone) {
           }
 
-          if (spell.shape === SpellShape.Line) {
+          if (spell.shape.name === SpellShape.Line) {
             const path = tail(
               line(player.position, pos1).map((pos) => toPosId(pos)),
             );
@@ -70,11 +71,11 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
             aoe = ray;
           }
 
-          if (spell.shape === SpellShape.Point) {
+          if (spell.shape.name === SpellShape.Point) {
             aoe = [toPosId(pos1)];
           }
 
-          if (spell.shape === SpellShape.Rectangle) {
+          if (spell.shape.name === SpellShape.Rectangle) {
           }
 
           setState((state: State) => (state.spellAoe = aoe));
