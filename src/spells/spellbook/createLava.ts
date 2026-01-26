@@ -8,7 +8,7 @@ export const createLava: Spell = {
   name: SpellName.CreateLava,
   displayName: "Create Lava",
   description: "Creates a pool of lava",
-  shape: { name: SpellShape.Line, radius: 1 },
+  shape: { name: SpellShape.Point },
   appearance: {
     char: "spellTypeFluid",
     tint: colors.lava,

@@ -8,7 +8,7 @@ export const createBlood: Spell = {
   name: SpellName.CreateBlood,
   displayName: "Create Blood",
   description: "Creates a pool of blood",
-  shape: { name: SpellShape.Line, radius: 1 },
+  shape: { name: SpellShape.Point },
   appearance: {
     char: "spellTypeFluid",
     tint: colors.blood,

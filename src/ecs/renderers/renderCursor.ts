@@ -43,8 +43,9 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
             aoe = circle(pos1, spell.shape.radius || 1).posIds;
           }
 
-          if (spell.shape.name === SpellShape.Cone) {
-          }
+          // TODO:
+          // if (spell.shape.name === SpellShape.Cone) {
+          // }
 
           if (spell.shape.name === SpellShape.Line) {
             const path = tail(
@@ -75,8 +76,9 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
             aoe = [toPosId(pos1)];
           }
 
-          if (spell.shape.name === SpellShape.Rectangle) {
-          }
+          // TODO:
+          // if (spell.shape.name === SpellShape.Rectangle) {
+          // }
 
           setState((state: State) => (state.spellAoe = aoe));
 

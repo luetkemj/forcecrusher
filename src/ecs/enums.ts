@@ -102,8 +102,8 @@ export enum SpellName {
 
 export enum SpellShape {
   Circle = "circle",
-  Cone = "cone",
+  // Cone = "cone",
   Line = "line",
   Point = "point",
-  Rectangle = "rectangle",
+  // Rectangle = "rectangle",
 }

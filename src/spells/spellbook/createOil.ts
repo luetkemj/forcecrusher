@@ -8,7 +8,7 @@ export const createOil: Spell = {
   name: SpellName.CreateOil,
   displayName: "Create Oil",
   description: "Creates a pool of flammable oil",
-  shape: { name: SpellShape.Line, radius: 1 },
+  shape: { name: SpellShape.Point },
   appearance: {
     char: "spellTypeFluid",
     tint: colors.oil,
