@@ -2,7 +2,7 @@ import { RendererContext } from "../systems/render.system";
 import { getState, GameState, setState, State } from "../gameState";
 import { chars } from "../../actors/graphics";
 import { SpellShape } from "../enums";
-import { isAtSamePosition, line, toPos, toPosId } from "../../lib/grid";
+import { PosId, isAtSamePosition, line, toPos, toPosId } from "../../lib/grid";
 import { isInFOV, isPosBlocked, queryAtPosition } from "../../lib/utils";
 import { tail } from "lodash";
 import { viewConfigs } from "../../views/views";
@@ -57,7 +57,7 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
           cursorProps.char = spell.appearance.char;
           cursorProps.tint = spell.appearance.tint;
 
-          let aoe = [toPosId(pos1)];
+          let aoe: PosId[] = [];
 
           if (spell.shape.name === SpellShape.Circle) {
             if (validTarget) {
