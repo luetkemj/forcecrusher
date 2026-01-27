@@ -10,7 +10,7 @@ import { Disposition, EntityKind, Fluids } from "../ecs/enums";
 import { GameState, getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos, PosId, toPosId } from "./grid";
-import { pull, get } from "lodash";
+import { pull, get, compact } from "lodash";
 
 export const colorTag = (color: number) => {
   return `§#${color.toString(16).padStart(6, "0")}§`;
@@ -347,6 +347,12 @@ function removeFromEAPMap(posId: PosId, id: EntityId) {
 
 export function getEAP(posId: PosId): Set<EntityId> | undefined {
   return getState().eapMap.get(posId);
+}
+
+export function queryAtPosition(pos: Pos): Entity[] {
+  const eIds = getEAP(toPosId(pos)) || [];
+  const eIdsArray = Array.from(eIds);
+  return compact(eIdsArray.map((eId) => gameWorld.registry.get(eId)));
 }
 
 export function isInFOV(posId: PosId): boolean {

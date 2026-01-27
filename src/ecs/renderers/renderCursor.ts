@@ -2,9 +2,11 @@ import { RendererContext } from "../systems/render.system";
 import { getState, GameState, setState, State } from "../gameState";
 import { chars } from "../../actors/graphics";
 import { SpellShape } from "../enums";
-import { circle, line, toPos, toPosId } from "../../lib/grid";
-import { isInFOV, isPosBlocked } from "../../lib/utils";
+import { isAtSamePosition, line, toPos, toPosId } from "../../lib/grid";
+import { isInFOV, isPosBlocked, queryAtPosition } from "../../lib/utils";
 import { tail } from "lodash";
+import { viewConfigs } from "../../views/views";
+import createFOV from "../../lib/fov";
 
 export const renderCursor = ({ views, queries }: RendererContext) => {
   const view = views.targeting;
@@ -27,9 +29,31 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
       view.clearView();
       view.show();
 
+      let cursorInView = false;
+      let validTarget = false;
+
+      for (const entity of queries.inFovQuery) {
+        if (!entity.position) continue;
+        if (isAtSamePosition(entity.position, pos1)) {
+          cursorInView = true;
+          break;
+        }
+      }
+
       if (getState().gameState === GameState.CAST_SPELL) {
         const [player] = queries.pcQuery;
         if (!player?.position) return;
+
+        if (cursorInView) {
+          const targets = queryAtPosition(pos1);
+          targets.forEach((target) => {
+            if (target.blocking && !target.ai) {
+              validTarget = false;
+            } else {
+              validTarget = true;
+            }
+          });
+        }
 
         const spell = player.knownSpells?.[getState().spellbookActiveIndex];
 
@@ -40,7 +64,28 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
           let aoe = [toPosId(pos1)];
 
           if (spell.shape.name === SpellShape.Circle) {
-            aoe = circle(pos1, spell.shape.radius || 1).posIds;
+            if (validTarget) {
+              const FOV = createFOV(
+                queries.opaqueQuery,
+                viewConfigs.map.width,
+                viewConfigs.map.height,
+                pos1,
+                spell.shape.radius || 1,
+              );
+
+              const fov = Array.from(FOV.fov);
+
+              for (const posId of fov) {
+                const targets = queryAtPosition(toPos(posId));
+                for (const target of targets) {
+                  if (target.blocking && !target.ai) {
+                    break;
+                  } else {
+                    aoe.push(posId);
+                  }
+                }
+              }
+            }
           }
 
           // TODO:

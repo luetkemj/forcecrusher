@@ -58,7 +58,12 @@ export interface RendererContext {
     >;
 
     pcQuery: Query<With<Entity, "position" | "pc">>;
-    inFovQuery: Query<
+
+    opaqueQuery: Query<With<Entity, "opaque" | "position">>;
+
+    inFovQuery: Query<With<Entity, "inFov">>;
+
+    legendableQuery: Query<
       With<Entity, "inFov" | "legendable" | "position" | "appearance" | "name">
     >;
   };
@@ -76,14 +81,16 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
   const renderable325Query = world.with("position", "appearance", "layer325");
   const renderable350Query = world.with("position", "appearance", "layer350");
   const renderable400Query = world.with("position", "appearance", "layer400");
-  // for rendering the legend
-  const inFovQuery = world.with(
+  const inFovQuery = world.with("inFov");
+  const legendableQuery = world.with(
     "inFov",
     "legendable",
     "position",
     "appearance",
     "name",
   );
+  // for rendering the cursor
+  const opaqueQuery = world.with("opaque", "position");
   const pcQuery = world.with("pc", "position");
 
   const ctx = {
@@ -101,6 +108,8 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
       renderable350Query,
       renderable400Query,
       inFovQuery,
+      legendableQuery,
+      opaqueQuery,
       pcQuery,
     },
     registry,
