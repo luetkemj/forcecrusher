@@ -75,11 +75,11 @@ This is aspirational only. Expect anything and everything in this document to be
     - [x] Remember things smelled
     - [x] Act on memory
     - [x] Debug UI
-  - [ ] Hear
-    - [ ] Hear things
-    - [ ] Remember things heard
-    - [ ] Act on memory
-    - [ ] Debug UI
+  - [x] Hear
+    - [x] Hear things
+    - [x] Remember things heard
+    - [x] Act on memory
+    - [x] Debug UI
   - [ ] Feel (tremor sense)
     - [ ] Feel things
     - [ ] Remember things felt
@@ -112,7 +112,7 @@ This is aspirational only. Expect anything and everything in this document to be
   - [x] Knockback system
   - [x] Handle breaking things that are kicked
   - [ ] Should offer some sort of information (is it jammed, or stuck etc)
-  - [ ] Sound (alert enemies) Sound System
+  - [x] Sound (alert enemies) Sound System
 - [ ] Maker Mode
   - [x] Maker Mode Game State
   - [x] Select Prefabs
@@ -139,17 +139,17 @@ This is aspirational only. Expect anything and everything in this document to be
 - [ ] Containers
 - [ ] AI for actors to use own inventory
 - [ ] you can "wear" a health potion?? seems like that shouldn't be possible. Do we need wearable and wieldable Or just go with it? It's no better then not wearing any armor...
-- [ ] Materials
+- [x] Materials
 - [ ] Overworld map with multiple dungeons to explore
 - [ ] Crafting
 - [ ] Ability to shoot things from a ranged weapon
 - [ ] Game cheats/debugging menu to toggle various modes
-- [ ] save to indexDB (local storage collapses after 6 levels)
+- [x] save to indexDB (local storage collapses after 6 levels)
 - [ ] inventory select armor/weapons so they can be removed
 - [ ] dykstra maps
 - [ ] lightsources from skrimshank
 - [ ] map gen from shank
-- [ ] graphical mode (use sprites not ascii as an option)
+- [x] graphical mode (use sprites not ascii as an option)
 
 ## Crafting notes
 
@@ -448,7 +448,6 @@ THought this would be easy... it's very much not.
 
 Add processes to growth stages (maybe call the whole thing mutations instead?) Add id's to each stage (mutation) and any processes that need to run. Change to mutate should be on each mutation not on the overall component. That way it can be controlled how quickly you mutate from one to another.
 
-
 ---
 
 spells
@@ -468,18 +467,20 @@ so we need to track where you came fromto know where to return you
 MVP
 
 hit C to cast spell.
+
 - [x] hit C
-- [ ] store spell to cast in game state
+- [x] store spell to cast in game state
 - [x] enetr target mode
-- [ ] select target
-- [ ] spell system
-- [ ] this will eventually be spell shapes so select AOE (cone, cube, circle, etc)
+- [x] select target
+- [x] spell system
+- [x] this will eventually be spell shapes so select AOE (cone, cube, circle, etc)
 - [x] cast spell (log to console)
-- [ ] log to game result
+- [x] log to game result
 - [x] return to game
 - [x] from target mode, escape to cancel spell and return to game
 
 spell
+
 - name
 - effect (components to add/remove/modify on target(s))
 - range

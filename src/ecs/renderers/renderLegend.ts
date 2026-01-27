@@ -14,7 +14,7 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
     const entities = [];
     const [player] = queries.pcQuery;
 
-    for (const entity of queries.inFovQuery) {
+    for (const entity of queries.legendableQuery) {
       entities.push(entity);
     }
 
