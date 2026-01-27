@@ -46,13 +46,9 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
 
         if (cursorInView) {
           const targets = queryAtPosition(pos1);
-          targets.forEach((target) => {
-            if (target.blocking && !target.ai) {
-              validTarget = false;
-            } else {
-              validTarget = true;
-            }
-          });
+          validTarget = targets.some(
+            (target) => !(target.blocking && !target.ai),
+          );
         }
 
         const spell = player.knownSpells?.[getState().spellbookActiveIndex];
