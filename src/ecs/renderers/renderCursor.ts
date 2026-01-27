@@ -72,14 +72,15 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
               const fov = Array.from(FOV.fov);
 
               for (const posId of fov) {
-                const targets = queryAtPosition(toPos(posId));
-                for (const target of targets) {
-                  if (target.blocking && !target.ai) {
-                    break;
-                  } else {
-                    aoe.push(posId);
-                  }
+                const blocker = isPosBlocked(posId);
+                
+                // Skip positions blocked by walls (blocking entities without AI)
+                if (blocker && !blocker.ai) {
+                  continue;
                 }
+                
+                // Include all other positions (empty or with non-wall entities)
+                aoe.push(posId);
               }
             }
           }
