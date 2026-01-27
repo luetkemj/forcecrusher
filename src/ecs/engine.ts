@@ -8,6 +8,7 @@ import {
   OpenState,
   Sense,
   SpellName,
+  SpellShape,
   WeaponClass,
   WeaponType,
 } from "./enums";
@@ -120,6 +121,16 @@ export interface FluidContainer {
 export interface Spell {
   name: SpellName;
   displayName: string;
+  description: string;
+  shape: {
+    name: SpellShape;
+    radius?: number;
+  };
+  appearance?: {
+    char: string;
+    tint: number;
+    tileSet: string;
+  };
   payload: any;
 }
 
@@ -219,7 +230,7 @@ export type Entity = {
     targetId: EntityId;
     distance: number;
   };
-  knownSpells?: SpellName[];
+  knownSpells?: Spell[];
   layer100?: true;
   layer125?: true;
   layer150?: true;

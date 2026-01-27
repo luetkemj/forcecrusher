@@ -33,10 +33,10 @@ export const handleCastSpellModeInput = ({
 
   if (key === Keys.CONFIRM) {
     const index = getState().spellbookActiveIndex;
-    const spellName = player?.knownSpells?.[index];
-    if (spellName) {
+    const spell = player?.knownSpells?.[index];
+    if (spell && spell.name) {
       world.addComponent(player, "tryCastSpell", {
-        spellName: spellName,
+        spellName: spell.name,
       });
     } else {
       addLog("No spell selected");

@@ -11,6 +11,7 @@ export type ViewId =
   | "log"
   | "senses"
   | "map"
+  | "targeting"
   | "mapFire"
   | "mapFluid"
   | "odorMap"
@@ -119,13 +120,27 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     name: "map",
   },
 
+  targeting: {
+    kind: "map",
+    width: 74,
+    height: 39,
+    x: 13,
+    y: 5,
+    layers: 2,
+    tileSets: ["tile", "kenny"],
+    tints: [0x00ff77, 0x000000],
+    alphas: [1, 0],
+    visible: false,
+    name: "targeting",
+  },
+
   mapFire: {
     kind: "map",
     width: 74,
     height: 39,
     x: 13,
     y: 5,
-    layers: 3,
+    layers: 1,
     tileSets: ["kenny"],
     tints: [0x000000],
     alphas: [1],

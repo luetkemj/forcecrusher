@@ -349,6 +349,16 @@ export function getEAP(pos: PosId): Set<EntityId> | undefined {
   return getState().eapMap.get(pos);
 }
 
+export function isPosBlocked(posId: PosId): Entity | undefined {
+  const eAP = getEAP(posId);
+  if (!eAP) {
+    return undefined;
+  }
+  return Array.from(eAP)
+    .map((eId) => gameWorld.registry.get(eId))
+    .find((candidate) => candidate?.blocking);
+}
+
 /**
  * Mix N colors with weights
  * Usage: mixHexWeighted([0xff0000, 0xffff00, 0x000000], [0.5, 0.3, 0.2]);

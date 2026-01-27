@@ -99,3 +99,11 @@ export enum SpellName {
   CreateOil = "createOil",
   CreateWater = "createWater",
 }
+
+export enum SpellShape {
+  Circle = "circle",
+  // Cone = "cone",
+  Line = "line",
+  Point = "point",
+  // Rectangle = "rectangle",
+}

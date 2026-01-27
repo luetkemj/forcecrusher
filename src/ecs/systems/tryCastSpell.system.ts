@@ -2,7 +2,6 @@ import { compact } from "lodash";
 import { getState } from "../gameState";
 import { getEAP } from "../../lib/utils";
 import { IGameWorld } from "../engine";
-import { toPosId } from "../../lib/grid";
 import { castSpell } from "../../spells";
 
 export const createTryCastSpellSystem = ({ world, registry }: IGameWorld) => {
@@ -12,9 +11,12 @@ export const createTryCastSpellSystem = ({ world, registry }: IGameWorld) => {
 
   return function tryCastSpellSystem() {
     for (const entity of tryCastSpellQuery) {
-      const cursorPos = getState().cursor[1];
+      const aoe = getState().spellAoe;
 
-      const targetEids = getEAP(toPosId(cursorPos)) || [];
+      const targetEids = aoe.flatMap((posId) =>
+        Array.from(getEAP(posId) || []),
+      );
+
       const targets = compact([...targetEids].map((eId) => registry.get(eId)));
 
       const { spellName } = entity.tryCastSpell;
