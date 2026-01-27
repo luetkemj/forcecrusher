@@ -328,25 +328,36 @@ export const updatePosition = (
   }
 };
 
-export function addToEAPMap(pos: PosId, id: EntityId) {
-  let set = getState().eapMap.get(pos);
+export function addToEAPMap(posId: PosId, id: EntityId) {
+  let set = getState().eapMap.get(posId);
   if (!set) {
     set = new Set();
-    getState().eapMap.set(pos, set);
+    getState().eapMap.set(posId, set);
   }
   set.add(id);
 }
 
-function removeFromEAPMap(pos: PosId, id: EntityId) {
-  const set = getState().eapMap.get(pos);
+function removeFromEAPMap(posId: PosId, id: EntityId) {
+  const set = getState().eapMap.get(posId);
   if (!set) return;
 
   set.delete(id);
-  if (set.size === 0) getState().eapMap.delete(pos);
+  if (set.size === 0) getState().eapMap.delete(posId);
 }
 
-export function getEAP(pos: PosId): Set<EntityId> | undefined {
-  return getState().eapMap.get(pos);
+export function getEAP(posId: PosId): Set<EntityId> | undefined {
+  return getState().eapMap.get(posId);
+}
+
+export function isInFOV(posId: PosId): boolean {
+  const eAP = getEAP(posId);
+  if (!eAP) {
+    return false;
+  }
+
+  return !!Array.from(eAP)
+    .map((eId) => gameWorld.registry.get(eId))
+    .find((candidate) => candidate?.inFov);
 }
 
 export function isPosBlocked(posId: PosId): Entity | undefined {

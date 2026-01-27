@@ -3,7 +3,7 @@ import { getState, GameState, setState, State } from "../gameState";
 import { chars } from "../../actors/graphics";
 import { SpellShape } from "../enums";
 import { circle, line, toPos, toPosId } from "../../lib/grid";
-import { isPosBlocked } from "../../lib/utils";
+import { isInFOV, isPosBlocked } from "../../lib/utils";
 import { tail } from "lodash";
 
 export const renderCursor = ({ views, queries }: RendererContext) => {
@@ -73,7 +73,11 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
           }
 
           if (spell.shape.name === SpellShape.Point) {
-            aoe = [toPosId(pos1)];
+            if (isInFOV(toPosId(pos1))) {
+              aoe = [toPosId(pos1)];
+            } else {
+              aoe = [];
+            }
           }
 
           // TODO:
