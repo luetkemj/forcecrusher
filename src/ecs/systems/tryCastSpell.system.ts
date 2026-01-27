@@ -13,8 +13,8 @@ export const createTryCastSpellSystem = ({ world, registry }: IGameWorld) => {
     for (const entity of tryCastSpellQuery) {
       const aoe = getState().spellAoe;
 
-      const targetEids = compact(aoe.flatMap((posId) => getEAP(posId))).flatMap(
-        (s) => [...s],
+      const targetEids = aoe.flatMap((posId) =>
+        Array.from(getEAP(posId) || []),
       );
 
       const targets = compact([...targetEids].map((eId) => registry.get(eId)));
