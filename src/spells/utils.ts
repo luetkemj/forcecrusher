@@ -25,3 +25,23 @@ export const createFluid = (
     addLog(`${caster.name} fails to cast ${name}`);
   }
 };
+
+export const setFire = (
+  { caster, targets, world }: SpellContext,
+  name: SpellName,
+) => {
+  let success = false;
+
+  for (const target of targets) {
+    if (target.flammable && !target.onFire) {
+      world.addComponent(target, "onFire", { intensity: 1, age: 0 });
+      success = true;
+    }
+  }
+
+  if (success) {
+    addLog(`${caster.name} casts ${name}`);
+  } else {
+    addLog(`${caster.name} fails to cast ${name}`);
+  }
+};
