@@ -11,7 +11,7 @@ import { castFireWall } from "./spellbook/fireWall.ts";
 export interface SpellContext {
   caster: Entity;
   targets: Entity[];
-  world: World;
+  world: World<Entity>;
 }
 
 export const castSpell = {

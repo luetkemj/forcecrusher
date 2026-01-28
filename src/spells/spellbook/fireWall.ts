@@ -18,5 +18,5 @@ export const fireWall: Spell = {
 };
 
 export const castFireWall = (ctx: SpellContext) => {
-  setFire(ctx, SpellName.Ignite);
+  setFire(ctx, SpellName.FireWall);
 };
