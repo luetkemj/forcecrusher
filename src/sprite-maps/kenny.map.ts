@@ -15,6 +15,8 @@ export const kennyGFXMap = {
   spellTypeDesiccate: 616,
   spellTypeFire: 504,
   spellTypeFluid: 569,
+  spellTypeKill: 621,
+  spellTypeKnock: 574,
   golem: 321,
   grass: 4,
   mediumGrass: 0,

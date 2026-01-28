@@ -8,15 +8,19 @@ import {
   Material,
   Fluids,
 } from "../ecs/enums";
+import { colors, chars } from "./graphics";
+// spells
 import { createBlood } from "../spells/spellbook/createBlood";
 import { createLava } from "../spells/spellbook/createLava";
 import { createOil } from "../spells/spellbook/createOil";
 import { createWater } from "../spells/spellbook/createWater";
+import { desiccate } from "../spells/spellbook/desiccate";
+import { fireWall } from "../spells/spellbook/fireWall";
 import { ignite } from "../spells/spellbook/ignite";
 import { inferno } from "../spells/spellbook/inferno";
-import { fireWall } from "../spells/spellbook/fireWall";
-import { colors, chars } from "./graphics";
-import { desiccate } from "../spells/spellbook/desiccate";
+import { knock } from "../spells/spellbook/knock";
+import { kill } from "../spells/spellbook/kill";
+import { massKill } from "../spells/spellbook/massKill";
 
 const fluidContainerComponent = {
   corked: false,
@@ -181,6 +185,9 @@ export const playerPrefab: Entity = {
     fireWall,
     ignite,
     inferno,
+    kill,
+    knock,
+    massKill,
   ],
 };
 

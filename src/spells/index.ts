@@ -8,6 +8,9 @@ import { castDesiccate } from "./spellbook/desiccate.ts";
 import { castIgnite } from "./spellbook/ignite.ts";
 import { castInferno } from "./spellbook/inferno.ts";
 import { castFireWall } from "./spellbook/fireWall.ts";
+import { castKill } from "./spellbook/kill.ts";
+import { castKnock } from "./spellbook/knock.ts";
+import { castMassKill } from "./spellbook/massKill.ts";
 
 export interface SpellContext {
   caster: Entity;
@@ -24,4 +27,7 @@ export const castSpell = {
   fireWall: (ctx: SpellContext) => castFireWall(ctx),
   ignite: (ctx: SpellContext) => castIgnite(ctx),
   inferno: (ctx: SpellContext) => castInferno(ctx),
+  kill: (ctx: SpellContext) => castKill(ctx),
+  knock: (ctx: SpellContext) => castKnock(ctx),
+  massKill: (ctx: SpellContext) => castMassKill(ctx),
 };

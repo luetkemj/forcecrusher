@@ -1,5 +1,5 @@
 import { SpellContext } from "..";
-import { colors } from "../../actors/graphics";
+import { chars, colors } from "../../actors/graphics";
 import { Spell } from "../../ecs/engine";
 import { Fluids, SpellName, SpellShape } from "../../ecs/enums";
 
@@ -9,7 +9,7 @@ export const desiccate: Spell = {
   description: "Evaporate all fluid within range",
   shape: { name: SpellShape.Line },
   appearance: {
-    char: "spellTypeDesiccate",
+    char: chars.spellTypeDesiccate,
     tint: colors.bone,
     tileSet: "kenny",
   },
