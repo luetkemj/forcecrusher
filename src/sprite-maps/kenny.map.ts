@@ -12,6 +12,8 @@ export const kennyGFXMap = {
   doorOpen: 550,
   fire: 504,
   floor: 1,
+  spellTypeDesiccate: 616,
+  spellTypeFire: 504,
   spellTypeFluid: 569,
   golem: 321,
   grass: 4,

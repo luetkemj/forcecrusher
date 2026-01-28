@@ -16,6 +16,7 @@ import { ignite } from "../spells/spellbook/ignite";
 import { inferno } from "../spells/spellbook/inferno";
 import { fireWall } from "../spells/spellbook/fireWall";
 import { colors, chars } from "./graphics";
+import { desiccate } from "../spells/spellbook/desiccate";
 
 const fluidContainerComponent = {
   corked: false,
@@ -176,6 +177,7 @@ export const playerPrefab: Entity = {
     createLava,
     createOil,
     createWater,
+    desiccate,
     fireWall,
     ignite,
     inferno,

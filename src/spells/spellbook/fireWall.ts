@@ -10,7 +10,7 @@ export const fireWall: Spell = {
   description: "Ignites everything in target line",
   shape: { name: SpellShape.Line },
   appearance: {
-    char: "fire",
+    char: "spellTypeFire",
     tint: colors.fire,
     tileSet: "kenny",
   },

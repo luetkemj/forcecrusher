@@ -10,7 +10,7 @@ export const inferno: Spell = {
   description: "Set everything on fire in target circle",
   shape: { name: SpellShape.Circle, radius: 3.5 },
   appearance: {
-    char: "fire",
+    char: "spellTypeFire",
     tint: colors.fire,
     tileSet: "kenny",
   },

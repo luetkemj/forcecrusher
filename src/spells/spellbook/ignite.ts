@@ -10,7 +10,7 @@ export const ignite: Spell = {
   description: "Set target on fire",
   shape: { name: SpellShape.Point },
   appearance: {
-    char: "fire",
+    char: "spellTypeFire",
     tint: colors.fire,
     tileSet: "kenny",
   },
