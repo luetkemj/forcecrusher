@@ -25,3 +25,26 @@ export const createFluid = (
     addLog(`${caster.name} fails to cast ${name}`);
   }
 };
+
+export const setFire = (
+  { caster, targets, world }: SpellContext,
+  name: SpellName,
+) => {
+  let success = false;
+
+  for (const target of targets) {
+    // this ignites anything flammable even if it contains no fuel.
+    // this is why floors can ignite for a brief moment and change color.
+    // consider checking for fuel if we want to only light things with fuel to burn.
+    if (target.flammable && !target.onFire) {
+      world.addComponent(target, "onFire", { intensity: 1, age: 0 });
+      success = true;
+    }
+  }
+
+  if (success) {
+    addLog(`${caster.name} casts ${name}`);
+  } else {
+    addLog(`${caster.name} fails to cast ${name}`);
+  }
+};

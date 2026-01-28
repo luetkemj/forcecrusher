@@ -24,6 +24,7 @@ export const createTryCastSpellSystem = ({ world, registry }: IGameWorld) => {
       const spellContext = {
         caster: entity,
         targets,
+        world,
       };
 
       // castSpell should be selected by user from a UI
