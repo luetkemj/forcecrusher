@@ -1,5 +1,5 @@
 import { SpellContext } from "..";
-import { colors } from "../../actors/graphics";
+import { chars, colors } from "../../actors/graphics";
 import { Spell } from "../../ecs/engine";
 import { SpellName, SpellShape } from "../../ecs/enums";
 import { setFire } from "../utils";
@@ -10,7 +10,7 @@ export const ignite: Spell = {
   description: "Set target on fire",
   shape: { name: SpellShape.Point },
   appearance: {
-    char: "fire",
+    char: chars.spellTypeFire,
     tint: colors.fire,
     tileSet: "kenny",
   },

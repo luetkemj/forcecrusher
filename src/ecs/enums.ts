@@ -98,9 +98,13 @@ export enum SpellName {
   CreateLava = "createLava",
   CreateOil = "createOil",
   CreateWater = "createWater",
+  Desiccate = "desiccate",
   FireWall = "fireWall",
   Ignite = "ignite",
   Inferno = "inferno",
+  Kill = "kill",
+  Knock = "knock",
+  MassKill = "massKill",
 }
 
 export enum SpellShape {
