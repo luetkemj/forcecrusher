@@ -7,7 +7,7 @@ import { addLog } from "../../lib/utils";
 export const knock: Spell = {
   name: SpellName.Knock,
   displayName: "Knock",
-  description: "Create noise emenating from target",
+  description: "Create noise emanating from target",
   shape: { name: SpellShape.Point },
   appearance: {
     char: chars.spellTypeKnock,
@@ -24,6 +24,7 @@ export const castKnock = (ctx: SpellContext) => {
 
   for (const target of targets) {
     world.addComponent(target, "sound", { strength: 100 });
+    success = true;
   }
 
   if (success) {

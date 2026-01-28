@@ -1,7 +1,7 @@
 import { SpellContext } from "..";
 import { chars, colors } from "../../actors/graphics";
 import { Spell } from "../../ecs/engine";
-import { Fluids, SpellName, SpellShape } from "../../ecs/enums";
+import { SpellName, SpellShape } from "../../ecs/enums";
 
 export const desiccate: Spell = {
   name: SpellName.Desiccate,
@@ -13,9 +13,7 @@ export const desiccate: Spell = {
     tint: colors.bone,
     tileSet: "kenny",
   },
-  payload: {
-    fluidType: Fluids.Water,
-  },
+  payload: {},
 };
 
 export const castDesiccate = (ctx: SpellContext) => {
