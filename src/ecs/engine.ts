@@ -273,6 +273,7 @@ export type Entity = {
   };
   pathThrough?: true;
   pickUp?: true;
+  readable?: true;
   name: string;
   excludeFromSim?: true;
   pc?: true;

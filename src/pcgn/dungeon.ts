@@ -17,6 +17,7 @@ import {
   spawnLavaGolem,
   spawnLivingSponge,
 } from "./monsters";
+import { spawnSpellbook } from "./items";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
@@ -288,7 +289,7 @@ export const generateDungeon = () => {
       if (percentile >= 90) {
         spawn("rock", { position: room.center });
       } else {
-        spawn("bottleEmpty", { position: room.center });
+        spawnSpellbook(room.center);
       }
     }
     if (index === 1) {

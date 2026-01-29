@@ -29,7 +29,7 @@ export const kennyGFXMap = {
   scrollOpen: 767,
   shortsword: 327,
   skeleton: 322,
-  spellBook: 389,
+  spellbook: 289,
   sponge: 60,
   stairsDown: 296,
   stairsUp: 295,

@@ -22,6 +22,7 @@ export enum chars {
   "rock" = "rock",
   "shortsword" = "shortsword",
   "skeleton" = "skeleton",
+  "spellbook" = "spellbook",
   "spellTypeDesiccate" = "spellTypeDesiccate",
   "spellTypeFluid" = "spellTypeFluid",
   "spellTypeFire" = "spellTypeFire",

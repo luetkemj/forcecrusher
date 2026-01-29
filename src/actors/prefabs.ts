@@ -7,6 +7,7 @@ import {
   EntityKind,
   Material,
   Fluids,
+  SpellName,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 // spells
@@ -418,6 +419,25 @@ export const skeletonPrefab: Entity = {
   },
   mass: 6,
   material: Material.Bone,
+};
+
+// spellBooks
+export const spellBookPrefab: Entity = {
+  ...base,
+  ...renderable,
+  appearance: {
+    char: chars.spellbook,
+    tint: colors.paper,
+    tileSet: "kenny",
+  },
+  readable: { message: "" },
+  legendable: true,
+  name: "Spellbook",
+  description: "A tome filled with glyphs a rituals. Read it to learn a spell.",
+  layer200: true,
+  pickUp: true,
+  mass: 1.5,
+  material: Material.Paper,
 };
 
 // NOTE: Potions
