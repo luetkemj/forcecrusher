@@ -11,7 +11,8 @@ export const createTryReadSystem = ({ world, registry }: IGameWorld) => {
       const readerEntity = registry.get(actor.tryRead.readerId);
       if (!readerEntity) {
         logFrozenEntity(actor);
-        return console.log(`Cannot read ${actor.tryRead.readerId}`);
+        console.log(`Cannot read ${actor.tryRead.readerId}`);
+        continue;
       }
 
       // if spellbook
