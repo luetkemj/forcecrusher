@@ -13,6 +13,7 @@ import {
   shortswordPrefab,
   clubPrefab,
   daggerPrefab,
+  spellBookPrefab,
   stairsDownPrefab,
   stairsUpPrefab,
   wallPrefab,
@@ -40,6 +41,7 @@ export const prefabs = {
 
   // NOTE: Items
   rock: rockPrefab,
+  spellbook: spellBookPrefab,
 
   // NOTE: Weapons
   shortsword: shortswordPrefab,

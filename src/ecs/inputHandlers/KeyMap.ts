@@ -27,6 +27,7 @@ export const Keys = {
   WIELD: "w",
   WEAR: "W",
   REMOVE: "r",
+  READ: "R",
   FILL: "f",
 
   STAIRS_DOWN: ">",
