@@ -301,7 +301,7 @@ export type Entity = {
   tryMove?: Pos;
   tryOpen?: { id: EntityId };
   tryPickUp?: { pickerId: EntityId };
-  tryRead?: { id: EntityId };
+  tryRead?: { readerId: EntityId };
   tryThrow?: { throwerId: EntityId };
   version: number;
   vision?: { range: number; visible: Array<EntityId> };
