@@ -26,7 +26,7 @@ export const kennyGFXMap = {
   potion: 580,
   rat: 422,
   rock: 565,
-  scrollOpen: 767,
+  // scrollOpen: 767, // for later use
   shortsword: 327,
   skeleton: 322,
   spellbook: 289,

@@ -26,7 +26,7 @@ export const createTryReadSystem = ({ world, registry }: IGameWorld) => {
             addLog(`${readerEntity.name} already knows ${spellName}`);
             // remove tryRead from book
             world.removeComponent(actor, "tryRead");
-            // If read doesn't know the spell
+            // If reader doesn't know the spell
           } else {
             // learn spell
             readerEntity.knownSpells.push(spellLibrary[spellName]);
@@ -38,7 +38,17 @@ export const createTryReadSystem = ({ world, registry }: IGameWorld) => {
             // remove book from gameWorld
             world.remove(actor);
           }
+        } else {
+          // reader cannot learn spells; finish the read attempt
+          addLog(`${readerEntity.name} cannot make sense of ${actor.name}.`);
+          world.removeComponent(actor, "tryRead");
         }
+      } else {
+        // readable item has no spell; treat as a simple reading action
+        addLog(
+          `${readerEntity.name} reads ${actor.name}: ${actor.readable?.message}.`,
+        );
+        world.removeComponent(actor, "tryRead");
       }
     }
   };

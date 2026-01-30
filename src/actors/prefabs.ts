@@ -408,7 +408,8 @@ export const spellBookPrefab: Entity = {
   readable: { message: "" },
   legendable: true,
   name: "Spellbook",
-  description: "A tome filled with glyphs a rituals. Read it to learn a spell.",
+  description:
+    "A tome filled with glyphs and rituals. Read it to learn a spell.",
   layer200: true,
   pickUp: true,
   mass: 1.5,

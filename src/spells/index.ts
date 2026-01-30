@@ -1,5 +1,5 @@
 import { World } from "miniplex";
-import { Entity } from "../ecs/engine";
+import { Entity, Spell } from "../ecs/engine";
 import { castCreateBlood, createBlood } from "./spellbook/createBlood.ts";
 import { castCreateLava, createLava } from "./spellbook/createLava.ts";
 import { castCreateOil, createOil } from "./spellbook/createOil.ts";
@@ -11,6 +11,7 @@ import { castFireWall, fireWall } from "./spellbook/fireWall.ts";
 import { castKill, kill } from "./spellbook/kill.ts";
 import { castKnock, knock } from "./spellbook/knock.ts";
 import { castMassKill, massKill } from "./spellbook/massKill.ts";
+import { SpellName } from "../ecs/enums.ts";
 
 export interface SpellContext {
   caster: Entity;
@@ -44,4 +45,4 @@ export const spellLibrary = {
   kill,
   knock,
   massKill,
-};
+} as Record<SpellName, Spell>;
