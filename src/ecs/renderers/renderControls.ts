@@ -32,7 +32,7 @@ export const renderControls = ({ views, queries }: RendererContext) => {
       }
 
       if (getState().gameState === GameState.INVENTORY) {
-        controls = `(${em("i/escape")})Return to Game (${em("arrows/hjkl")})Select Item (${em("c")})Consume (${em("d")})Drop (${em("t")})Throw (${em("W")})Wear (${em("w")})Wield (${em("r")})Remove`;
+        controls = `(${em("i/escape")})Return to Game (${em("arrows/hjkl")})Select Item (${em("c")})Consume (${em("d")})Drop (${em("t")})Throw (${em("R")})Read (${em("W")})Wear (${em("w")})Wield (${em("r")})Remove`;
       }
 
       if (getState().gameState === GameState.LOG_HISTORY) {

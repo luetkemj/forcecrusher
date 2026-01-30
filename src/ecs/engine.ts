@@ -273,7 +273,10 @@ export type Entity = {
   };
   pathThrough?: true;
   pickUp?: true;
-  readable?: true;
+  readable?: {
+    message: string;
+    spellName?: SpellName;
+  };
   name: string;
   excludeFromSim?: true;
   pc?: true;
@@ -298,6 +301,7 @@ export type Entity = {
   tryMove?: Pos;
   tryOpen?: { id: EntityId };
   tryPickUp?: { pickerId: EntityId };
+  tryRead?: { id: EntityId };
   tryThrow?: { throwerId: EntityId };
   version: number;
   vision?: { range: number; visible: Array<EntityId> };

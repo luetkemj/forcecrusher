@@ -26,8 +26,9 @@ import { createRenderSystem } from "../systems/render.system";
 import { createSimulationSystem } from "../systems/simulation.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createThrowSystem } from "../systems/throw.system";
-import { createTryFillSystem } from "../systems/tryFill.system";
 import { createTryCastSpellSystem } from "../systems/tryCastSpell.system";
+import { createTryFillSystem } from "../systems/tryFill.system";
+import { createTryReadSystem } from "../systems/tryRead.system";
 import { createUserInputSystem } from "../systems/userInput.system";
 import { gameWorld } from "../engine";
 import { GameState } from "../gameState";
@@ -62,8 +63,9 @@ const renderSystem = createRenderSystem(gameWorld);
 const simulationSystem = createSimulationSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const throwSystem = createThrowSystem(gameWorld);
-const tryFillSystem = createTryFillSystem(gameWorld);
 const tryCastSpellSystem = createTryCastSpellSystem(gameWorld);
+const tryFillSystem = createTryFillSystem(gameWorld);
+const tryReadSystem = createTryReadSystem(gameWorld);
 const userInputSystem = createUserInputSystem(gameWorld);
 
 export const systems = {
@@ -97,6 +99,7 @@ export const systems = {
   throw: throwSystem,
   tryCastSpell: tryCastSpellSystem,
   tryFill: tryFillSystem,
+  tryRead: tryReadSystem,
   userInput: userInputSystem,
 };
 
@@ -180,6 +183,7 @@ export const playerTurnPipeline: SystemPipeline = {
 export const worldTurnPipeline: SystemPipeline = {
   preInput: [
     systems.simulation,
+    systems.tryCastSpell,
     systems.fluid,
     systems.fire,
     systems.desiccate,
@@ -192,7 +196,6 @@ export const worldTurnPipeline: SystemPipeline = {
   main: [
     systems.pickUp,
     systems.tryFill,
-    systems.tryCastSpell,
     systems.movement,
     systems.open,
     systems.attack,
@@ -242,7 +245,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
   [GameState.INVENTORY]: {
     preInput: [],
     input: [systems.userInput],
-    main: [systems.activeEffects, systems.drop],
+    main: [systems.activeEffects, systems.drop, systems.tryRead],
     postMain: [systems.fov],
     render: [systems.render],
   },

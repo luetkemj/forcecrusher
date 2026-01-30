@@ -7,21 +7,8 @@ import {
   EntityKind,
   Material,
   Fluids,
-  SpellName,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
-// spells
-import { createBlood } from "../spells/spellbook/createBlood";
-import { createLava } from "../spells/spellbook/createLava";
-import { createOil } from "../spells/spellbook/createOil";
-import { createWater } from "../spells/spellbook/createWater";
-import { desiccate } from "../spells/spellbook/desiccate";
-import { fireWall } from "../spells/spellbook/fireWall";
-import { ignite } from "../spells/spellbook/ignite";
-import { inferno } from "../spells/spellbook/inferno";
-import { knock } from "../spells/spellbook/knock";
-import { kill } from "../spells/spellbook/kill";
-import { massKill } from "../spells/spellbook/massKill";
 
 const fluidContainerComponent = {
   corked: false,
@@ -177,19 +164,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [
-    createBlood,
-    createLava,
-    createOil,
-    createWater,
-    desiccate,
-    fireWall,
-    ignite,
-    inferno,
-    kill,
-    knock,
-    massKill,
-  ],
+  knownSpells: [],
 };
 
 // NOTE: Actors / Creatures

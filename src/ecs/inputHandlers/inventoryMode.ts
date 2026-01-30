@@ -137,6 +137,44 @@ export const handleInventoryModeInput = ({
     return true;
   }
 
+  // Read
+  if (key === Keys.READ) {
+    do {
+      // check if player has inventory
+      if (!activeItemEId) {
+        console.log("No Active Item");
+        break;
+      }
+
+      const tryReadEntity = registry.get(activeItemEId);
+      if (!tryReadEntity) {
+        console.log(`id: ${activeItemEId} does not exist.`);
+        logFrozenEntity(player);
+        break;
+      }
+
+      const playerId = player.id;
+      if (isUndefined(playerId)) {
+        break;
+      }
+
+      world.addComponent(tryReadEntity, "tryRead", {
+        readerId: playerId,
+      });
+      break;
+    } while (true);
+
+    // TODO:
+    // https://github.com/luetkemj/forcecrusher/issues/105
+    // this shouldn't happen here. Needs to be triggered only after you successfully read/use/drop item.
+    // should be a system or something
+    if (currentIndex === inventoryLength - 1) {
+      setState((state: State) => (state.inventoryActiveIndex -= 1));
+    }
+
+    return true;
+  }
+
   // NOTE: Wield
   if (key === Keys.WIELD) {
     if (activeItemEntity) {
