@@ -1,5 +1,21 @@
 # Dev Log
 
+## 013026
+
+**Skulltooth 2: Forcecrusher** ([github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher))
+
+Recently added the infrastructure for spells and have been working to clean that up and expand the list. There are spells to create fluid, water, lava, oil, and blood. There's a collection of fire spells of various shapes, ignite lights a point on fire, fire wall lights everything along a line, and inferno lights a 6 cell diameter circle. Kill and Mass Kill end all life (including your own) at target or in the area of effect.
+
+Created a UI for casting spells of various shapes. Arrow keys to select a target but there are indicators that highlight the area of effect. Available shapes are circle, line, and point.
+
+Just finished spellbooks. Spellbooks can be found throughout the dungeon and will add to your known spells after reading. No mana or magic points yet so once you know a spell you can cast it however much you want. Obviously that's something I'd like to change. Scrolls are in the backlog for single use spells. And I'd like to include a system for spells of a duration. Currently everything is instant or permanent. There's a desiccate spell that remove water from a target location but after casting it's invisible and just acts as a sort of liquid black hole. Need to be able to remove that component after some time and should probably add UI effects for that sort of thing.
+
+Other spells in the backlog, telekenesis, paralyze, blind, deafening, and noseblind (remove sense of smell).
+
+Last month I moved my backlog to a proper github project. Lots of fun building out an entire feature and marking tickets as complete. Feels like I'm actually working towards something instead of just writing code sort of aimless like.
+
+##
+
 **Skulltooth 2: Forcecrusher** ([github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher))
 
 The holidays and getting sick resulted in a slow week. Fixed a few bugs, removed some old dependencies, added some QOL scripts in CI. Got lost down a rabbit hole trying to redo dungeon gen that went nowhere.
