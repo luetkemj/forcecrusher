@@ -10,7 +10,7 @@ import { Disposition, EntityKind, Fluids } from "../ecs/enums";
 import { GameState, getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos, PosId, toPosId } from "./grid";
-import { pull, get, compact } from "lodash";
+import { pull, get, compact, random, times, sample } from "lodash";
 
 export const colorTag = (color: number) => {
   return `§#${color.toString(16).padStart(6, "0")}§`;
@@ -451,4 +451,21 @@ export function transferFluid(
 
     return true;
   }
+}
+
+export function generateAncientTongue() {
+  const chars =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYABCDEFGHIJKLMNOPQRSTUVWXYZ'`";
+  let string = "";
+
+  const generateString = () => {
+    times(random(3, 10), () => {
+      string += sample(chars);
+    });
+    string += " ";
+  };
+
+  times(random(1, 4), generateString);
+
+  return string.trim();
 }

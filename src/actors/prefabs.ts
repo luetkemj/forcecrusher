@@ -7,6 +7,7 @@ import {
   EntityKind,
   Material,
   Fluids,
+  ReadableType,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -405,7 +406,7 @@ export const spellBookPrefab: Entity = {
     tint: colors.paper,
     tileSet: "kenny",
   },
-  readable: { message: "" },
+  readable: { type: ReadableType.Spellbook, message: "" },
   legendable: true,
   name: "Spellbook",
   description:
@@ -429,6 +430,7 @@ export const healthPotionPrefab: Entity = {
   legendable: true,
   name: "Health Potion",
   description: "A syrupy red liquid in a small glass vile",
+  readable: { type: ReadableType.Text, message: "Drink me" },
   effects: [{ component: "health", delta: 10 }],
   layer200: true,
   pickUp: true,

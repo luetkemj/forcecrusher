@@ -287,7 +287,7 @@ export const generateDungeon = () => {
     const percentile = new DiceRoll("d100").total;
     if (index) {
       if (percentile >= 90) {
-        spawn("rock", { position: room.center });
+        spawn("healthPotion", { position: room.center });
       } else {
         spawnSpellbook(room.center);
       }
