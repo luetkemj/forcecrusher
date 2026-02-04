@@ -398,7 +398,7 @@ export const skeletonPrefab: Entity = {
 };
 
 // spellBooks
-export const spellBookPrefab: Entity = {
+export const spellbookPrefab: Entity = {
   ...base,
   ...renderable,
   appearance: {
@@ -411,6 +411,26 @@ export const spellBookPrefab: Entity = {
   name: "Spellbook",
   description:
     "A tome filled with glyphs and rituals. Read it to learn a spell.",
+  layer200: true,
+  pickUp: true,
+  mass: 1.5,
+  material: Material.Paper,
+};
+
+// spellscrolls
+export const spellscrollPrefab: Entity = {
+  ...base,
+  ...renderable,
+  appearance: {
+    char: chars.spellscroll,
+    tint: colors.paper,
+    tileSet: "kenny",
+  },
+  readable: { type: ReadableType.Scroll, message: "" },
+  legendable: true,
+  name: "Spellscroll",
+  description:
+    "Weather paper adorned with glowing runes. Read it to cast a spell.",
   layer200: true,
   pickUp: true,
   mass: 1.5,

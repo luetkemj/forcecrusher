@@ -17,7 +17,7 @@ import {
   spawnLavaGolem,
   spawnLivingSponge,
 } from "./monsters";
-import { spawnSpellbook } from "./items";
+import { spawnSpellbook, spawnSpellscroll } from "./items";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
@@ -289,7 +289,7 @@ export const generateDungeon = () => {
       if (percentile >= 90) {
         spawn("healthPotion", { position: room.center });
       } else {
-        spawnSpellbook(room.center);
+        spawnSpellscroll(room.center);
       }
     }
     if (index === 1) {
