@@ -17,7 +17,7 @@ import {
   spawnLavaGolem,
   spawnLivingSponge,
 } from "./monsters";
-import { spawnSpellbook } from "./items";
+import { spawnSpellscroll } from "./items";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
@@ -287,9 +287,9 @@ export const generateDungeon = () => {
     const percentile = new DiceRoll("d100").total;
     if (index) {
       if (percentile >= 90) {
-        spawn("rock", { position: room.center });
+        spawn("healthPotion", { position: room.center });
       } else {
-        spawnSpellbook(room.center);
+        spawnSpellscroll(room.center);
       }
     }
     if (index === 1) {

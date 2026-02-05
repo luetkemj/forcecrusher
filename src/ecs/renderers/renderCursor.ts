@@ -7,6 +7,7 @@ import { isInFOV, isPosBlocked, queryAtPosition } from "../../lib/utils";
 import { tail } from "lodash";
 import { viewConfigs } from "../../views/views";
 import createFOV from "../../lib/fov";
+import { spellLibrary } from "../../spells";
 
 export const renderCursor = ({ views, queries }: RendererContext) => {
   const view = views.targeting;
@@ -51,7 +52,10 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
           );
         }
 
-        const spell = player.knownSpells?.[getState().spellbookActiveIndex];
+        const { spellName } = getState();
+        if (!spellName) return;
+
+        const spell = spellLibrary[spellName];
 
         if (spell && spell.appearance) {
           cursorProps.char = spell.appearance.char;
@@ -73,12 +77,12 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
 
               for (const posId of fov) {
                 const blocker = isPosBlocked(posId);
-                
+
                 // Skip positions blocked by walls (blocking entities without AI)
                 if (blocker && !blocker.ai) {
                   continue;
                 }
-                
+
                 // Include all other positions (empty or with non-wall entities)
                 aoe.push(posId);
               }

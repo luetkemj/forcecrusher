@@ -20,3 +20,20 @@ export const spawnSpellbook = (position: Pos) => {
 
   return spellbook;
 };
+
+export const spawnSpellscroll = (position: Pos) => {
+  const spellscroll = spawn("spellscroll", { position });
+
+  const spellName = sample(Object.values(SpellName));
+
+  if (spellName && spellscroll.readable && spellscroll.appearance) {
+    const spell = spellLibrary[spellName];
+    if (spell && spell.appearance) {
+      spellscroll.readable.message = `You have read the scroll ${spell.displayName}!`;
+      spellscroll.readable.spellName = spellName;
+      spellscroll.appearance.tint = spell.appearance.tint;
+    }
+  }
+
+  return spellscroll;
+};

@@ -7,7 +7,9 @@ import {
   EntityKind,
   Material,
   Fluids,
+  ReadableType,
 } from "../ecs/enums";
+import { createBlood } from "../spells/spellbook/createBlood";
 import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
@@ -164,7 +166,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [],
+  knownSpells: [createBlood],
 };
 
 // NOTE: Actors / Creatures
@@ -397,7 +399,7 @@ export const skeletonPrefab: Entity = {
 };
 
 // spellBooks
-export const spellBookPrefab: Entity = {
+export const spellbookPrefab: Entity = {
   ...base,
   ...renderable,
   appearance: {
@@ -405,11 +407,31 @@ export const spellBookPrefab: Entity = {
     tint: colors.paper,
     tileSet: "kenny",
   },
-  readable: { message: "" },
+  readable: { type: ReadableType.Spellbook, message: "" },
   legendable: true,
   name: "Spellbook",
   description:
     "A tome filled with glyphs and rituals. Read it to learn a spell.",
+  layer200: true,
+  pickUp: true,
+  mass: 1.5,
+  material: Material.Paper,
+};
+
+// spellscrolls
+export const spellscrollPrefab: Entity = {
+  ...base,
+  ...renderable,
+  appearance: {
+    char: chars.spellscroll,
+    tint: colors.paper,
+    tileSet: "kenny",
+  },
+  readable: { type: ReadableType.Scroll, message: "" },
+  legendable: true,
+  name: "Spellscroll",
+  description:
+    "Weather paper adorned with glowing runes. Read it to cast a spell.",
   layer200: true,
   pickUp: true,
   mass: 1.5,
@@ -429,6 +451,7 @@ export const healthPotionPrefab: Entity = {
   legendable: true,
   name: "Health Potion",
   description: "A syrupy red liquid in a small glass vile",
+  readable: { type: ReadableType.Text, message: "Drink me" },
   effects: [{ component: "health", delta: 10 }],
   layer200: true,
   pickUp: true,

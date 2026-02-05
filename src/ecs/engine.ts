@@ -6,6 +6,7 @@ import {
   Fluids,
   Material,
   OpenState,
+  ReadableType,
   Sense,
   SpellName,
   SpellShape,
@@ -274,6 +275,7 @@ export type Entity = {
   pathThrough?: true;
   pickUp?: true;
   readable?: {
+    type: ReadableType;
     message: string;
     spellName?: SpellName;
   };

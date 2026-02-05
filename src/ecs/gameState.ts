@@ -2,6 +2,7 @@ import { PosId, type Pos } from "../lib/grid";
 import { MapView, UIPanelView } from "../lib/canvas";
 import { Entity, EntityId } from "./engine";
 import { VisibleFov } from "../lib/fov";
+import { SpellCastType, SpellName } from "./enums";
 
 export const enum Turn {
   PLAYER = "PLAYER",
@@ -85,6 +86,8 @@ export type State = {
   simulationTurnsLeft: number;
   spellAoe: PosId[];
   spellbookActiveIndex: number;
+  spellName: SpellName | null;
+  spellCastType: SpellCastType | null;
   turn: Turn;
   turnNumber: number;
   userInput: KeyboardEvent | null;
@@ -129,6 +132,8 @@ const state: State = {
   simulationTurnsLeft: 25,
   spellAoe: [],
   spellbookActiveIndex: 0,
+  spellName: null,
+  spellCastType: null,
   turn: Turn.PLAYER,
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,

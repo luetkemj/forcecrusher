@@ -13,7 +13,6 @@ import {
   shortswordPrefab,
   clubPrefab,
   daggerPrefab,
-  spellBookPrefab,
   stairsDownPrefab,
   stairsUpPrefab,
   wallPrefab,
@@ -21,6 +20,8 @@ import {
   grassPrefab,
   bottlePrefab,
   livingSpongePrefab,
+  spellbookPrefab,
+  spellscrollPrefab,
 } from "./prefabs";
 import { updatePosition } from "../lib/utils";
 import { Material } from "../ecs/enums";
@@ -41,7 +42,8 @@ export const prefabs = {
 
   // NOTE: Items
   rock: rockPrefab,
-  spellbook: spellBookPrefab,
+  spellbook: spellbookPrefab,
+  spellscroll: spellscrollPrefab,
 
   // NOTE: Weapons
   shortsword: shortswordPrefab,

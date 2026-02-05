@@ -114,3 +114,16 @@ export enum SpellShape {
   Point = "point",
   // Rectangle = "rectangle",
 }
+
+export enum ReadableType {
+  Spellbook = "spellbook",
+  Scroll = "scroll",
+  Text = "text",
+}
+
+export enum SpellCastType {
+  KnownSpell = "knownSpell",
+  Spellscroll = "spellscroll",
+  // Spellwand = "spellwand",
+  // Spellstaff = "spellstaff",
+}
