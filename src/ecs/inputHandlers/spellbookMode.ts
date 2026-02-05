@@ -2,7 +2,6 @@ import { InputContext } from "../systems/userInput.system";
 import { GameState, State, getState } from "../gameState";
 import { Keys } from "./KeyMap";
 import { SpellCastType } from "../enums";
-import { spellLibrary } from "../../spells";
 import { addLog } from "../../lib/utils";
 
 export const handleSpellbookModeInput = ({

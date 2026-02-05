@@ -17,7 +17,7 @@ import {
   spawnLavaGolem,
   spawnLivingSponge,
 } from "./monsters";
-import { spawnSpellbook, spawnSpellscroll } from "./items";
+import { spawnSpellscroll } from "./items";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
