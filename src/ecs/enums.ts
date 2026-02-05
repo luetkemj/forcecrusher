@@ -120,3 +120,10 @@ export enum ReadableType {
   Scroll = "scroll",
   Text = "text",
 }
+
+export enum SpellCastType {
+  KnownSpell = "knownSpell",
+  Spellscroll = "spellscroll",
+  // Spellwand = "spellwand",
+  // Spellstaff = "spellstaff",
+}

@@ -2,6 +2,8 @@ import { InputContext } from "../systems/userInput.system";
 import { GameState, State, Turn, getState } from "../gameState";
 import { addLog, outOfBounds } from "../../lib/utils";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
+import { spellLibrary } from "../../spells";
+import { SpellCastType } from "../enums";
 
 export const handleCastSpellModeInput = ({
   key,
@@ -32,14 +34,34 @@ export const handleCastSpellModeInput = ({
   }
 
   if (key === Keys.CONFIRM) {
-    const index = getState().spellbookActiveIndex;
-    const spell = player?.knownSpells?.[index];
-    if (spell && spell.name) {
-      world.addComponent(player, "tryCastSpell", {
-        spellName: spell.name,
-      });
-    } else {
-      addLog("No spell selected");
+    if (getState().spellCastType === SpellCastType.KnownSpell) {
+      const { spellName } = getState();
+
+      if (spellName) {
+        const spell = spellLibrary[spellName];
+
+        if (spell && spell.name) {
+          world.addComponent(player, "tryCastSpell", {
+            spellName: spell.name,
+          });
+        } else {
+          addLog("No spell selected");
+        }
+      }
+    } else if (getState().spellCastType === SpellCastType.Spellscroll) {
+      const { spellName } = getState();
+
+      if (spellName) {
+        const spell = spellLibrary[spellName];
+
+        if (spell && spell.name) {
+          world.addComponent(player, "tryCastSpell", {
+            spellName: spell.name,
+          });
+        } else {
+          addLog("No spell selected");
+        }
+      }
     }
 
     setState((state: State) => {

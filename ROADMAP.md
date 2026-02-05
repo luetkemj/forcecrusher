@@ -486,3 +486,21 @@ spell
 - range
 - shape (aoe)
 - mana
+
+read book
+
+- learn new spell
+
+read scroll
+
+- gameState.spellName = scroll.spellName
+- gameState.casting = SCROLL
+- target as usual getting info from gamestate
+
+cast known spell
+
+- gameState.spellName = selecedSpell.spellName
+- gameState.casting = SPELL
+- target as usuual getting infor from gamestate
+
+based on gameState.casting, escape returns to spell select or casts the scroll (there is no scroll undo)

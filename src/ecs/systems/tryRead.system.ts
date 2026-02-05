@@ -6,7 +6,8 @@ import {
 } from "../../lib/utils";
 import { spellLibrary } from "../../spells";
 import { IGameWorld } from "../engine";
-import { ReadableType } from "../enums";
+import { ReadableType, SpellCastType } from "../enums";
+import { GameState, setState, type State } from "../gameState";
 
 export const createTryReadSystem = ({ world, registry }: IGameWorld) => {
   const tryReadQuery = world.with("tryRead").without("excludeFromSim");
@@ -65,10 +66,25 @@ export const createTryReadSystem = ({ world, registry }: IGameWorld) => {
           world.removeComponent(actor, "tryRead");
         }
       } else if (actor.readable.type === ReadableType.Scroll) {
+        // enter target mode to cast the spell
+        const spellName = actor.readable.spellName || null;
+        if (actor.readable.spellName) {
+          setState((state: State) => {
+            state.spellCastType = SpellCastType.Spellscroll;
+            state.spellName = spellName;
+            state.gameState = GameState.CAST_SPELL;
+            if (readerEntity.position) state.cursor[1] = readerEntity.position;
+          });
+        }
+
         addLog(
-          `${readerEntity.name} reads ${actor.name}: "${actor.readable?.message}."`,
+          `The glyphs unravel in a burst of power, and the scroll is no more.`,
         );
-        world.removeComponent(actor, "tryRead");
+
+        if (readerEntity.container) {
+          remove(readerEntity.container.contents, (id) => actor.id === id);
+          world.remove(actor);
+        }
       } else if (actor.readable.type === ReadableType.Text) {
         addLog(
           `${readerEntity.name} reads ${actor.name}: "${actor.readable?.message}."`,

@@ -1,6 +1,9 @@
 import { InputContext } from "../systems/userInput.system";
-import { GameState, State } from "../gameState";
+import { GameState, State, getState } from "../gameState";
 import { Keys } from "./KeyMap";
+import { SpellCastType } from "../enums";
+import { spellLibrary } from "../../spells";
+import { addLog } from "../../lib/utils";
 
 export const handleSpellbookModeInput = ({
   key,
@@ -41,7 +44,26 @@ export const handleSpellbookModeInput = ({
   }
 
   if (Keys.CONFIRM === key) {
-    setState((state: State) => (state.gameState = GameState.CAST_SPELL));
+    const { knownSpells } = player;
+
+    if (knownSpells?.length) {
+      const spell = knownSpells[getState().spellbookActiveIndex];
+      const spellName = spell.name;
+
+      setState((state: State) => {
+        state.gameState = GameState.CAST_SPELL;
+        state.spellCastType = SpellCastType.KnownSpell;
+        state.spellName = spellName;
+      });
+    } else {
+      setState((state: State) => {
+        state.gameState = GameState.GAME;
+        state.spellCastType = null;
+        state.spellName = null;
+      });
+
+      addLog("You do not know any spells.");
+    }
     return true;
   }
 };
