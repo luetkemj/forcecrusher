@@ -59,9 +59,7 @@ export const createMovementSystem = ({ world, registry }: IGameWorld) => {
               entity.mutable &&
               entity.mutable.mutations.find((x) => x.name === "trampled")
             ) {
-              if (!entity.dead) {
-                world.addComponent(entity, "mutateTo", { name: "trampled" });
-              }
+              world.addComponent(entity, "mutateTo", { name: "trampled" });
             }
           }
         }

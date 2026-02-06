@@ -867,6 +867,7 @@ export const grassPrefab: Entity = {
         name: "young",
         next: "medium",
         chanceToMutate: 0.0025,
+        forbid: ["trampled"],
         addComponents: {
           appearance: {
             char: chars.grass,
@@ -881,6 +882,7 @@ export const grassPrefab: Entity = {
         name: "medium",
         next: "mature",
         chanceToMutate: 0.0025,
+        forbid: ["trampled"],
         addComponents: {
           appearance: {
             char: chars.mediumGrass,
@@ -911,7 +913,7 @@ export const grassPrefab: Entity = {
         chanceToMutate: 0.005,
         addComponents: {
           appearance: {
-            char: chars.grass,
+            char: chars.mediumGrass,
             tint: colors.plant,
             tileSet: TileSet.Kenny,
           },

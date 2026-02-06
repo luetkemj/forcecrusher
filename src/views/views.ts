@@ -104,7 +104,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x000000, 0x000000, 0x000000, 0x000000],
     alphas: [0, 0, 0, 0],
     visible: true,
-    name: TileSet.Kenny,
+    name: "mapFluid",
   },
 
   map: {
@@ -314,7 +314,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0x000000, 0xdddddd],
     alphas: [1, 1],
     visible: false,
-    name: TileSet.Text,
+    name: "makerModeRight",
   },
 
   makerModeLeft: {
