@@ -1,6 +1,7 @@
 import { World } from "miniplex";
 import {
   DamageType,
+  DispelName,
   EffectType,
   EntityKind,
   Fluids,
@@ -287,6 +288,7 @@ export type Entity = {
   resistances?: Array<DamageType>;
   revealed?: true;
   sound?: { strength: number };
+  spellbound?: { dispel: DispelName; turnNumber: number };
   stairsDown?: true;
   stairsUp?: true;
   strength?: number;

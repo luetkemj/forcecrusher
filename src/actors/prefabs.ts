@@ -9,7 +9,7 @@ import {
   Fluids,
   ReadableType,
 } from "../ecs/enums";
-import { createBlood } from "../spells/spellbook/createBlood";
+import { desiccate } from "../spells/spellbook/desiccate";
 import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
@@ -166,7 +166,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [createBlood],
+  knownSpells: [desiccate],
 };
 
 // NOTE: Actors / Creatures

@@ -4,7 +4,11 @@ import { castCreateBlood, createBlood } from "./spellbook/createBlood.ts";
 import { castCreateLava, createLava } from "./spellbook/createLava.ts";
 import { castCreateOil, createOil } from "./spellbook/createOil.ts";
 import { castCreateWater, createWater } from "./spellbook/createWater.ts";
-import { castDesiccate, desiccate } from "./spellbook/desiccate.ts";
+import {
+  castDesiccate,
+  desiccate,
+  uncastDesiccate,
+} from "./spellbook/desiccate.ts";
 import { castIgnite, ignite } from "./spellbook/ignite.ts";
 import { castInferno, inferno } from "./spellbook/inferno.ts";
 import { castFireWall, fireWall } from "./spellbook/fireWall.ts";
@@ -46,3 +50,10 @@ export const spellLibrary = {
   knock,
   massKill,
 } as Record<SpellName, Spell>;
+
+
+type DispelFunction = (world: World<Entity>, entity: Entity) => void;
+
+export const dispelLibrary: Record<string, DispelFunction> = {
+  uncastDesiccate,
+};
