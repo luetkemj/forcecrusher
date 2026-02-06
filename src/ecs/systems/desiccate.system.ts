@@ -1,6 +1,6 @@
 import { IGameWorld } from "../engine";
 import { circle } from "../../lib/grid";
-import { getEAP, logFrozenEntity, transferFluid } from "../../lib/utils";
+import { getEAP, transferFluid } from "../../lib/utils";
 
 export const createDesiccateSystem = ({ world, registry }: IGameWorld) => {
   const desiccateQuery = world

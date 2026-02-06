@@ -9,8 +9,7 @@ import {
   Fluids,
   ReadableType,
 } from "../ecs/enums";
-import { createBlood } from "../spells/spellbook/createBlood";
-import { castDesiccate, desiccate } from "../spells/spellbook/desiccate";
+import { desiccate } from "../spells/spellbook/desiccate";
 import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
