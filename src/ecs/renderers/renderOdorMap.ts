@@ -1,4 +1,5 @@
 import { toPos } from "../../lib/grid";
+import { TileSet } from "../enums";
 import { getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
@@ -26,7 +27,7 @@ export const renderOdorMap = ({ views }: RendererContext) => {
               char: "",
               tint: 0xffff00,
               alpha: clamped,
-              tileSet: "tile",
+              tileSet: TileSet.Tile,
               ...toPos(posId),
             },
           });

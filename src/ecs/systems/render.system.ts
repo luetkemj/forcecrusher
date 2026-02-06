@@ -21,6 +21,7 @@ import { renderSoundMap } from "../renderers/renderSoundMap";
 import { renderSpellBook } from "../renderers/renderSpellBook";
 import { renderSaving } from "../renderers/renderSaving";
 import { renderLoading } from "../renderers/renderLoading";
+import { TileSet } from "../enums";
 
 export interface RendererContext {
   world: World<Entity>;
@@ -178,7 +179,7 @@ export const renderEntity = (
   const { x, y } = position;
 
   view?.updateCell({
-    0: { char, tint: 0x000000, alpha: 0, tileSet: "tile", x, y },
+    0: { char, tint: 0x000000, alpha: 0, tileSet: TileSet.Tile, x, y },
     1: { char, tint: tintOverride || tint, alpha, tileSet, x, y },
   });
 };

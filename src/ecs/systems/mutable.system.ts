@@ -6,16 +6,14 @@ import { cloneDeep } from "lodash";
 export const createMutableSystem = ({ world }: IGameWorld) => {
   const mutableQuery = world
     .with("mutable")
-    .without("mutateTo", "excludeFromSim");
+    .without("dead", "mutateTo", "excludeFromSim");
   const mutateToQuery = world
     .with("mutateTo", "mutable")
     .without("excludeFromSim");
 
   return function mutableSystem() {
     for (const entity of mutableQuery) {
-      const currentMutation = entity.mutable.mutations.find(
-        (x) => x.name === entity.mutable.current,
-      );
+      const currentMutation = getCurrentMutation(entity);
 
       if (currentMutation && currentMutation.next) {
         if (Math.random() < currentMutation.chanceToMutate) {
@@ -24,6 +22,9 @@ export const createMutableSystem = ({ world }: IGameWorld) => {
           );
 
           if (nextMutation) {
+            // bail if next mutation is forbidden
+            if (forbidNextMutation(currentMutation, nextMutation)) continue;
+
             evolveEntity(world, entity, nextMutation);
             entity.mutable.current = nextMutation.name;
           }
@@ -32,12 +33,17 @@ export const createMutableSystem = ({ world }: IGameWorld) => {
     }
 
     for (const entity of mutateToQuery) {
-      const mutation = entity.mutable.mutations.find(
+      const currentMutation = getCurrentMutation(entity);
+
+      const nextMutation = entity.mutable.mutations.find(
         (x) => x.name === entity.mutateTo.name,
       );
-      if (mutation) {
-        evolveEntity(world, entity, mutation);
-        entity.mutable.current = mutation.name;
+
+      if (currentMutation && nextMutation) {
+        if (forbidNextMutation(currentMutation, nextMutation)) continue;
+
+        evolveEntity(world, entity, nextMutation);
+        entity.mutable.current = nextMutation.name;
       }
       world.removeComponent(entity, "mutateTo");
     }
@@ -74,3 +80,23 @@ function evolveEntity(
     }
   }
 }
+
+const getCurrentMutation = (entity: Entity): Mutation | undefined => {
+  if (!entity.mutable) return;
+
+  const currentMutation = entity.mutable.mutations.find((x) => {
+    return x.name === entity.mutable?.current;
+  });
+
+  return currentMutation;
+};
+
+const forbidNextMutation = (current: Mutation, next: Mutation): boolean => {
+  // bail if next mutation is forbidden
+  if (current.forbid && next) {
+    if (current.forbid.includes(next.name)) {
+      return true;
+    }
+  }
+  return false;
+};

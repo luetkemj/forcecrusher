@@ -2,7 +2,7 @@ import { filter } from "lodash";
 import { Pos, isAtSamePosition } from "../../lib/grid";
 import { addLog, em, mixHexWeighted } from "../../lib/utils";
 import { IGameWorld, type Entity } from "../engine";
-import { OpenState } from "../enums";
+import { OpenState, TileSet } from "../enums";
 import { type State, getState, setState } from "../gameState";
 
 export const createInteractSystem = ({ world, registry }: IGameWorld) => {
@@ -78,7 +78,7 @@ export const createInteractSystem = ({ world, registry }: IGameWorld) => {
           let interactTarget = {
             ...target,
             name: "",
-            appearance: { tint: 0x000000, char: "", tileSet: "" },
+            appearance: { tint: 0x000000, char: "", tileSet: TileSet.Tile },
           };
 
           if (fluids.length === 1) {

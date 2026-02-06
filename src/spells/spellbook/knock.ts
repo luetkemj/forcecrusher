@@ -1,7 +1,7 @@
 import { SpellContext } from "..";
 import { chars, colors } from "../../actors/graphics";
 import { Spell } from "../../ecs/engine";
-import { SpellName, SpellShape } from "../../ecs/enums";
+import { SpellName, SpellShape, TileSet } from "../../ecs/enums";
 import { addLog } from "../../lib/utils";
 
 export const knock: Spell = {
@@ -12,7 +12,7 @@ export const knock: Spell = {
   appearance: {
     char: chars.spellTypeKnock,
     tint: colors.bone,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   payload: {},
 };

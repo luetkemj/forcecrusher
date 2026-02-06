@@ -1,4 +1,5 @@
 import { toPos } from "../../lib/grid";
+import { TileSet } from "../enums";
 import { getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
@@ -15,7 +16,7 @@ export const renderVisionMap = ({ views }: RendererContext) => {
               char: "",
               tint: 0x0ff0f0,
               alpha: 0.25,
-              tileSet: "tile",
+              tileSet: TileSet.Tile,
               ...toPos(posId),
             },
           });

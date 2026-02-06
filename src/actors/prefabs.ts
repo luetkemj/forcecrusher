@@ -8,8 +8,9 @@ import {
   Material,
   Fluids,
   ReadableType,
+  TileSet,
 } from "../ecs/enums";
-import { desiccate } from "../spells/spellbook/desiccate";
+import { massKill } from "../spells/spellbook/massKill";
 import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
@@ -61,7 +62,7 @@ const renderable: Entity = {
   appearance: {
     char: chars.default,
     tint: colors.default,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   position: { x: 0, y: 0 },
   name: "renderable",
@@ -100,7 +101,7 @@ const baseWeapon: Entity = {
   appearance: {
     char: chars.weapon,
     tint: colors.steel,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   legendable: true,
   layer200: true,
@@ -118,7 +119,7 @@ export const playerPrefab: Entity = {
   appearance: {
     char: chars.player,
     tint: colors.player,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   health: { max: 1000, current: 1000 },
   legendable: true,
@@ -166,7 +167,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [desiccate],
+  knownSpells: [massKill],
 };
 
 // NOTE: Actors / Creatures
@@ -179,7 +180,7 @@ export const ratPrefab: Entity = {
   appearance: {
     char: chars.rat,
     tint: colors.rat,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   legendable: true,
   name: "rat",
@@ -252,7 +253,7 @@ export const lavaGolemPrefab: Entity = {
   appearance: {
     char: chars.golem,
     tint: colors.lava,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   legendable: true,
   name: "lava golem",
@@ -307,7 +308,7 @@ export const livingSpongePrefab: Entity = {
   appearance: {
     char: chars.sponge,
     tint: colors.paper,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   legendable: true,
   name: "Living Sponge",
@@ -356,7 +357,7 @@ export const skeletonPrefab: Entity = {
   appearance: {
     char: chars.skeleton,
     tint: colors.skeleton,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   legendable: true,
   name: "skeleton",
@@ -405,7 +406,7 @@ export const spellbookPrefab: Entity = {
   appearance: {
     char: chars.spellbook,
     tint: colors.paper,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   readable: { type: ReadableType.Spellbook, message: "" },
   legendable: true,
@@ -425,7 +426,7 @@ export const spellscrollPrefab: Entity = {
   appearance: {
     char: chars.spellscroll,
     tint: colors.paper,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   readable: { type: ReadableType.Scroll, message: "" },
   legendable: true,
@@ -445,7 +446,7 @@ export const healthPotionPrefab: Entity = {
   appearance: {
     char: chars.potion,
     tint: colors.potion,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   consumable: true,
   legendable: true,
@@ -465,7 +466,7 @@ export const bottlePrefab: Entity = {
   appearance: {
     char: chars.bottleEmpty,
     tint: colors.glass,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   legendable: true,
   name: "Bottle",
@@ -490,7 +491,7 @@ export const bottlePrefab: Entity = {
           appearance: {
             char: chars.bottleEmpty,
             tint: colors.glass,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
           description: "An empty glass bottle",
         },
@@ -503,7 +504,7 @@ export const bottlePrefab: Entity = {
           appearance: {
             char: chars.bottleHalfFull,
             tint: colors.glass,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
           renderFluidColor: true,
           description: "A mostly empty glass bottle",
@@ -516,7 +517,7 @@ export const bottlePrefab: Entity = {
           appearance: {
             char: chars.bottleHalfFull,
             tint: colors.glass,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
           renderFluidColor: true,
           description: "A mostly full glass bottle",
@@ -529,7 +530,7 @@ export const bottlePrefab: Entity = {
           appearance: {
             char: chars.bottleFull,
             tint: colors.glass,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
           renderFluidColor: true,
           description: "A full glass bottle",
@@ -546,7 +547,7 @@ export const rockPrefab: Entity = {
   appearance: {
     char: chars.rock,
     tint: colors.rock,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   legendable: true,
   name: "Rock",
@@ -570,7 +571,7 @@ export const shortswordPrefab: Entity = {
   appearance: {
     char: chars.shortsword,
     tint: colors.steel,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   weaponClass: WeaponClass.Martial,
   attacks: [
@@ -615,7 +616,7 @@ export const clubPrefab: Entity = {
   appearance: {
     char: chars.club,
     tint: colors.wood,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   attacks: [
     {
@@ -640,7 +641,7 @@ export const daggerPrefab: Entity = {
   appearance: {
     char: chars.dagger,
     tint: colors.wood,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   weaponClass: WeaponClass.Simple,
   attacks: [
@@ -681,7 +682,7 @@ export const leatherArmor: Entity = {
   appearance: {
     char: chars.armor,
     tint: colors.leather,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   legendable: true,
   name: "Leather Armor",
@@ -702,7 +703,7 @@ export const doorPrefab: Entity = {
   appearance: {
     char: chars.doorClosed,
     tint: colors.wood,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   name: "door",
   legendable: true,
@@ -743,7 +744,7 @@ export const stairsDownPrefab: Entity = {
   appearance: {
     char: chars.stairsDown,
     tint: colors.stairsDown,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   name: "stairs down",
   stairsDown: true,
@@ -761,7 +762,7 @@ export const stairsUpPrefab: Entity = {
   appearance: {
     char: chars.stairsUp,
     tint: colors.stairsUp,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   name: "stairs up",
   stairsUp: true,
@@ -780,7 +781,7 @@ export const wallPrefab: Entity = {
   appearance: {
     char: chars.wall,
     tint: colors.wall,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   blocking: true,
   opaque: true,
@@ -802,7 +803,7 @@ export const floorPrefab: Entity = {
   appearance: {
     char: chars.floor,
     tint: colors.floor,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   name: "floor",
   mass: 100,
@@ -817,7 +818,7 @@ export const fluidContainerPrefab: Entity = {
   appearance: {
     char: "",
     tint: 0x000,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   mass: 0,
   fluidContainer: { ...fluidContainerComponent },
@@ -830,8 +831,15 @@ export const grassPrefab: Entity = {
   appearance: {
     char: chars.grass,
     tint: colors.plant,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
+  appearanceCorpse: {
+    char: chars.grass,
+    tint: colors.ash,
+    tileSet: TileSet.Kenny,
+  },
+  health: { max: 10, current: 10 },
+  immunities: [DamageType.Fire],
   name: "grass",
   description: "Dry grass",
   layer125: true,
@@ -845,11 +853,12 @@ export const grassPrefab: Entity = {
         name: "burnt",
         next: "young",
         chanceToMutate: 0.01,
+        forbid: ["trampled"],
         addComponents: {
           appearance: {
             char: chars.grass,
             tint: colors.ash,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
         },
         removeComponents: ["flammable", "opaque"],
@@ -858,11 +867,12 @@ export const grassPrefab: Entity = {
         name: "young",
         next: "medium",
         chanceToMutate: 0.0025,
+        forbid: ["trampled"],
         addComponents: {
           appearance: {
             char: chars.grass,
             tint: colors.plant,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
           calculateFlammability: true,
         },
@@ -872,11 +882,12 @@ export const grassPrefab: Entity = {
         name: "medium",
         next: "mature",
         chanceToMutate: 0.0025,
+        forbid: ["trampled"],
         addComponents: {
           appearance: {
             char: chars.mediumGrass,
             tint: colors.plant,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
           calculateFlammability: true,
         },
@@ -889,7 +900,7 @@ export const grassPrefab: Entity = {
           appearance: {
             char: chars.tallGrass,
             tint: colors.plant,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
           calculateFlammability: true,
           opaque: true,
@@ -902,9 +913,9 @@ export const grassPrefab: Entity = {
         chanceToMutate: 0.005,
         addComponents: {
           appearance: {
-            char: chars.grass,
+            char: chars.mediumGrass,
             tint: colors.plant,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
         },
         removeComponents: ["opaque"],

@@ -22,6 +22,7 @@ import {
   worldTurnPipeline,
 } from "./ecs/systems/systemPipeline";
 import { handleUserInput } from "./ecs/inputHandlers/KeyMap";
+import { TileSet } from "./ecs/enums";
 
 // for debugging
 declare global {
@@ -192,7 +193,7 @@ function trackFPS() {
         layer: 0,
         x: 0,
         y: 0,
-        tileSet: "text",
+        tileSet: TileSet.Text,
       });
     }
 

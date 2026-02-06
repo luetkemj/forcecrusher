@@ -9,7 +9,11 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
     for (const entity of livingQuery) {
       if (entity.health.current <= 0) {
         if (entity.appearance) {
-          entity.appearance.char = "corpse";
+          if (entity.appearanceCorpse) {
+            entity.appearance = { ...entity.appearanceCorpse };
+          } else {
+            entity.appearance.char = "corpse";
+          }
         }
 
         unWield(entity);

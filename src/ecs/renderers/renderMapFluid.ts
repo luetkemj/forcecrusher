@@ -1,5 +1,6 @@
 import { MapView } from "../../lib/canvas";
 import { Entity } from "../engine";
+import { TileSet } from "../enums";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
@@ -32,7 +33,7 @@ export const renderMapFluid = ({ views, world, queries }: RendererContext) => {
           0: {
             char: "",
             tint: 0x134d8f,
-            tileSet: "tile",
+            tileSet: TileSet.Tile,
             x,
             y,
             alpha: Math.min(0.15, alpha),
@@ -86,7 +87,7 @@ function renderCell(view: MapView, entity: Entity) {
     0: {
       char: "",
       tint: lava.tint || 0xffffff,
-      tileSet: "tile",
+      tileSet: TileSet.Tile,
       x,
       y,
       alpha: lavaAlpha,
@@ -94,7 +95,7 @@ function renderCell(view: MapView, entity: Entity) {
     1: {
       char: "",
       tint: oil.tint || 0xffffff,
-      tileSet: "tile",
+      tileSet: TileSet.Tile,
       x,
       y,
       alpha: oilAlpha,
@@ -102,7 +103,7 @@ function renderCell(view: MapView, entity: Entity) {
     2: {
       char: "",
       tint: blood.tint || 0xffffff,
-      tileSet: "tile",
+      tileSet: TileSet.Tile,
       x,
       y,
       alpha: bloodAlpha,
@@ -110,7 +111,7 @@ function renderCell(view: MapView, entity: Entity) {
     3: {
       char: "",
       tint: water.tint || 0xffffff,
-      tileSet: "tile",
+      tileSet: TileSet.Tile,
       x,
       y,
       alpha: waterAlpha,

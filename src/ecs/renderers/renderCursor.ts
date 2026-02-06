@@ -1,7 +1,7 @@
 import { RendererContext } from "../systems/render.system";
 import { getState, GameState, setState, State } from "../gameState";
 import { chars } from "../../actors/graphics";
-import { SpellShape } from "../enums";
+import { SpellShape, TileSet } from "../enums";
 import { PosId, isAtSamePosition, line, toPos, toPosId } from "../../lib/grid";
 import { isInFOV, isPosBlocked, queryAtPosition } from "../../lib/utils";
 import { tail } from "lodash";
@@ -16,7 +16,7 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
     const cursorProps = {
       char: "",
       tint: 0xff0077,
-      tileSet: "tile",
+      tileSet: TileSet.Tile,
       alpha: 0,
       x: pos0.x,
       y: pos0.y,
@@ -158,7 +158,7 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
               alpha: 1,
               x: pos1.x,
               y: pos1.y,
-              tileSet: "kenny",
+              tileSet: TileSet.Kenny,
             },
           });
         }
@@ -172,7 +172,7 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
             alpha: 1,
             x: pos1.x,
             y: pos1.y,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
         });
       }
@@ -186,7 +186,7 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
             alpha: 1,
             x: pos1.x,
             y: pos1.y,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
         });
       }
@@ -200,7 +200,7 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
             alpha: 1,
             x: pos1.x,
             y: pos1.y,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
           },
         });
       }

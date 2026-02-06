@@ -1,4 +1,5 @@
 import { chars, colors } from "../../actors/graphics";
+import { TileSet } from "../enums";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
@@ -22,7 +23,7 @@ export const renderMapFire = ({ views, world, queries }: RendererContext) => {
           0: {
             char: chars.fire,
             tint: colors.fire,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
             x,
             y,
             alpha: 0.75,
@@ -40,7 +41,7 @@ export const renderMapFire = ({ views, world, queries }: RendererContext) => {
           0: {
             char: chars.fire,
             tint: colors.fire,
-            tileSet: "kenny",
+            tileSet: TileSet.Kenny,
             x,
             y,
             alpha: 0.75,

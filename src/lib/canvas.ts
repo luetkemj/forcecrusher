@@ -10,6 +10,7 @@ import {
 import { menloBoldAlphaMap as asciiMap } from "../sprite-maps/menlo-bold.map";
 import { menloBoldHalfAlphaMap as fontMap } from "../sprite-maps/menlo-bold-half.map";
 import { kennyGFXMap } from "../sprite-maps/kenny.map";
+import { TileSet } from "../ecs/enums";
 
 /* ============================================================================
  * App / Grid
@@ -164,7 +165,7 @@ interface ViewOptions {
   x: number;
   y: number;
   layers: number;
-  tileSets: Array<string>;
+  tileSets: Array<TileSet>;
   tints: Array<number>;
   alphas: Array<number>;
   visible: boolean;
@@ -177,7 +178,7 @@ export interface UpdateRow {
   layer?: number;
   x?: number;
   y?: number;
-  tileSet?: string;
+  tileSet?: TileSet;
   tint?: number;
   alpha?: number;
   colors?: Array<number>;
@@ -190,7 +191,7 @@ type LayerMap = {
     char: string;
     tint: number;
     alpha: number;
-    tileSet: string;
+    tileSet: TileSet;
     x: number;
     y: number;
   };
@@ -209,7 +210,7 @@ export type RowToken =
   | {
       type: typeof TokenType.Text;
       value: string;
-      tileSet?: string;
+      tileSet?: TileSet;
       tint?: number;
       alpha?: number;
       parseTags?: boolean;
@@ -217,7 +218,7 @@ export type RowToken =
   | {
       type: typeof TokenType.Glyph;
       char: string;
-      tileSet: string;
+      tileSet: TileSet;
       width?: number;
       tint?: number;
       alpha?: number;
@@ -232,7 +233,7 @@ abstract class BaseView {
   width: number;
   height: number;
   layers: Container[] = [];
-  tileSets: string[];
+  tileSets: TileSet[];
   tints: number[];
   alphas: number[];
   visible: boolean;
@@ -258,10 +259,10 @@ abstract class BaseView {
     });
   }
 
-  protected getTexture(tileSet: string, char: string): Texture {
-    if (tileSet === "ascii") return getAsciiTexture(char);
-    if (tileSet === "text") return getFontTexture(char);
-    if (tileSet === "kenny") return getKennyTexture(char);
+  protected getTexture(tileSet: TileSet, char: string): Texture {
+    if (tileSet === TileSet.Ascii) return getAsciiTexture(char);
+    if (tileSet === TileSet.Text) return getFontTexture(char);
+    if (tileSet === TileSet.Kenny) return getKennyTexture(char);
     return getTileTexture();
   }
 
@@ -363,7 +364,7 @@ export class UIPanelView extends BaseView {
     x: number;
     y: number;
     char: string;
-    tileSet: string;
+    tileSet: TileSet;
     tint?: number;
     alpha?: number;
     width?: number;
