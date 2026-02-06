@@ -108,6 +108,7 @@ export interface Mutation {
   name: string;
   next?: string;
   chanceToMutate: number;
+  forbid?: string[];
   addComponents?: Partial<Entity>;
   removeComponents?: Array<Partial<keyof Entity>>;
 }

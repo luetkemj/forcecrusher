@@ -10,7 +10,7 @@ import {
   ReadableType,
   TileSet,
 } from "../ecs/enums";
-import { desiccate } from "../spells/spellbook/desiccate";
+import { massKill } from "../spells/spellbook/massKill";
 import { colors, chars } from "./graphics";
 
 const fluidContainerComponent = {
@@ -167,7 +167,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [desiccate],
+  knownSpells: [massKill],
 };
 
 // NOTE: Actors / Creatures
@@ -833,6 +833,13 @@ export const grassPrefab: Entity = {
     tint: colors.plant,
     tileSet: TileSet.Kenny,
   },
+  appearanceCorpse: {
+    char: chars.grass,
+    tint: colors.ash,
+    tileSet: TileSet.Kenny,
+  },
+  health: { max: 10, current: 10 },
+  immunities: [DamageType.Fire],
   name: "grass",
   description: "Dry grass",
   layer125: true,
@@ -846,6 +853,7 @@ export const grassPrefab: Entity = {
         name: "burnt",
         next: "young",
         chanceToMutate: 0.01,
+        forbid: ["trampled"],
         addComponents: {
           appearance: {
             char: chars.grass,
