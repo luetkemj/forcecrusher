@@ -5,6 +5,7 @@ import { Entity } from "../engine";
 import { TokenType } from "../../lib/canvas";
 import { compact } from "lodash";
 import { colors } from "../../actors/graphics";
+import { TileSet } from "../enums";
 
 export const renderInventory = ({
   views,
@@ -111,7 +112,7 @@ const getTokenText = (string: string) => {
 const getTokenGlyph = (entity: Entity) => {
   return {
     type: TokenType.Glyph,
-    tileSet: entity.appearance?.tileSet || "kenny",
+    tileSet: entity.appearance?.tileSet || TileSet.Kenny,
     char: entity.appearance?.char || "?",
     tint: entity.appearance?.tint || 0x00ff00,
   };

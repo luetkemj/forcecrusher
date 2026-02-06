@@ -3,6 +3,7 @@ import { getState, GameState } from "../gameState";
 import { Entity, Spell } from "../engine";
 import { TokenType } from "../../lib/canvas";
 import { colors } from "../../actors/graphics";
+import { TileSet } from "../enums";
 
 export const renderSpellBook = ({ views, queries }: RendererContext) => {
   const view = views.spellbook;
@@ -68,7 +69,7 @@ const getTokenText = (string: string) => {
 const getTokenGlyph = (entity: Entity | Spell) => {
   return {
     type: TokenType.Glyph,
-    tileSet: entity.appearance?.tileSet || "kenny",
+    tileSet: entity.appearance?.tileSet || TileSet.Kenny,
     char: entity.appearance?.char || "?",
     tint: entity.appearance?.tint || 0x00ff00,
   };

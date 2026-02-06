@@ -1,7 +1,7 @@
 import { SpellContext } from "..";
 import { chars, colors } from "../../actors/graphics";
 import { Spell, type Entity } from "../../ecs/engine";
-import { DispelName, SpellName, SpellShape } from "../../ecs/enums";
+import { DispelName, SpellName, SpellShape, TileSet } from "../../ecs/enums";
 import { getState } from "../../ecs/gameState";
 import { World } from "miniplex";
 
@@ -13,7 +13,7 @@ export const desiccate: Spell = {
   appearance: {
     char: chars.spellTypeDesiccate,
     tint: colors.bone,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   payload: {},
 };

@@ -11,6 +11,7 @@ import {
   Sense,
   SpellName,
   SpellShape,
+  TileSet,
   WeaponClass,
   WeaponType,
 } from "./enums";
@@ -131,9 +132,15 @@ export interface Spell {
   appearance?: {
     char: string;
     tint: number;
-    tileSet: string;
+    tileSet: TileSet;
   };
   payload: any;
+}
+
+export interface Appearance {
+  char: string;
+  tint: number;
+  tileSet: TileSet;
 }
 
 export type EntityId = string;
@@ -141,11 +148,8 @@ export type EntityId = string;
 export type Entity = {
   activeEffects?: Array<Effect>;
   ai?: true;
-  appearance?: {
-    char: string;
-    tint: number;
-    tileSet: string;
-  };
+  appearance?: Appearance;
+  appearanceCorpse?: Appearance;
   armorClass?: number;
   armorClassMod?: string;
   armorSlot?: {

@@ -131,3 +131,10 @@ export enum SpellCastType {
   // Spellwand = "spellwand",
   // Spellstaff = "spellstaff",
 }
+
+export enum TileSet {
+  Ascii = "ascii",
+  Text = "text",
+  Kenny = "kenny",
+  Tile = "tile",
+}

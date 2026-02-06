@@ -3,6 +3,7 @@ import type { Entity, IGameWorld } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
 import { createMorgueSystem } from "./morgue.system";
 import { getState, GameState } from "../gameState";
+import { TileSet } from "../enums";
 
 describe("morgue.system", () => {
   let gameWorld: IGameWorld;
@@ -15,7 +16,7 @@ describe("morgue.system", () => {
       name: "Skeleton",
       version: 1,
       health: { max: 10, current: 1 },
-      appearance: { char: "S", tint: 0xffffff, tileSet: "default" },
+      appearance: { char: "S", tint: 0xffffff, tileSet: TileSet.Ascii },
       container: { name: "Bag", description: "", contents: [], slots: 5 },
       ai: true,
     };

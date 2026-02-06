@@ -3,6 +3,7 @@ import { distance } from "../../lib/grid";
 import { TokenType, UpdateRow } from "../../lib/canvas";
 import { GameState, getState } from "../gameState";
 import { colors } from "../../actors/graphics";
+import { TileSet } from "../enums";
 
 export const renderLegend = ({ views, queries }: RendererContext) => {
   // don't render when in SIM mode.
@@ -33,7 +34,7 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
           tokens: [
             {
               type: TokenType.Glyph,
-              tileSet: "kenny",
+              tileSet: TileSet.Kenny,
               char: entityChar,
               tint: entityTint,
             },

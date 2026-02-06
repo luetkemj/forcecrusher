@@ -4,6 +4,7 @@ import { getArmorClass } from "../../lib/combat";
 import { getState } from "../gameState";
 import { chars, colors } from "../../actors/graphics";
 import { TokenType } from "../../lib/canvas";
+import { TileSet } from "../enums";
 
 export const renderHud = ({ views, queries }: RendererContext) => {
   const view = views.hud;
@@ -56,7 +57,7 @@ export const renderHud = ({ views, queries }: RendererContext) => {
 
               {
                 type: TokenType.Glyph,
-                tileSet: "kenny",
+                tileSet: TileSet.Kenny,
                 char: wieldingChar,
                 tint: wieldingTint,
               },
@@ -79,7 +80,7 @@ export const renderHud = ({ views, queries }: RendererContext) => {
 
               {
                 type: TokenType.Glyph,
-                tileSet: "kenny",
+                tileSet: TileSet.Kenny,
                 char: wearingChar,
                 tint: wearingTint,
               },

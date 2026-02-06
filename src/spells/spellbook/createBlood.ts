@@ -1,5 +1,5 @@
 import { SpellContext } from "..";
-import { Fluids, SpellName, SpellShape } from "../../ecs/enums";
+import { Fluids, SpellName, SpellShape, TileSet } from "../../ecs/enums";
 import { createFluid } from "../utils";
 import { chars, colors } from "../../actors/graphics";
 import { Spell } from "../../ecs/engine";
@@ -12,7 +12,7 @@ export const createBlood: Spell = {
   appearance: {
     char: chars.spellTypeFluid,
     tint: colors.blood,
-    tileSet: "kenny",
+    tileSet: TileSet.Kenny,
   },
   payload: {
     fluidType: Fluids.Blood,
