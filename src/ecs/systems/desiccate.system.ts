@@ -70,7 +70,6 @@ export const createDesiccateSystem = ({ world, registry }: IGameWorld) => {
                 if (fluid === "lava") {
                   world.removeComponent(target, "onFire");
                   world.removeComponent(target, "flammable");
-                  logFrozenEntity(target);
                 }
               }
             }

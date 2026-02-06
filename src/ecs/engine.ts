@@ -287,6 +287,7 @@ export type Entity = {
   resistances?: Array<DamageType>;
   revealed?: true;
   sound?: { strength: number };
+  spellbound?: { dispel: "uncastDesiccate"; turnNumber: number };
   stairsDown?: true;
   stairsUp?: true;
   strength?: number;
