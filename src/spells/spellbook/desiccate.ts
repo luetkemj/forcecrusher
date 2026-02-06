@@ -1,7 +1,7 @@
 import { SpellContext } from "..";
 import { chars, colors } from "../../actors/graphics";
 import { Spell, type Entity } from "../../ecs/engine";
-import { SpellName, SpellShape } from "../../ecs/enums";
+import { DispelName, SpellName, SpellShape } from "../../ecs/enums";
 import { getState } from "../../ecs/gameState";
 import { World } from "miniplex";
 
@@ -29,7 +29,7 @@ export const castDesiccate = (ctx: SpellContext) => {
       denyList: [],
     });
     world.addComponent(target, "spellbound", {
-      dispel: "uncastDesiccate",
+      dispel: DispelName.Desiccate,
       turnNumber: getState().turnNumber + 1,
     });
   }

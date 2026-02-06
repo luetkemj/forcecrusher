@@ -107,6 +107,10 @@ export enum SpellName {
   MassKill = "massKill",
 }
 
+export enum DispelName {
+  Desiccate = "uncastDesiccate",
+}
+
 export enum SpellShape {
   Circle = "circle",
   // Cone = "cone",
