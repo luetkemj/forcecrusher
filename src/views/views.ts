@@ -18,6 +18,7 @@ export type ViewId =
   | "odorMap"
   | "soundMap"
   | "visionMap"
+  | "spellEffectsMap"
   | "fps"
   | "gitTag"
   | "hud"
@@ -189,6 +190,20 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     alphas: [1],
     visible: true,
     name: "visionMap",
+  },
+
+  spellEffectsMap: {
+    kind: "map",
+    width: 74,
+    height: 39,
+    x: 13,
+    y: 5,
+    layers: 1,
+    tileSets: [TileSet.Tile],
+    tints: [0x000000],
+    alphas: [1],
+    visible: true,
+    name: "spellEffectsMap",
   },
 
   fps: {

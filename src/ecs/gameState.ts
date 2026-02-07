@@ -37,6 +37,7 @@ export type Views = {
   odorMap?: MapView;
   soundMap?: MapView;
   visionMap?: MapView;
+  spellEffectsMap?: MapView;
   log?: UIPanelView;
   senses?: UIPanelView;
   legend?: UIPanelView;

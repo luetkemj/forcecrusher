@@ -18,6 +18,7 @@ import { renderHud } from "../renderers/renderHud";
 import { renderControls } from "../renderers/renderControls";
 import { renderMakerMode } from "../renderers/renderMakerMode";
 import { renderSoundMap } from "../renderers/renderSoundMap";
+import { renderMapSpellEffects } from "../renderers/renderMapSpellEffects";
 import { renderSpellBook } from "../renderers/renderSpellBook";
 import { renderSaving } from "../renderers/renderSaving";
 import { renderLoading } from "../renderers/renderLoading";
@@ -123,6 +124,7 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     renderOdorMap(ctx);
     renderSoundMap(ctx);
     renderVisionMap(ctx);
+    renderMapSpellEffects(ctx);
     renderSenses(ctx);
     renderLegend(ctx);
     renderMenuUnderlay(ctx);
