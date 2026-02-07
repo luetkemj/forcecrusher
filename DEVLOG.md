@@ -1,5 +1,26 @@
 # Dev Log
 
+## 020626
+
+**Skulltooth 2: Forcecrusher** ([github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher))
+
+More work on spells. Added spellscrolls which work like typical one off spells. Also added duration to spells which required a few new components and an "uncastSpellSystem" that disables spells at a specified later time. Refactored some stuff to allow grass to be killed by death spells. Grass still burns and regrows but if killed, it will no longer regrow. And finally, added a UI layer for spell effects so less obvious spells like knock and desiccate provide some visual cue that they went off.
+
+v0.2.0 Spells, is getting close. A few bugs and handfull of additional spells is all that's left before putting this one out there.
+
+```
+[feat] tall grass
+[feat] spell shapes
+[feat] improve spell target validation and aoe
+[feat] fire spells
+[feat] desiccate, kill, mass kill, and knock spells
+[feat] spellbooks
+[feat] spell scrolls
+[feat] spell duration
+[feat] killable grass and the custom corpse
+[feat] spell effects ui
+```
+
 ## 013026
 
 **Skulltooth 2: Forcecrusher** ([github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher))
