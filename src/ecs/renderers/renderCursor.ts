@@ -79,7 +79,7 @@ export const renderCursor = ({ views, queries }: RendererContext) => {
                 const blocker = isPosBlocked(posId);
 
                 // Skip positions blocked by walls (blocking entities without AI)
-                if (blocker && !blocker.ai) {
+                if (blocker && blocker.layer100) {
                   continue;
                 }
 
