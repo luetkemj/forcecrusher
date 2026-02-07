@@ -10,6 +10,8 @@ import {
   ReadableType,
   TileSet,
 } from "../ecs/enums";
+import { desiccate } from "../spells/spellbook/desiccate";
+import { knock } from "../spells/spellbook/knock";
 import { massKill } from "../spells/spellbook/massKill";
 import { colors, chars } from "./graphics";
 
@@ -167,7 +169,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [massKill],
+  knownSpells: [desiccate, massKill, knock],
 };
 
 // NOTE: Actors / Creatures

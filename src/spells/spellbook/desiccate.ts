@@ -31,6 +31,7 @@ export const castDesiccate = (ctx: SpellContext) => {
     world.addComponent(target, "spellbound", {
       dispel: DispelName.Desiccate,
       turnNumber: getState().turnNumber + 1,
+      spellName: SpellName.Desiccate,
     });
   }
 };

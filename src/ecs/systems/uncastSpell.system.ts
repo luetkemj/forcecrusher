@@ -9,12 +9,14 @@ export const createUncastSpellSystem = ({ world }: IGameWorld) => {
     const { turnNumber } = getState();
     for (const actor of spellboundQuery) {
       if (turnNumber >= actor.spellbound.turnNumber) {
-        const func = dispelLibrary[actor.spellbound.dispel];
-
-        if (func) {
-          func(world, actor);
-          world.removeComponent(actor, "spellbound");
+        if (actor.spellbound.dispel) {
+          const func = dispelLibrary[actor.spellbound.dispel];
+          if (func) {
+            func(world, actor);
+          }
         }
+
+        world.removeComponent(actor, "spellbound");
       }
     }
   };

@@ -2,6 +2,7 @@ import { SpellContext } from "..";
 import { chars, colors } from "../../actors/graphics";
 import { Spell } from "../../ecs/engine";
 import { SpellName, SpellShape, TileSet } from "../../ecs/enums";
+import { getState } from "../../ecs/gameState";
 import { addLog } from "../../lib/utils";
 
 export const knock: Spell = {
@@ -24,6 +25,12 @@ export const castKnock = (ctx: SpellContext) => {
 
   for (const target of targets) {
     world.addComponent(target, "sound", { strength: 100 });
+
+    world.addComponent(target, "spellbound", {
+      turnNumber: getState().turnNumber + 1,
+      spellName: SpellName.Knock,
+    });
+
     success = true;
   }
 
