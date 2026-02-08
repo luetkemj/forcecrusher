@@ -32,12 +32,19 @@ jobs:
         id: version
         run: |
           # Strip leading "v" if your tags are like v1.2.3
-          VERSION=${GITHUB_REF_NAME#v}
+          VERSION="${GITHUB_REF_NAME#v}"
+
+          # Validate semver format (basic check)
+          if ! echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?(\+[a-zA-Z0-9.-]+)?$'; then
+            echo "Error: Invalid semver version: $VERSION"
+            exit 1
+          fi
+
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Bump package.json + lockfile
         run: |
-          npm version ${{ steps.version.outputs.version }} \
+          npm version "${{ steps.version.outputs.version }}" \
             --no-git-tag-version \
             --allow-same-version
 
