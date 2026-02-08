@@ -105,6 +105,7 @@ export enum SpellName {
   Kill = "kill",
   Knock = "knock",
   MassKill = "massKill",
+  Paralyze = "paralyze",
 }
 
 export enum DispelName {

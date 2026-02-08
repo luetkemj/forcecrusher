@@ -29,6 +29,7 @@ export enum chars {
   "spellTypeFire" = "spellTypeFire",
   "spellTypeKill" = "spellTypeKill",
   "spellTypeKnock" = "spellTypeKnock",
+  "spellTypeParalyze" = "spellTypeParalyze",
   "sponge" = "sponge",
   "stairsDown" = "stairsDown",
   "stairsUp" = "stairsUp",
