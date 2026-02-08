@@ -5,7 +5,7 @@ on:
     types: [published]
 
 permissions:
-  contents: read
+  contents: write # needed to commit version bump
   pages: write
   id-token: write
 
@@ -14,12 +14,50 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  bump-version:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repo (main)
         uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Extract version from release tag
+        id: version
+        run: |
+          # Strip leading "v" if your tags are like v1.2.3
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Bump package.json + lockfile
+        run: |
+          npm version ${{ steps.version.outputs.version }} \
+            --no-git-tag-version \
+            --allow-same-version
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to ${{ steps.version.outputs.version }} [skip ci]" || echo "No changes to commit"
+          git push origin main
+
+  build:
+    needs: bump-version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout updated repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Setup Node
         uses: actions/setup-node@v4
