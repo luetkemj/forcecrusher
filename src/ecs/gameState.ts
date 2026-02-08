@@ -112,7 +112,7 @@ const state: State = {
   fps: 0,
   gameState: GameState.SIM,
   log: [
-    "Hello and welcome adventurer, to Forcecrusher Dungeon!",
+    "Hello and welcome, adventurer, to Forcecrusher Dungeon!",
     "Retrieve the Skulltooth Brooch from the 6th floor and escape with it!",
   ],
   logActiveIndex: 0,
