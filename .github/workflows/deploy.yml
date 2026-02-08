@@ -21,7 +21,7 @@ jobs:
       - name: Checkout repo (main)
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.event.release.target_commitish }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -50,7 +50,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "chore: bump version to ${{ steps.version.outputs.version }} [skip ci]"
-            git push origin main
+            git push origin ${{ github.event.release.target_commitish }}
           fi
 
   build:
@@ -61,7 +61,7 @@ jobs:
       - name: Checkout updated repo
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.event.release.target_commitish }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
