@@ -5,7 +5,7 @@ on:
     types: [published]
 
 permissions:
-  contents: write # needed to commit version bump
+  contents: read
   pages: write
   id-token: write
 
@@ -14,63 +14,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  bump-version:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.release.target_commitish }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Extract version from release tag
-        id: version
-        run: |
-          # Strip leading "v" if your tags are like v1.2.3
-          VERSION="${GITHUB_REF_NAME#v}"
-
-          # Validate semver format: MAJOR.MINOR.PATCH[-PRERELEASE][+BUILD]
-          # - No leading zeros in version numbers
-          # - Pre-release/build identifiers: alphanumeric + hyphens, dot-separated
-          if ! echo "$VERSION" | grep -qE '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*)?(\+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*)?$'; then
-            echo "Error: Invalid semver version: $VERSION"
-            exit 1
-          fi
-
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Bump package.json + lockfile
-        run: |
-          npm version "${{ steps.version.outputs.version }}" \
-            --no-git-tag-version \
-            --allow-same-version
-
-      - name: Commit version bump
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add package.json package-lock.json
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "chore: bump version to ${{ steps.version.outputs.version }} [skip ci]"
-            git push origin ${{ github.event.release.target_commitish }}
-          fi
-
-  build:
-    needs: bump-version
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout updated repo
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.release.target_commitish }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
