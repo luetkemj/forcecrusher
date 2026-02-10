@@ -2,7 +2,7 @@ import { InputContext } from "../systems/userInput.system";
 import { GameState, State } from "../gameState";
 import { toPosId, isAtSamePosition, toZone, toZoneId } from "../../lib/grid";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
-import { ChangeZoneDirections, gameWorld } from "../engine";
+import { ChangeZoneDirections } from "../engine";
 import { isUndefined } from "lodash";
 
 export const handleGameModeInput = async ({
@@ -16,6 +16,7 @@ export const handleGameModeInput = async ({
   loadGameData,
   changeZone,
   addLog,
+  registry,
 }: InputContext) => {
   // these should be provided in context?
   const pickUpQuery = world.with("pickUp");
@@ -120,25 +121,19 @@ export const handleGameModeInput = async ({
           let victoryCondition = false;
           // if player has inventory
           if (player.container) {
-            for (const eId of player.container.contents) {
-              const item = gameWorld.registry.get(eId);
-              if (item && item.name === "The Skulltooth") {
-                victoryCondition = true;
-              } else {
-                victoryCondition = false;
-              }
-            }
+            victoryCondition = player.container.contents.some((eId) => {
+              const item = registry.get(eId);
+              return !!item && item.name === "The Skulltooth";
+            });
+          }
 
-            if (victoryCondition) {
-              addLog("Congrats, you win.");
-              setState(
-                (state: State) => (state.gameState = GameState.GAME_OVER),
-              );
-              return true;
-            } else {
-              addLog("No one may leave without The Skulltooth");
-              return true;
-            }
+          if (victoryCondition) {
+            addLog("Congrats, you win.");
+            setState((state: State) => (state.gameState = GameState.GAME_OVER));
+            return true;
+          } else {
+            addLog("No one may leave without The Skulltooth");
+            return true;
           }
         }
 
