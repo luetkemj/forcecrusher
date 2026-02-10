@@ -86,6 +86,8 @@ export const handleGameModeInput = async ({
     if (key === Keys.STAIRS_DOWN) {
       if (!player.position) return;
       const [stairsDownEntity] = stairsDownQuery;
+      if (!stairsDownEntity) return true;
+
       if (isAtSamePosition(player.position, stairsDownEntity.position)) {
         const { zoneId } = state;
         const zonePos = toZone(zoneId);
@@ -105,6 +107,7 @@ export const handleGameModeInput = async ({
     if (key === Keys.STAIRS_UP) {
       if (!player.position) return;
       const [stairsUpEntity] = stairsUpQuery;
+      if (!stairsUpEntity) return true;
       if (isAtSamePosition(player.position, stairsUpEntity.position)) {
         const { zoneId } = state;
         const zonePos = toZone(zoneId);

@@ -57,6 +57,9 @@ export type Views = {
 
 export type State = {
   cursor: [Pos, Pos];
+  dungeon: {
+    maxDepth: number;
+  };
   fps: number;
   gameState: GameState;
   log: Array<string>;
@@ -109,11 +112,14 @@ const state: State = {
     { x: 0, y: 0 },
     { x: 0, y: 0 },
   ],
+  dungeon: {
+    maxDepth: -2,
+  },
   fps: 0,
   gameState: GameState.SIM,
   log: [
     "Hello and welcome, adventurer, to Forcecrusher Dungeon!",
-    "Retrieve the Skulltooth Brooch from the 6th floor and escape with it!",
+    "Retrieve the Skulltooth from the 6th floor and escape with it!",
   ],
   logActiveIndex: 0,
   inventoryActiveIndex: 0,
@@ -142,7 +148,7 @@ const state: State = {
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,
   views: {},
-  zoneId: "0,0,0",
+  zoneId: "0,0,-1",
   playerId: "",
   version: 1,
   cheats: {
