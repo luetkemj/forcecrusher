@@ -2,7 +2,7 @@ import { InputContext } from "../systems/userInput.system";
 import { GameState, State } from "../gameState";
 import { toPosId, isAtSamePosition, toZone, toZoneId } from "../../lib/grid";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
-import { ChangeZoneDirections } from "../engine";
+import { ChangeZoneDirections, EntityId, gameWorld } from "../engine";
 import { isUndefined } from "lodash";
 
 export const handleGameModeInput = async ({
@@ -113,6 +113,35 @@ export const handleGameModeInput = async ({
         const zonePos = toZone(zoneId);
         const targetZonePos = { ...zonePos, z: zonePos.z + 1 };
         const targetZoneId = toZoneId(targetZonePos);
+
+        // if attempting to go above ground:
+        if (targetZonePos.z === 0) {
+          // NOTE: check victory condition
+          let victoryCondition = false;
+          // if player has inventory
+          if (player.container) {
+            for (const eId of player.container.contents) {
+              const item = gameWorld.registry.get(eId);
+              if (item && item.name === "The Skulltooth") {
+                victoryCondition = true;
+              } else {
+                victoryCondition = false;
+              }
+            }
+
+            if (victoryCondition) {
+              addLog("Congrats, you win.");
+              setState(
+                (state: State) => (state.gameState = GameState.GAME_OVER),
+              );
+              return true;
+            } else {
+              addLog("No one may leave without The Skulltooth");
+              return true;
+            }
+          }
+        }
+
         changeZone(targetZoneId, ChangeZoneDirections.up);
         world.addComponent(player, "excludeFromSim", true);
         setState((state: State) => {
