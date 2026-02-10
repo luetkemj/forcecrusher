@@ -54,7 +54,8 @@ const init = async () => {
   });
 
   // create world
-  const dungeon = generateDungeon();
+  const zoneId = getState().zoneId;
+  const dungeon = generateDungeon(zoneId);
   if (!dungeon) return;
   const startPos = dungeon.rooms[0].center;
   const player = spawnPlayer(startPos);

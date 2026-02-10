@@ -113,7 +113,7 @@ const state: State = {
   gameState: GameState.SIM,
   log: [
     "Hello and welcome, adventurer, to Forcecrusher Dungeon!",
-    "Retrieve the Skulltooth Brooch from the 6th floor and escape with it!",
+    "Retrieve the Skulltooth from the 6th floor and escape with it!",
   ],
   logActiveIndex: 0,
   inventoryActiveIndex: 0,
@@ -142,7 +142,7 @@ const state: State = {
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,
   views: {},
-  zoneId: "0,0,0",
+  zoneId: "0,0,-1",
   playerId: "",
   version: 1,
   cheats: {

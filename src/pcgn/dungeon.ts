@@ -9,6 +9,7 @@ import {
   toPosId,
   getNeighbors,
   toPos,
+  toZone,
 } from "../lib/grid";
 import { spawn } from "../actors";
 import {
@@ -187,9 +188,10 @@ export const buildDungeon = (
   return { dungeon, tilesMap };
 };
 
-export const generateDungeon = () => {
+export const generateDungeon = (zoneId: string) => {
   // zoneId is now just a string, depth logic can be handled elsewhere if needed
-  const depth = 0;
+  const zone = toZone(zoneId);
+  const depth = zone.z;
 
   const { dungeon, tilesMap } = buildDungeon({
     pos: { x: 0, y: 0 },
@@ -298,7 +300,15 @@ export const generateDungeon = () => {
     }
     if (index === 2) {
       const { x, y } = sample(room.tiles) || { x: 0, y: 0 };
-      spawn("stairsDown", { position: { x, y } });
+
+      if (depth > -1) {
+        spawn("stairsDown", { position: { x, y } });
+      }
+
+      if (depth === -1) {
+        const { x: x2, y: y2 } = sample(room.tiles) || { x: 0, y: 0 };
+        spawn("skulltooth", { position: { x: x2, y: y2 } });
+      }
     }
   });
 
