@@ -230,6 +230,14 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     render: [systems.render],
   },
 
+  [GameState.GAME_OVER]: {
+    preInput: [],
+    input: [systems.userInput],
+    main: [],
+    postMain: [],
+    render: [systems.render],
+  },
+
   [GameState.INSPECT]: {
     preInput: [],
     input: [systems.userInput],

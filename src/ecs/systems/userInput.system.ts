@@ -3,6 +3,7 @@ import { GameState, State, getState, setState } from "../gameState";
 import { addLog } from "../../lib/utils";
 
 import { handleGameModeInput } from "../inputHandlers/gameMode";
+import { handleGameOverModeInput } from "../inputHandlers/gameOverMode";
 import { handleCastSpellModeInput } from "../inputHandlers/castSpellMode";
 import { handleInspectModeInput } from "../inputHandlers/inspectMode";
 import { handleInteractActionModeInput } from "../inputHandlers/interactActionMode";
@@ -77,7 +78,7 @@ export const createUserInputSystem = ({
     const inputDispatchers = {
       [GameState.CAST_SPELL]: handleCastSpellModeInput,
       [GameState.GAME]: handleGameModeInput,
-      [GameState.GAME_OVER]: () => true,
+      [GameState.GAME_OVER]: handleGameOverModeInput,
       [GameState.SIM]: () => true,
       [GameState.INSPECT]: handleInspectModeInput,
       [GameState.INTERACT]: handleInteractModeInput,

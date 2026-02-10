@@ -16,6 +16,7 @@ export const handleGameModeInput = async ({
   loadGameData,
   changeZone,
   addLog,
+  registry,
 }: InputContext) => {
   // these should be provided in context?
   const pickUpQuery = world.with("pickUp");
@@ -113,6 +114,29 @@ export const handleGameModeInput = async ({
         const zonePos = toZone(zoneId);
         const targetZonePos = { ...zonePos, z: zonePos.z + 1 };
         const targetZoneId = toZoneId(targetZonePos);
+
+        // if attempting to go above ground:
+        if (targetZonePos.z === 0) {
+          // NOTE: check victory condition
+          let victoryCondition = false;
+          // if player has inventory
+          if (player.container) {
+            victoryCondition = player.container.contents.some((eId) => {
+              const item = registry.get(eId);
+              return !!item && item.name === "The Skulltooth";
+            });
+          }
+
+          if (victoryCondition) {
+            addLog("Congrats, you win.");
+            setState((state: State) => (state.gameState = GameState.GAME_OVER));
+            return true;
+          } else {
+            addLog("No one may leave without The Skulltooth");
+            return true;
+          }
+        }
+
         changeZone(targetZoneId, ChangeZoneDirections.up);
         world.addComponent(player, "excludeFromSim", true);
         setState((state: State) => {
