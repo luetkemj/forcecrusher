@@ -57,6 +57,9 @@ export type Views = {
 
 export type State = {
   cursor: [Pos, Pos];
+  dungeon: {
+    maxDepth: number;
+  };
   fps: number;
   gameState: GameState;
   log: Array<string>;
@@ -109,6 +112,9 @@ const state: State = {
     { x: 0, y: 0 },
     { x: 0, y: 0 },
   ],
+  dungeon: {
+    maxDepth: -2,
+  },
   fps: 0,
   gameState: GameState.SIM,
   log: [

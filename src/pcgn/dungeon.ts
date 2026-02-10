@@ -23,6 +23,7 @@ import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
 import { Entity } from "../ecs/engine";
+import { getState } from "../ecs/gameState";
 
 type Tile = {
   x: number;
@@ -188,10 +189,11 @@ export const buildDungeon = (
   return { dungeon, tilesMap };
 };
 
-export const generateDungeon = (zoneId: string) => {
+export const generateDungeon = (zoneId: ZoneId) => {
   // zoneId is now just a string, depth logic can be handled elsewhere if needed
+  const maxDepth = Math.abs(getState().dungeon.maxDepth);
   const zone = toZone(zoneId);
-  const depth = zone.z;
+  const depth = Math.abs(zone.z);
 
   const { dungeon, tilesMap } = buildDungeon({
     pos: { x: 0, y: 0 },
@@ -301,11 +303,12 @@ export const generateDungeon = (zoneId: string) => {
     if (index === 2) {
       const { x, y } = sample(room.tiles) || { x: 0, y: 0 };
 
-      if (depth > -1) {
+      // we do need zone but also max depth
+      if (depth < maxDepth) {
         spawn("stairsDown", { position: { x, y } });
       }
 
-      if (depth === -1) {
+      if (depth === maxDepth) {
         const { x: x2, y: y2 } = sample(room.tiles) || { x: 0, y: 0 };
         spawn("skulltooth", { position: { x: x2, y: y2 } });
       }
