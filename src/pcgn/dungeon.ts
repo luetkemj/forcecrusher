@@ -10,6 +10,7 @@ import {
   getNeighbors,
   toPos,
   toZone,
+  ZoneId,
 } from "../lib/grid";
 import { spawn } from "../actors";
 import {
