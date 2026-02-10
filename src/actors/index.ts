@@ -22,6 +22,7 @@ import {
   livingSpongePrefab,
   spellbookPrefab,
   spellscrollPrefab,
+  skulltoothPrefab,
 } from "./prefabs";
 import { updatePosition } from "../lib/utils";
 import { Material } from "../ecs/enums";
@@ -42,6 +43,7 @@ export const prefabs = {
 
   // NOTE: Items
   rock: rockPrefab,
+  skulltooth: skulltoothPrefab,
   spellbook: spellbookPrefab,
   spellscroll: spellscrollPrefab,
 

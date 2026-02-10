@@ -544,6 +544,27 @@ export const bottlePrefab: Entity = {
 };
 
 // NOTE: Items
+export const skulltoothPrefab: Entity = {
+  ...base,
+  ...renderable,
+  appearance: {
+    char: chars.skulltooth,
+    tint: colors.bone,
+    tileSet: TileSet.Kenny,
+  },
+  legendable: true,
+  name: "The Skulltooth",
+  description: "A large tooth carved into the shape of a skull",
+  layer200: true,
+  pickUp: true,
+  kickable: {
+    noiseLevel: 3,
+    breakable: true,
+  },
+  mass: 1,
+  material: Material.Bone,
+};
+
 export const rockPrefab: Entity = {
   ...base,
   ...renderable,
