@@ -18,6 +18,7 @@ export const renderScreenTitle = ({ views }: RendererContext) => {
               tint: colors.player,
             },
           ],
+          align: "center",
         },
       ],
       [{ string: "" }],
@@ -25,21 +26,17 @@ export const renderScreenTitle = ({ views }: RendererContext) => {
         {
           tokens: [
             {
-              type: TokenType.Text,
-              value: "           ",
-              tint: colors.text,
-            },
-            {
               type: TokenType.Glyph,
               tileSet: TileSet.Kenny,
               char: chars.skulltooth,
               tint: colors.bone,
             },
           ],
+          align: "center",
         },
       ],
       [{ string: "" }],
-      [{ string: ` ${em("[Press Any Key to Start]")}` }],
+      [{ string: `${em("[Press Any Key to Start]")}`, align: "center" }],
     ];
 
     view?.clearView();
