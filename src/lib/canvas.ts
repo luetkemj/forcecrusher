@@ -159,7 +159,6 @@ const parseTaggedColors = (str: string, defaultTint: number = 0xffffff) => {
  * ============================================================================
  */
 
-// todo: make these enums
 export enum AlignH {
   Left = "left",
   Center = "center",
