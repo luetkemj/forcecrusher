@@ -130,7 +130,6 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     renderSenses(ctx);
     renderLegend(ctx);
     renderMenuUnderlay(ctx);
-    renderMenuUnderlay(ctx);
     renderLogHistory(ctx);
     renderInventory(ctx);
     renderSpellBook(ctx);
