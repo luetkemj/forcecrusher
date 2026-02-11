@@ -160,8 +160,16 @@ const parseTaggedColors = (str: string, defaultTint: number = 0xffffff) => {
  */
 
 // todo: make these enums
-type RowAlign = "left" | "center" | "right";
-type VerticalAlign = "top" | "middle" | "bottom";
+export enum AlignH {
+  Left = "left",
+  Center = "center",
+  Right = "right",
+}
+export enum AlignV {
+  Top = "top",
+  Middle = "middle",
+  Bottom = "bottom",
+}
 
 interface ViewOptions {
   width: number;
@@ -188,7 +196,7 @@ export interface UpdateRow {
   colors?: Array<number>;
   alphas?: Array<number>;
   parseTags?: boolean;
-  align?: RowAlign;
+  alignH?: AlignH;
 }
 
 type LayerMap = {
@@ -400,15 +408,15 @@ export class UIPanelView extends BaseView {
     return width;
   }
 
-  private getVerticalStartY(contentHeight: number, align?: VerticalAlign) {
+  private getVerticalStartY(contentHeight: number, align?: AlignV) {
     if (!align || align === "top") return 0;
     if (align === "bottom") return this.height - contentHeight;
     return Math.floor((this.height - contentHeight) / 2);
   }
 
-  private getAlignedStartX(
+  private getHorizontalStartX(
     contentWidth: number,
-    align: RowAlign | undefined,
+    align: AlignH | undefined,
   ): number {
     if (!align || align === "left") return 0;
     if (align === "right") return this.width - contentWidth;
@@ -449,13 +457,14 @@ export class UIPanelView extends BaseView {
     rows: Array<Array<UpdateRow>>,
     opts?: {
       parseTags?: boolean;
-      verticalAlign?: VerticalAlign;
+      alignH?: AlignH;
+      alignV?: AlignV;
     },
   ) {
     const parseTags = opts?.parseTags ?? true;
-    const verticalAlign = opts?.verticalAlign ?? "top";
+    const alignV = opts?.alignV ?? AlignV.Top;
     const contentHeight = rows.length;
-    const startY = this.getVerticalStartY(contentHeight, verticalAlign);
+    const startY = this.getVerticalStartY(contentHeight, alignV);
 
     rows.forEach((layers, rowIndex) => {
       const y = startY + rowIndex;
@@ -478,7 +487,7 @@ export class UIPanelView extends BaseView {
             layer,
             y,
             tokens: row.tokens,
-            align: row.align,
+            align: row.alignH,
           });
         }
       });
@@ -495,7 +504,7 @@ export class UIPanelView extends BaseView {
       tint,
       alpha,
       parseTags = false,
-      align = "left",
+      alignH = AlignH.Left,
     } = opts;
 
     this.clearRow(layer, y);
@@ -503,7 +512,7 @@ export class UIPanelView extends BaseView {
     const ts = tileSet || this.tileSets[layer];
     const glyphWidth = TILE_WIDTH[ts] ?? 1;
     const contentWidth = this.measureStringWidth(string, ts, parseTags);
-    let cursorX = x + this.getAlignedStartX(contentWidth, align);
+    let cursorX = x + this.getHorizontalStartX(contentWidth, alignH);
 
     const { chars, tints } = parseTags
       ? parseTaggedColors(string, tint ?? this.tints[layer])
@@ -533,16 +542,16 @@ export class UIPanelView extends BaseView {
     y: number;
     x?: number;
     tokens: RowToken[];
-    align?: RowAlign;
+    align?: AlignH;
   }) {
     const layer = opts.layer ?? 0;
     const y = opts.y;
-    const align = opts.align ?? "left";
+    const align = opts.align ?? AlignH.Left;
 
     this.clearRow(layer, y);
 
     const contentWidth = this.measureTokensWidth(layer, opts.tokens);
-    let cursorX = (opts.x ?? 0) + this.getAlignedStartX(contentWidth, align);
+    let cursorX = (opts.x ?? 0) + this.getHorizontalStartX(contentWidth, align);
 
     for (const token of opts.tokens) {
       if (token.type === "text") {

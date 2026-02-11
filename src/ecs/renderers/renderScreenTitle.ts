@@ -1,5 +1,5 @@
 import { chars, colors } from "../../actors/graphics";
-import { TokenType } from "../../lib/canvas";
+import { AlignH, AlignV, TokenType } from "../../lib/canvas";
 import { em } from "../../lib/utils";
 import { TileSet } from "../enums";
 import { GameState, getState } from "../gameState";
@@ -18,7 +18,7 @@ export const renderScreenTitle = ({ views }: RendererContext) => {
               tint: colors.player,
             },
           ],
-          align: "center",
+          alignH: AlignH.Center,
         },
       ],
       [{ string: "" }],
@@ -32,15 +32,15 @@ export const renderScreenTitle = ({ views }: RendererContext) => {
               tint: colors.bone,
             },
           ],
-          align: "center",
+          alignH: AlignH.Center,
         },
       ],
       [{ string: "" }],
-      [{ string: `${em("[Press Any Key to Start]")}`, align: "center" }],
+      [{ string: `${em("[Press Any Key to Start]")}`, alignH: AlignH.Center }],
     ];
 
     view?.clearView();
-    view?.updateRows(rows, { parseTags: true, verticalAlign: "middle" });
+    view?.updateRows(rows, { parseTags: true, alignV: AlignV.Middle });
     view?.show();
   } else {
     view?.hide();
