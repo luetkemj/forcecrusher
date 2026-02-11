@@ -457,7 +457,6 @@ export class UIPanelView extends BaseView {
     rows: Array<Array<UpdateRow>>,
     opts?: {
       parseTags?: boolean;
-      alignH?: AlignH;
       alignV?: AlignV;
     },
   ) {
