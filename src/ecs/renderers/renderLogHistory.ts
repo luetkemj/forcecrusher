@@ -30,7 +30,7 @@ export const renderLogHistory = ({ views }: RendererContext) => {
       ];
 
       view?.clearView();
-      view?.updateRows(rows, true);
+      view?.updateRows(rows, { parseTags: true });
       view?.show();
     } else {
       view?.hide();
