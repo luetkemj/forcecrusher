@@ -30,6 +30,10 @@ export type ViewId =
   | "makerModeLeft"
   | "makerModeTop"
   | "saving"
+  | "screenUnderlay"
+  | "screenVictory"
+  | "screenTitle"
+  | "screenDeath"
   | "spellbook"
   | "loading";
 
@@ -386,6 +390,62 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     alphas: [1],
     visible: false,
     name: "loading",
+  },
+
+  screenUnderlay: {
+    kind: "map",
+    width: 100,
+    height: 44,
+    x: 0,
+    y: 0,
+    layers: 1,
+    tileSets: [TileSet.Tile],
+    tints: [0x000000],
+    alphas: [1],
+    visible: false,
+    name: "screenUnderlay",
+  },
+
+  screenTitle: {
+    kind: "ui",
+    width: 100,
+    height: 44,
+    x: 0,
+    y: 0,
+    layers: 1,
+    tileSets: [TileSet.Text],
+    tints: [0xffffff],
+    alphas: [1],
+    visible: false,
+    name: "screenTitle",
+  },
+
+  screenDeath: {
+    kind: "ui",
+    width: 100,
+    height: 44,
+    x: 0,
+    y: 0,
+    layers: 1,
+    tileSets: [TileSet.Text],
+    tints: [0xffffff],
+    alphas: [0.1],
+    visible: false,
+    name: "screenDeath",
+  },
+
+  screenVictory: {
+    kind: "ui",
+    width: 100,
+    height: 44,
+    x: 0,
+    y: 0,
+    layers: 1,
+    tileSets: [TileSet.Text],
+    tints: [0xffffff],
+    alphas: [0.1],
+    visible: false,
+    name: "screenVictory",
   },
 };
 
