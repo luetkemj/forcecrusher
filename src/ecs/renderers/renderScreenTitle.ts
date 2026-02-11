@@ -40,7 +40,7 @@ export const renderScreenTitle = ({ views }: RendererContext) => {
     ];
 
     view?.clearView();
-    view?.updateRows(rows, true);
+    view?.updateRows(rows, { parseTags: true, verticalAlign: "middle" });
     view?.show();
   } else {
     view?.hide();

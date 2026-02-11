@@ -161,6 +161,7 @@ const parseTaggedColors = (str: string, defaultTint: number = 0xffffff) => {
 
 // todo: make these enums
 type RowAlign = "left" | "center" | "right";
+type VerticalAlign = "top" | "middle" | "bottom";
 
 interface ViewOptions {
   width: number;
@@ -399,13 +400,20 @@ export class UIPanelView extends BaseView {
     return width;
   }
 
+  private getVerticalStartY(contentHeight: number, align?: VerticalAlign) {
+    if (!align || align === "top") return 0;
+    if (align === "bottom") return this.height - contentHeight;
+    return Math.floor((this.height - contentHeight) / 2);
+  }
+
   private getAlignedStartX(
     contentWidth: number,
     align: RowAlign | undefined,
   ): number {
     if (!align || align === "left") return 0;
     if (align === "right") return this.width - contentWidth;
-    return Math.floor((this.width - contentWidth) / 2); // center
+
+    return (this.width - contentWidth) / 2; // center
   }
 
   private drawGlyph(opts: {
@@ -437,25 +445,41 @@ export class UIPanelView extends BaseView {
     this.sprites[layer][y] = [];
   }
 
-  updateRows(rows: Array<Array<UpdateRow>>, parseTags = true) {
-    rows.forEach((layers, y) => {
+  updateRows(
+    rows: Array<Array<UpdateRow>>,
+    opts?: {
+      parseTags?: boolean;
+      verticalAlign?: VerticalAlign;
+    },
+  ) {
+    const parseTags = opts?.parseTags ?? true;
+    const verticalAlign = opts?.verticalAlign ?? "top";
+    const contentHeight = rows.length;
+    const startY = this.getVerticalStartY(contentHeight, verticalAlign);
+
+    rows.forEach((layers, rowIndex) => {
+      const y = startY + rowIndex;
+
+      // skip rows that would render outside the panel
+      if (y < 0 || y >= this.height) return;
+
       layers.forEach((row, layer) => {
-        if (row && row.string) {
+        if (!row) return this.clearRow(layer, y);
+
+        if (row.string !== undefined) {
           this.updateRow({
-            string: row.string,
+            ...row,
             layer,
             y,
             parseTags,
-            align: row.align,
           });
-        } else if (row && row.tokens) {
+        } else if (row.tokens) {
           this.updateRowTokens({
+            layer,
             y,
             tokens: row.tokens,
             align: row.align,
           });
-        } else {
-          this.clearRow(layer, y);
         }
       });
     });
