@@ -16,6 +16,7 @@ import { handleMakerModePrefabSelectInput } from "../inputHandlers/makerModePref
 import { handleSavingModeInput } from "../inputHandlers/savingMode";
 import { handleSpellbookModeInput } from "../inputHandlers/spellbookMode";
 import { handleLoadingModeInput } from "../inputHandlers/loadingMode";
+import { handleScreenTitleMode } from "../inputHandlers/handleScreenTitleMode";
 
 export interface InputContext {
   key: string;
@@ -91,6 +92,7 @@ export const createUserInputSystem = ({
       [GameState.SAVING]: handleSavingModeInput,
       [GameState.SPELLBOOK]: handleSpellbookModeInput,
       [GameState.LOADING]: handleLoadingModeInput,
+      [GameState.SCREEN_TITLE]: handleScreenTitleMode,
     };
 
     const handler = inputDispatchers[gameState];

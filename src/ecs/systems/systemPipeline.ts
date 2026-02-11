@@ -222,6 +222,14 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     ...worldTurnPipeline,
   },
 
+  [GameState.SCREEN_TITLE]: {
+    preInput: [],
+    input: [systems.userInput],
+    main: [],
+    postMain: [],
+    render: [systems.render],
+  },
+
   [GameState.CAST_SPELL]: {
     preInput: [],
     input: [systems.userInput],
