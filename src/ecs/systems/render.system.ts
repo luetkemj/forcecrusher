@@ -24,6 +24,7 @@ import { renderSaving } from "../renderers/renderSaving";
 import { renderLoading } from "../renderers/renderLoading";
 import { renderScreenUnderlay } from "../renderers/renderScreenUnderlay";
 import { renderScreenTitle } from "../renderers/renderScreenTitle";
+import { renderScreenGameOver } from "../renderers/renderScreenGameOver";
 import { TileSet } from "../enums";
 
 export interface RendererContext {
@@ -142,6 +143,7 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     renderLoading(ctx);
     renderScreenUnderlay(ctx);
     renderScreenTitle(ctx);
+    renderScreenGameOver(ctx);
   };
 };
 
