@@ -22,6 +22,8 @@ import { renderMapSpellEffects } from "../renderers/renderMapSpellEffects";
 import { renderSpellBook } from "../renderers/renderSpellBook";
 import { renderSaving } from "../renderers/renderSaving";
 import { renderLoading } from "../renderers/renderLoading";
+import { renderScreenUnderlay } from "../renderers/renderScreenUnderlay";
+import { renderScreenTitle } from "../renderers/renderScreenTitle";
 import { TileSet } from "../enums";
 
 export interface RendererContext {
@@ -138,6 +140,8 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     renderMakerMode(ctx);
     renderSaving(ctx);
     renderLoading(ctx);
+    renderScreenUnderlay(ctx);
+    renderScreenTitle(ctx);
   };
 };
 

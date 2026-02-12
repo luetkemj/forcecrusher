@@ -53,7 +53,7 @@ export const renderInventory = ({
       ];
 
       view?.clearView();
-      view?.updateRows(rows, true);
+      view?.updateRows(rows, { parseTags: true });
       view?.show();
     } else {
       view?.hide();

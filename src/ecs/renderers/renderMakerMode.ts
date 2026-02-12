@@ -18,7 +18,7 @@ export const renderMakerMode = ({ views }: RendererContext) => {
       }
 
       viewTop?.clearView();
-      viewTop?.updateRows(rows, true);
+      viewTop?.updateRows(rows, { parseTags: true });
       viewTop?.show();
     } else {
       viewTop?.hide();
@@ -30,7 +30,7 @@ export const renderMakerMode = ({ views }: RendererContext) => {
       const rows = [[{}, { string: "MAKER MODE" }]];
 
       viewRight?.clearView();
-      viewRight?.updateRows(rows, true);
+      viewRight?.updateRows(rows, { parseTags: true });
       viewRight?.show();
     } else {
       viewRight?.hide();
@@ -70,7 +70,7 @@ export const renderMakerMode = ({ views }: RendererContext) => {
       });
 
       viewLeft?.clearView();
-      viewLeft?.updateRows(rows, true);
+      viewLeft?.updateRows(rows, { parseTags: true });
       viewLeft?.show();
     } else {
       viewLeft?.hide();

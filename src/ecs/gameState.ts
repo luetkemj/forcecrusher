@@ -25,6 +25,7 @@ export const enum GameState {
   SAVING = "SAVING",
   LOADING = "LOADING",
   SIM = "SIM",
+  SCREEN_TITLE = "SCREEN_TITLE",
 }
 
 export type Views = {
@@ -53,6 +54,10 @@ export type Views = {
   saving?: UIPanelView;
   spellbook?: UIPanelView;
   loading?: UIPanelView;
+  screenUnderlay?: MapView;
+  screenVictory?: UIPanelView;
+  screenTitle?: UIPanelView;
+  screenDeath?: UIPanelView;
 };
 
 export type State = {
@@ -116,7 +121,7 @@ const state: State = {
     maxDepth: -2,
   },
   fps: 0,
-  gameState: GameState.SIM,
+  gameState: GameState.SCREEN_TITLE,
   log: [
     "Hello and welcome, adventurer, to Forcecrusher Dungeon!",
     "Retrieve the Skulltooth from the 6th floor and escape with it!",

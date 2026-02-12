@@ -23,7 +23,7 @@ export const renderSpellBook = ({ views, queries }: RendererContext) => {
       ];
 
       view?.clearView();
-      view?.updateRows(rows, true);
+      view?.updateRows(rows, { parseTags: true });
       view?.show();
     } else {
       view?.hide();

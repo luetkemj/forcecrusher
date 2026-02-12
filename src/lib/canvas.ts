@@ -159,6 +159,17 @@ const parseTaggedColors = (str: string, defaultTint: number = 0xffffff) => {
  * ============================================================================
  */
 
+export enum AlignH {
+  Left = "left",
+  Center = "center",
+  Right = "right",
+}
+export enum AlignV {
+  Top = "top",
+  Middle = "middle",
+  Bottom = "bottom",
+}
+
 interface ViewOptions {
   width: number;
   height: number;
@@ -184,6 +195,7 @@ export interface UpdateRow {
   colors?: Array<number>;
   alphas?: Array<number>;
   parseTags?: boolean;
+  alignH?: AlignH;
 }
 
 type LayerMap = {
@@ -359,6 +371,58 @@ export class UIPanelView extends BaseView {
     });
   }
 
+  private measureStringWidth(
+    str: string,
+    tileSet: TileSet,
+    parseTags: boolean,
+  ): number {
+    const glyphWidth = TILE_WIDTH[tileSet] ?? 1;
+
+    if (!parseTags) return str.length * glyphWidth;
+
+    const { chars } = parseTaggedColors(str);
+    return chars.length * glyphWidth;
+  }
+
+  private measureTokensWidth(layer: number, tokens: RowToken[]): number {
+    let width = 0;
+
+    for (const token of tokens) {
+      if (token.type === "text") {
+        const ts = token.tileSet ?? this.tileSets[layer];
+        const glyphWidth = TILE_WIDTH[ts] ?? 1;
+
+        const charCount = token.parseTags
+          ? parseTaggedColors(token.value).chars.length
+          : token.value.length;
+
+        width += charCount * glyphWidth;
+      }
+
+      if (token.type === "glyph") {
+        width += token.width ?? TILE_WIDTH[token.tileSet] ?? 1;
+      }
+    }
+
+    return width;
+  }
+
+  private getVerticalStartY(contentHeight: number, align?: AlignV) {
+    if (!align || align === "top") return 0;
+    if (align === "bottom") return this.height - contentHeight;
+    return Math.floor((this.height - contentHeight) / 2);
+  }
+
+  private getHorizontalStartX(
+    contentWidth: number,
+    align: AlignH | undefined,
+  ): number {
+    if (!align || align === "left") return 0;
+    if (align === "right") return this.width - contentWidth;
+
+    return (this.width - contentWidth) / 2; // center
+  }
+
   private drawGlyph(opts: {
     layer: number;
     x: number;
@@ -388,23 +452,41 @@ export class UIPanelView extends BaseView {
     this.sprites[layer][y] = [];
   }
 
-  updateRows(rows: Array<Array<UpdateRow>>, parseTags = true) {
-    rows.forEach((layers, y) => {
+  updateRows(
+    rows: Array<Array<UpdateRow>>,
+    opts?: {
+      parseTags?: boolean;
+      alignV?: AlignV;
+    },
+  ) {
+    const parseTags = opts?.parseTags ?? true;
+    const alignV = opts?.alignV ?? AlignV.Top;
+    const contentHeight = rows.length;
+    const startY = this.getVerticalStartY(contentHeight, alignV);
+
+    rows.forEach((layers, rowIndex) => {
+      const y = startY + rowIndex;
+
+      // skip rows that would render outside the panel
+      if (y < 0 || y >= this.height) return;
+
       layers.forEach((row, layer) => {
-        if (row && row.string) {
+        if (!row) return this.clearRow(layer, y);
+
+        if (row.string !== undefined) {
           this.updateRow({
-            string: row.string,
+            ...row,
             layer,
             y,
             parseTags,
           });
-        } else if (row && row.tokens) {
+        } else if (row.tokens) {
           this.updateRowTokens({
+            layer,
             y,
             tokens: row.tokens,
+            align: row.alignH,
           });
-        } else {
-          this.clearRow(layer, y);
         }
       });
     });
@@ -420,13 +502,15 @@ export class UIPanelView extends BaseView {
       tint,
       alpha,
       parseTags = false,
+      alignH = AlignH.Left,
     } = opts;
 
     this.clearRow(layer, y);
 
     const ts = tileSet || this.tileSets[layer];
     const glyphWidth = TILE_WIDTH[ts] ?? 1;
-    let cursorX = x;
+    const contentWidth = this.measureStringWidth(string, ts, parseTags);
+    let cursorX = x + this.getHorizontalStartX(contentWidth, alignH);
 
     const { chars, tints } = parseTags
       ? parseTaggedColors(string, tint ?? this.tints[layer])
@@ -456,12 +540,16 @@ export class UIPanelView extends BaseView {
     y: number;
     x?: number;
     tokens: RowToken[];
+    align?: AlignH;
   }) {
     const layer = opts.layer ?? 0;
     const y = opts.y;
-    let cursorX = opts.x ?? 0;
+    const align = opts.align ?? AlignH.Left;
 
     this.clearRow(layer, y);
+
+    const contentWidth = this.measureTokensWidth(layer, opts.tokens);
+    let cursorX = (opts.x ?? 0) + this.getHorizontalStartX(contentWidth, align);
 
     for (const token of opts.tokens) {
       if (token.type === "text") {

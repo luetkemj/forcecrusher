@@ -13,7 +13,7 @@ export const renderLog = ({ views }: RendererContext) => {
       messages.map((message: string, index: number) => {
         return [{ string: concatRow(message, width), alpha: getAlpha(index) }];
       }),
-      true,
+      { parseTags: true },
     );
   }
 };
