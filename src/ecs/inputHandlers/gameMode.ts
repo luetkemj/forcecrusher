@@ -129,7 +129,9 @@ export const handleGameModeInput = async ({
 
           if (victoryCondition) {
             addLog("Congrats, you win.");
-            setState((state: State) => (state.gameState = GameState.GAME_OVER));
+            setState(
+              (state: State) => (state.gameState = GameState.SCREEN_VICTORY),
+            );
             return true;
           } else {
             addLog("No one may leave without The Skulltooth");

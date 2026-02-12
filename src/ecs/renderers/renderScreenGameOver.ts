@@ -13,9 +13,35 @@ export const renderScreenGameOver = ({ views }: RendererContext) => {
         {
           tokens: [
             {
-              type: TokenType.Text,
-              value: "You have died.",
-              tint: colors.player,
+              type: TokenType.Glyph,
+              tileSet: TileSet.Kenny,
+              char: chars.tombstone,
+              tint: colors.stone,
+            },
+          ],
+          alignH: AlignH.Center,
+        },
+      ],
+      [
+        {
+          tokens: [
+            {
+              type: TokenType.Glyph,
+              tileSet: TileSet.Kenny,
+              char: chars.grass,
+              tint: colors.plant,
+            },
+            {
+              type: TokenType.Glyph,
+              tileSet: TileSet.Kenny,
+              char: chars.grass,
+              tint: colors.plant,
+            },
+            {
+              type: TokenType.Glyph,
+              tileSet: TileSet.Kenny,
+              char: chars.grass,
+              tint: colors.plant,
             },
           ],
           alignH: AlignH.Center,
@@ -26,10 +52,9 @@ export const renderScreenGameOver = ({ views }: RendererContext) => {
         {
           tokens: [
             {
-              type: TokenType.Glyph,
-              tileSet: TileSet.Kenny,
-              char: chars.corpse,
-              tint: colors.blood,
+              type: TokenType.Text,
+              value: "You have died.",
+              tint: colors.player,
             },
           ],
           alignH: AlignH.Center,

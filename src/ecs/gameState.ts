@@ -26,6 +26,7 @@ export const enum GameState {
   LOADING = "LOADING",
   SIM = "SIM",
   SCREEN_TITLE = "SCREEN_TITLE",
+  SCREEN_VICTORY = "SCREEN_VICTORY",
 }
 
 export type Views = {

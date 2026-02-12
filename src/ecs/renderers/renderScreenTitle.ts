@@ -15,7 +15,7 @@ export const renderScreenTitle = ({ views }: RendererContext) => {
             {
               type: TokenType.Text,
               value: "Skulltooth 2: Forcecrusher",
-              tint: colors.player,
+              tint: colors.text,
             },
           ],
           alignH: AlignH.Center,
