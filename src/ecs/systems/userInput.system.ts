@@ -81,7 +81,7 @@ export const createUserInputSystem = ({
       [GameState.CAST_SPELL]: handleCastSpellModeInput,
       [GameState.GAME]: handleGameModeInput,
       [GameState.GAME_OVER]: handleGameOverModeInput,
-      [GameState.SIM]: () => true,
+      [GameState.SIM]: () => false,
       [GameState.INSPECT]: handleInspectModeInput,
       [GameState.INTERACT]: handleInteractModeInput,
       [GameState.INTERACT_ACTION]: handleInteractActionModeInput,

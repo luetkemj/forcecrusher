@@ -133,6 +133,10 @@ function gameLoop() {
   const playerCanAct = state.turn === Turn.PLAYER && state.userInput !== null;
 
   if (state.gameState !== GameState.GAME) {
+    if (playerCanAct) {
+      runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
+    }
+
     if (state.gameState === GameState.SIM) {
       if (state.simulationTurnsLeft === 0) {
         setState((state: State) => {
@@ -141,10 +145,6 @@ function gameLoop() {
       } else {
         runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
       }
-    }
-
-    if (playerCanAct) {
-      runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
     }
 
     return;
