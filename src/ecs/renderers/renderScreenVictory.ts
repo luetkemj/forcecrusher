@@ -109,7 +109,7 @@ const getLootToken = () => {
       type: TokenType.Glyph,
       tileSet: TileSet.Kenny,
       char: sample(lootMetalChars) || lootMetalChars[0],
-      tint: sample(lootMetalColors) || lootGemColors[0],
+      tint: sample(lootMetalColors) || lootMetalColors[0],
     };
   }
 };
