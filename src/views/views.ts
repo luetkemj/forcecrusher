@@ -443,7 +443,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     layers: 1,
     tileSets: [TileSet.Text],
     tints: [0xffffff],
-    alphas: [0.1],
+    alphas: [1],
     visible: false,
     name: "screenVictory",
   },

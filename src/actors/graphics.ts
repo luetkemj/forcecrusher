@@ -1,9 +1,16 @@
 export enum chars {
+  "amulet1" = "amulet1",
+  "amulet2" = "amulet2",
+  "amulet3" = "amulet3",
+  "amulet4" = "amulet4",
   "armor" = "armor",
   "bottleEmpty" = "bottleEmpty",
   "bottleHalfFull" = "bottleHalfFull",
   "bottleFull" = "bottleFull",
+  "candelabra" = "candelabra",
   "club" = "club",
+  "coin" = "coin",
+  "coins" = "coins",
   "corpse" = "corpse",
   "cursor" = "cursor",
   "dagger" = "dagger",
@@ -12,6 +19,7 @@ export enum chars {
   "doorOpen" = "doorOpen",
   "fire" = "fire",
   "floor" = "floor",
+  "gem" = "gem",
   "grass" = "grass",
   "golem" = "golem",
   "mediumGrass" = "mediumGrass",
@@ -34,6 +42,7 @@ export enum chars {
   "stairsDown" = "stairsDown",
   "stairsUp" = "stairsUp",
   "tallGrass" = "tallGrass",
+  "tombstone" = "tombstone",
   "wall" = "wall",
   "weapon" = "weapon",
 }
@@ -55,6 +64,7 @@ export enum colors {
   "steel" = 0x9fa3a6, // #9fa3a6
   "wall" = 0x808080, // #808080
   "weapon" = 0xdaa520, // #daa520
+  "gold" = 0xffbc00,
   // base materials
   "wood" = 0x854e25,
   "cloth" = 0xddd6cd,
