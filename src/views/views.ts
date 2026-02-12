@@ -34,7 +34,6 @@ export type ViewId =
   | "screenVictory"
   | "screenTitle"
   | "screenDeath"
-  | "screenVictory"
   | "spellbook"
   | "loading";
 
