@@ -9,5 +9,11 @@ export const handleScreenVictoryMode = ({ key, gameState }: InputContext) => {
 
       return true;
     }
+
+    // Consume all keys while on the victory screen to avoid re-processing stale input.
+    return true;
   }
+
+  // Not in victory screen mode; let other handlers process this input.
+  return false;
 };
