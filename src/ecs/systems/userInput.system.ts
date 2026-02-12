@@ -16,7 +16,7 @@ import { handleMakerModePrefabSelectInput } from "../inputHandlers/makerModePref
 import { handleSavingModeInput } from "../inputHandlers/savingMode";
 import { handleSpellbookModeInput } from "../inputHandlers/spellbookMode";
 import { handleLoadingModeInput } from "../inputHandlers/loadingMode";
-import { handleScreenTitleMode } from "../inputHandlers/handleScreenTitleMode";
+import { handleScreenTitleMode } from "../inputHandlers/screenTitleMode";
 
 export interface InputContext {
   key: string;
