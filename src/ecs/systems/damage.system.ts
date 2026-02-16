@@ -170,7 +170,6 @@ const bleed = (
   amount: number,
   splash: boolean,
 ) => {
-  // const amount = random(0, 2, true);
   if (entity.vitalFluid && entity.position) {
     const vf = entity.vitalFluid;
 
