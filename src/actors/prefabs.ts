@@ -321,7 +321,7 @@ export const livingSpongePrefab: Entity = {
   attacks: [],
   damages: [],
   mass: 6,
-  material: Material.Bone,
+  material: Material.Paper,
   desiccate: {
     range: 1,
     rate: 0.5,
@@ -408,7 +408,6 @@ export const spellbookPrefab: Entity = {
   pickUp: true,
   mass: 1.5,
   material: Material.Paper,
-  destroyedByFire: true,
 };
 
 // spellscrolls
@@ -429,7 +428,6 @@ export const spellscrollPrefab: Entity = {
   pickUp: true,
   mass: 1.5,
   material: Material.Paper,
-  destroyedByFire: true,
 };
 
 // NOTE: Potions

@@ -3,7 +3,7 @@ import { getNeighbors, toPos, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
-import { DamageType } from "../enums";
+import { DamageType, Material } from "../enums";
 import createFOV from "../../lib/fov";
 import { colors } from "../../actors/graphics";
 
@@ -156,8 +156,18 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         world.removeComponent(actor, "onFire");
         world.removeComponent(actor, "flammable");
 
-        if (actor.destroyedByFire) {
-          world.addComponent(actor, "destroy", true);
+        if (actor.material) {
+          const materialsDestroyedByFire = [
+            Material.Wood,
+            Material.Leather,
+            Material.Cloth,
+            Material.Paper,
+            Material.Oil,
+            Material.Plant,
+          ];
+          if (materialsDestroyedByFire.includes(actor.material)) {
+            world.addComponent(actor, "destroy", true);
+          }
         }
 
         if (actor.mutable) {
