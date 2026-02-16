@@ -408,6 +408,7 @@ export const spellbookPrefab: Entity = {
   pickUp: true,
   mass: 1.5,
   material: Material.Paper,
+  destroyedByFire: true,
 };
 
 // spellscrolls
