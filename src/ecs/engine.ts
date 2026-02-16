@@ -17,7 +17,7 @@ import {
 } from "./enums";
 import { type State, getState, setState } from "./gameState";
 import { generateDungeon } from "../pcgn/dungeon";
-import { Pos, ZoneId, toPosId } from "../lib/grid";
+import { Pos, toPosId } from "../lib/grid";
 import { saveGameData as dbSave, loadGameData as dbLoad } from "./saveStore";
 import { handleUserInput } from "./inputHandlers/KeyMap";
 import { addLog, addToEAPMap, updatePosition } from "../lib/utils";
