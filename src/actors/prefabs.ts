@@ -428,6 +428,7 @@ export const spellscrollPrefab: Entity = {
   pickUp: true,
   mass: 1.5,
   material: Material.Paper,
+  destroyedByFire: true,
 };
 
 // NOTE: Potions

@@ -156,6 +156,10 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         world.removeComponent(actor, "onFire");
         world.removeComponent(actor, "flammable");
 
+        if (actor.destroyedByFire) {
+          world.addComponent(actor, "destroy", true);
+        }
+
         if (actor.mutable) {
           world.addComponent(actor, "mutateTo", { name: "burnt" });
         } else if (actor.appearance) {
