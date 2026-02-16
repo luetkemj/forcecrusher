@@ -196,6 +196,7 @@ export type Entity = {
   effects?: Array<Effect>;
   entityKind?: EntityKind;
   fluidContainer?: FluidContainer;
+  vitalFluid?: Fluids;
   flammable?: {
     ignitionChance: number;
     fuel: {

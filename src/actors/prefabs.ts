@@ -171,6 +171,7 @@ export const playerPrefab: Entity = {
   mass: 1,
   material: Material.Flesh,
   knownSpells: [inferno, desiccate, massKill, knock],
+  vitalFluid: Fluids.Blood,
 };
 
 // NOTE: Actors / Creatures
@@ -230,21 +231,7 @@ export const ratPrefab: Entity = {
   vision: { range: 3, visible: [] },
   mass: 0.8,
   material: Material.Flesh,
-  fluidContainer: {
-    corked: true,
-    maxVolume: 10,
-    outflow: true,
-    inflow: false,
-    fluids: {
-      blood: {
-        type: Fluids.Blood,
-        tint: colors.blood,
-        viscosity: 0.18,
-        minFlow: 0.5,
-        volume: 1,
-      },
-    },
-  },
+  vitalFluid: Fluids.Blood,
 };
 
 export const lavaGolemPrefab: Entity = {
@@ -300,6 +287,7 @@ export const lavaGolemPrefab: Entity = {
       },
     },
   },
+  vitalFluid: Fluids.Lava,
 };
 
 export const livingSpongePrefab: Entity = {

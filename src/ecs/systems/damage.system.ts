@@ -1,7 +1,14 @@
-import { random } from "lodash";
-import { addLog, colorEntity, getWearing } from "../../lib/utils";
+import { random, shuffle } from "lodash";
+import { addLog, colorEntity, getEAP, getWearing } from "../../lib/utils";
 import { Entity, IGameWorld } from "../engine";
 import { DamageType } from "../enums";
+import { Pos, getNeighbors, toPosId } from "../../lib/grid";
+import { viewConfigs } from "../../views/views";
+
+const mapBoundary = {
+  width: viewConfigs.map.width,
+  height: viewConfigs.map.height,
+};
 
 export const createDamageSystem = ({ world, registry }: IGameWorld) => {
   const damageQuery = world.with("damages").without("excludeFromSim");
@@ -78,7 +85,19 @@ export const createDamageSystem = ({ world, registry }: IGameWorld) => {
         if (totalDamage < 0) totalDamage = 0;
 
         if (target.health) {
+          const amount = totalDamage / target.health.current;
+
           target.health.current -= totalDamage;
+
+          if (target.health.current <= 0) {
+            // TODO: bleed commenserate to size of creature
+            // 1 small,
+            // 2 medium
+            // 3 large
+            bleed(target, registry, 1, true);
+          } else {
+            bleed(target, registry, amount, true);
+          }
         }
 
         // Log output
@@ -144,3 +163,53 @@ function getDamageReduction(armor?: Entity): number {
   const { min, max } = armor.damageReduction;
   return random(min, max);
 }
+
+const bleed = (
+  entity: Entity,
+  registry: Map<string, Entity>,
+  amount: number,
+  splash: boolean,
+) => {
+  if (entity.vitalFluid && entity.position) {
+    const vf = entity.vitalFluid;
+
+    let container;
+
+    if (!splash) {
+      const eAP = getEAP(toPosId(entity.position));
+      if (eAP) {
+        for (const eId of eAP) {
+          const candidate = registry.get(eId);
+          if (candidate?.fluidContainer) {
+            container = candidate;
+          }
+        }
+      }
+    } else {
+      const neighbors = [
+        entity.position,
+        ...shuffle(getNeighbors(entity.position, "all", mapBoundary, false)),
+      ] as Array<Pos>;
+
+      const pos = neighbors[0];
+
+      const eAP = getEAP(toPosId(pos));
+      if (eAP) {
+        for (const eId of eAP) {
+          const candidate = registry.get(eId);
+          if (candidate?.fluidContainer) {
+            container = candidate;
+          }
+        }
+      }
+    }
+
+    // find fluid container at location and spill vitals into it.
+    const fc = container?.fluidContainer;
+    if (fc) {
+      if (fc.fluids[vf]) {
+        fc.fluids[vf].volume += amount;
+      }
+    }
+  }
+};
