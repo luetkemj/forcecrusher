@@ -1,4 +1,4 @@
-import { IGameWorld } from "../engine";
+import { IGameWorld, Entity } from "../engine";
 import { getNeighbors, toPos, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
@@ -104,7 +104,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         }
       }
 
-      // update fire age, intensity and fuel remaining
+      // update fuel remaining
       if (actor.flammable.fuel.current > 0) {
         actor.flammable.fuel.current -= actor.onFire.intensity;
 
@@ -138,6 +138,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       if (!actor.onFire) continue;
 
       if (actor.health) {
+        const amount = getFireDamageAmount(actor);
         const damage = {
           attacker: null,
           instigator: actor.id,
@@ -148,7 +149,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
           damageAmounts: [
             {
               type: DamageType.Fire,
-              amount: actor.health.max / 5,
+              amount: amount,
               mod: 0,
             },
           ],
@@ -179,4 +180,29 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       }
     }
   };
+};
+
+const getFireDamageAmount = (entity: Entity) => {
+  if (!entity.flammable || !entity.onFire || !entity.health) return 0;
+
+  const { fuel } = entity.flammable;
+
+  const fuelMax = fuel.max;
+  const fuelBurned = fuel.max - fuel.current;
+  const intensity = entity.onFire.intensity;
+
+  if (fuelMax <= 0) return 0;
+
+  // How engulfed the entity is (0 → 1)
+  const burnFraction = fuelBurned / fuelMax;
+
+  // Fire ramps up over time
+  const ramp = burnFraction ** 1.5;
+
+  // Global tuning knob
+  const BASE_BURN_DAMAGE = 2;
+
+  const damage = BASE_BURN_DAMAGE * intensity * (1 + ramp * 3); // late fire gets scary
+
+  return Math.ceil(damage);
 };
