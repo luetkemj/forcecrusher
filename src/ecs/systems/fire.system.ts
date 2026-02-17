@@ -20,6 +20,15 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
     .with("opaque", "position")
     .without("excludeFromSim");
 
+  const materialsDestroyedByFire = [
+    Material.Wood,
+    Material.Leather,
+    Material.Cloth,
+    Material.Paper,
+    Material.Oil,
+    Material.Plant,
+  ];
+
   return function fireSystem() {
     for (const actor of onFireQuery) {
       // ensure position exists (miniplex typings don't narrow optional properties)
@@ -157,14 +166,6 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         world.removeComponent(actor, "flammable");
 
         if (actor.material) {
-          const materialsDestroyedByFire = [
-            Material.Wood,
-            Material.Leather,
-            Material.Cloth,
-            Material.Paper,
-            Material.Oil,
-            Material.Plant,
-          ];
           if (materialsDestroyedByFire.includes(actor.material)) {
             world.addComponent(actor, "destroy", true);
           }
