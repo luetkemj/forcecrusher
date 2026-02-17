@@ -124,7 +124,7 @@ export const playerPrefab: Entity = {
     tint: colors.player,
     tileSet: TileSet.Kenny,
   },
-  health: { max: 10, current: 10 },
+  health: { max: 30, current: 30 },
   legendable: true,
   name: "player",
   pc: true,
@@ -154,7 +154,6 @@ export const playerPrefab: Entity = {
     slots: 1,
   },
   damages: [],
-  immunities: [DamageType.Fire],
   attacks: [
     {
       name: "Kick",
