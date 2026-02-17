@@ -39,6 +39,18 @@ describe("renderLegend", () => {
       ]);
     });
 
+    test("max health less than divisor", () => {
+      const hearts = getHearts(2, 2, 10);
+
+      expect(hearts).toEqual([
+        {
+          fullHearts: 1,
+          halfHearts: 0,
+          emptyHearts: 0,
+        },
+      ]);
+    });
+
     test("with some damage", () => {
       const hearts = getHearts(30, 23, 10);
 

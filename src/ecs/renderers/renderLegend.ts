@@ -123,9 +123,16 @@ export const getHearts = (max: number, current: number, rowLength: number) => {
   const totalHearts = Math.ceil(max / DIVISOR);
   const cur = clamp(current, 0, max);
 
-  const fullHearts = Math.floor(cur / DIVISOR);
-  const halfHearts = cur % DIVISOR ? 1 : 0;
+  let fullHearts = Math.floor(cur / DIVISOR);
+  let halfHearts = cur % DIVISOR ? 1 : 0;
   const emptyHearts = totalHearts - fullHearts - halfHearts;
+
+  // Ensure that at full health we show only full hearts, even if max is not
+  // divisible by DIVISOR (so the last heart may have smaller capacity).
+  if (cur === max) {
+    fullHearts = totalHearts;
+    halfHearts = 0;
+  }
 
   const hearts = [
     ...Array(fullHearts).fill("full"),
