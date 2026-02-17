@@ -321,7 +321,7 @@ export const livingSpongePrefab: Entity = {
   attacks: [],
   damages: [],
   mass: 6,
-  material: Material.Bone,
+  material: Material.Paper,
   desiccate: {
     range: 1,
     rate: 0.5,

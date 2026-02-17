@@ -3,7 +3,7 @@ import { getNeighbors, toPos, toPosId } from "../../lib/grid";
 import type { Pos } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 import { getEAP } from "../../lib/utils";
-import { DamageType } from "../enums";
+import { DamageType, Material } from "../enums";
 import createFOV from "../../lib/fov";
 import { colors } from "../../actors/graphics";
 
@@ -19,6 +19,15 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
   const opaqueQuery = world
     .with("opaque", "position")
     .without("excludeFromSim");
+
+  const materialsDestroyedByFire = [
+    Material.Wood,
+    Material.Leather,
+    Material.Cloth,
+    Material.Paper,
+    Material.Oil,
+    Material.Plant,
+  ];
 
   return function fireSystem() {
     for (const actor of onFireQuery) {
@@ -155,6 +164,12 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       if (actor.flammable.fuel.current <= 0 && actor.onFire) {
         world.removeComponent(actor, "onFire");
         world.removeComponent(actor, "flammable");
+
+        if (actor.material) {
+          if (materialsDestroyedByFire.includes(actor.material)) {
+            world.addComponent(actor, "destroy", true);
+          }
+        }
 
         if (actor.mutable) {
           world.addComponent(actor, "mutateTo", { name: "burnt" });

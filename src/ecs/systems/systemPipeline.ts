@@ -6,6 +6,7 @@ import { createCloseSystem } from "../systems/close.system";
 import { createCursorSystem } from "../systems/cursor.system";
 import { createDamageSystem } from "../systems/damage.system";
 import { createDesiccateSystem } from "../systems/desiccate.system";
+import { createDestroySystem } from "./destroy.system";
 import { createDropSystem } from "../systems/drop.system";
 import { createFovSystem } from "../systems/fov.system";
 import { createFireSystem } from "../systems/fire.system";
@@ -44,6 +45,7 @@ const closeSystem = createCloseSystem(gameWorld);
 const cursorSystem = createCursorSystem(gameWorld);
 const damageSystem = createDamageSystem(gameWorld);
 const desiccateSystem = createDesiccateSystem(gameWorld);
+const destroySystem = createDestroySystem(gameWorld);
 const dropSystem = createDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
 const fireSystem = createFireSystem(gameWorld);
@@ -79,6 +81,7 @@ export const systems = {
   cursor: cursorSystem,
   damage: damageSystem,
   desiccate: desiccateSystem,
+  destroy: destroySystem,
   drop: dropSystem,
   fire: fireSystem,
   fluid: fluidSystem,
@@ -179,7 +182,7 @@ export const playerTurnPipeline: SystemPipeline = {
     systems.morgue,
     systems.drop,
   ],
-  postMain: [systems.fov, systems.mutable, systems.mixTints],
+  postMain: [systems.fov, systems.mutable, systems.mixTints, systems.destroy],
   render: [systems.render],
 };
 
@@ -213,6 +216,7 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.calculateFlammability,
     systems.mutable,
     systems.mixTints,
+    systems.destroy,
   ],
   render: [systems.render],
 };
@@ -274,7 +278,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     preInput: [],
     input: [systems.userInput],
     main: [systems.activeEffects, systems.drop, systems.tryRead],
-    postMain: [systems.fov],
+    postMain: [systems.fov, systems.destroy],
     render: [systems.render],
   },
 
@@ -282,7 +286,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     preInput: [],
     input: [systems.userInput],
     main: [systems.interact],
-    postMain: [systems.fov],
+    postMain: [systems.fov, systems.destroy],
     render: [systems.render],
   },
 
@@ -304,7 +308,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
       systems.morgue,
       systems.drop,
     ],
-    postMain: [systems.fov, systems.mutable, systems.mixTints],
+    postMain: [systems.fov, systems.mutable, systems.mixTints, systems.destroy],
     render: [systems.render],
   },
 
