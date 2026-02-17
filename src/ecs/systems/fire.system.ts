@@ -104,10 +104,9 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         }
       }
 
-      // update fire age, intensity and fuel remaining
+      // update fuel remaining
       if (actor.flammable.fuel.current > 0) {
         actor.flammable.fuel.current -= actor.onFire.intensity;
-        actor.onFire.age += 1;
 
         if (actor.fluidContainer && actor.fluidContainer.fluids.oil) {
           actor.fluidContainer.fluids.oil.volume -= actor.onFire.intensity;
