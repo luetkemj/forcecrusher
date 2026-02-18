@@ -53,7 +53,6 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
 
         world.addComponent(entity, "pickUp", true);
         world.addComponent(entity, "layer200", true);
-        world.addComponent(entity, "open", true);
 
         if (entity.fluidContainer) {
           world.removeComponent(entity, "desiccate");

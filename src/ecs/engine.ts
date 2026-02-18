@@ -271,7 +271,6 @@ export type Entity = {
     source?: boolean;
   };
   opaque?: true;
-  open?: true;
   openable?: {
     state: OpenState;
     isLocked?: { lockId: EntityId }; // keyId?: string;
