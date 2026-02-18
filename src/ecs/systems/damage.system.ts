@@ -135,8 +135,13 @@ export const createDamageSystem = ({ world, registry }: IGameWorld) => {
             }
           }
 
-          if (target.dead) {
-            logParts.push("but it's already dead.");
+          if (target.dead || target.destroyed) {
+            if (target.dead) {
+              logParts.push("but it's already dead.");
+            }
+            if (target.destroyed) {
+              logParts.push("but it's already destroyed.");
+            }
           } else {
             // Damage summary
             logParts.push(`for ${totalDamage}hp!`);

@@ -187,6 +187,7 @@ export type Entity = {
     denyList: Array<Fluids>;
   };
   destroy?: true;
+  destroyed?: true;
   dexterity?: number;
   door?: true;
   ears?: {

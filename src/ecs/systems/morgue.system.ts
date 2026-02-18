@@ -3,7 +3,9 @@ import { setState, State, GameState } from "../gameState";
 import { addLog, unWield, unWear, colorTag } from "../../lib/utils";
 
 export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
-  const livingQuery = world.with("health").without("dead", "excludeFromSim");
+  const livingQuery = world
+    .with("health")
+    .without("dead", "destroyed", "excludeFromSim");
 
   return function morgueSystem() {
     for (const entity of livingQuery) {
@@ -31,9 +33,12 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
 
         const entityTint = entity.appearance?.tint || 0x00ff00;
 
-        if (entity.ai) {
+        if (entity.living) {
+          world.removeComponent(entity, "living");
+          world.addComponent(entity, "dead", true);
           addLog(`${colorTag(entityTint)}${entity.name}§purple§ has died!`);
         } else {
+          world.addComponent(entity, "destroyed", true);
           addLog(
             `${colorTag(entityTint)}${entity.name}§purple§ has been destroyed!`,
           );
@@ -43,10 +48,12 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
         world.removeComponent(entity, "blocking");
         world.removeComponent(entity, "opaque");
         world.removeComponent(entity, "layer300");
+        world.removeComponent(entity, "openable");
+        world.removeComponent(entity, "legendable");
 
-        world.addComponent(entity, "dead", true);
         world.addComponent(entity, "pickUp", true);
         world.addComponent(entity, "layer200", true);
+        world.addComponent(entity, "open", true);
 
         if (entity.fluidContainer) {
           world.removeComponent(entity, "desiccate");
