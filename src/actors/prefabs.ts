@@ -80,6 +80,7 @@ const tile: Entity = {
 const being: Entity = {
   ...base,
   health: { max: 1, current: 1 },
+  living: true,
   blocking: true,
   layer300: true,
   name: "being",
@@ -708,6 +709,11 @@ export const doorPrefab: Entity = {
     tint: colors.wood,
     tileSet: TileSet.Kenny,
   },
+  appearanceCorpse: {
+    char: chars.doorBroken,
+    tint: colors.wood,
+    tileSet: TileSet.Kenny,
+  },
   name: "door",
   description: "A door",
   layer250: true,
@@ -839,6 +845,7 @@ export const grassPrefab: Entity = {
     tileSet: TileSet.Kenny,
   },
   health: { max: 10, current: 10 },
+  living: true,
   immunities: [DamageType.Fire],
   name: "grass",
   description: "Dry grass",

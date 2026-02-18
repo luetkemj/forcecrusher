@@ -23,7 +23,7 @@ export const castKill = (ctx: SpellContext) => {
   let success = false;
 
   for (const target of targets) {
-    if (target.health) {
+    if (target.health && target.living) {
       target.health.current = 0;
 
       success = true;

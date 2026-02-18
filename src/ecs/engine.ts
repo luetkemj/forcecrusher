@@ -187,6 +187,7 @@ export type Entity = {
     denyList: Array<Fluids>;
   };
   destroy?: true;
+  destroyed?: true;
   dexterity?: number;
   door?: true;
   ears?: {
@@ -251,6 +252,7 @@ export type Entity = {
   layer350?: true;
   layer400?: true;
   legendable?: true;
+  living?: true;
   locked?: true;
   material?: Material;
   mass?: number;
@@ -269,7 +271,6 @@ export type Entity = {
     source?: boolean;
   };
   opaque?: true;
-  open?: true;
   openable?: {
     state: OpenState;
     isLocked?: { lockId: EntityId }; // keyId?: string;

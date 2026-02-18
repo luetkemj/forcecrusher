@@ -15,6 +15,7 @@ export const kennyGFXMap = {
   cursor: 623,
   dagger: 329,
   default: 866,
+  doorBroken: 555,
   doorClosed: 551,
   doorOpen: 550,
   fire: 504,
