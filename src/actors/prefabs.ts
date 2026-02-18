@@ -60,7 +60,7 @@ const base: Entity = {
   name: "base",
 };
 
-const renderable: Entity = {
+const baseRenderable: Entity = {
   ...base,
   appearance: {
     char: chars.default,
@@ -71,19 +71,21 @@ const renderable: Entity = {
   name: "renderable",
 };
 
-const tile: Entity = {
-  ...base,
+const baseTile: Entity = {
+  ...baseRenderable,
   layer100: true,
   name: "tile",
 };
 
-const being: Entity = {
-  ...base,
+const baseBeing: Entity = {
+  ...baseRenderable,
   health: { max: 1, current: 1 },
   living: true,
   blocking: true,
+  pathThrough: true,
   layer300: true,
   name: "being",
+  legendable: true,
   baseArmorClass: 10,
   averageDamage: 0,
   strength: 10,
@@ -99,22 +101,29 @@ const being: Entity = {
   },
 };
 
+const baseMob: Entity = {
+  ...baseBeing,
+  ai: true,
+};
+
+const baseItem: Entity = {
+  ...baseRenderable,
+  layer200: true,
+  pickUp: true,
+};
+
 const baseWeapon: Entity = {
-  ...base,
-  ...renderable,
+  ...baseItem,
   appearance: {
     char: chars.weapon,
     tint: colors.steel,
     tileSet: TileSet.Kenny,
   },
-  layer200: true,
-  pickUp: true,
 };
 
 // NOTE: Player
 export const playerPrefab: Entity = {
-  ...renderable,
-  ...being,
+  ...baseBeing,
   odor: {
     strength: 10,
   },
@@ -175,23 +184,18 @@ export const playerPrefab: Entity = {
 
 // NOTE: Actors / Creatures
 export const ratPrefab: Entity = {
-  ...base,
-  ...renderable,
-  ...being,
+  ...baseMob,
   entityKind: EntityKind.Beast,
-  ai: true,
   appearance: {
-    char: chars.rat,
+    char: chars.mobRat,
     tint: colors.rat,
     tileSet: TileSet.Kenny,
   },
-  legendable: true,
   name: "rat",
   nose: { sensitivity: 0, detected: [] },
   ears: { sensitivity: 0, detected: [] },
   description:
     "A filthy, disease-ridden rodent with glowing eyes and a hungry squeak.",
-  pathThrough: true,
   health: { max: 5, current: 5 },
   baseArmorClass: 10,
   strength: 2,
@@ -234,22 +238,17 @@ export const ratPrefab: Entity = {
 };
 
 export const lavaGolemPrefab: Entity = {
-  ...base,
-  ...renderable,
-  ...being,
+  ...baseMob,
   entityKind: EntityKind.Humanoid,
-  ai: true,
   appearance: {
-    char: chars.golem,
+    char: chars.mobGolem,
     tint: colors.lava,
     tileSet: TileSet.Kenny,
   },
-  legendable: true,
   name: "lava golem",
   ears: { sensitivity: 3, detected: [] },
   nose: { sensitivity: 0, detected: [] },
   description: "A humanoid mass of lava, animated by forgotten magic.",
-  pathThrough: true,
   health: { max: 15, current: 15 },
   baseArmorClass: 10,
   strength: 10,
@@ -290,22 +289,17 @@ export const lavaGolemPrefab: Entity = {
 };
 
 export const livingSpongePrefab: Entity = {
-  ...base,
-  ...renderable,
-  ...being,
+  ...baseMob,
   entityKind: EntityKind.Beast,
-  ai: true,
   appearance: {
-    char: chars.sponge,
+    char: chars.mobSponge,
     tint: colors.paper,
     tileSet: TileSet.Kenny,
   },
-  legendable: true,
   name: "Living Sponge",
   ears: { sensitivity: 0, detected: [] },
   nose: { sensitivity: 0, detected: [] },
   description: "A living sponge with an unquenchable thirst",
-  pathThrough: true,
   health: { max: 150, current: 150 },
   baseArmorClass: 10,
   strength: 10,
@@ -338,24 +332,83 @@ export const livingSpongePrefab: Entity = {
   renderFluidColor: true,
 };
 
-export const skeletonPrefab: Entity = {
-  ...base,
-  ...renderable,
-  ...being,
-  entityKind: EntityKind.Undead,
-  ai: true,
+export const goblinPrefab: Entity = {
+  ...baseMob,
+  entityKind: EntityKind.Humanoid,
   appearance: {
-    char: chars.skeleton,
+    char: chars.mobGoblin,
+    tint: colors.mobGoblin,
+    tileSet: TileSet.Kenny,
+  },
+  name: "goblin",
+  ears: { sensitivity: 5, detected: [] },
+  nose: { sensitivity: 5, detected: [] },
+  description: "Snarling spittin little brutes. Dumb as rocks.",
+  health: { max: 15, current: 15 },
+  baseArmorClass: 10,
+  strength: 10,
+  dexterity: 14,
+  constitution: 13,
+  intelligence: 4,
+  wisdom: 5,
+  charisma: 5,
+  immunities: [],
+  resistances: [],
+  vulnerabilities: [],
+  weaponSlot: {
+    name: "Weapon",
+    contents: [],
+    slots: 1,
+  },
+  armorSlot: {
+    name: "Armor",
+    contents: [],
+    slots: 1,
+  },
+  attacks: [
+    {
+      name: "Bite",
+      verb: "bites",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d1",
+      damageType: DamageType.Piercing,
+    },
+    {
+      name: "Claw",
+      verb: "claws",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d1",
+      damageType: DamageType.Slashing,
+    },
+  ],
+  damages: [],
+  container: {
+    name: "Haversack",
+    description:
+      "A simple medium sized burlap pouch with a single shoulder strap.",
+    slots: 3,
+    contents: [],
+  },
+  mass: 6,
+  material: Material.Flesh,
+  vitalFluid: Fluids.Blood,
+};
+
+export const skeletonPrefab: Entity = {
+  ...baseMob,
+  entityKind: EntityKind.Undead,
+  appearance: {
+    char: chars.mobSkeleton,
     tint: colors.skeleton,
     tileSet: TileSet.Kenny,
   },
-  legendable: true,
   name: "skeleton",
   ears: { sensitivity: 5, detected: [] },
   nose: { sensitivity: 5, detected: [] },
   description:
     "A brittle warrior from another age, still fighting long after death forgot it.",
-  pathThrough: true,
   health: { max: 10, current: 10 },
   baseArmorClass: 10,
   strength: 10,
@@ -391,8 +444,7 @@ export const skeletonPrefab: Entity = {
 
 // spellBooks
 export const spellbookPrefab: Entity = {
-  ...base,
-  ...renderable,
+  ...baseItem,
   appearance: {
     char: chars.spellbook,
     tint: colors.paper,
@@ -402,16 +454,13 @@ export const spellbookPrefab: Entity = {
   name: "Spellbook",
   description:
     "A tome filled with glyphs and rituals. Read it to learn a spell.",
-  layer200: true,
-  pickUp: true,
   mass: 1.5,
   material: Material.Paper,
 };
 
 // spellscrolls
 export const spellscrollPrefab: Entity = {
-  ...base,
-  ...renderable,
+  ...baseItem,
   appearance: {
     char: chars.spellscroll,
     tint: colors.paper,
@@ -421,16 +470,13 @@ export const spellscrollPrefab: Entity = {
   name: "Spellscroll",
   description:
     "Weather paper adorned with glowing runes. Read it to cast a spell.",
-  layer200: true,
-  pickUp: true,
   mass: 1.5,
   material: Material.Paper,
 };
 
 // NOTE: Potions
 export const healthPotionPrefab: Entity = {
-  ...base,
-  ...renderable,
+  ...baseItem,
   appearance: {
     char: chars.potion,
     tint: colors.potion,
@@ -441,15 +487,12 @@ export const healthPotionPrefab: Entity = {
   description: "A syrupy red liquid in a small glass vile",
   readable: { type: ReadableType.Text, message: "Drink me" },
   effects: [{ component: "health", delta: 10 }],
-  layer200: true,
-  pickUp: true,
   mass: 0.8,
   material: Material.Glass,
 };
 
 export const bottlePrefab: Entity = {
-  ...base,
-  ...renderable,
+  ...baseItem,
   appearance: {
     char: chars.bottleEmpty,
     tint: colors.glass,
@@ -457,8 +500,6 @@ export const bottlePrefab: Entity = {
   },
   name: "Bottle",
   description: "An empty glass bottle",
-  layer200: true,
-  pickUp: true,
   mass: 0.8,
   material: Material.Glass,
   fluidContainer: {
@@ -528,8 +569,7 @@ export const bottlePrefab: Entity = {
 
 // NOTE: Items
 export const skulltoothPrefab: Entity = {
-  ...base,
-  ...renderable,
+  ...baseItem,
   appearance: {
     char: chars.skulltooth,
     tint: colors.bone,
@@ -537,8 +577,6 @@ export const skulltoothPrefab: Entity = {
   },
   name: "The Skulltooth",
   description: "A large tooth carved into the shape of a skull",
-  layer200: true,
-  pickUp: true,
   kickable: {
     noiseLevel: 3,
     breakable: true,
@@ -548,8 +586,7 @@ export const skulltoothPrefab: Entity = {
 };
 
 export const rockPrefab: Entity = {
-  ...base,
-  ...renderable,
+  ...baseItem,
   appearance: {
     char: chars.rock,
     tint: colors.rock,
@@ -557,8 +594,6 @@ export const rockPrefab: Entity = {
   },
   name: "Rock",
   description: "A small, jagged stone—barely useful, unless thrown.",
-  layer200: true,
-  pickUp: true,
   kickable: {
     noiseLevel: 3,
     breakable: true,
@@ -682,8 +717,7 @@ export const daggerPrefab: Entity = {
 };
 
 export const leatherArmor: Entity = {
-  ...base,
-  ...renderable,
+  ...baseItem,
   appearance: {
     char: chars.armor,
     tint: colors.leather,
@@ -701,9 +735,7 @@ export const leatherArmor: Entity = {
 
 // NOTE: Interactive Structures
 export const doorPrefab: Entity = {
-  ...base,
-  ...renderable,
-  ...tile,
+  ...baseTile,
   appearance: {
     char: chars.doorClosed,
     tint: colors.wood,
@@ -746,9 +778,7 @@ export const doorPrefab: Entity = {
 };
 
 export const stairsDownPrefab: Entity = {
-  ...base,
-  ...renderable,
-  ...tile,
+  ...baseTile,
   appearance: {
     char: chars.stairsDown,
     tint: colors.stairsDown,
@@ -763,9 +793,7 @@ export const stairsDownPrefab: Entity = {
 };
 
 export const stairsUpPrefab: Entity = {
-  ...base,
-  ...renderable,
-  ...tile,
+  ...baseTile,
   appearance: {
     char: chars.stairsUp,
     tint: colors.stairsUp,
@@ -781,9 +809,7 @@ export const stairsUpPrefab: Entity = {
 
 // NOTE: Terrain / Map Features
 export const wallPrefab: Entity = {
-  ...base,
-  ...renderable,
-  ...tile,
+  ...baseTile,
   appearance: {
     char: chars.wall,
     tint: colors.wall,
@@ -803,9 +829,7 @@ export const wallPrefab: Entity = {
 };
 
 export const floorPrefab: Entity = {
-  ...base,
-  ...renderable,
-  ...tile,
+  ...baseTile,
   appearance: {
     char: chars.floor,
     tint: colors.floor,
@@ -817,8 +841,7 @@ export const floorPrefab: Entity = {
 };
 
 export const fluidContainerPrefab: Entity = {
-  ...base,
-  ...renderable,
+  ...baseRenderable,
   name: "fluidContainer",
   layer150: true,
   appearance: {
@@ -831,9 +854,7 @@ export const fluidContainerPrefab: Entity = {
 };
 
 export const grassPrefab: Entity = {
-  ...base,
-  ...renderable,
-  ...tile,
+  ...baseTile,
   appearance: {
     char: chars.grass,
     tint: colors.plant,

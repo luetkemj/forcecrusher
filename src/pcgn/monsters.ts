@@ -1,15 +1,24 @@
-import { sample, times } from "lodash";
+import { random, sample, times } from "lodash";
 import { wield, wear } from "../lib/utils";
 import { calcAverageDamage } from "../lib/combat";
 import { spawn } from "../actors";
 import { type Pos } from "../lib/grid";
 import { Fluids } from "../ecs/enums";
 
-export const spawnRat = (position: Pos) => {
-  const rat = spawn("rat", { position });
-  rat.averageDamage = calcAverageDamage(rat);
+export const spawnGoblin = (position: Pos) => {
+  const mob = spawn("goblin", { position });
+  const weapon = spawn("dagger");
+  const armor = spawn("leatherArmor");
 
-  return rat;
+  if (random(0, 1)) {
+    wield(mob, weapon);
+  }
+
+  if (random(0, 1)) {
+    wear(mob, armor);
+  }
+
+  return mob;
 };
 
 export const spawnLavaGolem = (position: Pos) => {
@@ -19,10 +28,16 @@ export const spawnLavaGolem = (position: Pos) => {
   return golem;
 };
 
+export const spawnRat = (position: Pos) => {
+  const rat = spawn("rat", { position });
+  rat.averageDamage = calcAverageDamage(rat);
+
+  return rat;
+};
+
 export const spawnSkeleton = (position: Pos) => {
   const skeleton = spawn("skeleton", { position });
-  const randomWeapons = ["shortsword", "club", "dagger"] as const;
-  const weapon = spawn(sample(randomWeapons));
+  const weapon = spawn("shortsword");
   const armor = spawn("leatherArmor");
   times(1, () =>
     spawn("healthPotion", {

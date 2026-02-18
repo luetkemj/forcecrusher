@@ -23,6 +23,7 @@ import {
   spellbookPrefab,
   spellscrollPrefab,
   skulltoothPrefab,
+  goblinPrefab,
 } from "./prefabs";
 import { updatePosition } from "../lib/utils";
 import { Material } from "../ecs/enums";
@@ -33,9 +34,10 @@ export const prefabs = {
 
   // NOTE: Actors / Creatures
   lavaGolem: lavaGolemPrefab,
+  livingSponge: livingSpongePrefab,
+  goblin: goblinPrefab,
   rat: ratPrefab,
   skeleton: skeletonPrefab,
-  livingSponge: livingSpongePrefab,
 
   // NOTE: Potions
   healthPotion: healthPotionPrefab,

@@ -14,6 +14,7 @@ import {
 } from "../lib/grid";
 import { spawn } from "../actors";
 import {
+  spawnGoblin,
   spawnSkeleton,
   spawnRat,
   spawnLavaGolem,
@@ -282,7 +283,10 @@ export const generateDungeon = (zoneId: ZoneId) => {
     if (percentile > 10 && percentile <= 20) {
       spawnSkeleton(position);
     }
-    if (percentile > 20) {
+    if (percentile > 20 && percentile <= 30) {
+      spawnGoblin(position);
+    }
+    if (percentile > 30) {
       spawnRat(position);
     }
   });
