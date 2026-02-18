@@ -15,6 +15,7 @@ export enum chars {
   "cursor" = "cursor",
   "dagger" = "dagger",
   "default" = "default",
+  "doorBroken" = "doorBroken",
   "doorClosed" = "doorClosed",
   "doorOpen" = "doorOpen",
   "fire" = "fire",

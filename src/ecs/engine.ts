@@ -251,6 +251,7 @@ export type Entity = {
   layer350?: true;
   layer400?: true;
   legendable?: true;
+  living?: true;
   locked?: true;
   material?: Material;
   mass?: number;
