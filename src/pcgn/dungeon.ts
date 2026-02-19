@@ -19,6 +19,7 @@ import {
   spawnRat,
   spawnLavaGolem,
   spawnLivingSponge,
+  spawnOgre,
 } from "./monsters";
 import { spawnSpellscroll } from "./items";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
@@ -286,7 +287,12 @@ export const generateDungeon = (zoneId: ZoneId) => {
     if (percentile > 20 && percentile <= 30) {
       spawnGoblin(position);
     }
-    if (percentile > 30) {
+
+    if (percentile > 30 && percentile <= 40) {
+      spawnOgre(position);
+    }
+
+    if (percentile > 40) {
       spawnRat(position);
     }
   });

@@ -215,13 +215,18 @@ function processAiSmells(
         const odorArray: (DetectedOdor | undefined)[] = Object.entries(
           odors,
         ).map(([eId, odorObj]) => {
-          // don't detect own odor
-          if (eId !== actor.id) {
-            return {
-              eId,
-              strength: odorObj.strength,
-              posId,
-            };
+          if (actor.nose) {
+            // don't detect own odor
+            if (eId !== actor.id) {
+              // don't detect smells below actor sensitivity
+              if (actor.nose.sensitivity <= odorObj.strength) {
+                return {
+                  eId,
+                  strength: odorObj.strength,
+                  posId,
+                };
+              }
+            }
           }
         });
 
@@ -243,13 +248,18 @@ function processAiHearing(
         const soundArray: (DetectedSound | undefined)[] = Object.entries(
           sounds,
         ).map(([eId, soundObj]) => {
-          // don't detect own odor
-          if (eId !== actor.id) {
-            return {
-              eId,
-              strength: soundObj.strength,
-              posId,
-            };
+          if (actor.ears) {
+            // don't detect own odor
+            if (eId !== actor.id) {
+              // only detect things louder than sensitivity
+              if (actor.ears.sensitivity <= soundObj.strength) {
+                return {
+                  eId,
+                  strength: soundObj.strength,
+                  posId,
+                };
+              }
+            }
           }
         });
 

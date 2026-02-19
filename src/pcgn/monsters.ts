@@ -21,6 +21,13 @@ export const spawnGoblin = (position: Pos) => {
   return mob;
 };
 
+export const spawnOgre = (position: Pos) => {
+  const mob = spawn("ogre", { position });
+  mob.averageDamage = calcAverageDamage(mob);
+
+  return mob;
+};
+
 export const spawnLavaGolem = (position: Pos) => {
   const golem = spawn("lavaGolem", { position });
   golem.averageDamage = calcAverageDamage(golem);
