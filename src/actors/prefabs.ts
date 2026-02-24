@@ -399,6 +399,67 @@ export const goblinPrefab: Entity = {
   vitalFluid: Fluids.Blood,
 };
 
+export const owlbearPrefab: Entity = {
+  ...baseMob,
+  entityKind: EntityKind.Beast,
+  appearance: {
+    char: chars.mobOwlbear,
+    tint: colors.wood,
+    tileSet: TileSet.Kenny,
+  },
+  name: "owlbear",
+  ears: { sensitivity: 7, detected: [] },
+  nose: { sensitivity: 0, detected: [] },
+  vision: { range: 20, visible: [] },
+  description: "Bird? Beast? All killing machine.",
+  health: { max: 35, current: 35 },
+  baseArmorClass: 10,
+  strength: 18,
+  dexterity: 10,
+  constitution: 15,
+  intelligence: 6,
+  wisdom: 18,
+  charisma: 5,
+  immunities: [],
+  resistances: [],
+  vulnerabilities: [],
+  weaponSlot: {
+    name: "Weapon",
+    contents: [],
+    slots: 1,
+  },
+  armorSlot: {
+    name: "Armor",
+    contents: [],
+    slots: 1,
+  },
+  attacks: [
+    {
+      name: "Beak",
+      verb: "pecks",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d6",
+      useModifier: true,
+      damageType: DamageType.Piercing,
+      knockbackDistance: 0,
+    },
+
+    {
+      name: "Claw",
+      verb: "claws",
+      toHit: 0,
+      attackType: "melee",
+      damageRoll: "1d6",
+      damageType: DamageType.Slashing,
+      useModifier: true,
+    },
+  ],
+  damages: [],
+  mass: 18,
+  material: Material.Flesh,
+};
+
 export const ogrePrefab: Entity = {
   ...baseMob,
   entityKind: EntityKind.Humanoid,
@@ -462,7 +523,7 @@ export const ogrePrefab: Entity = {
     slots: 10,
     contents: [],
   },
-  mass: 6,
+  mass: 20,
   material: Material.Flesh,
 };
 
