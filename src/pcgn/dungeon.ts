@@ -14,10 +14,13 @@ import {
 } from "../lib/grid";
 import { spawn } from "../actors";
 import {
+  spawnGoblin,
   spawnSkeleton,
   spawnRat,
   spawnLavaGolem,
   spawnLivingSponge,
+  spawnOgre,
+  spawnOwlbear,
 } from "./monsters";
 import { spawnSpellscroll } from "./items";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
@@ -266,7 +269,6 @@ export const generateDungeon = (zoneId: ZoneId) => {
     tile.tags?.has(DungeonTags.Floor),
   );
 
-  // randomly place enemies on open tiles
   times(10 + depth, () => {
     const openTile = sample(floorTiles);
     if (!openTile) return;
@@ -274,17 +276,30 @@ export const generateDungeon = (zoneId: ZoneId) => {
     const percentile = new DiceRoll("d100").total;
 
     if (percentile <= 5) {
-      spawnLavaGolem(position);
+      return spawnLavaGolem(position);
     }
-    if (percentile > 5 && percentile <= 10) {
-      spawnLivingSponge(position);
+
+    if (percentile <= 10) {
+      return spawnOwlbear(position);
     }
-    if (percentile > 10 && percentile <= 20) {
-      spawnSkeleton(position);
+
+    if (percentile <= 20) {
+      return spawnOgre(position);
     }
-    if (percentile > 20) {
-      spawnRat(position);
+
+    if (percentile <= 30) {
+      return spawnSkeleton(position);
     }
+
+    if (percentile <= 40) {
+      return spawnGoblin(position);
+    }
+
+    if (percentile <= 50) {
+      return spawnLivingSponge(position);
+    }
+
+    return spawnRat(position);
   });
 
   // increase number of enemies as you get deeper

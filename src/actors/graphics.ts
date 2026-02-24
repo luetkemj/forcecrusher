@@ -22,18 +22,23 @@ export enum chars {
   "floor" = "floor",
   "gem" = "gem",
   "grass" = "grass",
-  "golem" = "golem",
   "heartEmpty" = "heartEmpty",
   "heartFull" = "heartFull",
   "heartHalf" = "heartHalf",
   "mediumGrass" = "mediumGrass",
-  "owlbear" = "owlbear",
+
+  "mobGolem" = "mobGolem",
+  "mobGoblin" = "mobGoblin",
+  "mobOgre" = "mobOgre",
+  "mobOwlbear" = "mobOwlbear",
+  "mobRat" = "mobRat",
+  "mobSkeleton" = "mobSkeleton",
+  "mobSponge" = "mobSponge",
+
   "player" = "player",
   "potion" = "potion",
-  "rat" = "rat",
   "rock" = "rock",
   "shortsword" = "shortsword",
-  "skeleton" = "skeleton",
   "skulltooth" = "skulltooth",
   "spellbook" = "spellbook",
   "spellscroll" = "spellscroll",
@@ -42,7 +47,6 @@ export enum chars {
   "spellTypeFire" = "spellTypeFire",
   "spellTypeKill" = "spellTypeKill",
   "spellTypeKnock" = "spellTypeKnock",
-  "sponge" = "sponge",
   "stairsDown" = "stairsDown",
   "stairsUp" = "stairsUp",
   "tallGrass" = "tallGrass",
@@ -58,6 +62,7 @@ export enum colors {
   "armor" = 0xdaa520, // #daa520
   "default" = 0x00ff77, // #00ff77
   "floor" = 0x333333, // #333333
+  "mobGoblin" = 0xa1df50,
   "player" = 0xffffff, // #ffffff
   "potion" = 0xdb1835, // #db1835
   "rat" = 0xd65a77, // #d65a77
