@@ -4,30 +4,11 @@ import { TileSet } from "../enums";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 import { Entity } from "../engine";
-
-import {
-  goblinPrefab,
-  lavaGolemPrefab,
-  livingSpongePrefab,
-  ogrePrefab,
-  owlbearPrefab,
-  ratPrefab,
-  skeletonPrefab,
-} from "../../actors/prefabs";
-
-export const beastiary = [
-  lavaGolemPrefab,
-  livingSpongePrefab,
-  ratPrefab,
-  skeletonPrefab,
-  goblinPrefab,
-  owlbearPrefab,
-  ogrePrefab,
-];
+import { bestiary } from "../../actors";
 
 export const renderScreenBeastiaryDetail = ({ views }: RendererContext) => {
   const { activeIndex } = getState().screenBeastiary;
-  const prefab = beastiary[activeIndex];
+  const prefab = bestiary[activeIndex];
 
   const view = views.screenBeastiaryDetail;
   if (getState().gameState === GameState.SCREEN_BEASTIARY) {
@@ -171,7 +152,7 @@ const senses = (prefab: Entity) => {
           type: TokenType.Text,
           value: sense,
           tint: colors.text,
-          parsetags: true,
+          parseTags: true,
         },
       ],
       alignH: AlignH.Left,
@@ -188,10 +169,10 @@ const immunities = (prefab: Entity) => {
           type: TokenType.Text,
           value: `Immunities: ${immunities.join(", ")}`,
           tint: colors.text,
-          parsetags: true,
+          parseTags: true,
         },
       ],
-      alignh: AlignH.Left,
+      alignH: AlignH.Left,
     },
   ];
 };
@@ -207,10 +188,10 @@ const resistances = (prefab: Entity) => {
           type: TokenType.Text,
           value: `Resistances: ${resistances.join(", ")}`,
           tint: colors.text,
-          parsetags: true,
+          parseTags: true,
         },
       ],
-      alignh: AlignH.Left,
+      alignH: AlignH.Left,
     },
   ];
 };
@@ -226,10 +207,10 @@ const vulnerabilities = (prefab: Entity) => {
           type: TokenType.Text,
           value: `Vulnerabilities: ${vulnerabilities.join(", ")}`,
           tint: colors.text,
-          parsetags: true,
+          parseTags: true,
         },
       ],
-      alignh: AlignH.Left,
+      alignH: AlignH.Left,
     },
   ];
 };

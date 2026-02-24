@@ -1,10 +1,9 @@
+import { bestiary } from "../../actors";
 import { chars, colors } from "../../actors/graphics";
 import { AlignH, AlignV, TokenType } from "../../lib/canvas";
 import { TileSet } from "../enums";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
-
-import { beastiary } from "./renderScreenBeastiaryDetail";
 
 export const renderScreenBeastiary = ({ views }: RendererContext) => {
   const view = views.screenBeastiary;
@@ -16,7 +15,7 @@ export const renderScreenBeastiary = ({ views }: RendererContext) => {
           tokens: [
             {
               type: TokenType.Text,
-              value: "Beastiary",
+              value: "Bestiary",
               tint: colors.text,
             },
           ],
@@ -24,7 +23,7 @@ export const renderScreenBeastiary = ({ views }: RendererContext) => {
         },
       ],
       [{ string: "" }],
-      ...beastiary.map((prefab, index) => [
+      ...bestiary.map((prefab, index) => [
         {
           tokens: [
             {

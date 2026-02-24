@@ -73,6 +73,16 @@ export const prefabs = {
   grass: grassPrefab,
 };
 
+export const bestiary = [
+  goblinPrefab,
+  lavaGolemPrefab,
+  livingSpongePrefab,
+  ratPrefab,
+  skeletonPrefab,
+  ogrePrefab,
+  owlbearPrefab,
+];
+
 export const spawn = (
   prefab: keyof typeof prefabs,
   components: Partial<Entity> = {},

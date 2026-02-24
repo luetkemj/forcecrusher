@@ -1,10 +1,10 @@
 import { InputContext } from "../systems/userInput.system";
 import { GameState, State, getState } from "../gameState";
 import { Keys } from "./KeyMap";
-import { beastiary } from "../renderers/renderScreenBeastiaryDetail";
+import { bestiary } from "../../actors";
 
 export const handleScreenBeastiaryMode = ({ key, setState }: InputContext) => {
-  const length = beastiary.length || 0;
+  const length = bestiary.length || 0;
   const { activeIndex } = getState().screenBeastiary;
 
   if (key === Keys.BEASTIARY || key === Keys.CANCEL) {

@@ -433,7 +433,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0xffffff],
     alphas: [1],
     visible: false,
-    name: "screenBeastiary",
+    name: "screenBeastiaryDetail",
   },
 
   screenTitle: {
