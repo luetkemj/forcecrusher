@@ -35,4 +35,6 @@ export const handleScreenBeastiaryMode = ({ key, setState }: InputContext) => {
     }
     return true;
   }
+
+  return true;
 };
