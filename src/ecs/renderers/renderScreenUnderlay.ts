@@ -8,6 +8,7 @@ export const renderScreenUnderlay = ({ views }: RendererContext) => {
       GameState.SCREEN_TITLE,
       GameState.GAME_OVER,
       GameState.SCREEN_VICTORY,
+      GameState.SCREEN_BEASTIARY,
     ];
     const { gameState } = getState();
 

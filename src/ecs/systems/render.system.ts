@@ -25,6 +25,8 @@ import { renderLoading } from "../renderers/renderLoading";
 import { renderScreenUnderlay } from "../renderers/renderScreenUnderlay";
 import { renderScreenTitle } from "../renderers/renderScreenTitle";
 import { renderScreenGameOver } from "../renderers/renderScreenGameOver";
+import { renderScreenBeastiary } from "../renderers/renderScreenBeastiary";
+import { renderScreenBeastiaryDetail } from "../renderers/renderScreenBeastiaryDetail";
 import { renderScreenVictory } from "../renderers/renderScreenVictory";
 import { TileSet } from "../enums";
 
@@ -143,6 +145,8 @@ export const createRenderSystem = ({ world, registry }: IGameWorld) => {
     renderSaving(ctx);
     renderLoading(ctx);
     renderScreenUnderlay(ctx);
+    renderScreenBeastiary(ctx);
+    renderScreenBeastiaryDetail(ctx);
     renderScreenGameOver(ctx);
     renderScreenVictory(ctx);
     renderScreenTitle(ctx);

@@ -74,6 +74,14 @@ export const handleGameModeInput = async ({
       return true;
     }
 
+    if (key === Keys.BEASTIARY) {
+      setState(
+        (state: State) => (state.gameState = GameState.SCREEN_BEASTIARY),
+      );
+
+      return true;
+    }
+
     if (key === Keys.TOGGLE_SEE_VISION_MAP) {
       setState(
         (state: State) =>
