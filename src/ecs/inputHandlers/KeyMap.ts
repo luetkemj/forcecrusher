@@ -29,6 +29,7 @@ export const Keys = {
   REMOVE: "r",
   READ: "R",
   FILL: "f",
+  BEASTIARY: "B",
 
   STAIRS_DOWN: ">",
   STAIRS_UP: "<",

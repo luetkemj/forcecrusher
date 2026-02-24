@@ -30,6 +30,8 @@ export type ViewId =
   | "makerModeLeft"
   | "makerModeTop"
   | "saving"
+  | "screenBeastiary"
+  | "screenBeastiaryDetail"
   | "screenUnderlay"
   | "screenVictory"
   | "screenTitle"
@@ -404,6 +406,34 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     alphas: [1],
     visible: false,
     name: "screenUnderlay",
+  },
+
+  screenBeastiary: {
+    kind: "ui",
+    width: 25,
+    height: 44,
+    x: 0,
+    y: 0,
+    layers: 1,
+    tileSets: [TileSet.Text],
+    tints: [0xffffff],
+    alphas: [1],
+    visible: false,
+    name: "screenBeastiary",
+  },
+
+  screenBeastiaryDetail: {
+    kind: "ui",
+    width: 75,
+    height: 44,
+    x: 24,
+    y: 0,
+    layers: 1,
+    tileSets: [TileSet.Text],
+    tints: [0xffffff],
+    alphas: [1],
+    visible: false,
+    name: "screenBeastiaryDetail",
   },
 
   screenTitle: {

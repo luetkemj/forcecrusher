@@ -25,6 +25,7 @@ export const enum GameState {
   SAVING = "SAVING",
   LOADING = "LOADING",
   SIM = "SIM",
+  SCREEN_BEASTIARY = "SCREEN_BEASTIARY",
   SCREEN_TITLE = "SCREEN_TITLE",
   SCREEN_VICTORY = "SCREEN_VICTORY",
 }
@@ -55,6 +56,8 @@ export type Views = {
   saving?: UIPanelView;
   spellbook?: UIPanelView;
   loading?: UIPanelView;
+  screenBeastiary?: UIPanelView;
+  screenBeastiaryDetail?: UIPanelView;
   screenUnderlay?: MapView;
   screenVictory?: UIPanelView;
   screenTitle?: UIPanelView;
@@ -94,6 +97,7 @@ export type State = {
     touch: string;
   };
   simulationTurnsLeft: number;
+  screenBeastiary: { activeIndex: number };
   spellAoe: PosId[];
   spellbookActiveIndex: number;
   spellName: SpellName | null;
@@ -138,6 +142,9 @@ const state: State = {
   odorMap: new Map(),
   soundMap: new Map(),
   visionMap: [],
+  screenBeastiary: {
+    activeIndex: 0,
+  },
   senses: {
     sight: "",
     hearing: "",
