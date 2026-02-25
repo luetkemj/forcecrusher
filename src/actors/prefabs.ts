@@ -53,6 +53,17 @@ const fluidContainerComponent = {
   },
 };
 
+const wetComponent = {
+  wet: {
+    fluids: {
+      blood: { level: 0 },
+      lava: { level: 0 },
+      oil: { level: 0 },
+      water: { level: 0 },
+    },
+  },
+};
+
 // NOTE: generics
 const base: Entity = {
   id: "",
@@ -69,6 +80,7 @@ const baseRenderable: Entity = {
   },
   position: { x: 0, y: 0 },
   name: "renderable",
+  ...wetComponent,
 };
 
 const baseTile: Entity = {

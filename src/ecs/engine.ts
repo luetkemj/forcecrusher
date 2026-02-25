@@ -104,6 +104,14 @@ export interface Fluid {
   source?: boolean;
 }
 
+export interface Wetness {
+  level: number;
+}
+
+export interface Wet {
+  fluids: Record<Fluids, Wetness>;
+}
+
 export interface Mutation {
   name: string;
   next?: string;
@@ -209,6 +217,11 @@ export type Entity = {
     heatTolerance: number;
     explosive: boolean;
     source?: boolean;
+    multipliers?: {
+      explosive: boolean;
+      maxIntensity: number;
+      ignitionChance: number;
+    };
   };
   mutable?: {
     current: string;
@@ -329,6 +342,7 @@ export type Entity = {
     slots: number;
   };
   weaponType?: WeaponType;
+  wet?: Wet;
   wisdom?: number;
 };
 
