@@ -2,7 +2,6 @@ import { IGameWorld } from "../engine";
 import { getEAP } from "../../lib/utils";
 import { Fluids } from "../enums";
 import { toPosId } from "../../lib/grid";
-import { some } from "lodash";
 
 const flammableFluidTypes = [Fluids.Lava, Fluids.Oil];
 

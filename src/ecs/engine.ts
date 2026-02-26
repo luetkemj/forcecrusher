@@ -221,6 +221,7 @@ export type Entity = {
       explosive: boolean;
       maxIntensity: number;
       ignitionChance: number;
+      extinguishChance: number;
     };
   };
   mutable?: {
