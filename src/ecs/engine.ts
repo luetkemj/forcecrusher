@@ -217,7 +217,7 @@ export type Entity = {
     heatTolerance: number;
     explosive: boolean;
     source?: boolean;
-    multipliers?: {
+    multipliers: {
       explosive: boolean;
       maxIntensity: number;
       ignitionChance: number;

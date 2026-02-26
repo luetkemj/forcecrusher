@@ -10,7 +10,10 @@ import {
   ReadableType,
   TileSet,
 } from "../ecs/enums";
+import { createBlood } from "../spells/spellbook/createBlood";
+import { createWater } from "../spells/spellbook/createWater";
 import { desiccate } from "../spells/spellbook/desiccate";
+import { ignite } from "../spells/spellbook/ignite";
 import { inferno } from "../spells/spellbook/inferno";
 import { knock } from "../spells/spellbook/knock";
 import { massKill } from "../spells/spellbook/massKill";
@@ -190,7 +193,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [inferno, desiccate, massKill, knock],
+  knownSpells: [ignite, createWater, createBlood, desiccate, massKill, knock],
   vitalFluid: Fluids.Blood,
 };
 

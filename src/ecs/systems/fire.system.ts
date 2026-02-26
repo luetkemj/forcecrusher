@@ -42,8 +42,32 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
 
       let neighbors: Pos[] = [];
 
-      if (actor.flammable.explosive) {
-        // if actor is explosive, get neighbors withing a range
+      let extinguish = false;
+
+      // if entity is wet (soaked), remove onFire and bail
+      if (Math.random() <= actor.flammable.multipliers.extinguishChance) {
+        if (actor.pc) {
+          console.log("extinguish", actor);
+        }
+        extinguish = true;
+      }
+
+      if (extinguish) {
+        world.removeComponent(actor, "onFire");
+
+        if (actor.mutable) {
+          // TODO: 'singed' mutation that returns to base color after a time
+          // burnt should be only for burned to death
+          world.addComponent(actor, "mutateTo", { name: "burnt" });
+        } else if (actor.appearance) {
+          actor.appearance.tint = colors.ash;
+        }
+
+        continue;
+      }
+
+      if (actor.flammable.explosive || actor.flammable.multipliers?.explosive) {
+        // if actor is explosive, get neighbors within a range
         // TODO: FOV creates a square - not the best shape.
         const FOV = createFOV(
           opaqueQuery,
@@ -69,35 +93,24 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
       for (const pos of neighbors) {
         const eap = getEAP(toPosId(pos));
         if (eap) {
-          let canIgnite = true;
-
-          // if fluid is in same tile
           for (const eid of eap) {
             const entity = registry.get(eid);
+            if (entity && !entity.onFire) {
+              const { flammable } = entity;
+              if (flammable) {
+                // if multiplier is -1, entity cannot light on fire.
+                if (flammable.multipliers.ignitionChance === -1) continue;
 
-            if (entity?.fluidContainer) {
-              const { lava, oil, blood, water } = entity.fluidContainer.fluids;
+                const ignitionChance =
+                  flammable.ignitionChance +
+                  flammable.multipliers.ignitionChance;
 
-              if (lava && lava.volume > 0) continue;
-              if (oil && oil.volume > 0) continue;
-
-              if (blood && blood.volume > 0) {
-                canIgnite = false;
-              }
-
-              if (water && water.volume > 0) {
-                canIgnite = false;
-              }
-            }
-          }
-
-          if (!canIgnite) continue;
-
-          for (const eid of eap) {
-            const entity = registry.get(eid);
-            if (entity && entity.flammable && !entity.onFire) {
-              if (Math.random() < entity.flammable.ignitionChance) {
-                world.addComponent(entity, "onFire", { intensity: 1, age: 0 });
+                if (Math.random() < ignitionChance) {
+                  world.addComponent(entity, "onFire", {
+                    intensity: 1,
+                    age: 0,
+                  });
+                }
               }
             }
           }
