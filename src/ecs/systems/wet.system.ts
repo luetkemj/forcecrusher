@@ -31,28 +31,17 @@ export const createWetSystem = ({ world, registry }: IGameWorld) => {
 
             // if volume is greater than current wet level
             if (volume > actor.wet.fluids[fluidType].level) {
-              // limit wetness to max of 1
-              // do I need both of these checks? They both run...
-              if (volume > 1) {
-                actor.wet.fluids[fluidType].level = 1;
-
-                if (flammableFluidTypes.includes(fluidType)) {
-                  actor.flammable.multipliers.extinguishChance = 0;
-                } else {
-                  actor.flammable.multipliers.extinguishChance = 1;
-                }
-              }
-
               if (volume > 0) {
+                const wetLevel = Math.max(0, Math.min(1, volume));
+
                 // clamp wetness between 0 and 1
-                actor.wet.fluids[fluidType].level = Math.max(
-                  0,
-                  Math.min(1, volume),
-                );
+                actor.wet.fluids[fluidType].level = wetLevel;
 
                 if (flammableFluidTypes.includes(fluidType)) {
+                  // cannot exstinguish if flammable
                   actor.flammable.multipliers.extinguishChance = 0;
                 } else {
+                  // 75% extinguish if wet at all
                   actor.flammable.multipliers.extinguishChance = 0.75;
                 }
               }
