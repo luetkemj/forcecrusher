@@ -107,4 +107,8 @@ export const handleInteractActionModeInput = ({
       return true;
     }
   }
+
+  // if any other key is pressed
+  // afterInteractCleanUp();
+  return true;
 };
