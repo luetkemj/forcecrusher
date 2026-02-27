@@ -32,6 +32,7 @@ import { createTryFillSystem } from "../systems/tryFill.system";
 import { createTryReadSystem } from "../systems/tryRead.system";
 import { createUncastSpellSystem } from "./uncastSpell.system";
 import { createUserInputSystem } from "../systems/userInput.system";
+import { createWetSystem } from "../systems/wet.system";
 import { gameWorld } from "../engine";
 import { GameState } from "../gameState";
 import { styleDuration } from "./debug-utils";
@@ -71,6 +72,7 @@ const tryFillSystem = createTryFillSystem(gameWorld);
 const tryReadSystem = createTryReadSystem(gameWorld);
 const userInputSystem = createUserInputSystem(gameWorld);
 const uncastSpellSystem = createUncastSpellSystem(gameWorld);
+const wetSystem = createWetSystem(gameWorld);
 
 export const systems = {
   activeEffects: activeEffectsSystem,
@@ -107,6 +109,7 @@ export const systems = {
   tryRead: tryReadSystem,
   userInput: userInputSystem,
   uncastSpellSystem: uncastSpellSystem,
+  wet: wetSystem,
 };
 
 type SystemFn = () => void;
@@ -192,6 +195,7 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.tryCastSpell,
     systems.uncastSpellSystem,
     systems.fluid,
+    systems.wet,
     systems.fire,
     systems.desiccate,
     systems.activeEffects,

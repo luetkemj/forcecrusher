@@ -241,6 +241,12 @@ export function calculateFlammability(material: Material, mass: number) {
       heatTolerance: base?.heatTolerance ?? 999,
       explosive: base.explosive,
       source: base.source,
+      multipliers: {
+        explosive: false,
+        maxIntensity: 0,
+        ignitionChance: 0,
+        extinguishChance: 0,
+      },
     };
   }
 
@@ -256,5 +262,11 @@ export function calculateFlammability(material: Material, mass: number) {
     heatTolerance: base.heatTolerance,
     explosive: base.explosive,
     source: base.source,
+    multipliers: {
+      explosive: false,
+      maxIntensity: 0,
+      ignitionChance: 0,
+      extinguishChance: 0,
+    },
   };
 }

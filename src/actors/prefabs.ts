@@ -10,13 +10,15 @@ import {
   ReadableType,
   TileSet,
 } from "../ecs/enums";
+import { createBlood } from "../spells/spellbook/createBlood";
+import { createWater } from "../spells/spellbook/createWater";
 import { desiccate } from "../spells/spellbook/desiccate";
-import { inferno } from "../spells/spellbook/inferno";
+import { ignite } from "../spells/spellbook/ignite";
 import { knock } from "../spells/spellbook/knock";
 import { massKill } from "../spells/spellbook/massKill";
 import { colors, chars } from "./graphics";
 
-const fluidContainerComponent = {
+export const fluidContainerComponent = {
   corked: false,
   maxVolume: 10,
   inflow: true,
@@ -53,6 +55,17 @@ const fluidContainerComponent = {
   },
 };
 
+const wetComponent = {
+  wet: {
+    fluids: {
+      blood: { level: 0, tint: colors.blood },
+      lava: { level: 0, tint: colors.lava },
+      oil: { level: 0, tint: colors.oil },
+      water: { level: 0, tint: colors.water },
+    },
+  },
+};
+
 // NOTE: generics
 const base: Entity = {
   id: "",
@@ -69,6 +82,7 @@ const baseRenderable: Entity = {
   },
   position: { x: 0, y: 0 },
   name: "renderable",
+  ...wetComponent,
 };
 
 const baseTile: Entity = {
@@ -178,7 +192,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [inferno, desiccate, massKill, knock],
+  knownSpells: [ignite, createWater, createBlood, desiccate, massKill, knock],
   vitalFluid: Fluids.Blood,
 };
 
