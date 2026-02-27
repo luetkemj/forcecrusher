@@ -5,12 +5,7 @@ import { GameState, getState } from "../gameState";
 import { chars, colors } from "../../actors/graphics";
 import { TileSet } from "../enums";
 import { clamp, times } from "lodash";
-import {
-  getFluidWetPercent,
-  getWetColor,
-  getWetPercent,
-  isDry,
-} from "../systems/wet.system";
+import { getFluidWetPercent, isDry } from "../systems/wet.system";
 
 export const renderLegend = ({ views, queries }: RendererContext) => {
   // don't render when in SIM mode.

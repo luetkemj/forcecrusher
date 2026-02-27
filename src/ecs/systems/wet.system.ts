@@ -1,4 +1,4 @@
-import { IGameWorld, Entity, Wet, Wetness } from "../engine";
+import { IGameWorld, Entity, Wetness } from "../engine";
 import { getEAP, mixHexWeighted } from "../../lib/utils";
 import { Fluids } from "../enums";
 import { toPosId } from "../../lib/grid";
