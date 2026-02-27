@@ -1,4 +1,4 @@
-import { IGameWorld, Entity } from "../engine";
+import { IGameWorld, Entity, Wet, Wetness } from "../engine";
 import { getEAP, mixHexWeighted } from "../../lib/utils";
 import { Fluids } from "../enums";
 import { toPosId } from "../../lib/grid";
@@ -46,16 +46,15 @@ export const createWetSystem = ({ world, registry }: IGameWorld) => {
                   actor.flammable.multipliers.extinguishChance = 0.75;
                 }
               }
-            } else {
-              if (volume <= 0) {
-                // dry out
-                const level = Math.max(
-                  0,
-                  actor.wet.fluids[fluidType].level - 0.05,
-                );
-                actor.wet.fluids[fluidType].level = level;
-              }
             }
+          }
+
+          // natural dry-out over time, regardless of position or nearby fluid containers
+          for (const fluidType of Object.values(Fluids)) {
+            const wetState = actor.wet.fluids[fluidType];
+            if (!wetState || wetState.level <= 0) continue;
+            const level = Math.max(0, wetState.level - 0.05);
+            wetState.level = level;
           }
         }
       }
@@ -148,6 +147,7 @@ const resetMultipliers = (actor: Entity) => {
     actor.flammable.multipliers.explosive = false;
     actor.flammable.multipliers.ignitionChance = 0;
     actor.flammable.multipliers.maxIntensity = 0;
+    actor.flammable.multipliers.extinguishChance = 0;
   }
 };
 
@@ -191,4 +191,8 @@ export const getWetPercent = (actor: Entity) => {
   const wetPercent = round(Math.min(totalWetLevel, 1) * 100);
 
   return wetPercent;
+};
+
+export const getFluidWetPercent = (fluid: Wetness) => {
+  return round(Math.min(fluid.level, 1) * 100);
 };

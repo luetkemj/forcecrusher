@@ -5,7 +5,12 @@ import { GameState, getState } from "../gameState";
 import { chars, colors } from "../../actors/graphics";
 import { TileSet } from "../enums";
 import { clamp, times } from "lodash";
-import { getWetColor, getWetPercent, isDry } from "../systems/wet.system";
+import {
+  getFluidWetPercent,
+  getWetColor,
+  getWetPercent,
+  isDry,
+} from "../systems/wet.system";
 
 export const renderLegend = ({ views, queries }: RendererContext) => {
   // don't render when in SIM mode.
@@ -45,28 +50,6 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
                 type: TokenType.Text,
                 value: ` BURNING`,
                 tint: colors.fire,
-                parseTags: true,
-              },
-            ],
-          },
-        ]);
-      }
-
-      if (!isDry(entity)) {
-        const wetColor = getWetColor(entity) || colors.text;
-        rows.push([
-          {
-            tokens: [
-              {
-                type: TokenType.Glyph,
-                tileSet: TileSet.Kenny,
-                char: chars.spellTypeFluid,
-                tint: wetColor,
-              },
-              {
-                type: TokenType.Text,
-                value: ` WET ${getWetPercent(entity)}%`,
-                tint: wetColor,
                 parseTags: true,
               },
             ],
@@ -131,6 +114,77 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
 
           rows.push([{ tokens }]);
         });
+      }
+      if (!isDry(entity)) {
+        if (!entity.wet) return;
+
+        const waterPercent = getFluidWetPercent(entity.wet.fluids.water);
+        const bloodPercent = getFluidWetPercent(entity.wet.fluids.blood);
+        const lavaPercent = getFluidWetPercent(entity.wet.fluids.lava);
+        const oilPercent = getFluidWetPercent(entity.wet.fluids.oil);
+
+        rows.push([
+          {
+            tokens: [
+              {
+                type: TokenType.Glyph,
+                tileSet: TileSet.Kenny,
+                char: chars.spellTypeFluid,
+                tint: colors.water,
+                alpha: waterPercent ? 1 : 0.15,
+              },
+              {
+                type: TokenType.Text,
+                value: `${waterPercent}% `,
+                tint: colors.water,
+                parseTags: true,
+                alpha: waterPercent ? 1 : 0.15,
+              },
+              {
+                type: TokenType.Glyph,
+                tileSet: TileSet.Kenny,
+                char: chars.spellTypeFluid,
+                tint: colors.blood,
+                alpha: bloodPercent ? 1 : 0.35,
+              },
+              {
+                type: TokenType.Text,
+                value: `${bloodPercent}% `,
+                tint: colors.blood,
+                parseTags: true,
+                alpha: bloodPercent ? 1 : 0.35,
+              },
+              {
+                type: TokenType.Glyph,
+                tileSet: TileSet.Kenny,
+                char: chars.spellTypeFluid,
+                tint: colors.lava,
+                alpha: lavaPercent ? 1 : 0.15,
+              },
+              {
+                type: TokenType.Text,
+                value: `${lavaPercent}% `,
+                tint: colors.lava,
+                parseTags: true,
+                alpha: lavaPercent ? 1 : 0.15,
+              },
+              {
+                type: TokenType.Glyph,
+                tileSet: TileSet.Kenny,
+                char: chars.spellTypeFluid,
+                tint: colors.oil,
+                alpha: oilPercent ? 1 : 0.1,
+              },
+              {
+                type: TokenType.Text,
+                value: `${oilPercent}% `,
+                tint: colors.oil,
+                parseTags: true,
+                alpha: oilPercent ? 1 : 0.1,
+              },
+            ],
+          },
+        ]);
       }
 
       rows.push([]);
