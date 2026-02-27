@@ -15,9 +15,9 @@ export const createWetSystem = ({ world, registry }: IGameWorld) => {
         const eap = getEAP(toPosId(actor.position));
         if (!eap) continue;
 
-        // TODO: check if in inventory and if container is wet and if waterproof - if yes, get wet
+        // TODO: #170 check if in inventory and if container is wet and if waterproof - if yes, get wet
 
-        // TODO: material should affect absorption and dryout
+        // TODO: #169 material should affect absorption and dryout
 
         for (const eid of eap) {
           const entity = registry.get(eid);
