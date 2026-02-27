@@ -132,6 +132,13 @@ export enum SpellCastType {
   // Spellstaff = "spellstaff",
 }
 
+export enum AttackType {
+  Melee = "melee",
+  MeleeSpell = "meleeSpell",
+  Ranged = "ranged",
+  RangedSpell = "rangedSpell",
+}
+
 export enum TileSet {
   Ascii = "ascii",
   Text = "text",

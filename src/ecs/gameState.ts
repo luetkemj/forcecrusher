@@ -96,6 +96,9 @@ export type State = {
     taste: string;
     touch: string;
   };
+  morgue: {
+    causeOfDeath: string;
+  };
   simulationTurnsLeft: number;
   screenBeastiary: { activeIndex: number };
   spellAoe: PosId[];
@@ -138,6 +141,7 @@ const state: State = {
   interactActions: "",
   interaction: {},
   makerModePrefabSelectIndex: 0,
+  morgue: { causeOfDeath: "Unknown" },
   eapMap: new Map(),
   odorMap: new Map(),
   soundMap: new Map(),

@@ -9,13 +9,14 @@ import {
   Fluids,
   ReadableType,
   TileSet,
+  AttackType,
 } from "../ecs/enums";
 import { createBlood } from "../spells/spellbook/createBlood";
 import { createWater } from "../spells/spellbook/createWater";
 import { desiccate } from "../spells/spellbook/desiccate";
 import { ignite } from "../spells/spellbook/ignite";
+import { kill } from "../spells/spellbook/kill";
 import { knock } from "../spells/spellbook/knock";
-import { massKill } from "../spells/spellbook/massKill";
 import { colors, chars } from "./graphics";
 
 export const fluidContainerComponent = {
@@ -181,8 +182,9 @@ export const playerPrefab: Entity = {
     {
       name: "Kick",
       verb: "kicks",
+      verbPastTense: "kicked",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d1",
       damageType: DamageType.Bludgeoning,
       natural: true,
@@ -192,7 +194,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [ignite, createWater, createBlood, desiccate, massKill, knock],
+  knownSpells: [ignite, createWater, createBlood, desiccate, kill, knock],
   vitalFluid: Fluids.Blood,
 };
 
@@ -226,16 +228,18 @@ export const ratPrefab: Entity = {
     {
       name: "Bite",
       verb: "bites",
+      verbPastTense: "bit",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d1",
       damageType: DamageType.Piercing,
     },
     {
       name: "Claw",
       verb: "claws",
+      verbPastTense: "clawed",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d1",
       damageType: DamageType.Slashing,
     },
@@ -279,8 +283,9 @@ export const lavaGolemPrefab: Entity = {
     {
       name: "Lava Punch",
       verb: "punches",
+      verbPastTense: "punched",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d6",
       damageType: DamageType.Fire,
     },
@@ -386,16 +391,18 @@ export const goblinPrefab: Entity = {
     {
       name: "Bite",
       verb: "bites",
+      verbPastTense: "bit",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d1",
       damageType: DamageType.Piercing,
     },
     {
       name: "Claw",
       verb: "claws",
+      verbPastTense: "clawed",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d1",
       damageType: DamageType.Slashing,
     },
@@ -451,8 +458,9 @@ export const owlbearPrefab: Entity = {
     {
       name: "Beak",
       verb: "pecks",
+      verbPastTense: "pecked",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d6",
       useModifier: true,
       damageType: DamageType.Piercing,
@@ -462,8 +470,9 @@ export const owlbearPrefab: Entity = {
     {
       name: "Claw",
       verb: "claws",
+      verbPastTense: "clawed",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d6",
       damageType: DamageType.Slashing,
       useModifier: true,
@@ -512,8 +521,9 @@ export const ogrePrefab: Entity = {
     {
       name: "Bash",
       verb: "bashes",
+      verbPastTense: "bashed",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d6",
       damageType: DamageType.Bludgeoning,
       knockbackDistance: 2,
@@ -522,8 +532,9 @@ export const ogrePrefab: Entity = {
     {
       name: "Stomp",
       verb: "stomps",
+      verbPastTense: "stomped",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d6",
       damageType: DamageType.Bludgeoning,
       useModifier: true,
@@ -763,8 +774,9 @@ export const shortswordPrefab: Entity = {
     {
       name: "Stab",
       verb: "stabs",
+      verbPastTense: "stabbed",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d6+2",
       damageType: DamageType.Piercing,
       useModifier: true,
@@ -772,8 +784,9 @@ export const shortswordPrefab: Entity = {
     {
       name: "Slash",
       verb: "slashes",
+      verbPastTense: "slashed",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d6+2",
       damageType: DamageType.Slashing,
       useModifier: true,
@@ -781,8 +794,9 @@ export const shortswordPrefab: Entity = {
     {
       name: "Bash",
       verb: "bashes",
+      verbPastTense: "bashed",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d4+2",
       damageType: DamageType.Bludgeoning,
       useModifier: true,
@@ -807,8 +821,9 @@ export const clubPrefab: Entity = {
     {
       name: "Smash",
       verb: "smashes",
+      verbPastTense: "smashed",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d4",
       damageType: DamageType.Bludgeoning,
       useModifier: true,
@@ -833,16 +848,18 @@ export const daggerPrefab: Entity = {
     {
       name: "Pummel",
       verb: "pummels",
+      verbPastTense: "pummeled",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d4",
       damageType: DamageType.Bludgeoning,
     },
     {
       name: "Stab",
       verb: "stabs",
+      verbPastTense: "stabbed",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d4",
       damageType: DamageType.Piercing,
       useModifier: true,
@@ -850,8 +867,9 @@ export const daggerPrefab: Entity = {
     {
       name: "Slash",
       verb: "slashes",
+      verbPastTense: "slashed",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d4",
       damageType: DamageType.Slashing,
       useModifier: true,
@@ -1011,6 +1029,7 @@ export const grassPrefab: Entity = {
     tileSet: TileSet.Kenny,
   },
   health: { max: 10, current: 10 },
+  damages: [],
   living: true,
   immunities: [DamageType.Fire],
   name: "grass",

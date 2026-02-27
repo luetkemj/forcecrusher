@@ -1,6 +1,7 @@
-import { IGameWorld } from "../engine";
+import { Entity, IGameWorld } from "../engine";
 import { setState, State, GameState } from "../gameState";
 import { addLog, unWield, unWear, colorTag } from "../../lib/utils";
+import { capitalize } from "lodash";
 
 export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
   const livingQuery = world
@@ -60,10 +61,75 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
         }
 
         if (entity.pc) {
-          setState((state: State) => (state.gameState = GameState.GAME_OVER));
+          const cod = getPCCauseOfDeath(entity, registry) || "Unknown?";
+
+          setState((state: State) => {
+            state.gameState = GameState.GAME_OVER;
+            state.morgue.causeOfDeath = cod;
+          });
           console.log("Game Over!");
         }
       }
     }
   };
+};
+
+const getPCCauseOfDeath = (entity: Entity, registry: Map<string, Entity>) => {
+  if (!entity.cod) return;
+
+  let cod = ``;
+
+  const { attack, reason } = entity.cod;
+
+  const attacker = registry.get(entity.cod.attacker || "");
+  const instigator = registry.get(entity.cod.instigator || "");
+  const responder = registry.get(entity.cod.responder || "");
+  const target = registry.get(entity.cod.target || "");
+  const weapon = registry.get(entity.cod.weapon || "");
+
+  // if null, is environment
+  if (attacker) {
+    if (attack) {
+      if (attack.attackType.includes("Spell")) {
+        cod += `${capitalize(attack.verbPastTense)} ${attack.name} `;
+      } else {
+        cod += `${capitalize(attack.verbPastTense)} to death `;
+      }
+    } else {
+      cod += `Killed `;
+    }
+
+    if (attacker) {
+      if (attacker.pc) {
+        cod += `on self`;
+      } else {
+        cod += `by ${attacker.name} `;
+      }
+    } else {
+      cod += `by environment `;
+    }
+
+    if (weapon) {
+      cod += `with a ${weapon.name}`;
+    }
+    // who initiated the action (who kicked the door)
+  } else if (instigator) {
+    if (instigator.pc) {
+      cod += `${capitalize(reason)} `;
+
+      if (responder) {
+        cod += `${responder.name} `;
+      }
+
+      cod += `to death`;
+    }
+    // what was interacted with (the door)
+  } else if (responder) {
+    // who took the damage
+  } else if (target) {
+  }
+
+  console.log(entity.cod);
+
+  return cod;
 };

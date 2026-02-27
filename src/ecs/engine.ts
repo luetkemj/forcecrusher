@@ -1,5 +1,6 @@
 import { World } from "miniplex";
 import {
+  AttackType,
   DamageType,
   DispelName,
   EffectType,
@@ -46,11 +47,12 @@ type Effect = {
 export type Attack = {
   name: string;
   toHit: number;
-  attackType: "melee" | "ranged";
+  attackType: AttackType;
   damageRoll: string;
   damageType: DamageType;
   useModifier?: true;
   verb: string;
+  verbPastTense: string;
   magical?: true;
   natural?: true;
   knockbackDistance?: number; // TODO: this should be based on target weight and actor strenth/skill
@@ -174,6 +176,7 @@ export type Entity = {
   blocking?: true;
   calculateFlammability?: true;
   charisma?: number;
+  cod?: Damage;
   consumable?: true;
   constitution?: number;
   container?: {
