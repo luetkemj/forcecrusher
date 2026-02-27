@@ -5,6 +5,7 @@ import { GameState, getState } from "../gameState";
 import { chars, colors } from "../../actors/graphics";
 import { TileSet } from "../enums";
 import { clamp, times } from "lodash";
+import { getWetColor, getWetPercent, isDry } from "../systems/wet.system";
 
 export const renderLegend = ({ views, queries }: RendererContext) => {
   // don't render when in SIM mode.
@@ -44,6 +45,28 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
                 type: TokenType.Text,
                 value: ` BURNING`,
                 tint: colors.fire,
+                parseTags: true,
+              },
+            ],
+          },
+        ]);
+      }
+
+      if (!isDry(entity)) {
+        const wetColor = getWetColor(entity) || colors.text;
+        rows.push([
+          {
+            tokens: [
+              {
+                type: TokenType.Glyph,
+                tileSet: TileSet.Kenny,
+                char: chars.spellTypeFluid,
+                tint: wetColor,
+              },
+              {
+                type: TokenType.Text,
+                value: ` WET ${getWetPercent(entity)}%`,
+                tint: wetColor,
                 parseTags: true,
               },
             ],

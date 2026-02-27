@@ -106,6 +106,7 @@ export interface Fluid {
 
 export interface Wetness {
   level: number;
+  tint: number;
 }
 
 export interface Wet {

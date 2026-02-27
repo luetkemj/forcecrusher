@@ -1,7 +1,8 @@
-import { IGameWorld } from "../engine";
-import { getEAP } from "../../lib/utils";
+import { IGameWorld, Entity } from "../engine";
+import { getEAP, mixHexWeighted } from "../../lib/utils";
 import { Fluids } from "../enums";
 import { toPosId } from "../../lib/grid";
+import { map, reduce, round } from "lodash";
 
 const flammableFluidTypes = [Fluids.Lava, Fluids.Oil];
 
@@ -134,6 +135,60 @@ export const createWetSystem = ({ world, registry }: IGameWorld) => {
           actor.flammable.multipliers.extinguishChance = 0;
         }
       }
+
+      if (isDry(actor)) {
+        resetMultipliers(actor);
+      }
     }
   };
+};
+
+const resetMultipliers = (actor: Entity) => {
+  if (actor.flammable) {
+    actor.flammable.multipliers.explosive = false;
+    actor.flammable.multipliers.ignitionChance = 0;
+    actor.flammable.multipliers.maxIntensity = 0;
+  }
+};
+
+export const isDry = (actor: Entity) => {
+  if (!actor.wet) return true;
+  const fluids = Object.values(Fluids);
+
+  let dry = true;
+  for (const fluid of fluids) {
+    if (actor.wet.fluids[fluid].level > 0) dry = false;
+  }
+
+  return dry;
+};
+
+export const getWetColor = (actor: Entity) => {
+  if (!actor.wet) return;
+
+  if (isDry(actor)) return;
+
+  const colors = map(actor.wet.fluids, (x) => x.tint);
+  const weights = map(actor.wet.fluids, (x) => x.level);
+  const wetColor = mixHexWeighted(colors, weights);
+
+  if (wetColor) {
+    return wetColor;
+  }
+};
+
+export const getWetPercent = (actor: Entity) => {
+  if (!actor.wet) return 0;
+  const totalWetLevel = reduce(
+    actor.wet.fluids,
+    (acc, val) => {
+      acc += val.level;
+      return acc;
+    },
+    0,
+  );
+
+  const wetPercent = round(Math.min(totalWetLevel, 1) * 100);
+
+  return wetPercent;
 };

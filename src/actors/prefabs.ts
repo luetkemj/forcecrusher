@@ -18,7 +18,7 @@ import { knock } from "../spells/spellbook/knock";
 import { massKill } from "../spells/spellbook/massKill";
 import { colors, chars } from "./graphics";
 
-const fluidContainerComponent = {
+export const fluidContainerComponent = {
   corked: false,
   maxVolume: 10,
   inflow: true,
@@ -58,10 +58,10 @@ const fluidContainerComponent = {
 const wetComponent = {
   wet: {
     fluids: {
-      blood: { level: 0 },
-      lava: { level: 0 },
-      oil: { level: 0 },
-      water: { level: 0 },
+      blood: { level: 0, tint: colors.blood },
+      lava: { level: 0, tint: colors.lava },
+      oil: { level: 0, tint: colors.oil },
+      water: { level: 0, tint: colors.water },
     },
   },
 };
