@@ -67,7 +67,6 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
             state.gameState = GameState.GAME_OVER;
             state.morgue.causeOfDeath = cod;
           });
-          console.log("Game Over!");
         }
       }
     }
