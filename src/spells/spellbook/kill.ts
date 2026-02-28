@@ -30,13 +30,9 @@ export const castKill = (ctx: SpellContext) => {
 
   for (const target of targets) {
     if (target.health && target.living) {
-      // add damage component instead
-      //
       if (target.damages) {
         const damage: Damage = {
           attacker: caster.id,
-          // instigator: caster.id,
-          // responder: target.id,
           target: target.id,
           attack: {
             name: "Kill",
@@ -59,9 +55,9 @@ export const castKill = (ctx: SpellContext) => {
           ],
         };
         target.damages.push(damage);
-      }
 
-      success = true;
+        success = true;
+      }
     }
   }
 
