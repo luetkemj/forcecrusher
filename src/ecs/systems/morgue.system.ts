@@ -2,6 +2,7 @@ import { Entity, IGameWorld } from "../engine";
 import { setState, State, GameState } from "../gameState";
 import { addLog, unWield, unWear, colorTag } from "../../lib/utils";
 import { capitalize } from "lodash";
+import { AttackType } from "../enums";
 
 export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
   const livingQuery = world
@@ -89,7 +90,10 @@ const getPCCauseOfDeath = (entity: Entity, registry: Map<string, Entity>) => {
   // if null, is environment
   if (attacker) {
     if (attack) {
-      if (attack.attackType.includes("Spell")) {
+      if (
+        attack.attackType === AttackType.MeleeSpell ||
+        attack.attackType === AttackType.RangedSpell
+      ) {
         cod += `${capitalize(attack.verbPastTense)} ${attack.name} `;
       } else {
         cod += `${capitalize(attack.verbPastTense)} to death `;
