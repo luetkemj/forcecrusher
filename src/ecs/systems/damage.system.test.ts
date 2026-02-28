@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, afterEach } from "vitest";
 import type { Entity, IGameWorld, Attack, Damage } from "../engine";
-import { DamageType } from "../enums";
+import { AttackType, DamageType } from "../enums";
 import { setupTestGameWorld } from "./test-utils";
 import { createDamageSystem } from "./damage.system";
 import { getState, setState, State } from "../gameState";
@@ -21,10 +21,11 @@ describe("damage.system", () => {
     attack = {
       name: "Punch",
       toHit: 0,
-      attackType: "melee",
+      attackType: AttackType.Melee,
       damageRoll: "1d4",
       damageType: DamageType.Bludgeoning,
       verb: "hits",
+      verbPastTense: "hit",
       useModifier: true,
     };
     target = {

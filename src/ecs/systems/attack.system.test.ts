@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, vi } from "vitest";
 import type { Entity, IGameWorld } from "../engine";
-import { DamageType } from "../enums";
+import { AttackType, DamageType } from "../enums";
 import { setupTestGameWorld } from "./test-utils";
 import { createAttackSystem } from "./attack.system";
 
@@ -29,10 +29,11 @@ describe("attack.system", () => {
         {
           name: "Punch",
           toHit: 0,
-          attackType: "melee",
+          attackType: AttackType.Melee,
           damageRoll: "1d4",
           damageType: DamageType.Bludgeoning,
           verb: "hits",
+          verbPastTense: "hit",
           useModifier: true,
         },
       ],
@@ -57,8 +58,9 @@ describe("attack.system", () => {
         {
           name: "Stab",
           verb: "stabs",
+          verbPastTense: "stabbed",
           toHit: 0,
-          attackType: "melee",
+          attackType: AttackType.Melee,
           damageRoll: "1d6+2",
           damageType: DamageType.Piercing,
           useModifier: true,
