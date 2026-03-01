@@ -15,6 +15,7 @@ export const handleInventoryModeInput = ({
 }: InputContext) => {
   if (key === Keys.INVENTORY || key === Keys.CANCEL) {
     setState((state: State) => (state.gameState = GameState.GAME));
+    return true;
   }
 
   const activeItemEId =
