@@ -17,6 +17,7 @@ import { desiccate } from "../spells/spellbook/desiccate";
 import { ignite } from "../spells/spellbook/ignite";
 import { kill } from "../spells/spellbook/kill";
 import { knock } from "../spells/spellbook/knock";
+import { massKill } from "../spells/spellbook/massKill";
 import { colors, chars } from "./graphics";
 
 export const fluidContainerComponent = {
@@ -182,7 +183,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [ignite, createWater, createBlood, desiccate, kill, knock],
+  knownSpells: [ignite, createWater, createBlood, desiccate, kill, massKill, knock],
   vitalFluid: Fluids.Blood,
 };
 
@@ -783,7 +784,7 @@ export const doorPrefab: Entity = {
   },
   vulnerabilities: [DamageType.Bludgeoning, DamageType.Force],
   resistances: [DamageType.Piercing],
-  immunities: [DamageType.Poison, DamageType.Psychic],
+  immunities: [DamageType.Poison, DamageType.Psychic, DamageType.Necrotic],
   effectImmunities: [EffectType.Knockback],
   baseArmorClass: 1,
   damages: [],

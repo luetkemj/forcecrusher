@@ -2,13 +2,7 @@ import { SpellContext } from "..";
 import { chars, colors } from "../../actors/graphics";
 import attacks from "../../attacks";
 import { Damage, Spell } from "../../ecs/engine";
-import {
-  AttackType,
-  DamageType,
-  SpellName,
-  SpellShape,
-  TileSet,
-} from "../../ecs/enums";
+import { DamageType, SpellName, SpellShape, TileSet } from "../../ecs/enums";
 import { addLog } from "../../lib/utils";
 
 export const kill: Spell = {
@@ -30,25 +24,23 @@ export const castKill = (ctx: SpellContext) => {
   let success = false;
 
   for (const target of targets) {
-    if (target.health && target.living) {
-      if (target.damages) {
-        const damage: Damage = {
-          attacker: caster.id,
-          target: target.id,
-          attack: attacks.rangedSpell.kill(),
-          critical: false,
-          damageAmounts: [
-            {
-              type: DamageType.Necrotic,
-              amount: 1000,
-              mod: 0,
-            },
-          ],
-        };
-        target.damages.push(damage);
+    if (target.damages) {
+      const damage: Damage = {
+        attacker: caster.id,
+        target: target.id,
+        attack: attacks.rangedSpell.kill(),
+        critical: false,
+        damageAmounts: [
+          {
+            type: DamageType.Necrotic,
+            amount: 1000,
+            mod: 0,
+          },
+        ],
+      };
+      target.damages.push(damage);
 
-        success = true;
-      }
+      success = true;
     }
   }
 
