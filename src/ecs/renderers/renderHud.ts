@@ -34,6 +34,8 @@ export const renderHud = ({ views, queries }: RendererContext) => {
       wearingTint = wearing.appearance?.tint ?? colors.armor;
     }
 
+    const currency = player.coinPurse?.value || 0;
+
     if (view) {
       const rows = [
         [{ string: `Forcecrusher` }],
@@ -44,6 +46,23 @@ export const renderHud = ({ views, queries }: RendererContext) => {
         [],
         [{ string: `LV: 1` }],
         [{ string: `HP: ${player?.health?.current}/${player?.health?.max}` }],
+        [
+          {
+            tokens: [
+              {
+                type: TokenType.Glyph,
+                tileSet: TileSet.Kenny,
+                char: chars.coins,
+                tint: colors.gold,
+              },
+              {
+                type: TokenType.Text,
+                value: ` ${currency}`,
+                tint: colors.text,
+              },
+            ],
+          },
+        ],
         [],
         // wielding
         [

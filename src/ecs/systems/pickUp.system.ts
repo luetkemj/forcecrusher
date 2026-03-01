@@ -28,6 +28,24 @@ export const createPickUpSystem = ({ world, registry }: IGameWorld) => {
         break;
       }
 
+      if (entity.currency) {
+        if (pickerEntity.coinPurse) {
+          pickerEntity.coinPurse.value += entity.currency.value;
+
+          // coin can be removed from game
+          // engine needs an onremove listener and that needs to know when to
+          // DESTROY something like this or when it's just being off loaded.
+          // Likely a "destroy" component with a cleanup system that can handle
+          // the stuff
+          // world.remove(entity);
+          // for now, we just remove the position
+          removePosition(world, entity);
+          world.removeComponent(entity, "tryPickUp");
+        }
+
+        break;
+      }
+
       const { container } = pickerEntity;
       if (!container) {
         console.log(`Picker has no container`);

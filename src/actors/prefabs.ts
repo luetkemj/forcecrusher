@@ -149,6 +149,7 @@ export const playerPrefab: Entity = {
     tint: colors.player,
     tileSet: TileSet.Kenny,
   },
+  coinPurse: { value: 0 },
   health: { max: 30, current: 30 },
   legendable: true,
   name: "player",
@@ -661,7 +662,9 @@ export const coinPrefab: Entity = {
   description: "A shiny gold coin",
   mass: 0.1,
   material: Material.Metal,
-  currency: true,
+  currency: {
+    value: 1,
+  },
 };
 
 export const rockPrefab: Entity = {
