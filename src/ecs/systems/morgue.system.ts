@@ -102,14 +102,12 @@ const getPCCauseOfDeath = (entity: Entity, registry: Map<string, Entity>) => {
       cod += `Killed `;
     }
 
-    if (attacker) {
-      if (attacker.pc) {
-        cod += `on self`;
-      } else {
-        cod += `by ${attacker.name} `;
-      }
+    if (!attacker) {
+      cod += "by environment ";
+    } else if (attacker.pc) {
+      cod += "on self";
     } else {
-      cod += `by environment `;
+      cod += `by ${attacker.name} `;
     }
 
     if (weapon) {

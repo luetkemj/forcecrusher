@@ -1,5 +1,6 @@
 import { SpellContext } from "..";
 import { chars, colors } from "../../actors/graphics";
+import attacks from "../../attacks";
 import { Damage, Spell } from "../../ecs/engine";
 import {
   AttackType,
@@ -34,17 +35,7 @@ export const castKill = (ctx: SpellContext) => {
         const damage: Damage = {
           attacker: caster.id,
           target: target.id,
-          attack: {
-            name: "Kill",
-            toHit: 0,
-            attackType: AttackType.RangedSpell,
-            damageRoll: "1d1+1000",
-            damageType: DamageType.Necrotic,
-            useModifier: true,
-            verb: "casts",
-            verbPastTense: "cast",
-            magical: true,
-          },
+          attack: attacks.rangedSpell.kill(),
           critical: false,
           damageAmounts: [
             {

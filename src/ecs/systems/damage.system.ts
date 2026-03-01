@@ -95,8 +95,9 @@ export const createDamageSystem = ({ world, registry }: IGameWorld) => {
             // 2 medium
             // 3 large
             bleed(target, registry, 1, true);
-
-            world.addComponent(target, "cod", damage);
+            if (!target.cod) {
+              world.addComponent(target, "cod", damage);
+            }
           } else {
             bleed(target, registry, amount, true);
           }
