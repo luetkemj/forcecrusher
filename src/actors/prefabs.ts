@@ -183,7 +183,15 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [ignite, createWater, createBlood, desiccate, kill, massKill, knock],
+  knownSpells: [
+    ignite,
+    createWater,
+    createBlood,
+    desiccate,
+    kill,
+    massKill,
+    knock,
+  ],
   vitalFluid: Fluids.Blood,
 };
 
@@ -640,6 +648,20 @@ export const skulltoothPrefab: Entity = {
   },
   mass: 1,
   material: Material.Bone,
+};
+
+export const coinPrefab: Entity = {
+  ...baseItem,
+  appearance: {
+    char: chars.coin,
+    tint: colors.gold,
+    tileSet: TileSet.Kenny,
+  },
+  name: "coin",
+  description: "A shiny gold coin",
+  mass: 0.1,
+  material: Material.Metal,
+  currency: true,
 };
 
 export const rockPrefab: Entity = {

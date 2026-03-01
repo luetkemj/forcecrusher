@@ -312,6 +312,15 @@ export const generateDungeon = (zoneId: ZoneId) => {
         spawnSpellscroll(room.center);
       }
     }
+    // sprinkle coins
+
+    times(5, () => {
+      if (random(0, 3) > 1) {
+        const { x, y } = sample(room.tiles) || { x: 0, y: 0 };
+        spawn("coin", { position: { x, y } });
+      }
+    });
+
     if (index === 1) {
       const { x, y } = sample(room.tiles) || { x: 0, y: 0 };
       spawn("stairsUp", { position: { x, y } });

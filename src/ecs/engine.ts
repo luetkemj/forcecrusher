@@ -185,6 +185,7 @@ export type Entity = {
     contents: Array<EntityId>;
     slots: number;
   };
+  currency?: true;
   damages?: Array<Damage>;
   damageType?: DamageType;
   damageReduction?: { min: number; max: number };
