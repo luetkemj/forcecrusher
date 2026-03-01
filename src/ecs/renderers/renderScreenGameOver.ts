@@ -54,12 +54,26 @@ export const renderScreenGameOver = ({ views }: RendererContext) => {
             {
               type: TokenType.Text,
               value: "You have died.",
-              tint: colors.player,
+              tint: colors.text,
             },
           ],
           alignH: AlignH.Center,
         },
       ],
+
+      [
+        {
+          tokens: [
+            {
+              type: TokenType.Text,
+              value: `${getState().morgue.causeOfDeath}`,
+              tint: colors.text,
+            },
+          ],
+          alignH: AlignH.Center,
+        },
+      ],
+
       [{ string: "" }],
       [
         {

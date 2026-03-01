@@ -1,7 +1,7 @@
 import { random, shuffle } from "lodash";
 import { addLog, colorEntity, getEAP, getWearing } from "../../lib/utils";
 import { Entity, IGameWorld } from "../engine";
-import { DamageType } from "../enums";
+import { AttackType, DamageType } from "../enums";
 import { Pos, getNeighbors, toPosId } from "../../lib/grid";
 import { viewConfigs } from "../../views/views";
 
@@ -95,6 +95,9 @@ export const createDamageSystem = ({ world, registry }: IGameWorld) => {
             // 2 medium
             // 3 large
             bleed(target, registry, 1, true);
+            if (!target.cod) {
+              world.addComponent(target, "cod", damage);
+            }
           } else {
             bleed(target, registry, amount, true);
           }
@@ -126,12 +129,30 @@ export const createDamageSystem = ({ world, registry }: IGameWorld) => {
 
           // Normal attack (entity vs entity)
           else if (attacker && attack) {
-            let colorTag = attacker.pc ? "§purple§" : "§red§";
-            logParts.push(
-              `${colorEntity(attacker)}${colorTag} ${attack.verb} ${colorEntity(target)}${colorTag}`,
-            );
-            if (weapon) {
-              logParts.push(`with ${colorEntity(weapon)}${colorTag}`);
+            if (
+              attack.attackType === AttackType.Melee ||
+              attack.attackType === AttackType.Ranged
+            ) {
+              let colorTag = attacker.pc ? "§purple§" : "§red§";
+              logParts.push(
+                `${colorEntity(attacker)}${colorTag} ${attack.verb} ${colorEntity(target)}${colorTag}`,
+              );
+              if (weapon) {
+                logParts.push(`with ${colorEntity(weapon)}${colorTag}`);
+              }
+            }
+
+            if (
+              attack.attackType === AttackType.RangedSpell ||
+              attack.attackType === AttackType.MeleeSpell
+            ) {
+              let colorTag = attacker.pc ? "§purple§" : "§red§";
+              logParts.push(
+                `${colorEntity(attacker)}${colorTag} ${attack.verb} ${attack.name} on ${colorEntity(target)}${colorTag}`,
+              );
+              if (weapon) {
+                logParts.push(`with ${colorEntity(weapon)}${colorTag}`);
+              }
             }
           }
 

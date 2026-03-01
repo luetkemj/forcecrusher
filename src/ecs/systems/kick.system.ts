@@ -45,7 +45,7 @@ export const createKickSystem = ({ world, registry }: IGameWorld) => {
               instigator: actor.id,
               responder: target.id,
               target: actor.id,
-              reason: `kicked ${target.name}`,
+              reason: `kicked`,
               critical: false,
               damageAmounts: [
                 {

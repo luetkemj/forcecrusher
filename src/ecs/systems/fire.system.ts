@@ -157,7 +157,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
           instigator: actor.id,
           responder: null,
           target: actor.id,
-          reason: `burned ${actor.name}`,
+          reason: `burned`,
           critical: false,
           damageAmounts: [
             {

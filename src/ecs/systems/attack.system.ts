@@ -6,6 +6,7 @@ import {
 } from "../engine";
 import { sample } from "lodash";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
+import { AttackType } from "../enums";
 
 export const createAttackSystem = ({ world, registry }: IGameWorld) => {
   const attackQuery = world.with("tryAttack").without("excludeFromSim");
@@ -86,7 +87,7 @@ function calcAttackDamage(
   let amount = new DiceRoll(attack.damageRoll).total;
   let mod = 0;
 
-  if (attack.attackType === "melee") {
+  if (attack.attackType === AttackType.Melee) {
     if (attack.useModifier && actor.strength) {
       mod = getModifier(actor.strength);
     }

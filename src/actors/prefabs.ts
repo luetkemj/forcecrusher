@@ -1,3 +1,4 @@
+import attacks from "../attacks";
 import { EntityId, Memory, type Entity } from "../ecs/engine";
 import {
   DamageType,
@@ -14,6 +15,7 @@ import { createBlood } from "../spells/spellbook/createBlood";
 import { createWater } from "../spells/spellbook/createWater";
 import { desiccate } from "../spells/spellbook/desiccate";
 import { ignite } from "../spells/spellbook/ignite";
+import { kill } from "../spells/spellbook/kill";
 import { knock } from "../spells/spellbook/knock";
 import { massKill } from "../spells/spellbook/massKill";
 import { colors, chars } from "./graphics";
@@ -177,22 +179,11 @@ export const playerPrefab: Entity = {
     slots: 1,
   },
   damages: [],
-  attacks: [
-    {
-      name: "Kick",
-      verb: "kicks",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d1",
-      damageType: DamageType.Bludgeoning,
-      natural: true,
-      knockbackDistance: 2,
-    },
-  ],
+  attacks: [attacks.melee.kick()],
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [ignite, createWater, createBlood, desiccate, massKill, knock],
+  knownSpells: [ignite, createWater, createBlood, desiccate, kill, massKill, knock],
   vitalFluid: Fluids.Blood,
 };
 
@@ -222,24 +213,7 @@ export const ratPrefab: Entity = {
   immunities: [],
   resistances: [],
   vulnerabilities: [],
-  attacks: [
-    {
-      name: "Bite",
-      verb: "bites",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d1",
-      damageType: DamageType.Piercing,
-    },
-    {
-      name: "Claw",
-      verb: "claws",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d1",
-      damageType: DamageType.Slashing,
-    },
-  ],
+  attacks: [attacks.melee.bite(), attacks.melee.claw()],
   damages: [],
   kickable: {
     breakable: true,
@@ -275,16 +249,7 @@ export const lavaGolemPrefab: Entity = {
   immunities: [DamageType.Fire, DamageType.Poison, DamageType.Acid],
   resistances: [DamageType.Bludgeoning, DamageType.Piercing],
   vulnerabilities: [DamageType.Cold],
-  attacks: [
-    {
-      name: "Lava Punch",
-      verb: "punches",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d6",
-      damageType: DamageType.Fire,
-    },
-  ],
+  attacks: [attacks.melee.lavaPunch()],
   damages: [],
   mass: 6,
   material: Material.Lava,
@@ -383,22 +348,9 @@ export const goblinPrefab: Entity = {
     slots: 1,
   },
   attacks: [
-    {
-      name: "Bite",
-      verb: "bites",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d1",
-      damageType: DamageType.Piercing,
-    },
-    {
-      name: "Claw",
-      verb: "claws",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d1",
-      damageType: DamageType.Slashing,
-    },
+    attacks.melee.bite(),
+    attacks.melee.claw(),
+    attacks.melee.kick({ knockbackDistance: undefined }),
   ],
   damages: [],
   container: {
@@ -447,28 +399,7 @@ export const owlbearPrefab: Entity = {
     contents: [],
     slots: 1,
   },
-  attacks: [
-    {
-      name: "Beak",
-      verb: "pecks",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d6",
-      useModifier: true,
-      damageType: DamageType.Piercing,
-      knockbackDistance: 0,
-    },
-
-    {
-      name: "Claw",
-      verb: "claws",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d6",
-      damageType: DamageType.Slashing,
-      useModifier: true,
-    },
-  ],
+  attacks: [attacks.melee.beak(), attacks.melee.claw({ damageRoll: "1d6" })],
   damages: [],
   mass: 18,
   material: Material.Flesh,
@@ -508,27 +439,7 @@ export const ogrePrefab: Entity = {
     contents: [],
     slots: 1,
   },
-  attacks: [
-    {
-      name: "Bash",
-      verb: "bashes",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d6",
-      damageType: DamageType.Bludgeoning,
-      knockbackDistance: 2,
-    },
-
-    {
-      name: "Stomp",
-      verb: "stomps",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d6",
-      damageType: DamageType.Bludgeoning,
-      useModifier: true,
-    },
-  ],
+  attacks: [attacks.melee.bash(), attacks.melee.stomp()],
   damages: [],
   container: {
     name: "Haversack",
@@ -565,6 +476,7 @@ export const skeletonPrefab: Entity = {
   immunities: [DamageType.Poison],
   resistances: [DamageType.Piercing],
   vulnerabilities: [DamageType.Bludgeoning],
+  attacks: [attacks.melee.claw()],
   weaponSlot: {
     name: "Weapon",
     contents: [],
@@ -760,33 +672,12 @@ export const shortswordPrefab: Entity = {
   },
   weaponClass: WeaponClass.Martial,
   attacks: [
-    {
-      name: "Stab",
-      verb: "stabs",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d6+2",
-      damageType: DamageType.Piercing,
-      useModifier: true,
-    },
-    {
-      name: "Slash",
-      verb: "slashes",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d6+2",
-      damageType: DamageType.Slashing,
-      useModifier: true,
-    },
-    {
-      name: "Bash",
-      verb: "bashes",
-      toHit: 0,
-      attackType: "melee",
+    attacks.melee.stab(),
+    attacks.melee.slash(),
+    attacks.melee.bash({
       damageRoll: "1d4+2",
-      damageType: DamageType.Bludgeoning,
-      useModifier: true,
-    },
+      knockbackDistance: undefined,
+    }),
   ],
   mass: 1.5,
   material: Material.Metal,
@@ -804,16 +695,12 @@ export const clubPrefab: Entity = {
     tileSet: TileSet.Kenny,
   },
   attacks: [
-    {
+    attacks.melee.bash({
       name: "Smash",
       verb: "smashes",
-      toHit: 0,
-      attackType: "melee",
+      verbPastTense: "smashed",
       damageRoll: "1d4",
-      damageType: DamageType.Bludgeoning,
-      useModifier: true,
-      knockbackDistance: 2,
-    },
+    }),
   ],
   mass: 2,
   material: Material.Wood,
@@ -830,32 +717,15 @@ export const daggerPrefab: Entity = {
   },
   weaponClass: WeaponClass.Simple,
   attacks: [
-    {
+    attacks.melee.bash({
       name: "Pummel",
       verb: "pummels",
-      toHit: 0,
-      attackType: "melee",
+      verbPastTense: "pummeled",
       damageRoll: "1d4",
-      damageType: DamageType.Bludgeoning,
-    },
-    {
-      name: "Stab",
-      verb: "stabs",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d4",
-      damageType: DamageType.Piercing,
-      useModifier: true,
-    },
-    {
-      name: "Slash",
-      verb: "slashes",
-      toHit: 0,
-      attackType: "melee",
-      damageRoll: "1d4",
-      damageType: DamageType.Slashing,
-      useModifier: true,
-    },
+      knockbackDistance: undefined,
+    }),
+    attacks.melee.stab({ damageRoll: "1d4" }),
+    attacks.melee.slash({ damageRoll: "1d4" }),
   ],
   mass: 0.8,
   material: Material.Metal,
@@ -914,7 +784,7 @@ export const doorPrefab: Entity = {
   },
   vulnerabilities: [DamageType.Bludgeoning, DamageType.Force],
   resistances: [DamageType.Piercing],
-  immunities: [DamageType.Poison, DamageType.Psychic],
+  immunities: [DamageType.Poison, DamageType.Psychic, DamageType.Necrotic],
   effectImmunities: [EffectType.Knockback],
   baseArmorClass: 1,
   damages: [],
@@ -1011,6 +881,7 @@ export const grassPrefab: Entity = {
     tileSet: TileSet.Kenny,
   },
   health: { max: 10, current: 10 },
+  damages: [],
   living: true,
   immunities: [DamageType.Fire],
   name: "grass",
