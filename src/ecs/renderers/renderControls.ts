@@ -20,7 +20,7 @@ export const renderControls = ({ views, queries }: RendererContext) => {
       }
 
       if (getState().gameState === GameState.GAME) {
-        controls = `(${em("arrows/hjkl")})Move (${em("e")})Interact (${em("g")})Get (${em("H")})History (${em("i")})Inventory (${em("L")})Look (${em("M")})MakerMode`;
+        controls = `(${em("arrows/hjkl")})Move (${em("e")})Interact (${em("g")})Get (${em("i")})Inventory (${em("L")})Look (${em("<")})Stairs Up (${em(">")})Stairs Down  | (${em("B")})Bestiary (${em("H")})History (${em("M")})MakerMode `;
       }
 
       if (getState().gameState === GameState.INSPECT) {
