@@ -10,7 +10,8 @@ export const renderScreenTitle = async ({ views }: RendererContext) => {
   const view = views.screenTitle;
 
   const leaderboard = (await loadLeaderboard()) || [];
-  const scoreLength = leaderboard[0].score.toString().length || 0;
+
+  const scoreLength = leaderboard[0]?.score.toString().length || 0;
 
   // TODO: calculate padding for longest entry
   // screen width - length of longest entity / 2
@@ -19,7 +20,7 @@ export const renderScreenTitle = async ({ views }: RendererContext) => {
     [{ string: `* High Scores *`, alignH: AlignH.Center }],
     [{ string: ``, alignH: AlignH.Center }],
     ...leaderboard.map((entry: LeaderboardEntry, index: number) => {
-      return [
+      const leaderboardEntry = [
         {
           tokens: [
             {
@@ -29,7 +30,7 @@ export const renderScreenTitle = async ({ views }: RendererContext) => {
             },
             {
               type: TokenType.Text,
-              value: `${index + 1}) `,
+              value: `${index + 1}) `.padStart(4, " "),
               tint: colors.text,
             },
             {
@@ -56,14 +57,29 @@ export const renderScreenTitle = async ({ views }: RendererContext) => {
             },
             {
               type: TokenType.Text,
-              value: ` on turn ${entry.turn}`,
+              value: ` on turn ${entry.turn} `,
               tint: colors.text,
             },
           ],
         },
       ];
+
+      if (entry.victory) {
+        leaderboardEntry[0].tokens.push({
+          type: TokenType.Glyph,
+          tileSet: TileSet.Kenny,
+          char: chars.skulltooth,
+          tint: colors.bone,
+        });
+      }
+
+      return leaderboardEntry;
     }),
   ];
+
+  if (!leaderboard.length) {
+    highscore.push([{ string: `...`, alignH: AlignH.Center }]);
+  }
 
   if (getState().gameState === GameState.SCREEN_TITLE) {
     const rows = [

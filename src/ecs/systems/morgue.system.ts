@@ -1,6 +1,12 @@
 import { Entity, IGameWorld } from "../engine";
 import { setState, State, GameState, getState } from "../gameState";
-import { addLog, unWield, unWear, colorTag } from "../../lib/utils";
+import {
+  addLog,
+  unWield,
+  unWear,
+  colorTag,
+  writeToLeaderboard,
+} from "../../lib/utils";
 import { capitalize, sortBy } from "lodash";
 import { AttackType } from "../enums";
 import {
@@ -74,27 +80,7 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
             state.morgue.causeOfDeath = cod;
           });
 
-          const today = new Date();
-          const year = today.getFullYear();
-          // getMonth() is zero-based (0 is January), so add 1
-          const month = String(today.getMonth() + 1).padStart(2, "0");
-          const day = String(today.getDate()).padStart(2, "0");
-
-          const formattedDateLocal = `${year}-${month}-${day}`;
-
-          const leaderboardEntry: LeaderboardEntry = {
-            score: entity.coinPurse?.value || 0,
-            cod,
-            turn: getState().turnNumber,
-            date: formattedDateLocal,
-          };
-          const leaderboard = (await loadLeaderboard()) || [];
-
-          leaderboard.push(leaderboardEntry);
-
-          const sortedLeaderBord = sortBy(leaderboard, "score").reverse();
-
-          await saveLeaderboard(sortedLeaderBord);
+          await writeToLeaderboard(entity, cod, false);
         }
       }
     }

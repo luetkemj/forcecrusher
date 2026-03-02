@@ -11,6 +11,7 @@ export interface LeaderboardEntry {
   cod: string;
   turn: number;
   date: string;
+  victory: boolean;
 }
 
 class GameDatabase extends Dexie {
