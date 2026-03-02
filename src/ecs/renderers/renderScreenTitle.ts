@@ -6,10 +6,10 @@ import { GameState, getState } from "../gameState";
 import { LeaderboardEntry, loadLeaderboard } from "../saveStore";
 import { RendererContext } from "../systems/render.system";
 
-export const renderScreenTitle = async ({ views }: RendererContext) => {
-  const view = views.screenTitle;
+const leaderboard = (await loadLeaderboard()) || [];
 
-  const leaderboard = (await loadLeaderboard()) || [];
+export const renderScreenTitle = ({ views }: RendererContext) => {
+  const view = views.screenTitle;
 
   const scoreLength = leaderboard[0]?.score.toString().length || 0;
 

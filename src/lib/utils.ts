@@ -480,26 +480,32 @@ export const writeToLeaderboard = async (
   cod: string,
   victory: boolean,
 ) => {
-  const today = new Date();
-  const year = today.getFullYear();
-  // getMonth() is zero-based (0 is January), so add 1
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
+  try {
+    const today = new Date();
+    const year = today.getFullYear();
+    // getMonth() is zero-based (0 is January), so add 1
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
 
-  const formattedDateLocal = `${year}-${month}-${day}`;
+    const formattedDateLocal = `${year}-${month}-${day}`;
 
-  const leaderboardEntry: LeaderboardEntry = {
-    score: entity.coinPurse?.value || 0,
-    turn: getState().turnNumber,
-    date: formattedDateLocal,
-    cod,
-    victory,
-  };
-  const leaderboard = (await loadLeaderboard()) || [];
+    const leaderboardEntry: LeaderboardEntry = {
+      score: entity.coinPurse?.value || 0,
+      turn: getState().turnNumber,
+      date: formattedDateLocal,
+      cod,
+      victory,
+    };
+    const leaderboard = (await loadLeaderboard()) || [];
 
-  leaderboard.push(leaderboardEntry);
+    leaderboard.push(leaderboardEntry);
 
-  const sortedLeaderBord = sortBy(leaderboard, "score").reverse().slice(0, 10);
+    const sortedLeaderBord = sortBy(leaderboard, "score")
+      .reverse()
+      .slice(0, 10);
 
-  await saveLeaderboard(sortedLeaderBord);
+    await saveLeaderboard(sortedLeaderBord);
+  } catch (error) {
+    console.error("writeToLeaderboard", error);
+  }
 };

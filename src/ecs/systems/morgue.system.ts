@@ -15,7 +15,7 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
     .with("health")
     .without("dead", "destroyed", "excludeFromSim");
 
-  return async function morgueSystem() {
+  return function morgueSystem() {
     for (const entity of livingQuery) {
       if (entity.health.current <= 0) {
         if (entity.appearance) {
@@ -75,7 +75,7 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
             state.morgue.causeOfDeath = cod;
           });
 
-          await writeToLeaderboard(entity, cod, false);
+          writeToLeaderboard(entity, cod, false);
         }
       }
     }

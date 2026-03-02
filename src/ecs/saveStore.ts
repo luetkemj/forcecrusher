@@ -29,25 +29,45 @@ class GameDatabase extends Dexie {
 const db = new GameDatabase();
 
 export async function saveGameData(data: any) {
-  const save = { id: "main", data, timestamp: Date.now() };
-  await db.saves.put(save);
+  try {
+    const save = { id: "main", data, timestamp: Date.now() };
+    await db.saves.put(save);
+  } catch (error) {
+    console.error("saveGameData", error);
+  }
 }
 
 export async function loadGameData(): Promise<any | null> {
-  const save = await db.saves.get("main");
-  return save?.data ?? null;
+  try {
+    const save = await db.saves.get("main");
+    return save?.data ?? null;
+  } catch (error) {
+    console.error("loadGameData", error);
+  }
 }
 
 export async function clearGameData() {
-  await db.saves.clear();
+  try {
+    await db.saves.clear();
+  } catch (error) {
+    console.error("clearGameData", error);
+  }
 }
 
 export async function saveLeaderboard(data: any) {
-  const save = { id: "leaderboard", data, timestamp: Date.now() };
-  await db.saves.put(save);
+  try {
+    const save = { id: "leaderboard", data, timestamp: Date.now() };
+    await db.saves.put(save);
+  } catch (error) {
+    console.error("saveLeaderboard", error);
+  }
 }
 
 export async function loadLeaderboard(): Promise<any | null> {
-  const save = await db.saves.get("leaderboard");
-  return save?.data ?? null;
+  try {
+    const save = await db.saves.get("leaderboard");
+    return save?.data ?? null;
+  } catch (error) {
+    console.error("loadLeaderboard", error);
+  }
 }
