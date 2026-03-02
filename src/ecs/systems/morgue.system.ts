@@ -1,5 +1,5 @@
 import { Entity, IGameWorld } from "../engine";
-import { setState, State, GameState, getState } from "../gameState";
+import { setState, State, GameState } from "../gameState";
 import {
   addLog,
   unWield,
@@ -7,13 +7,8 @@ import {
   colorTag,
   writeToLeaderboard,
 } from "../../lib/utils";
-import { capitalize, sortBy } from "lodash";
+import { capitalize } from "lodash";
 import { AttackType } from "../enums";
-import {
-  LeaderboardEntry,
-  loadLeaderboard,
-  saveLeaderboard,
-} from "../saveStore";
 
 export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
   const livingQuery = world
