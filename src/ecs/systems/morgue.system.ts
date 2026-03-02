@@ -1,15 +1,20 @@
 import { Entity, IGameWorld } from "../engine";
-import { setState, State, GameState } from "../gameState";
+import { setState, State, GameState, getState } from "../gameState";
 import { addLog, unWield, unWear, colorTag } from "../../lib/utils";
-import { capitalize } from "lodash";
+import { capitalize, sortBy } from "lodash";
 import { AttackType } from "../enums";
+import {
+  LeaderboardEntry,
+  loadLeaderboard,
+  saveLeaderboard,
+} from "../saveStore";
 
 export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
   const livingQuery = world
     .with("health")
     .without("dead", "destroyed", "excludeFromSim");
 
-  return function morgueSystem() {
+  return async function morgueSystem() {
     for (const entity of livingQuery) {
       if (entity.health.current <= 0) {
         if (entity.appearance) {
@@ -68,6 +73,28 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
             state.gameState = GameState.GAME_OVER;
             state.morgue.causeOfDeath = cod;
           });
+
+          const today = new Date();
+          const year = today.getFullYear();
+          // getMonth() is zero-based (0 is January), so add 1
+          const month = String(today.getMonth() + 1).padStart(2, "0");
+          const day = String(today.getDate()).padStart(2, "0");
+
+          const formattedDateLocal = `${year}-${month}-${day}`;
+
+          const leaderboardEntry: LeaderboardEntry = {
+            score: entity.coinPurse?.value || 0,
+            cod,
+            turn: getState().turnNumber,
+            date: formattedDateLocal,
+          };
+          const leaderboard = (await loadLeaderboard()) || [];
+
+          leaderboard.push(leaderboardEntry);
+
+          const sortedLeaderBord = sortBy(leaderboard, "score").reverse();
+
+          await saveLeaderboard(sortedLeaderBord);
         }
       }
     }
@@ -132,5 +159,5 @@ const getPCCauseOfDeath = (entity: Entity, registry: Map<string, Entity>) => {
 
   console.log(entity.cod);
 
-  return cod;
+  return cod.trim();
 };

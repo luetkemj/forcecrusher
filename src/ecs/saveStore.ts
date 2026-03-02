@@ -6,8 +6,16 @@ interface GameSave {
   timestamp: number;
 }
 
+export interface LeaderboardEntry {
+  score: number;
+  cod: string;
+  turn: number;
+  date: string;
+}
+
 class GameDatabase extends Dexie {
   saves!: Dexie.Table<GameSave, string>;
+  leaderboard!: Dexie.Table<GameSave, string>;
 
   constructor() {
     super("GameSaveDB");
@@ -31,4 +39,14 @@ export async function loadGameData(): Promise<any | null> {
 
 export async function clearGameData() {
   await db.saves.clear();
+}
+
+export async function saveLeaderboard(data: any) {
+  const save = { id: "leaderboard", data, timestamp: Date.now() };
+  await db.saves.put(save);
+}
+
+export async function loadLeaderboard(): Promise<any | null> {
+  const save = await db.saves.get("leaderboard");
+  return save?.data ?? null;
 }
