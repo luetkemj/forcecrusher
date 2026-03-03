@@ -500,11 +500,11 @@ export const writeToLeaderboard = async (
 
     leaderboard.push(leaderboardEntry);
 
-    const sortedLeaderBord = sortBy(leaderboard, "score")
+    const sortedLeaderBoard = sortBy(leaderboard, "score")
       .reverse()
       .slice(0, 10);
 
-    await saveLeaderboard(sortedLeaderBord);
+    await saveLeaderboard(sortedLeaderBoard);
   } catch (error) {
     console.error("writeToLeaderboard", error);
   }

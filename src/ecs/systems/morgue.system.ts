@@ -75,7 +75,7 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
             state.morgue.causeOfDeath = cod;
           });
 
-          writeToLeaderboard(entity, cod, false);
+          void writeToLeaderboard(entity, cod, false);
         }
       }
     }
