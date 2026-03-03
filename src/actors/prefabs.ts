@@ -222,7 +222,10 @@ export const ratPrefab: Entity = {
   immunities: [],
   resistances: [],
   vulnerabilities: [],
-  attacks: [attacks.melee.bite(), attacks.melee.claw()],
+  attacks: [
+    attacks.melee.bite({ useModifier: undefined }),
+    attacks.melee.claw({ useModifier: undefined }),
+  ],
   damages: [],
   kickable: {
     breakable: true,
