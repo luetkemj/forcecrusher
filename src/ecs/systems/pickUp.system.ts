@@ -44,6 +44,7 @@ export const createPickUpSystem = ({ world, registry }: IGameWorld) => {
         } else {
           world.removeComponent(entity, "tryPickUp");
         }
+        continue;
       }
 
       const { container } = pickerEntity;
