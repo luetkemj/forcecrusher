@@ -10,7 +10,12 @@ import { Disposition, EntityKind, Fluids } from "../ecs/enums";
 import { GameState, getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos, PosId, toPosId } from "./grid";
-import { pull, get, compact, random, times, sample } from "lodash";
+import { pull, get, compact, random, times, sample, sortBy } from "lodash";
+import {
+  LeaderboardEntry,
+  loadLeaderboard,
+  saveLeaderboard,
+} from "../ecs/saveStore";
 
 export const colorTag = (color: number) => {
   return `§#${color.toString(16).padStart(6, "0")}§`;
@@ -469,3 +474,38 @@ export function generateAncientTongue() {
 
   return string.trim();
 }
+
+export const writeToLeaderboard = async (
+  entity: Entity,
+  cod: string,
+  victory: boolean,
+) => {
+  try {
+    const today = new Date();
+    const year = today.getFullYear();
+    // getMonth() is zero-based (0 is January), so add 1
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+
+    const formattedDateLocal = `${year}-${month}-${day}`;
+
+    const leaderboardEntry: LeaderboardEntry = {
+      score: entity.coinPurse?.value || 0,
+      turn: getState().turnNumber,
+      date: formattedDateLocal,
+      cod,
+      victory,
+    };
+    const leaderboard = (await loadLeaderboard()) || [];
+
+    leaderboard.push(leaderboardEntry);
+
+    const sortedLeaderBoard = sortBy(leaderboard, "score")
+      .reverse()
+      .slice(0, 10);
+
+    await saveLeaderboard(sortedLeaderBoard);
+  } catch (error) {
+    console.error("writeToLeaderboard", error);
+  }
+};

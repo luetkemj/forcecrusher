@@ -4,6 +4,7 @@ import { toPosId, isAtSamePosition, toZone, toZoneId } from "../../lib/grid";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 import { ChangeZoneDirections } from "../engine";
 import { isUndefined } from "lodash";
+import { writeToLeaderboard } from "../../lib/utils";
 
 export const handleGameModeInput = async ({
   key,
@@ -137,6 +138,7 @@ export const handleGameModeInput = async ({
 
           if (victoryCondition) {
             addLog("Congrats, you win.");
+            writeToLeaderboard(player, "Ascended Victoriously", true);
             setState(
               (state: State) => (state.gameState = GameState.SCREEN_VICTORY),
             );

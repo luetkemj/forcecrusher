@@ -1,6 +1,7 @@
 import { cloneDeep } from "lodash";
 import { gameWorld, type Entity } from "../ecs/engine";
 import {
+  coinPrefab,
   floorPrefab,
   fluidContainerPrefab,
   healthPotionPrefab,
@@ -48,6 +49,7 @@ export const prefabs = {
   bottleEmpty: bottlePrefab,
 
   // NOTE: Items
+  coin: coinPrefab,
   rock: rockPrefab,
   skulltooth: skulltoothPrefab,
   spellbook: spellbookPrefab,

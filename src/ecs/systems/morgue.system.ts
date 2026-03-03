@@ -1,6 +1,12 @@
 import { Entity, IGameWorld } from "../engine";
 import { setState, State, GameState } from "../gameState";
-import { addLog, unWield, unWear, colorTag } from "../../lib/utils";
+import {
+  addLog,
+  unWield,
+  unWear,
+  colorTag,
+  writeToLeaderboard,
+} from "../../lib/utils";
 import { capitalize } from "lodash";
 import { AttackType } from "../enums";
 
@@ -68,6 +74,8 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
             state.gameState = GameState.GAME_OVER;
             state.morgue.causeOfDeath = cod;
           });
+
+          void writeToLeaderboard(entity, cod, false);
         }
       }
     }
@@ -132,5 +140,5 @@ const getPCCauseOfDeath = (entity: Entity, registry: Map<string, Entity>) => {
 
   console.log(entity.cod);
 
-  return cod;
+  return cod.trim();
 };
