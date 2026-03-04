@@ -180,7 +180,10 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         world.removeComponent(actor, "flammable");
 
         if (actor.material) {
-          if (materialsDestroyedByFire.includes(actor.material)) {
+          if (
+            materialsDestroyedByFire.includes(actor.material) &&
+            !actor.indestructable
+          ) {
             world.addComponent(actor, "destroy", true);
           }
         }

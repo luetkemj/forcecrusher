@@ -1,12 +1,6 @@
 import { Entity, IGameWorld } from "../engine";
 import { setState, State, GameState } from "../gameState";
-import {
-  addLog,
-  unWield,
-  unWear,
-  colorTag,
-  writeToLeaderboard,
-} from "../../lib/utils";
+import { addLog, colorTag, writeToLeaderboard } from "../../lib/utils";
 import { capitalize } from "lodash";
 import { AttackType } from "../enums";
 
@@ -26,18 +20,21 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
           }
         }
 
-        unWield(entity);
-        unWear(entity);
-
-        // drop inventory
-        if (entity.container?.contents) {
-          for (const eId of entity.container.contents) {
-            const item = registry.get(eId);
-            if (item) {
-              world.addComponent(item, "tryDrop", { dropperId: entity.id });
-            }
-          }
-        }
+        // NOTE: leads to unbalance and way to many item in game.
+        // removing for now - possibly forever
+        //
+        // unWield(entity);
+        // unWear(entity);
+        //
+        // // drop inventory
+        // if (entity.container?.contents) {
+        //   for (const eId of entity.container.contents) {
+        //     const item = registry.get(eId);
+        //     if (item) {
+        //       world.addComponent(item, "tryDrop", { dropperId: entity.id });
+        //     }
+        //   }
+        // }
 
         const entityTint = entity.appearance?.tint || 0x00ff00;
 
@@ -45,7 +42,7 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
           world.removeComponent(entity, "living");
           world.addComponent(entity, "dead", true);
           addLog(`${colorTag(entityTint)}${entity.name}§purple§ has died!`);
-        } else {
+        } else if (!entity.indestructable) {
           world.addComponent(entity, "destroyed", true);
           addLog(
             `${colorTag(entityTint)}${entity.name}§purple§ has been destroyed!`,

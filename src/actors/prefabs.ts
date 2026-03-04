@@ -796,6 +796,7 @@ export const doorPrefab: Entity = {
   pathThrough: true,
   blocking: true,
   door: true,
+  indestructable: true,
   openable: {
     state: OpenState.Closed,
   },
@@ -833,6 +834,7 @@ export const stairsDownPrefab: Entity = {
   layer250: true,
   mass: 10,
   material: Material.Wood,
+  indestructable: true,
 };
 
 export const stairsUpPrefab: Entity = {
@@ -848,6 +850,7 @@ export const stairsUpPrefab: Entity = {
   layer250: true,
   mass: 10,
   material: Material.Wood,
+  indestructable: true,
 };
 
 // NOTE: Terrain / Map Features

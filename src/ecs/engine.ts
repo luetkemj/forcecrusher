@@ -247,6 +247,7 @@ export type Entity = {
   };
   id: EntityId;
   immunities?: Array<DamageType>;
+  indestructable?: true;
   inFov?: true;
   intelligence?: number;
   interactDirection?: Pos;
