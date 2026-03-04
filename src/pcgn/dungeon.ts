@@ -316,7 +316,7 @@ export const generateDungeon = (zoneId: ZoneId) => {
   const grassTiles: GrassMap = {};
   dungeon.rooms.forEach((_) => {
     // only seed 30% of rooms
-    if (random(0, 3) === 1) {
+    if (random(0, Math.abs(depth)) === 1) {
       const { x, y } = sample(sample(dungeon.rooms)?.tiles) || { x: 0, y: 0 };
       const seedEntity = spawn("grass", { position: { x, y } });
       // grow grass
