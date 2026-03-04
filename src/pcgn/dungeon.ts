@@ -13,17 +13,8 @@ import {
   ZoneId,
 } from "../lib/grid";
 import { spawn } from "../actors";
-import {
-  spawnGoblin,
-  spawnSkeleton,
-  spawnRat,
-  spawnLavaGolem,
-  spawnLivingSponge,
-  spawnOgre,
-  spawnOwlbear,
-  spawnEnemies,
-} from "./monsters";
-import { spawnSpellscroll } from "./items";
+import { spawnEnemies } from "./monsters";
+import { spawnItems, spawnSpellbook, spawnSpellscroll } from "./items";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
@@ -230,8 +221,8 @@ export const generateDungeon = (zoneId: ZoneId) => {
       // add fluidContainers to every open floor tile
       const fEntity = spawn("fluidContainer", { position: { x, y } });
       // randomly fill containers with fluid to create pools
-      const fluidTypes = ["blood", "oil", "water"];
-      if (Math.random() < 0.005) {
+      const fluidTypes = ["oil", "water", "water", "water"];
+      if (Math.random() < 0.002) {
         if (fEntity.fluidContainer) {
           const volume = random(5, 20);
           fEntity.fluidContainer.fluids[sample(fluidTypes) || "water"].volume =
@@ -272,18 +263,11 @@ export const generateDungeon = (zoneId: ZoneId) => {
 
   spawnEnemies(depth, floorTiles);
 
+  spawnItems(depth, floorTiles);
+
   // increase number of enemies as you get deeper
   dungeon.rooms.forEach((room, index) => {
-    const percentile = new DiceRoll("d100").total;
-    if (index) {
-      if (percentile >= 90) {
-        spawn("healthPotion", { position: room.center });
-      } else {
-        spawnSpellscroll(room.center);
-      }
-    }
     // sprinkle coins
-
     times(5, () => {
       if (random(0, 3) > 1) {
         const { x, y } = sample(room.tiles) || { x: 0, y: 0 };

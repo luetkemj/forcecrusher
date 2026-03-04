@@ -559,3 +559,34 @@ export const writeToLeaderboard = async (
     console.error("writeToLeaderboard", error);
   }
 };
+
+export function weightedRandom<T extends { weight: number }>(items: T[]): T {
+  const totalWeight = items.reduce((sum, i) => sum + i.weight, 0);
+
+  let roll = Math.random() * totalWeight;
+
+  for (const item of items) {
+    roll -= item.weight;
+    if (roll <= 0) {
+      return item;
+    }
+  }
+
+  // floating point safety fallback
+  return items[items.length - 1];
+}
+
+// baseline danger (absolute minimum)
+// depth: current dungeon depth
+// tune: difficult slider - 0.5 => lowerBudget, 1.2 => higherBudget
+export function getFloorBudget(baseline: number, depth: number, tune: number) {
+  return Math.floor(baseline + depth * depth * tune);
+}
+
+// chunk floors into tier groups
+// tier 0 = [0,1,2]
+// tier 1 = [3,4,5]
+// ...
+export function getTier(depth: number, chunkSize: number = 3) {
+  return Math.floor(depth / chunkSize);
+}

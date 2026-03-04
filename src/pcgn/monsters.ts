@@ -1,5 +1,12 @@
 import { random, sample, times } from "lodash";
-import { wield, wear, getNearbyOpenTile } from "../lib/utils";
+import {
+  wield,
+  wear,
+  getNearbyOpenTile,
+  weightedRandom,
+  getTier,
+  getFloorBudget,
+} from "../lib/utils";
 import { calcAverageDamage } from "../lib/combat";
 import { spawn } from "../actors";
 import { type Pos } from "../lib/grid";
@@ -95,16 +102,12 @@ const ENEMY_TABLE: Enemy[] = [
   { spawn: spawnLavaGolem, cost: 14, min: 14, max: 999 },
 ];
 
-const getFloorBudget = (depth: number) => {
-  return Math.floor(8 + depth * depth * 0.9);
-};
-
-function getTier(depth: number) {
-  return Math.floor(depth / 3);
-}
+const BUDGET_BASELINE = 8;
+const BUDGET_TUNER = 0.9;
+const TIER_CHUNK_SIZE = 3;
 
 function tierWeight(enemy: Enemy, depth: number) {
-  const tier = getTier(depth);
+  const tier = getTier(depth, TIER_CHUNK_SIZE);
 
   if (tier === 0 && enemy.spawn === spawnRat) return 4;
   if (tier === 1 && enemy.spawn === spawnGoblin) return 4;
@@ -140,23 +143,8 @@ function spawnSolo(enemy: Enemy, position: Pos) {
   return enemy.cost;
 }
 
-export function weightedRandom<T extends { weight: number }>(items: T[]): T {
-  const totalWeight = items.reduce((sum, i) => sum + i.weight, 0);
-
-  let roll = Math.random() * totalWeight;
-
-  for (const item of items) {
-    roll -= item.weight;
-    if (roll <= 0) return item;
-  }
-
-  // floating point safety fallback
-  return items[items.length - 1];
-}
-
 export function spawnEnemies(depth: number, floorTiles: Tile[]) {
-  let budget = getFloorBudget(depth);
-  console.log(budget);
+  let budget = getFloorBudget(BUDGET_BASELINE, depth, BUDGET_TUNER);
 
   // elite spike
   // TODO: getElite - some amount above current tier

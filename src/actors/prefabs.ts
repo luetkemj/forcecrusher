@@ -917,7 +917,6 @@ export const grassPrefab: Entity = {
   layer125: true,
   mass: 0.4,
   material: Material.Plant,
-  pickUp: true,
   mutable: {
     current: "young",
     mutations: [
