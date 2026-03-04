@@ -315,11 +315,14 @@ export const generateDungeon = (zoneId: ZoneId) => {
   type GrassMap = Record<PosId, Entity>;
   const grassTiles: GrassMap = {};
   dungeon.rooms.forEach((_) => {
-    const { x, y } = sample(sample(dungeon.rooms)?.tiles) || { x: 0, y: 0 };
-    const seedEntity = spawn("grass", { position: { x, y } });
-    // grow grass
-    if (seedEntity.position) {
-      grassTiles[toPosId(seedEntity.position)] = seedEntity;
+    // only seed 30% of rooms
+    if (random(0, 3) === 1) {
+      const { x, y } = sample(sample(dungeon.rooms)?.tiles) || { x: 0, y: 0 };
+      const seedEntity = spawn("grass", { position: { x, y } });
+      // grow grass
+      if (seedEntity.position) {
+        grassTiles[toPosId(seedEntity.position)] = seedEntity;
+      }
     }
   });
 
