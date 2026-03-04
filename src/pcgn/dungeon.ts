@@ -21,6 +21,7 @@ import {
   spawnLivingSponge,
   spawnOgre,
   spawnOwlbear,
+  spawnEnemies,
 } from "./monsters";
 import { spawnSpellscroll } from "./items";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
@@ -29,13 +30,13 @@ import { Constants } from "./constants";
 import { Entity } from "../ecs/engine";
 import { getState } from "../ecs/gameState";
 
-type Tile = {
+export type Tile = {
   x: number;
   y: number;
   sprite: string;
 };
 
-type Tiles = { [key: PosId]: Tile };
+export type Tiles = { [key: PosId]: Tile };
 
 function digHorizontalPassage(posA: Pos, posB: Pos) {
   const tiles: Tiles = {};
@@ -269,38 +270,7 @@ export const generateDungeon = (zoneId: ZoneId) => {
     tile.tags?.has(DungeonTags.Floor),
   );
 
-  times(10 + depth, () => {
-    const openTile = sample(floorTiles);
-    if (!openTile) return;
-    const position = { x: openTile.x, y: openTile.y };
-    const percentile = new DiceRoll("d100").total;
-
-    if (percentile <= 5) {
-      return spawnLavaGolem(position);
-    }
-
-    if (percentile <= 10) {
-      return spawnOwlbear(position);
-    }
-
-    if (percentile <= 20) {
-      return spawnOgre(position);
-    }
-
-    if (percentile <= 30) {
-      return spawnSkeleton(position);
-    }
-
-    if (percentile <= 40) {
-      return spawnGoblin(position);
-    }
-
-    if (percentile <= 50) {
-      return spawnLivingSponge(position);
-    }
-
-    return spawnRat(position);
-  });
+  spawnEnemies(depth, floorTiles);
 
   // increase number of enemies as you get deeper
   dungeon.rooms.forEach((room, index) => {

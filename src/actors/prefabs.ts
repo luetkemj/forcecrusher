@@ -293,7 +293,7 @@ export const livingSpongePrefab: Entity = {
   nose: { sensitivity: 0, detected: [] },
   vision: { range: 5, visible: [] },
   description: "A living sponge with an unquenchable thirst",
-  health: { max: 150, current: 150 },
+  health: { max: 10, current: 10 },
   baseArmorClass: 10,
   strength: 10,
   dexterity: 14,
@@ -318,7 +318,7 @@ export const livingSpongePrefab: Entity = {
   fluidContainer: {
     ...fluidContainerComponent,
     corked: true,
-    maxVolume: 2,
+    maxVolume: 4,
     inflow: false,
     outflow: true,
   },

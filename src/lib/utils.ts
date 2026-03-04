@@ -9,13 +9,23 @@ import {
 import { Disposition, EntityKind, Fluids } from "../ecs/enums";
 import { GameState, getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
-import { Pos, PosId, toPosId } from "./grid";
-import { pull, get, compact, random, times, sample, sortBy } from "lodash";
+import { Pos, PosId, getNeighbors, toPosId } from "./grid";
+import {
+  pull,
+  get,
+  compact,
+  random,
+  times,
+  sample,
+  sortBy,
+  shuffle,
+} from "lodash";
 import {
   LeaderboardEntry,
   loadLeaderboard,
   saveLeaderboard,
 } from "../ecs/saveStore";
+import { Constants } from "../pcgn/constants";
 
 export const colorTag = (color: number) => {
   return `§#${color.toString(16).padStart(6, "0")}§`;
@@ -271,25 +281,36 @@ export const unWear = (equipper: Entity) => {
 
 export const getDisposition = (actor: Entity, target: Entity) => {
   const dispositions: Record<EntityKind, Record<EntityKind, number>> = {
+    aberration: {
+      aberration: Disposition.Neutral,
+      beast: Disposition.Neutral,
+      humanoid: Disposition.Neutral,
+      undead: Disposition.Neutral,
+      player: Disposition.Neutral,
+    },
     beast: {
+      aberration: Disposition.Neutral,
       beast: Disposition.Neutral,
       humanoid: Disposition.Neutral,
       undead: Disposition.Hostile,
       player: Disposition.Hostile,
     },
     humanoid: {
+      aberration: Disposition.Neutral,
       beast: Disposition.Neutral,
       humanoid: Disposition.Neutral,
       undead: Disposition.Hostile,
       player: Disposition.Hostile,
     },
     undead: {
+      aberration: Disposition.Neutral,
       beast: Disposition.Hostile,
       humanoid: Disposition.Hostile,
       undead: Disposition.Friendly,
       player: Disposition.Hostile,
     },
     player: {
+      aberration: Disposition.Neutral,
       beast: Disposition.Neutral,
       humanoid: Disposition.Neutral,
       undead: Disposition.Neutral,
@@ -373,19 +394,48 @@ export function isInFOV(posId: PosId): boolean {
 
 export function isPosBlocked(posId: PosId): Entity | undefined {
   const eAP = getEAP(posId);
+
   if (!eAP) {
     return undefined;
   }
+
   return Array.from(eAP)
     .map((eId) => gameWorld.registry.get(eId))
     .find((candidate) => candidate?.blocking);
+}
+
+export function getNearbyOpenTile(position: Pos) {
+  const neighbors = getNeighbors(
+    position,
+    "all",
+    {
+      width: Constants.dungeonWidth,
+      height: Constants.dungeonHeight,
+    },
+    false,
+  ) as Pos[];
+
+  const possiblePositions = shuffle(neighbors);
+  let openPosition;
+
+  while (possiblePositions.length) {
+    // const eAP = queryAtPosition(possiblePositions[0]);
+    const pos = possiblePositions[0];
+    if (isPosBlocked(toPosId(pos))) {
+      possiblePositions.shift();
+    } else {
+      openPosition = pos;
+      break;
+    }
+  }
+
+  return openPosition;
 }
 
 /**
  * Mix N colors with weights
  * Usage: mixHexWeighted([0xff0000, 0xffff00, 0x000000], [0.5, 0.3, 0.2]);
  */
-
 export function mixHexWeighted(colors: number[], weights?: number[]): number {
   if (colors.length === 0) return 0x000000;
 
