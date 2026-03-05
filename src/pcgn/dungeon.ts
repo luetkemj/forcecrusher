@@ -14,12 +14,13 @@ import {
 } from "../lib/grid";
 import { spawn } from "../actors";
 import { spawnEnemies } from "./monsters";
-import { spawnItems, spawnSpellbook, spawnSpellscroll } from "./items";
-import { DiceRoll } from "@dice-roller/rpg-dice-roller";
+import { spawnItems } from "./items";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
 import { Entity } from "../ecs/engine";
 import { getState } from "../ecs/gameState";
+import { spawnGear } from "./gear";
+import { spawnSpellbooks } from "./spellBooks";
 
 export type Tile = {
   x: number;
@@ -264,6 +265,10 @@ export const generateDungeon = (zoneId: ZoneId) => {
   spawnEnemies(depth, floorTiles);
 
   spawnItems(depth, floorTiles);
+
+  spawnGear(depth, floorTiles);
+
+  spawnSpellbooks(depth, floorTiles);
 
   // increase number of enemies as you get deeper
   dungeon.rooms.forEach((room, index) => {

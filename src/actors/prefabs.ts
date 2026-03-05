@@ -776,6 +776,40 @@ export const leatherArmor: Entity = {
   material: Material.Leather,
 };
 
+export const chainmailArmor: Entity = {
+  ...baseItem,
+  appearance: {
+    char: chars.armor,
+    tint: colors.metal,
+    tileSet: TileSet.Kenny,
+  },
+  name: "Chainmail Armor",
+  description: "Better than leather.",
+  layer200: true,
+  pickUp: true,
+  armorClass: 12,
+  armorClassMod: "dexterity",
+  mass: 2.5,
+  material: Material.Leather,
+};
+
+export const paddedArmor: Entity = {
+  ...baseItem,
+  appearance: {
+    char: chars.armor,
+    tint: colors.metal,
+    tileSet: TileSet.Kenny,
+  },
+  name: "Padded Armor",
+  description: "Dense padding between two layers of thick wool.",
+  layer200: true,
+  pickUp: true,
+  armorClass: 13,
+  armorClassMod: "dexterity",
+  mass: 2,
+  material: Material.Cloth,
+};
+
 // NOTE: Interactive Structures
 export const doorPrefab: Entity = {
   ...baseTile,

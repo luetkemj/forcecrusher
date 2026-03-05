@@ -10,24 +10,6 @@ import {
   getTier,
   weightedRandom,
 } from "../lib/utils";
-import { Turn } from "../ecs/gameState";
-
-export const spawnSpellbook = (position: Pos) => {
-  const spellbook = spawn("spellbook", { position });
-
-  const spellName = sample(Object.values(SpellName));
-
-  if (spellName && spellbook.readable && spellbook.appearance) {
-    const spell = spellLibrary[spellName];
-    if (spell && spell.appearance) {
-      spellbook.readable.message = `You have learned ${spell.displayName}!`;
-      spellbook.readable.spellName = spellName;
-      spellbook.appearance.tint = spell.appearance.tint;
-    }
-  }
-
-  return spellbook;
-};
 
 export const spawnSpellscroll = (position: Pos) => {
   const spellscroll = spawn("spellscroll", { position });
@@ -67,8 +49,7 @@ type Item = {
 };
 
 const ITEM_TABLE: Item[] = [
-  { spawn: spawnSpellbook, cost: 10, min: 5, max: 999 },
-  { spawn: spawnSpellscroll, cost: 6, min: 3, max: 999 },
+  { spawn: spawnSpellscroll, cost: 20, min: 3, max: 999 },
   { spawn: spawnHealthPotion, cost: 5, min: 2, max: 999 },
   { spawn: spawnBottle, cost: 3, min: 1, max: 999 },
   { spawn: spawnRock, cost: 1, min: 1, max: 999 },
@@ -84,8 +65,7 @@ function tierWeight(item: Item, depth: number) {
   if (tier === 0 && item.spawn === spawnRock) return 4;
   if (tier === 1 && item.spawn === spawnBottle) return 4;
   if (tier === 2 && item.spawn === spawnHealthPotion) return 4;
-  if (tier === 3 && item.spawn === spawnSpellscroll) return 4;
-  if (tier >= 4 && item.spawn === spawnSpellbook) return 5;
+  if (tier >= 3 && item.spawn === spawnSpellscroll) return 4;
 
   return 1;
 }

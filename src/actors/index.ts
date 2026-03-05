@@ -27,6 +27,8 @@ import {
   goblinPrefab,
   ogrePrefab,
   owlbearPrefab,
+  chainmailArmor,
+  paddedArmor,
 } from "./prefabs";
 import { updatePosition } from "../lib/utils";
 import { Material } from "../ecs/enums";
@@ -62,6 +64,8 @@ export const prefabs = {
 
   // NOTE: Armor
   leatherArmor: leatherArmor,
+  chainmailArmor: chainmailArmor,
+  paddedArmor: paddedArmor,
 
   // NOTE: Interactive Structures
   stairsDown: stairsDownPrefab,
@@ -88,7 +92,7 @@ export const bestiary = [
 export const spawn = (
   prefab: keyof typeof prefabs,
   components: Partial<Entity> = {},
-) => {
+): Entity => {
   const prefabObj = prefabs[prefab];
 
   const entity = gameWorld.world.add({
