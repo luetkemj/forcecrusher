@@ -5,9 +5,11 @@ import { SpellName } from "../ecs/enums";
 import { spellLibrary } from "../spells";
 import { Tile } from "./dungeon";
 import {
+  WeightedSpawn,
   getFloorBudget,
   getNearbyOpenTile,
   getTier,
+  spawnSolo,
   weightedRandom,
 } from "../lib/utils";
 import { Spell, Entity } from "../ecs/engine";
@@ -60,15 +62,7 @@ export const spawnSpellbookKnock = (position: Pos) => {
   return spellbook;
 };
 
-// weighted item spawn
-type Item = {
-  spawn: Function;
-  cost: number;
-  min: number;
-  max: number;
-};
-
-const ITEM_TABLE: Item[] = [
+const ITEM_TABLE: WeightedSpawn[] = [
   { spawn: spawnSpellbookCreateBlood, cost: 1, min: 9, max: 999 },
   { spawn: spawnSpellbookCreateWater, cost: 1, min: 9, max: 999 },
   { spawn: spawnSpellbookCreateOil, cost: 1, min: 9, max: 999 },
@@ -80,7 +74,7 @@ const BUDGET_BASELINE = 5;
 const BUDGET_TUNER = 0.5;
 const TIER_CHUNK_SIZE = 3;
 
-function tierWeight(item: Item, depth: number) {
+function tierWeight(item: WeightedSpawn, depth: number) {
   const tier = getTier(depth, TIER_CHUNK_SIZE);
 
   if (tier === 3 && item.spawn === spawnSpellbookCreateBlood) return 4;
@@ -90,12 +84,6 @@ function tierWeight(item: Item, depth: number) {
   if (tier >= 4 && item.spawn === spawnSpellbookDesiccate) return 4;
 
   return 1;
-}
-
-function spawnSolo(item: Item, position: Pos) {
-  const tile = getNearbyOpenTile(position);
-  item.spawn(tile);
-  return item.cost;
 }
 
 export function spawnSpellbooks(depth: number, floorTiles: Tile[]) {

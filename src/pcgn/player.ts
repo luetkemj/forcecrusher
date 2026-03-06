@@ -6,7 +6,6 @@ export const spawnPlayer = (position: Pos) => {
   const player = spawn("player", { position });
 
   calcAverageDamage(player);
-  calcAverageDamage(player);
 
   return player;
 };

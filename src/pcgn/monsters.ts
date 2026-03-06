@@ -6,6 +6,8 @@ import {
   weightedRandom,
   getTier,
   getFloorBudget,
+  WeightedSpawn,
+  spawnSolo,
 } from "../lib/utils";
 import { calcAverageDamage } from "../lib/combat";
 import { spawn } from "../actors";
@@ -84,15 +86,7 @@ export const spawnLivingSponge = (position: Pos) => {
   return mob;
 };
 
-// weighted enemy spawn
-type Enemy = {
-  spawn: Function;
-  cost: number;
-  min: number;
-  max: number;
-  pack?: [number, number];
-};
-const ENEMY_TABLE: Enemy[] = [
+const ENEMY_TABLE: WeightedSpawn[] = [
   { spawn: spawnRat, cost: 1, min: 1, max: 6, pack: [4, 8] },
   { spawn: spawnGoblin, cost: 2, min: 2, max: 12, pack: [2, 5] },
   { spawn: spawnSkeleton, cost: 3, min: 4, max: 18, pack: [2, 4] },
@@ -103,10 +97,10 @@ const ENEMY_TABLE: Enemy[] = [
 ];
 
 const BUDGET_BASELINE = 8;
-const BUDGET_TUNER = 0.9;
+const BUDGET_TUNER = 0.5;
 const TIER_CHUNK_SIZE = 3;
 
-function tierWeight(enemy: Enemy, depth: number) {
+function tierWeight(enemy: WeightedSpawn, depth: number) {
   const tier = getTier(depth, TIER_CHUNK_SIZE);
 
   if (tier === 0 && enemy.spawn === spawnRat) return 4;
@@ -118,7 +112,7 @@ function tierWeight(enemy: Enemy, depth: number) {
   return 1;
 }
 
-function spawnPack(enemy: Enemy, position: Pos, budget: number) {
+function spawnPack(enemy: WeightedSpawn, position: Pos, budget: number) {
   if (!enemy.pack) return 0;
   const [min, max] = enemy.pack;
   const count = random(min, max);
@@ -127,20 +121,15 @@ function spawnPack(enemy: Enemy, position: Pos, budget: number) {
 
   times(count, () => {
     const tile = getNearbyOpenTile(position);
-    if (budgetRemaining >= enemy.cost) {
+
+    if (tile && budgetRemaining >= enemy.cost) {
       enemy.spawn(tile);
       budgetRemaining -= enemy.cost;
-      spawnCount += enemy.cost;
+      spawnCount += 1;
     }
   });
 
   return enemy.cost * spawnCount;
-}
-
-function spawnSolo(enemy: Enemy, position: Pos) {
-  const tile = getNearbyOpenTile(position);
-  enemy.spawn(tile);
-  return enemy.cost;
 }
 
 export function spawnEnemies(depth: number, floorTiles: Tile[]) {
@@ -175,7 +164,7 @@ export function spawnEnemies(depth: number, floorTiles: Tile[]) {
 
     let spent = 0;
 
-    if (random(1, 3) === 1) {
+    if (random(1, 3) === 1 && chosen.pack) {
       spent = spawnPack(chosen, tile, budget);
     } else {
       spent = spawnSolo(chosen, tile);

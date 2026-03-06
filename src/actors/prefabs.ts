@@ -790,7 +790,7 @@ export const chainmailArmor: Entity = {
   armorClass: 12,
   armorClassMod: "dexterity",
   mass: 2.5,
-  material: Material.Leather,
+  material: Material.Metal,
 };
 
 export const paddedArmor: Entity = {
@@ -830,7 +830,7 @@ export const doorPrefab: Entity = {
   pathThrough: true,
   blocking: true,
   door: true,
-  indestructable: true,
+  indestructible: true,
   openable: {
     state: OpenState.Closed,
   },
@@ -868,7 +868,7 @@ export const stairsDownPrefab: Entity = {
   layer250: true,
   mass: 10,
   material: Material.Wood,
-  indestructable: true,
+  indestructible: true,
 };
 
 export const stairsUpPrefab: Entity = {
@@ -884,7 +884,7 @@ export const stairsUpPrefab: Entity = {
   layer250: true,
   mass: 10,
   material: Material.Wood,
-  indestructable: true,
+  indestructible: true,
 };
 
 // NOTE: Terrain / Map Features

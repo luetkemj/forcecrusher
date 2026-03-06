@@ -404,7 +404,7 @@ export function isPosBlocked(posId: PosId): Entity | undefined {
     .find((candidate) => candidate?.blocking);
 }
 
-export function getNearbyOpenTile(position: Pos) {
+export function getNearbyOpenTile(position: Pos): Pos | undefined {
   const neighbors = getNeighbors(
     position,
     "all",
@@ -416,7 +416,7 @@ export function getNearbyOpenTile(position: Pos) {
   ) as Pos[];
 
   const possiblePositions = shuffle(neighbors);
-  let openPosition;
+  let openPosition: Pos | undefined;
 
   while (possiblePositions.length) {
     // const eAP = queryAtPosition(possiblePositions[0]);
@@ -589,4 +589,18 @@ export function getFloorBudget(baseline: number, depth: number, tune: number) {
 // ...
 export function getTier(depth: number, chunkSize: number = 3) {
   return Math.floor(depth / chunkSize);
+}
+
+export type WeightedSpawn = {
+  spawn: Function;
+  cost: number;
+  min: number;
+  max: number;
+  pack?: [number, number];
+};
+
+export function spawnSolo(thing: WeightedSpawn, position: Pos) {
+  const tile = getNearbyOpenTile(position);
+  thing.spawn(tile);
+  return thing ? thing.cost : 0;
 }

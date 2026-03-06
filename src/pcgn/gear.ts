@@ -2,7 +2,13 @@ import { sample } from "lodash";
 import { spawn } from "../actors";
 import { type Pos } from "../lib/grid";
 import { Tile } from "./dungeon";
-import { getNearbyOpenTile, getTier, weightedRandom } from "../lib/utils";
+import {
+  WeightedSpawn,
+  getNearbyOpenTile,
+  getTier,
+  spawnSolo,
+  weightedRandom,
+} from "../lib/utils";
 
 export const spawnShortsword = (position: Pos) => {
   spawn("shortsword", { position });
@@ -28,15 +34,7 @@ export const spawnPaddedArmor = (position: Pos) => {
   spawn("paddedArmor", { position });
 };
 
-// weighted item spawn
-type Item = {
-  spawn: Function;
-  cost: number;
-  min: number;
-  max: number;
-};
-
-const ITEM_TABLE: Item[] = [
+const ITEM_TABLE: WeightedSpawn[] = [
   { spawn: spawnDagger, cost: 2, min: 2, max: 999 },
   { spawn: spawnLeatherArmor, cost: 2, min: 2, max: 999 },
   { spawn: spawnShortsword, cost: 4, min: 4, max: 999 },
@@ -48,7 +46,7 @@ const ITEM_TABLE: Item[] = [
 const BUDGET_BASELINE = 1;
 const TIER_CHUNK_SIZE = 3;
 
-function tierWeight(item: Item, depth: number) {
+function tierWeight(item: WeightedSpawn, depth: number) {
   const tier = getTier(depth, TIER_CHUNK_SIZE);
 
   if (tier === 0 && item.spawn === spawnDagger) return 4;
@@ -56,12 +54,6 @@ function tierWeight(item: Item, depth: number) {
   if (tier === 2 && item.spawn === spawnClub) return 4;
 
   return 1;
-}
-
-function spawnSolo(item: Item, position: Pos) {
-  const tile = getNearbyOpenTile(position);
-  item.spawn(tile);
-  return item.cost;
 }
 
 export function spawnGear(depth: number, floorTiles: Tile[]) {
