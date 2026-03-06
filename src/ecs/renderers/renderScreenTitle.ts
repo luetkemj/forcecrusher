@@ -6,7 +6,13 @@ import { GameState, getState } from "../gameState";
 import { LeaderboardEntry, loadLeaderboard } from "../saveStore";
 import { RendererContext } from "../systems/render.system";
 
-const leaderboard = (await loadLeaderboard()) || [];
+let leaderboard: LeaderboardEntry[] = [];
+
+async function initLeaderboard() {
+  leaderboard = (await loadLeaderboard()) || [];
+}
+
+initLeaderboard();
 
 export const renderScreenTitle = ({ views }: RendererContext) => {
   const view = views.screenTitle;
