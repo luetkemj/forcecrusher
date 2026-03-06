@@ -184,15 +184,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [
-    ignite,
-    createWater,
-    createBlood,
-    desiccate,
-    kill,
-    massKill,
-    knock,
-  ],
+  knownSpells: [],
   vitalFluid: Fluids.Blood,
 };
 
