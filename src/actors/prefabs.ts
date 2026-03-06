@@ -11,13 +11,6 @@ import {
   ReadableType,
   TileSet,
 } from "../ecs/enums";
-import { createBlood } from "../spells/spellbook/createBlood";
-import { createWater } from "../spells/spellbook/createWater";
-import { desiccate } from "../spells/spellbook/desiccate";
-import { ignite } from "../spells/spellbook/ignite";
-import { kill } from "../spells/spellbook/kill";
-import { knock } from "../spells/spellbook/knock";
-import { massKill } from "../spells/spellbook/massKill";
 import { colors, chars } from "./graphics";
 
 export const fluidContainerComponent = {
@@ -184,15 +177,7 @@ export const playerPrefab: Entity = {
   pathThrough: true,
   mass: 1,
   material: Material.Flesh,
-  knownSpells: [
-    ignite,
-    createWater,
-    createBlood,
-    desiccate,
-    kill,
-    massKill,
-    knock,
-  ],
+  knownSpells: [],
   vitalFluid: Fluids.Blood,
 };
 
