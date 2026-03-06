@@ -13,29 +13,22 @@ import {
   ZoneId,
 } from "../lib/grid";
 import { spawn } from "../actors";
-import {
-  spawnGoblin,
-  spawnSkeleton,
-  spawnRat,
-  spawnLavaGolem,
-  spawnLivingSponge,
-  spawnOgre,
-  spawnOwlbear,
-} from "./monsters";
-import { spawnSpellscroll } from "./items";
-import { DiceRoll } from "@dice-roller/rpg-dice-roller";
+import { spawnEnemies } from "./monsters";
+import { spawnItems } from "./items";
 import { DungeonTags } from "../ecs/enums";
 import { Constants } from "./constants";
 import { Entity } from "../ecs/engine";
 import { getState } from "../ecs/gameState";
+import { spawnGear } from "./gear";
+import { spawnSpellbooks } from "./spellBooks";
 
-type Tile = {
+export type Tile = {
   x: number;
   y: number;
   sprite: string;
 };
 
-type Tiles = { [key: PosId]: Tile };
+export type Tiles = { [key: PosId]: Tile };
 
 function digHorizontalPassage(posA: Pos, posB: Pos) {
   const tiles: Tiles = {};
@@ -229,8 +222,8 @@ export const generateDungeon = (zoneId: ZoneId) => {
       // add fluidContainers to every open floor tile
       const fEntity = spawn("fluidContainer", { position: { x, y } });
       // randomly fill containers with fluid to create pools
-      const fluidTypes = ["blood", "oil", "water"];
-      if (Math.random() < 0.005) {
+      const fluidTypes = ["oil", "water", "water", "water"];
+      if (Math.random() < 0.002) {
         if (fEntity.fluidContainer) {
           const volume = random(5, 20);
           fEntity.fluidContainer.fluids[sample(fluidTypes) || "water"].volume =
@@ -269,51 +262,17 @@ export const generateDungeon = (zoneId: ZoneId) => {
     tile.tags?.has(DungeonTags.Floor),
   );
 
-  times(10 + depth, () => {
-    const openTile = sample(floorTiles);
-    if (!openTile) return;
-    const position = { x: openTile.x, y: openTile.y };
-    const percentile = new DiceRoll("d100").total;
+  spawnEnemies(depth, floorTiles);
 
-    if (percentile <= 5) {
-      return spawnLavaGolem(position);
-    }
+  spawnItems(depth, floorTiles);
 
-    if (percentile <= 10) {
-      return spawnOwlbear(position);
-    }
+  spawnGear(depth, floorTiles);
 
-    if (percentile <= 20) {
-      return spawnOgre(position);
-    }
-
-    if (percentile <= 30) {
-      return spawnSkeleton(position);
-    }
-
-    if (percentile <= 40) {
-      return spawnGoblin(position);
-    }
-
-    if (percentile <= 50) {
-      return spawnLivingSponge(position);
-    }
-
-    return spawnRat(position);
-  });
+  spawnSpellbooks(depth, floorTiles);
 
   // increase number of enemies as you get deeper
   dungeon.rooms.forEach((room, index) => {
-    const percentile = new DiceRoll("d100").total;
-    if (index) {
-      if (percentile >= 90) {
-        spawn("healthPotion", { position: room.center });
-      } else {
-        spawnSpellscroll(room.center);
-      }
-    }
     // sprinkle coins
-
     times(5, () => {
       if (random(0, 3) > 1) {
         const { x, y } = sample(room.tiles) || { x: 0, y: 0 };
@@ -345,11 +304,14 @@ export const generateDungeon = (zoneId: ZoneId) => {
   type GrassMap = Record<PosId, Entity>;
   const grassTiles: GrassMap = {};
   dungeon.rooms.forEach((_) => {
-    const { x, y } = sample(sample(dungeon.rooms)?.tiles) || { x: 0, y: 0 };
-    const seedEntity = spawn("grass", { position: { x, y } });
-    // grow grass
-    if (seedEntity.position) {
-      grassTiles[toPosId(seedEntity.position)] = seedEntity;
+    // only seed 30% of rooms
+    if (random(0, Math.abs(depth)) === 1) {
+      const { x, y } = sample(sample(dungeon.rooms)?.tiles) || { x: 0, y: 0 };
+      const seedEntity = spawn("grass", { position: { x, y } });
+      // grow grass
+      if (seedEntity.position) {
+        grassTiles[toPosId(seedEntity.position)] = seedEntity;
+      }
     }
   });
 

@@ -293,7 +293,7 @@ export const livingSpongePrefab: Entity = {
   nose: { sensitivity: 0, detected: [] },
   vision: { range: 5, visible: [] },
   description: "A living sponge with an unquenchable thirst",
-  health: { max: 150, current: 150 },
+  health: { max: 10, current: 10 },
   baseArmorClass: 10,
   strength: 10,
   dexterity: 14,
@@ -318,7 +318,7 @@ export const livingSpongePrefab: Entity = {
   fluidContainer: {
     ...fluidContainerComponent,
     corked: true,
-    maxVolume: 2,
+    maxVolume: 4,
     inflow: false,
     outflow: true,
   },
@@ -776,6 +776,40 @@ export const leatherArmor: Entity = {
   material: Material.Leather,
 };
 
+export const chainmailArmor: Entity = {
+  ...baseItem,
+  appearance: {
+    char: chars.armor,
+    tint: colors.metal,
+    tileSet: TileSet.Kenny,
+  },
+  name: "Chainmail Armor",
+  description: "Better than leather.",
+  layer200: true,
+  pickUp: true,
+  armorClass: 12,
+  armorClassMod: "dexterity",
+  mass: 2.5,
+  material: Material.Metal,
+};
+
+export const paddedArmor: Entity = {
+  ...baseItem,
+  appearance: {
+    char: chars.armor,
+    tint: colors.metal,
+    tileSet: TileSet.Kenny,
+  },
+  name: "Padded Armor",
+  description: "Dense padding between two layers of thick wool.",
+  layer200: true,
+  pickUp: true,
+  armorClass: 13,
+  armorClassMod: "dexterity",
+  mass: 2,
+  material: Material.Cloth,
+};
+
 // NOTE: Interactive Structures
 export const doorPrefab: Entity = {
   ...baseTile,
@@ -796,6 +830,7 @@ export const doorPrefab: Entity = {
   pathThrough: true,
   blocking: true,
   door: true,
+  indestructible: true,
   openable: {
     state: OpenState.Closed,
   },
@@ -833,6 +868,7 @@ export const stairsDownPrefab: Entity = {
   layer250: true,
   mass: 10,
   material: Material.Wood,
+  indestructible: true,
 };
 
 export const stairsUpPrefab: Entity = {
@@ -848,6 +884,7 @@ export const stairsUpPrefab: Entity = {
   layer250: true,
   mass: 10,
   material: Material.Wood,
+  indestructible: true,
 };
 
 // NOTE: Terrain / Map Features
@@ -917,7 +954,6 @@ export const grassPrefab: Entity = {
   layer125: true,
   mass: 0.4,
   material: Material.Plant,
-  pickUp: true,
   mutable: {
     current: "young",
     mutations: [

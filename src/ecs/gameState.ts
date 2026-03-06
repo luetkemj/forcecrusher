@@ -126,7 +126,7 @@ const state: State = {
     { x: 0, y: 0 },
   ],
   dungeon: {
-    maxDepth: -2,
+    maxDepth: -14,
   },
   fps: 0,
   gameState: GameState.SCREEN_TITLE,

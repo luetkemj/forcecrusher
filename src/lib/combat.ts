@@ -107,7 +107,8 @@ function calcDamage(attacker: Entity, ranged: boolean) {
     }
   }
 
-  return Math.max(0, damage);
+  // if you hit - do at least one damage
+  return Math.max(1, damage);
 }
 
 // NOTE: this doesn't really make sense anymore with how attacks work - would need to average the damage from ALL attacks

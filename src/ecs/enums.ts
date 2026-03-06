@@ -24,6 +24,7 @@ export enum DungeonTags {
 }
 
 export enum EntityKind {
+  Aberration = "aberration",
   Beast = "beast",
   Humanoid = "humanoid",
   Player = "player",
