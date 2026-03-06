@@ -4,7 +4,6 @@ import { type Pos } from "../lib/grid";
 import { Tile } from "./dungeon";
 import {
   WeightedSpawn,
-  getNearbyOpenTile,
   getTier,
   spawnSolo,
   weightedRandom,

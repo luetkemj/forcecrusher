@@ -42,7 +42,7 @@ export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
           world.removeComponent(entity, "living");
           world.addComponent(entity, "dead", true);
           addLog(`${colorTag(entityTint)}${entity.name}§purple§ has died!`);
-        } else if (!entity.indestructable) {
+        } else if (!entity.indestructible) {
           world.addComponent(entity, "destroyed", true);
           addLog(
             `${colorTag(entityTint)}${entity.name}§purple§ has been destroyed!`,

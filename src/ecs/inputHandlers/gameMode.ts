@@ -94,22 +94,22 @@ export const handleGameModeInput = async ({
 
     // stairs needs to be it's own system
     if (key === Keys.STAIRS_DOWN) {
-      // if (!player.position) return;
-      // const [stairsDownEntity] = stairsDownQuery;
-      // if (!stairsDownEntity) return true;
+      if (!player.position) return;
+      const [stairsDownEntity] = stairsDownQuery;
+      if (!stairsDownEntity) return true;
 
-      // if (isAtSamePosition(player.position, stairsDownEntity.position)) {
-      const { zoneId } = state;
-      const zonePos = toZone(zoneId);
-      const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
-      const targetZoneId = toZoneId(targetZonePos);
-      changeZone(targetZoneId, ChangeZoneDirections.down);
-      world.addComponent(player, "excludeFromSim", true);
-      setState((state: State) => {
-        state.gameState = GameState.SIM;
-        state.simulationTurnsLeft = 25;
-      });
-      // }
+      if (isAtSamePosition(player.position, stairsDownEntity.position)) {
+        const { zoneId } = state;
+        const zonePos = toZone(zoneId);
+        const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
+        const targetZoneId = toZoneId(targetZonePos);
+        changeZone(targetZoneId, ChangeZoneDirections.down);
+        world.addComponent(player, "excludeFromSim", true);
+        setState((state: State) => {
+          state.gameState = GameState.SIM;
+          state.simulationTurnsLeft = 25;
+        });
+      }
 
       return true;
     }

@@ -7,7 +7,6 @@ import { Tile } from "./dungeon";
 import {
   WeightedSpawn,
   getFloorBudget,
-  getNearbyOpenTile,
   getTier,
   spawnSolo,
   weightedRandom,

@@ -182,7 +182,7 @@ export const createFireSystem = ({ world, registry }: IGameWorld) => {
         if (actor.material) {
           if (
             materialsDestroyedByFire.includes(actor.material) &&
-            !actor.indestructable
+            !actor.indestructible
           ) {
             world.addComponent(actor, "destroy", true);
           }
