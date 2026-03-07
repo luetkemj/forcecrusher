@@ -1,8 +1,6 @@
 import { sample } from "lodash";
 import { spawn } from "../actors";
 import { type Pos } from "../lib/grid";
-import { SpellName } from "../ecs/enums";
-import { spellLibrary } from "../spells";
 import { Tile } from "./dungeon";
 import {
   WeightedSpawn,
@@ -11,23 +9,6 @@ import {
   spawnSolo,
   weightedRandom,
 } from "../lib/utils";
-
-export const spawnSpellscroll = (position: Pos) => {
-  const spellscroll = spawn("spellscroll", { position });
-
-  const spellName = sample(Object.values(SpellName));
-
-  if (spellName && spellscroll.readable && spellscroll.appearance) {
-    const spell = spellLibrary[spellName];
-    if (spell && spell.appearance) {
-      spellscroll.readable.message = `You have read the scroll ${spell.displayName}!`;
-      spellscroll.readable.spellName = spellName;
-      spellscroll.appearance.tint = spell.appearance.tint;
-    }
-  }
-
-  return spellscroll;
-};
 
 export const spawnHealthPotion = (position: Pos) => {
   spawn("healthPotion", { position });
@@ -42,7 +23,6 @@ export const spawnRock = (position: Pos) => {
 };
 
 const ITEM_TABLE: WeightedSpawn[] = [
-  { spawn: spawnSpellscroll, cost: 20, min: 3, max: 999 },
   { spawn: spawnHealthPotion, cost: 5, min: 2, max: 999 },
   { spawn: spawnBottle, cost: 3, min: 1, max: 999 },
   { spawn: spawnRock, cost: 1, min: 1, max: 999 },
@@ -57,8 +37,7 @@ function tierWeight(item: WeightedSpawn, depth: number) {
 
   if (tier === 0 && item.spawn === spawnRock) return 4;
   if (tier === 1 && item.spawn === spawnBottle) return 4;
-  if (tier === 2 && item.spawn === spawnHealthPotion) return 4;
-  if (tier >= 3 && item.spawn === spawnSpellscroll) return 4;
+  if (tier >= 2 && item.spawn === spawnHealthPotion) return 4;
 
   return 1;
 }
