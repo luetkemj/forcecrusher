@@ -21,6 +21,7 @@ import { Entity } from "../ecs/engine";
 import { getState } from "../ecs/gameState";
 import { spawnGear } from "./gear";
 import { spawnSpellbooks } from "./spellBooks";
+import { spawnSpellscrolls } from "./spellScrolls";
 
 export type Tile = {
   x: number;
@@ -269,6 +270,8 @@ export const generateDungeon = (zoneId: ZoneId) => {
   spawnGear(depth, floorTiles);
 
   spawnSpellbooks(depth, floorTiles);
+
+  spawnSpellscrolls(depth, floorTiles);
 
   // increase number of enemies as you get deeper
   dungeon.rooms.forEach((room, index) => {
