@@ -55,15 +55,8 @@ const TIER_CHUNK_SIZE = 3;
 
 function tierWeight(item: WeightedSpawn, depth: number) {
   const tier = getTier(depth, TIER_CHUNK_SIZE);
-
-  if (tier === 1 && item.spawn === spawnSpellscrollKill) return 4;
-  if (tier === 2 && item.spawn === spawnSpellscrollIgnite) return 4;
-  if (tier === 3 && item.spawn === spawnSpellscrollCreateLava) return 4;
-  if (tier === 4 && item.spawn === spawnSpellscrollFireWall) return 4;
-  if (tier === 4 && item.spawn === spawnSpellscrollInferno) return 4;
-  if (tier === 5 && item.spawn === spawnSpellscrollMassKill) return 4;
-
-  return 1;
+  const unlockTier = getTier(item.min, TIER_CHUNK_SIZE);
+  return tier === unlockTier ? 4 : 1;
 }
 
 export function spawnSpellscrolls(depth: number, floorTiles: Tile[]) {
