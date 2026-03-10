@@ -1,5 +1,41 @@
 # Dev Log
 
+## 030716
+
+**Skulltooth 2: Forcecrusher** ([github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher))
+
+Version 1 release! It's an actual game!
+
+Tons of work over the last month taking what's basically been a tech demo and turning it into an actual game. Added start, death, and victory screens. Gold to aquire points and a high scores list. And an actual goal! Its the classic steal the amulet but in this case a skulltooth. It's very very far from perfect but if you're not a little embarassed you waited too long.
+
+Full release notes:
+
+- [feat] add main quest prompt in message log at game start
+- [feat] skulltooth spawns on bottom floor
+- [feat] victory condition
+- [feat] title screen
+- [feat] game over screen
+- [feat] victory screen and reset commands
+- [fix] flicker and console error in sim mode
+- [fix] inflammable rats
+- [fix] materials that can be destroyed by fire
+- [feat] fire damage calc
+- [feat] render hearts and status in legend
+- [feat] living component
+- [feat] more mobs
+- [feat] beastiary
+- [feat] wet component
+- [fix] interact bug
+- [feat] cause of death
+- [fix] add controls in UI for stairs and bestiary
+- [fix] flush input when exiting inventory screen
+- [feat] money leaderboard
+- [fix] don't use modifier for rat attacks (too weak)
+- [feat] weighted spawn & difficulty ramp
+- [fix] remove spells on player start
+- [fix] refactor top level await
+- [feat] better balance of scrolls
+
 ## 020626
 
 **Skulltooth 2: Forcecrusher** ([github](https://github.com/luetkemj/forcecrusher) | [play](https://luetkemj.github.io/forcecrusher))
