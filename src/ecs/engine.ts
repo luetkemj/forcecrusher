@@ -23,6 +23,8 @@ import { saveGameData as dbSave, loadGameData as dbLoad } from "./saveStore";
 import { handleUserInput } from "./inputHandlers/KeyMap";
 import { addLog, addToEAPMap, updatePosition } from "../lib/utils";
 
+export const ACTION_COST = 100;
+
 export interface IGameWorld {
   world: World<Entity>;
   registry: Map<string, Entity>;
