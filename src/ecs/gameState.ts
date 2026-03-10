@@ -99,7 +99,11 @@ export type State = {
   morgue: {
     causeOfDeath: string;
   };
+
+  readyQueue?: EntityId[];
+  currentActorId?: EntityId | undefined;
   simulationTurnsLeft: number;
+
   screenBeastiary: { activeIndex: number };
   spellAoe: PosId[];
   spellbookActiveIndex: number;
@@ -156,7 +160,11 @@ const state: State = {
     taste: "",
     touch: "",
   },
+
+  readyQueue: [],
+  currentActorId: undefined,
   simulationTurnsLeft: 25,
+
   spellAoe: [],
   spellbookActiveIndex: 0,
   spellName: null,
