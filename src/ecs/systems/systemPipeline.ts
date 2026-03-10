@@ -1,3 +1,4 @@
+import { createAccumulateEnergySystem } from "../systems/accumulateEnergySystem";
 import { createActiveEffectsSystem } from "../systems/activeEffects.system";
 import { createAiSystem } from "../systems/ai.system";
 import { createAttackSystem } from "../systems/attack.system";
@@ -37,6 +38,7 @@ import { gameWorld } from "../engine";
 import { GameState } from "../gameState";
 import { styleDuration } from "./debug-utils";
 
+const accumulateEnergySystem = createAccumulateEnergySystem(gameWorld);
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
 const aiSystem = createAiSystem(gameWorld);
 const attackSystem = createAttackSystem(gameWorld);
@@ -75,6 +77,7 @@ const uncastSpellSystem = createUncastSpellSystem(gameWorld);
 const wetSystem = createWetSystem(gameWorld);
 
 export const systems = {
+  accumulateEnergy: accumulateEnergySystem,
   activeEffects: activeEffectsSystem,
   ai: aiSystem,
   attack: attackSystem,
@@ -222,6 +225,50 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.mixTints,
     systems.destroy,
   ],
+  render: [systems.render],
+};
+
+export const tickPipeline: SystemPipeline = {
+  preInput: [
+    systems.accumulateEnergy,
+    systems.simulation,
+    systems.uncastSpellSystem,
+    systems.fluid,
+    systems.wet,
+    systems.fire,
+    systems.desiccate,
+    systems.activeEffects,
+    systems.odor,
+    systems.sound,
+  ],
+  input: [],
+  main: [systems.damage, systems.morgue],
+  postMain: [
+    systems.fov,
+    systems.calculateFlammability,
+    systems.mutable,
+    systems.mixTints,
+    systems.destroy,
+  ],
+  render: [systems.render],
+};
+
+export const actorTurnPipeline: SystemPipeline = {
+  preInput: [systems.activeEffects],
+  input: [systems.userInput, systems.perception, systems.memory, systems.ai],
+  main: [
+    systems.pickUp,
+    systems.tryFill,
+    systems.tryCastSpell,
+    systems.movement,
+    systems.open,
+    systems.attack,
+    systems.knockback,
+    systems.damage,
+    systems.drop,
+  ],
+  // do I need these to run here?
+  postMain: [systems.fov, systems.mutable, systems.mixTints, systems.destroy],
   render: [systems.render],
 };
 
