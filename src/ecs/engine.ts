@@ -214,6 +214,7 @@ export type Entity = {
   };
   effectImmunities?: Array<EffectType>;
   effects?: Array<Effect>;
+  energy?: number;
   entityKind?: EntityKind;
   fluidContainer?: FluidContainer;
   vitalFluid?: Fluids;
@@ -321,6 +322,7 @@ export type Entity = {
   resistances?: Array<DamageType>;
   revealed?: true;
   sound?: { strength: number };
+  speed?: number;
   spellbound?: {
     dispel?: DispelName;
     turnNumber: number;
