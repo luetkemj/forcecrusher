@@ -85,6 +85,7 @@ export type State = {
     applicator?: EntityId;
   };
   makerModePrefabSelectIndex: number;
+  nextInitiative: number;
   eapMap: Map<PosId, Set<EntityId>>;
   odorMap: Map<PosId, Record<EntityId, { strength: number }>>;
   soundMap: Map<PosId, Record<EntityId, { strength: number }>>;
@@ -109,7 +110,6 @@ export type State = {
   spellbookActiveIndex: number;
   spellName: SpellName | null;
   spellCastType: SpellCastType | null;
-  turn: Turn;
   turnNumber: number;
   userInput: KeyboardEvent | null;
   views: Views;
@@ -146,6 +146,7 @@ const state: State = {
   interaction: {},
   makerModePrefabSelectIndex: 0,
   morgue: { causeOfDeath: "Unknown" },
+  nextInitiative: 0,
   eapMap: new Map(),
   odorMap: new Map(),
   soundMap: new Map(),
@@ -163,13 +164,12 @@ const state: State = {
 
   readyQueue: [],
   currentActorId: undefined,
-  simulationTurnsLeft: 25,
+  simulationTurnsLeft: 0,
 
   spellAoe: [],
   spellbookActiveIndex: 0,
   spellName: null,
   spellCastType: null,
-  turn: Turn.PLAYER,
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,
   views: {},

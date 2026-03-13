@@ -1,5 +1,5 @@
 import { InputContext } from "../systems/userInput.system";
-import { GameState, State, Turn } from "../gameState";
+import { GameState, State } from "../gameState";
 import { outOfBounds } from "../../lib/utils";
 import { isUndefined } from "lodash";
 import { Keys, getDirectionFromKey, isMoveKey } from "./KeyMap";
@@ -35,7 +35,6 @@ export const handleTargetModeInput = ({
     }
 
     setState((state: State) => {
-      state.turn = Turn.WORLD;
       state.gameState = GameState.GAME;
     });
     return true;

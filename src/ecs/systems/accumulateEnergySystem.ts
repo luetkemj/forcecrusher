@@ -1,6 +1,6 @@
 import { IGameWorld } from "../engine";
 
-export const accumulateEnergySystem = ({ world }: IGameWorld) => {
+export const createAccumulateEnergySystem = ({ world }: IGameWorld) => {
   const actorsQuery = world.with("speed", "energy");
 
   return function accumulateEnergySystem() {

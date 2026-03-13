@@ -19,6 +19,7 @@ import { handleLoadingModeInput } from "../inputHandlers/loadingMode";
 import { handleScreenBeastiaryMode } from "../inputHandlers/screenBeastiary";
 import { handleScreenTitleMode } from "../inputHandlers/screenTitleMode";
 import { handleScreenVictoryMode } from "../inputHandlers/screenVictoryMode";
+import { getCurrentActor } from "../../main";
 
 export interface InputContext {
   key: string;
@@ -54,6 +55,9 @@ export const createUserInputSystem = ({
   return async function userInputSystem() {
     const { userInput, gameState } = getState();
     const state = getState();
+
+    const currentActor = getCurrentActor();
+    if (currentActor && currentActor.id !== getState().playerId) return;
 
     if (!userInput) return;
 

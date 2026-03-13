@@ -1,25 +1,19 @@
 import "./style.css";
-import { mean } from "lodash";
+import { isUndefined, mean } from "lodash";
 import { pxToPosId, setupCanvas } from "./lib/canvas";
 import { toPosId } from "./lib/grid";
 import { getFrozenEntity } from "./lib/utils";
 import { generateDungeon } from "./pcgn/dungeon";
 import { spawnPlayer } from "./pcgn/player";
-import { gameWorld, IGameWorld } from "./ecs/engine";
-import {
-  type State,
-  GameState,
-  Turn,
-  getState,
-  setState,
-} from "./ecs/gameState";
+import { ACTION_COST, gameWorld, IGameWorld } from "./ecs/engine";
+import { type State, GameState, getState, setState } from "./ecs/gameState";
 import { createViews, ViewId } from "./views/views";
 import {
+  actorTurnPipeline,
+  tickPipeline,
   gameStatePipelines,
-  playerTurnPipeline,
   runPipeline,
   systems,
-  worldTurnPipeline,
 } from "./ecs/systems/systemPipeline";
 import { handleUserInput } from "./ecs/inputHandlers/KeyMap";
 import { TileSet } from "./ecs/enums";
@@ -124,52 +118,86 @@ const init = async () => {
   });
 };
 
+// where should these go?
+export function getCurrentActor() {
+  const { currentActorId } = getState();
+
+  return gameWorld.registry.get(currentActorId || "");
+}
+
+function buildReadyQueue(): string[] {
+  const actors = gameWorld.world.with("energy", "speed", "initiative");
+  const ready: any[] = [];
+
+  for (const actor of actors) {
+    if (actor.energy >= ACTION_COST) {
+      ready.push(actor);
+    }
+  }
+
+  ready.sort((a, b) => a.initiative - b.initiative);
+
+  return ready.map((a) => a.id);
+}
+
+function runActorTurn(actorId: string) {
+  setState((state: State) => (state.currentActorId = actorId));
+
+  runPipeline(actorTurnPipeline, "ActorTurn");
+
+  // spend energy AFTER action
+  const actor = gameWorld.registry.get(actorId);
+
+  if (actor && !isUndefined(actor.energy)) {
+    actor.energy -= ACTION_COST;
+  }
+}
+
+function simulationFrame() {
+  const queue = buildReadyQueue();
+
+  if (queue.length === 0) {
+    // nobody ready → advance time once
+    runPipeline(tickPipeline, "Tick");
+    return;
+  }
+
+  const actorId = queue[0];
+
+  const isPlayer = actorId === getState().playerId;
+  const hasInput = getState().userInput !== null;
+
+  if (isPlayer && !hasInput) {
+    runPipeline({ render: [systems.render] }, "Render");
+    return;
+  }
+
+  runActorTurn(actorId);
+
+  // only advance time if nobody else can act
+  const nextQueue = buildReadyQueue();
+
+  if (nextQueue.length === 0) {
+    runPipeline(tickPipeline, "Tick");
+  }
+
+  runPipeline({ render: [systems.render] }, "Render");
+}
+
 function gameLoop() {
   requestAnimationFrame(gameLoop);
   trackFPS();
 
   const state = getState();
 
-  const playerCanAct = state.turn === Turn.PLAYER && state.userInput !== null;
-
   if (state.gameState !== GameState.GAME) {
-    if (playerCanAct) {
-      runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
-    }
-
-    if (state.gameState === GameState.SIM) {
-      if (state.simulationTurnsLeft === 0) {
-        setState((state: State) => {
-          state.gameState = GameState.GAME;
-        });
-      } else {
-        runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
-      }
-    }
+    runPipeline(gameStatePipelines[state.gameState]!, state.gameState);
 
     return;
   }
 
-  if (playerCanAct) {
-    runPipeline(playerTurnPipeline, "PlayerTurn");
-
-    if (getState().gameState === GameState.GAME) {
-      setState((state: State) => {
-        state.turn = Turn.WORLD;
-      });
-    }
-
-    return;
-  }
-
-  if (state.turn === Turn.WORLD) {
-    runPipeline(worldTurnPipeline, "WorldTurn");
-
-    setState((state: State) => (state.turnNumber += 1));
-
-    setState((state: State) => {
-      state.turn = Turn.PLAYER;
-    });
+  if (state.gameState === GameState.GAME) {
+    simulationFrame();
   }
 }
 

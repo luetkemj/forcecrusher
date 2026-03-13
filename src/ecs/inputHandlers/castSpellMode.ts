@@ -1,5 +1,5 @@
 import { InputContext } from "../systems/userInput.system";
-import { GameState, State, Turn, getState } from "../gameState";
+import { GameState, State, getState } from "../gameState";
 import { addLog, outOfBounds } from "../../lib/utils";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 import { spellLibrary } from "../../spells";
@@ -65,7 +65,6 @@ export const handleCastSpellModeInput = ({
     }
 
     setState((state: State) => {
-      state.turn = Turn.WORLD;
       state.gameState = GameState.GAME;
     });
     return true;

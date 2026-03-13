@@ -110,6 +110,7 @@ const baseBeing: Entity = {
   },
   speed: 100,
   energy: 0,
+  initiative: 0,
 };
 
 const baseMob: Entity = {
@@ -222,7 +223,8 @@ export const ratPrefab: Entity = {
   mass: 0.8,
   material: Material.Flesh,
   vitalFluid: Fluids.Blood,
-  speed: 200,
+  speed: 100,
+  initiative: 1,
 };
 
 export const lavaGolemPrefab: Entity = {

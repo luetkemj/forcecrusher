@@ -1,4 +1,4 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep, isUndefined } from "lodash";
 import { gameWorld, type Entity } from "../ecs/engine";
 import {
   coinPrefab,
@@ -32,6 +32,7 @@ import {
 } from "./prefabs";
 import { updatePosition } from "../lib/utils";
 import { Material } from "../ecs/enums";
+import { getState, setState, State } from "../ecs/gameState";
 
 export const prefabs = {
   // NOTE: Player
@@ -116,6 +117,12 @@ export const spawn = (
         source: true,
       });
     }
+  }
+
+  // calculate initiative
+  if (!isUndefined(entity.energy)) {
+    entity.initiative = getState().nextInitiative;
+    setState((state: State) => (state.nextInitiative += 1));
   }
 
   return entity;

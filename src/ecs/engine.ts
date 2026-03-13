@@ -252,6 +252,7 @@ export type Entity = {
   immunities?: Array<DamageType>;
   indestructible?: true;
   inFov?: true;
+  initiative?: number;
   intelligence?: number;
   interactDirection?: Pos;
   kickable?: {

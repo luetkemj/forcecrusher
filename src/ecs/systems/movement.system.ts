@@ -5,11 +5,11 @@ import {
   getEAP,
   updatePosition,
 } from "../../lib/utils";
-import { IGameWorld } from "../engine";
+import { ACTION_COST, IGameWorld } from "../engine";
 
 export const createMovementSystem = ({ world, registry }: IGameWorld) => {
   const moveableQuery = world
-    .with("position", "tryMove")
+    .with("position", "tryMove", "energy")
     .without("excludeFromSim");
   const blockingQuery = world
     .with("blocking", "position")
@@ -18,6 +18,9 @@ export const createMovementSystem = ({ world, registry }: IGameWorld) => {
   return function movementSystem() {
     for (const actor of moveableQuery) {
       const { tryMove } = actor;
+
+      console.log(actor.energy, actor);
+      if (actor.energy < ACTION_COST) continue;
 
       let blocked = false;
 
