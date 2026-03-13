@@ -154,31 +154,33 @@ function runActorTurn(actorId: string) {
 }
 
 function simulationFrame() {
-  const queue = buildReadyQueue();
+  // Batch all ready actor turns into a single frame.
+  // Process until the player needs input or no one is ready.
+  const MAX_ITERATIONS = 200;
+  let iterations = 0;
+  let playerActedThisFrame = false;
 
-  if (queue.length === 0) {
-    // nobody ready → advance time once
-    runPipeline(tickPipeline, "Tick");
-    return;
-  }
+  while (iterations++ < MAX_ITERATIONS) {
+    const queue = buildReadyQueue();
 
-  const actorId = queue[0];
+    if (queue.length === 0) {
+      runPipeline(tickPipeline, "Tick");
+      // If still nobody ready after tick, stop
+      if (buildReadyQueue().length === 0) break;
+      continue;
+    }
 
-  const isPlayer = actorId === getState().playerId;
-  const hasInput = getState().userInput !== null;
+    const actorId = queue[0];
+    const isPlayer = actorId === getState().playerId;
+    const hasInput = getState().userInput !== null;
 
-  if (isPlayer && !hasInput) {
-    runPipeline({ render: [systems.render] }, "Render");
-    return;
-  }
+    // Wait for player input
+    if (isPlayer && !hasInput) break;
+    // Player already acted this frame — show results before next input
+    if (isPlayer && playerActedThisFrame) break;
 
-  runActorTurn(actorId);
-
-  // only advance time if nobody else can act
-  const nextQueue = buildReadyQueue();
-
-  if (nextQueue.length === 0) {
-    runPipeline(tickPipeline, "Tick");
+    runActorTurn(actorId);
+    if (isPlayer) playerActedThisFrame = true;
   }
 
   runPipeline({ render: [systems.render] }, "Render");

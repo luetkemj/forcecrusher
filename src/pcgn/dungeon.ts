@@ -263,7 +263,7 @@ export const generateDungeon = (zoneId: ZoneId) => {
     tile.tags?.has(DungeonTags.Floor),
   );
 
-  // spawnEnemies(depth, floorTiles);
+  spawnEnemies(depth, floorTiles);
 
   spawnItems(depth, floorTiles);
 

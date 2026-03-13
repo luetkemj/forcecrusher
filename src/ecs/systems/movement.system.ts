@@ -19,8 +19,6 @@ export const createMovementSystem = ({ world, registry }: IGameWorld) => {
     for (const actor of moveableQuery) {
       const { tryMove } = actor;
 
-      console.log(actor.energy, actor);
-
       if (actor.energy < ACTION_COST) continue;
 
       let blocked = false;
