@@ -223,7 +223,7 @@ export const ratPrefab: Entity = {
   mass: 0.8,
   material: Material.Flesh,
   vitalFluid: Fluids.Blood,
-  speed: 100,
+  speed: 200,
   initiative: 1,
 };
 

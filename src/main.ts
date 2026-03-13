@@ -154,33 +154,34 @@ function runActorTurn(actorId: string) {
 }
 
 function simulationFrame() {
-  // Batch all ready actor turns into a single frame.
-  // Process until the player needs input or no one is ready.
-  const MAX_ITERATIONS = 200;
-  let iterations = 0;
+  const queue = buildReadyQueue();
+
+  if (queue.length === 0) {
+    runPipeline(tickPipeline, "Tick");
+    runPipeline({ render: [systems.render] }, "Render");
+    return;
+  }
+
   let playerActedThisFrame = false;
 
-  while (iterations++ < MAX_ITERATIONS) {
-    const queue = buildReadyQueue();
+  for (const actorId of queue) {
+    const actor = gameWorld.registry.get(actorId);
+    if (!actor || isUndefined(actor.energy)) continue;
+    if (actor.energy < ACTION_COST) continue;
 
-    if (queue.length === 0) {
-      runPipeline(tickPipeline, "Tick");
-      // If still nobody ready after tick, stop
-      if (buildReadyQueue().length === 0) break;
-      continue;
-    }
-
-    const actorId = queue[0];
     const isPlayer = actorId === getState().playerId;
     const hasInput = getState().userInput !== null;
 
-    // Wait for player input
     if (isPlayer && !hasInput) break;
-    // Player already acted this frame — show results before next input
     if (isPlayer && playerActedThisFrame) break;
 
     runActorTurn(actorId);
     if (isPlayer) playerActedThisFrame = true;
+  }
+
+  // advance time if nobody can act anymore
+  if (buildReadyQueue().length === 0) {
+    runPipeline(tickPipeline, "Tick");
   }
 
   runPipeline({ render: [systems.render] }, "Render");
