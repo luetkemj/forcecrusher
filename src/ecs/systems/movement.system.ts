@@ -20,6 +20,7 @@ export const createMovementSystem = ({ world, registry }: IGameWorld) => {
       const { tryMove } = actor;
 
       console.log(actor.energy, actor);
+
       if (actor.energy < ACTION_COST) continue;
 
       let blocked = false;

@@ -4,13 +4,18 @@ import { getDirection, randomNeighbor } from "../../lib/grid";
 import { getDisposition } from "../../lib/utils";
 import { sortBy } from "lodash";
 import { DamageType } from "../enums";
+import { getState } from "../gameState";
 
 export const createAiSystem = ({ world, registry }: IGameWorld) => {
   const aiQuery = world.with("ai", "position", "memory").without("excludeFromSim");
   const positionQuery = world.with("position").without("excludeFromSim");
 
   return function aiSystem() {
+    const { currentActorId } = getState();
+
     for (const actor of aiQuery) {
+      // only run AI for the actor whose turn it is
+      if (actor.id !== currentActorId) continue;
       // if onfire move randomly
       if (actor.onFire && !actor.immunities?.includes(DamageType.Fire)) {
         const newPos = randomNeighbor(actor.position);
