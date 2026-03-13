@@ -9,9 +9,9 @@ import { circle, toPos, toPosId } from "../../lib/grid";
 import { IGameWorld } from "../engine";
 
 export const createDropSystem = ({ world, registry }: IGameWorld) => {
-  const dropQuery = world.with("tryDrop").without("excludeFromSim");
-  const pickUpQuery = world.with("position", "pickUp").without("excludeFromSim");
-  const blockingQuery = world.with("position", "blocking").without("excludeFromSim");
+  const dropQuery = world.with("tryDrop");
+  const pickUpQuery = world.with("position", "pickUp");
+  const blockingQuery = world.with("position", "blocking");
 
   return function dropSystem() {
     for (const entity of dropQuery) {

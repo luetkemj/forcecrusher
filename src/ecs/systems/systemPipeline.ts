@@ -25,7 +25,6 @@ import { createOpenSystem } from "../systems/open.system";
 import { createPerceptionSystem } from "./perception.system";
 import { createPickUpSystem } from "../systems/pickUp.system";
 import { createRenderSystem } from "../systems/render.system";
-import { createSimulationSystem } from "../systems/simulation.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createThrowSystem } from "../systems/throw.system";
 import { createTryCastSpellSystem } from "../systems/tryCastSpell.system";
@@ -66,7 +65,6 @@ const openSystem = createOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
 const pickUpSystem = createPickUpSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
-const simulationSystem = createSimulationSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const throwSystem = createThrowSystem(gameWorld);
 const tryCastSpellSystem = createTryCastSpellSystem(gameWorld);
@@ -104,7 +102,6 @@ export const systems = {
   perception: perceptionSystem,
   pickUp: pickUpSystem,
   render: renderSystem,
-  simulation: simulationSystem,
   sound: soundSystem,
   throw: throwSystem,
   tryCastSpell: tryCastSpellSystem,
@@ -172,66 +169,9 @@ export const runPipeline = (pipeline: SystemPipeline, label = "") => {
     }
   }
 };
-
-// export const playerTurnPipeline: SystemPipeline = {
-//   preInput: [systems.activeEffects],
-//   input: [systems.userInput],
-//   main: [
-//     systems.pickUp,
-//     systems.tryFill,
-//     systems.tryCastSpell,
-//     systems.movement,
-//     systems.open,
-//     systems.attack,
-//     systems.knockback,
-//     systems.damage,
-//     systems.morgue,
-//     systems.drop,
-//   ],
-//   postMain: [systems.fov, systems.mutable, systems.mixTints, systems.destroy],
-//   render: [systems.render],
-// };
-//
-// export const worldTurnPipeline: SystemPipeline = {
-//   preInput: [
-//     systems.simulation,
-//     systems.tryCastSpell,
-//     systems.uncastSpellSystem,
-//     systems.fluid,
-//     systems.wet,
-//     systems.fire,
-//     systems.desiccate,
-//     systems.activeEffects,
-//     systems.morgue,
-//     systems.odor,
-//     systems.sound,
-//   ],
-//   input: [systems.perception, systems.memory, systems.ai],
-//   main: [
-//     systems.pickUp,
-//     systems.tryFill,
-//     systems.movement,
-//     systems.open,
-//     systems.attack,
-//     systems.knockback,
-//     systems.damage,
-//     systems.morgue,
-//     systems.drop,
-//   ],
-//   postMain: [
-//     systems.fov,
-//     systems.calculateFlammability,
-//     systems.mutable,
-//     systems.mixTints,
-//     systems.destroy,
-//   ],
-//   render: [systems.render],
-// };
-
 export const tickPipeline: SystemPipeline = {
   preInput: [
     systems.accumulateEnergy,
-    systems.simulation,
     systems.uncastSpellSystem,
     systems.fluid,
     systems.wet,
@@ -273,10 +213,6 @@ export const actorTurnPipeline: SystemPipeline = {
 };
 
 export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
-  // [GameState.SIM]: {
-  //   ...worldTurnPipeline,
-  // },
-
   [GameState.SCREEN_TITLE]: {
     preInput: [],
     input: [systems.userInput],

@@ -318,7 +318,6 @@ export type Entity = {
     spellName?: SpellName;
   };
   name: string;
-  excludeFromSim?: true;
   pc?: true;
   position?: Pos;
   renderFluidColor?: true;

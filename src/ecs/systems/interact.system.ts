@@ -7,16 +7,16 @@ import { type State, getState, setState } from "../gameState";
 
 export const createInteractSystem = ({ world, registry }: IGameWorld) => {
   const renderableQueries = [
-    world.with("position", "appearance", "layer400").without("excludeFromSim"),
-    world.with("position", "appearance", "layer350").without("excludeFromSim"),
-    world.with("position", "appearance", "layer325").without("excludeFromSim"),
-    world.with("position", "appearance", "layer300").without("excludeFromSim"),
-    world.with("position", "appearance", "layer250").without("excludeFromSim"),
-    world.with("position", "appearance", "layer225").without("excludeFromSim"),
-    world.with("position", "appearance", "layer200").without("excludeFromSim"),
-    world.with("position", "appearance", "layer150").without("excludeFromSim"),
-    world.with("position", "appearance", "layer125").without("excludeFromSim"),
-    world.with("position", "appearance", "layer100").without("excludeFromSim"),
+    world.with("position", "appearance", "layer400"),
+    world.with("position", "appearance", "layer350"),
+    world.with("position", "appearance", "layer325"),
+    world.with("position", "appearance", "layer300"),
+    world.with("position", "appearance", "layer250"),
+    world.with("position", "appearance", "layer225"),
+    world.with("position", "appearance", "layer200"),
+    world.with("position", "appearance", "layer150"),
+    world.with("position", "appearance", "layer125"),
+    world.with("position", "appearance", "layer100"),
   ];
 
   function findTopRenderableAtPosition(

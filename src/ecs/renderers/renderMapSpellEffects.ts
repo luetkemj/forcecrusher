@@ -3,19 +3,10 @@ import { TileSet } from "../enums";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
-export const renderMapSpellEffects = ({
-  views,
-  world,
-  queries,
-}: RendererContext) => {
+export const renderMapSpellEffects = ({ views, world }: RendererContext) => {
   const view = views.spellEffectsMap;
   if (view) {
     view.clearView();
-
-    const [player] = queries.pcQuery;
-    if (player.excludeFromSim) {
-      return;
-    }
 
     const spellBoundQuery = world.with("spellbound", "position");
 

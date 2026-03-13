@@ -3,15 +3,10 @@ import { TileSet } from "../enums";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
-export const renderMapFire = ({ views, world, queries }: RendererContext) => {
+export const renderMapFire = ({ views, world }: RendererContext) => {
   const view = views.mapFire;
   if (view) {
     view.clearView();
-
-    const [player] = queries.pcQuery;
-    if (player.excludeFromSim) {
-      return;
-    }
 
     const onFireQuery = world.with("onFire", "position");
 

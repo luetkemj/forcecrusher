@@ -7,8 +7,8 @@ import { DamageType } from "../enums";
 import { getState } from "../gameState";
 
 export const createAiSystem = ({ world, registry }: IGameWorld) => {
-  const aiQuery = world.with("ai", "position", "memory").without("excludeFromSim");
-  const positionQuery = world.with("position").without("excludeFromSim");
+  const aiQuery = world.with("ai", "position", "memory");
+  const positionQuery = world.with("position");
 
   return function aiSystem() {
     const { currentActorId } = getState();

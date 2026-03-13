@@ -103,8 +103,6 @@ export type State = {
 
   readyQueue?: EntityId[];
   currentActorId?: EntityId | undefined;
-  simulationTurnsLeft: number;
-
   screenBeastiary: { activeIndex: number };
   spellAoe: PosId[];
   spellbookActiveIndex: number;
@@ -164,8 +162,6 @@ const state: State = {
 
   readyQueue: [],
   currentActorId: undefined,
-  simulationTurnsLeft: 0,
-
   spellAoe: [],
   spellbookActiveIndex: 0,
   spellName: null,

@@ -4,8 +4,7 @@ import { getEAP, transferFluid } from "../../lib/utils";
 
 export const createDesiccateSystem = ({ world, registry }: IGameWorld) => {
   const desiccateQuery = world
-    .with("desiccate", "position")
-    .without("excludeFromSim");
+    .with("desiccate", "position");
 
   return function desiccateSystem() {
     for (const actor of desiccateQuery) {

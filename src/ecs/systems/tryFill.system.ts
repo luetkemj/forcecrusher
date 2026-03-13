@@ -3,8 +3,7 @@ import { IGameWorld } from "../engine";
 
 export const createTryFillSystem = ({ world, registry }: IGameWorld) => {
   const tryFillQuery = world
-    .with("fluidContainer", "tryFill")
-    .without("excludeFromSim");
+    .with("fluidContainer", "tryFill");
 
   return function tryFillSystem() {
     for (const actor of tryFillQuery) {

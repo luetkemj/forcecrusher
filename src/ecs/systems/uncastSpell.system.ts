@@ -3,7 +3,7 @@ import { IGameWorld } from "../engine";
 import { getState } from "../gameState";
 
 export const createUncastSpellSystem = ({ world }: IGameWorld) => {
-  const spellboundQuery = world.with("spellbound").without("excludeFromSim");
+  const spellboundQuery = world.with("spellbound");
 
   return function uncastSpellSystem() {
     const { turnNumber } = getState();

@@ -3,7 +3,7 @@ import { IGameWorld } from "../engine";
 import { DamageType } from "../enums";
 
 export const createKickSystem = ({ world, registry }: IGameWorld) => {
-  const tryKickQuery = world.with("tryKick").without("excludeFromSim");
+  const tryKickQuery = world.with("tryKick");
 
   return function kickSystem() {
     for (const actor of tryKickQuery) {

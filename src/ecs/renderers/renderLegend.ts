@@ -1,17 +1,12 @@
 import { RendererContext } from "../systems/render.system";
 import { distance } from "../../lib/grid";
 import { RowToken, TokenType, UpdateRow } from "../../lib/canvas";
-import { GameState, getState } from "../gameState";
 import { chars, colors } from "../../actors/graphics";
 import { TileSet } from "../enums";
 import { clamp, times } from "lodash";
 import { getFluidWetPercent, isDry } from "../systems/wet.system";
 
 export const renderLegend = ({ views, queries }: RendererContext) => {
-  // don't render when in SIM mode.
-  const { gameState, simulationTurnsLeft } = getState();
-  if (gameState === GameState.SIM && simulationTurnsLeft > 0) return;
-
   const view = views.legend;
   if (view) {
     const entities = [];

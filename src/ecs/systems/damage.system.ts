@@ -4,7 +4,7 @@ import { Entity, IGameWorld } from "../engine";
 import { AttackType, DamageType } from "../enums";
 
 export const createDamageSystem = ({ world, registry }: IGameWorld) => {
-  const damageQuery = world.with("damages").without("excludeFromSim");
+  const damageQuery = world.with("damages");
 
   return function damageSystem() {
     for (const target of damageQuery) {

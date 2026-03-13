@@ -7,7 +7,7 @@ import {
   gameWorld,
 } from "../ecs/engine";
 import { Disposition, EntityKind, Fluids } from "../ecs/enums";
-import { GameState, getState, setState, State } from "../ecs/gameState";
+import { getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos, PosId, getNeighbors, toPosId } from "./grid";
 import {
@@ -81,10 +81,6 @@ export const logFrozenEntity = (entity: Entity) => {
 };
 
 export const addLog = (newLog: string) => {
-  // don't log when in SIM mode.
-  const { gameState, simulationTurnsLeft } = getState();
-  if (gameState === GameState.SIM && simulationTurnsLeft > 0) return;
-
   const logs = getState().log;
 
   if (logs.length === 0) {

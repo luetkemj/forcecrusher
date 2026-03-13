@@ -6,10 +6,9 @@ import { cloneDeep } from "lodash";
 export const createMutableSystem = ({ world }: IGameWorld) => {
   const mutableQuery = world
     .with("mutable")
-    .without("dead", "mutateTo", "excludeFromSim");
+    .without("dead", "mutateTo");
   const mutateToQuery = world
-    .with("mutateTo", "mutable")
-    .without("excludeFromSim");
+    .with("mutateTo", "mutable");
 
   return function mutableSystem() {
     for (const entity of mutableQuery) {

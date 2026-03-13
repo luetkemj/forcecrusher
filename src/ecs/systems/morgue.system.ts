@@ -7,7 +7,7 @@ import { AttackType } from "../enums";
 export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
   const livingQuery = world
     .with("health")
-    .without("dead", "destroyed", "excludeFromSim");
+    .without("dead", "destroyed");
 
   return function morgueSystem() {
     for (const entity of livingQuery) {

@@ -10,7 +10,7 @@ import { ReadableType, SpellCastType } from "../enums";
 import { GameState, setState, type State } from "../gameState";
 
 export const createTryReadSystem = ({ world, registry }: IGameWorld) => {
-  const tryReadQuery = world.with("tryRead").without("excludeFromSim");
+  const tryReadQuery = world.with("tryRead");
 
   return function tryReadSystem() {
     for (const actor of tryReadQuery) {

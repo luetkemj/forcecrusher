@@ -6,8 +6,7 @@ import { castSpell } from "../../spells";
 
 export const createTryCastSpellSystem = ({ world, registry }: IGameWorld) => {
   const tryCastSpellQuery = world
-    .with("tryCastSpell")
-    .without("excludeFromSim");
+    .with("tryCastSpell");
 
   return function tryCastSpellSystem() {
     for (const entity of tryCastSpellQuery) {
