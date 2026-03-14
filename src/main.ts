@@ -175,11 +175,6 @@ function simulationFrame() {
     if (isPlayer) playerActedThisFrame = true;
   }
 
-  // advance time if nobody can act anymore
-  if (buildReadyQueue().length === 0) {
-    runPipeline(tickPipeline, "Tick");
-  }
-
   if (shouldRender) {
     runPipeline({ render: [systems.render] }, "Render");
   }
