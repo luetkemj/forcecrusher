@@ -207,8 +207,7 @@ export const actorTurnPipeline: SystemPipeline = {
     systems.damage,
     systems.drop,
   ],
-  // do I need these to run here?
-  postMain: [systems.fov, systems.mutable, systems.mixTints, systems.destroy],
+  postMain: [],
   render: [],
 };
 
