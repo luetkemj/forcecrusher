@@ -104,9 +104,6 @@ export const handleGameModeInput = async ({
         const targetZonePos = { ...zonePos, z: zonePos.z - 1 };
         const targetZoneId = toZoneId(targetZonePos);
         changeZone(targetZoneId, ChangeZoneDirections.down);
-        setState((state: State) => {
-          state.gameState = GameState.SIM;
-        });
       }
 
       return true;
@@ -148,9 +145,6 @@ export const handleGameModeInput = async ({
         }
 
         changeZone(targetZoneId, ChangeZoneDirections.up);
-        setState((state: State) => {
-          state.gameState = GameState.SIM;
-        });
       }
 
       return true;

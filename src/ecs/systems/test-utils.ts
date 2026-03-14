@@ -4,7 +4,6 @@ import type { IGameWorld, Entity } from "../engine";
 import { GameState, setState, State } from "../gameState";
 
 export function setupTestGameWorld(): IGameWorld {
-  // setup world AFTER 25 turn sim is complete
   setState((state: State) => (state.gameState = GameState.GAME));
 
   const world = new World<Entity>();
