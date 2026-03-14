@@ -120,7 +120,7 @@ const init = async () => {
 
 function buildReadyQueue(): string[] {
   const actors = gameWorld.world.with("energy", "speed", "initiative");
-  const ready: any[] = [];
+  const ready: (typeof actors extends Iterable<infer T> ? T : never)[] = [];
 
   for (const actor of actors) {
     if (actor.energy >= ACTION_COST) {
