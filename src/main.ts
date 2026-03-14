@@ -118,13 +118,6 @@ const init = async () => {
   });
 };
 
-// where should these go?
-export function getCurrentActor() {
-  const { currentActorId } = getState();
-
-  return gameWorld.registry.get(currentActorId || "");
-}
-
 function buildReadyQueue(): string[] {
   const actors = gameWorld.world.with("energy", "speed", "initiative");
   const ready: any[] = [];

@@ -600,3 +600,9 @@ export function spawnSolo(thing: WeightedSpawn, position: Pos) {
   thing.spawn(tile);
   return thing ? thing.cost : 0;
 }
+
+export function getCurrentActor() {
+  const { currentActorId } = getState();
+
+  return gameWorld.registry.get(currentActorId || "");
+}

@@ -1,6 +1,6 @@
 import { IGameWorld, ChangeZoneDirections, Entity } from "../engine";
 import { GameState, State, getState, setState } from "../gameState";
-import { addLog } from "../../lib/utils";
+import { addLog, getCurrentActor } from "../../lib/utils";
 
 import { handleGameModeInput } from "../inputHandlers/gameMode";
 import { handleGameOverModeInput } from "../inputHandlers/gameOverMode";
@@ -19,7 +19,6 @@ import { handleLoadingModeInput } from "../inputHandlers/loadingMode";
 import { handleScreenBeastiaryMode } from "../inputHandlers/screenBeastiary";
 import { handleScreenTitleMode } from "../inputHandlers/screenTitleMode";
 import { handleScreenVictoryMode } from "../inputHandlers/screenVictoryMode";
-import { getCurrentActor } from "../../main";
 
 export interface InputContext {
   key: string;
