@@ -17,6 +17,7 @@ import {
 } from "./ecs/systems/systemPipeline";
 import { handleUserInput } from "./ecs/inputHandlers/KeyMap";
 import { TileSet } from "./ecs/enums";
+import { should } from "vitest";
 
 // for debugging
 declare global {
@@ -163,6 +164,7 @@ function simulationFrame() {
   }
 
   let playerActedThisFrame = false;
+  let shouldRender = false;
 
   for (const actorId of queue) {
     const actor = gameWorld.registry.get(actorId);
@@ -176,6 +178,8 @@ function simulationFrame() {
     if (isPlayer && playerActedThisFrame) break;
 
     runActorTurn(actorId);
+    shouldRender = true;
+
     if (isPlayer) playerActedThisFrame = true;
   }
 
@@ -184,7 +188,9 @@ function simulationFrame() {
     runPipeline(tickPipeline, "Tick");
   }
 
-  runPipeline({ render: [systems.render] }, "Render");
+  if (shouldRender) {
+    runPipeline({ render: [systems.render] }, "Render");
+  }
 }
 
 function gameLoop() {
