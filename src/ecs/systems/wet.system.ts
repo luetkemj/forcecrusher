@@ -62,12 +62,14 @@ export const createWetSystem = ({ world, registry }: IGameWorld) => {
       const wetness = actor.wet.fluids;
       const { blood, water, lava, oil } = wetness;
 
-      if (water.level <= 0 && blood.level <= 0) {
-        actor.flammable.multipliers.extinguishChance = 0;
-      }
+      if (actor.flammable) {
+        if (water.level <= 0 && blood.level <= 0) {
+          actor.flammable.multipliers.extinguishChance = 0;
+        }
 
-      if (lava.level > 0 || oil.level > 0) {
-        actor.flammable.multipliers.extinguishChance = 0;
+        if (lava.level > 0 || oil.level > 0) {
+          actor.flammable.multipliers.extinguishChance = 0;
+        }
       }
 
       // adjust wetness (water cleans etc)
@@ -83,55 +85,57 @@ export const createWetSystem = ({ world, registry }: IGameWorld) => {
         if (blood.level < 0) blood.level = 0;
       }
 
-      if (blood.level > 0) {
-        if (blood.level >= 1) {
-          actor.flammable.multipliers.explosive = false;
-          actor.flammable.multipliers.ignitionChance = -1;
-          actor.flammable.multipliers.maxIntensity = -1;
-        } else {
-          actor.flammable.multipliers.explosive = false;
-          actor.flammable.multipliers.ignitionChance = -blood.level;
-          actor.flammable.multipliers.maxIntensity = -blood.level;
+      if (actor.flammable) {
+        if (blood.level > 0) {
+          if (blood.level >= 1) {
+            actor.flammable.multipliers.explosive = false;
+            actor.flammable.multipliers.ignitionChance = -1;
+            actor.flammable.multipliers.maxIntensity = -1;
+          } else {
+            actor.flammable.multipliers.explosive = false;
+            actor.flammable.multipliers.ignitionChance = -blood.level;
+            actor.flammable.multipliers.maxIntensity = -blood.level;
+          }
         }
-      }
 
-      if (water.level > 0) {
-        if (water.level >= 1) {
-          actor.flammable.multipliers.explosive = false;
-          actor.flammable.multipliers.ignitionChance = -1;
-          actor.flammable.multipliers.maxIntensity = -1;
-        } else {
-          actor.flammable.multipliers.explosive = false;
-          actor.flammable.multipliers.ignitionChance = -water.level * 0.1;
-          actor.flammable.multipliers.maxIntensity = -water.level * 0.1;
+        if (water.level > 0) {
+          if (water.level >= 1) {
+            actor.flammable.multipliers.explosive = false;
+            actor.flammable.multipliers.ignitionChance = -1;
+            actor.flammable.multipliers.maxIntensity = -1;
+          } else {
+            actor.flammable.multipliers.explosive = false;
+            actor.flammable.multipliers.ignitionChance = -water.level * 0.1;
+            actor.flammable.multipliers.maxIntensity = -water.level * 0.1;
+          }
         }
-      }
 
-      if (lava.level > 0) {
-        if (lava.level >= 1) {
-          actor.flammable.multipliers.explosive = false;
-          actor.flammable.multipliers.ignitionChance = 1;
-          actor.flammable.multipliers.maxIntensity = 2;
-          actor.flammable.multipliers.extinguishChance = 0;
-        } else {
-          actor.flammable.multipliers.explosive = false;
-          actor.flammable.multipliers.ignitionChance = 1;
-          actor.flammable.multipliers.maxIntensity = 2;
-          actor.flammable.multipliers.extinguishChance = 0;
+        if (lava.level > 0) {
+          if (lava.level >= 1) {
+            actor.flammable.multipliers.explosive = false;
+            actor.flammable.multipliers.ignitionChance = 1;
+            actor.flammable.multipliers.maxIntensity = 2;
+            actor.flammable.multipliers.extinguishChance = 0;
+          } else {
+            actor.flammable.multipliers.explosive = false;
+            actor.flammable.multipliers.ignitionChance = 1;
+            actor.flammable.multipliers.maxIntensity = 2;
+            actor.flammable.multipliers.extinguishChance = 0;
+          }
         }
-      }
 
-      if (oil.level > 0) {
-        if (oil.level >= 1) {
-          actor.flammable.multipliers.explosive = true;
-          actor.flammable.multipliers.ignitionChance = 1;
-          actor.flammable.multipliers.maxIntensity = 2;
-          actor.flammable.multipliers.extinguishChance = 0;
-        } else {
-          actor.flammable.multipliers.explosive = true;
-          actor.flammable.multipliers.ignitionChance = 1;
-          actor.flammable.multipliers.maxIntensity = 2;
-          actor.flammable.multipliers.extinguishChance = 0;
+        if (oil.level > 0) {
+          if (oil.level >= 1) {
+            actor.flammable.multipliers.explosive = true;
+            actor.flammable.multipliers.ignitionChance = 1;
+            actor.flammable.multipliers.maxIntensity = 2;
+            actor.flammable.multipliers.extinguishChance = 0;
+          } else {
+            actor.flammable.multipliers.explosive = true;
+            actor.flammable.multipliers.ignitionChance = 1;
+            actor.flammable.multipliers.maxIntensity = 2;
+            actor.flammable.multipliers.extinguishChance = 0;
+          }
         }
       }
 
