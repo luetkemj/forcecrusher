@@ -3,7 +3,7 @@ import { IGameWorld } from "../engine";
 import { getState } from "../gameState";
 
 export const createDestroySystem = ({ world, registry, zones }: IGameWorld) => {
-  const destroyQuery = world.with("destroy").without("excludeFromSim");
+  const destroyQuery = world.with("destroy");
 
   return function destroySystem() {
     for (const actor of destroyQuery) {

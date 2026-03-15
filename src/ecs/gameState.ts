@@ -24,7 +24,6 @@ export const enum GameState {
   MAKER_MODE_PREFAB_SELECT = "MAKER_MODE_PREFAB_SELECT",
   SAVING = "SAVING",
   LOADING = "LOADING",
-  SIM = "SIM",
   SCREEN_BEASTIARY = "SCREEN_BEASTIARY",
   SCREEN_TITLE = "SCREEN_TITLE",
   SCREEN_VICTORY = "SCREEN_VICTORY",
@@ -85,6 +84,7 @@ export type State = {
     applicator?: EntityId;
   };
   makerModePrefabSelectIndex: number;
+  nextInitiative: number;
   eapMap: Map<PosId, Set<EntityId>>;
   odorMap: Map<PosId, Record<EntityId, { strength: number }>>;
   soundMap: Map<PosId, Record<EntityId, { strength: number }>>;
@@ -99,13 +99,14 @@ export type State = {
   morgue: {
     causeOfDeath: string;
   };
-  simulationTurnsLeft: number;
+
+  readyQueue?: EntityId[];
+  currentActorId?: EntityId | undefined;
   screenBeastiary: { activeIndex: number };
   spellAoe: PosId[];
   spellbookActiveIndex: number;
   spellName: SpellName | null;
   spellCastType: SpellCastType | null;
-  turn: Turn;
   turnNumber: number;
   userInput: KeyboardEvent | null;
   views: Views;
@@ -142,6 +143,7 @@ const state: State = {
   interaction: {},
   makerModePrefabSelectIndex: 0,
   morgue: { causeOfDeath: "Unknown" },
+  nextInitiative: 0,
   eapMap: new Map(),
   odorMap: new Map(),
   soundMap: new Map(),
@@ -156,12 +158,13 @@ const state: State = {
     taste: "",
     touch: "",
   },
-  simulationTurnsLeft: 25,
+
+  readyQueue: [],
+  currentActorId: undefined,
   spellAoe: [],
   spellbookActiveIndex: 0,
   spellName: null,
   spellCastType: null,
-  turn: Turn.PLAYER,
   turnNumber: 0, // this needs to be stored in game saves
   userInput: null,
   views: {},

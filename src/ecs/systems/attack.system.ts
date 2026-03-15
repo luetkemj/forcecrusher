@@ -9,7 +9,7 @@ import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { AttackType } from "../enums";
 
 export const createAttackSystem = ({ world, registry }: IGameWorld) => {
-  const attackQuery = world.with("tryAttack").without("excludeFromSim");
+  const attackQuery = world.with("tryAttack");
 
   const cleanUp = (actor: Entity) => {
     world.removeComponent(actor, "tryAttack");

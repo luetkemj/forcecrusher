@@ -108,6 +108,9 @@ const baseBeing: Entity = {
   odor: {
     strength: 10,
   },
+  speed: 100,
+  energy: 0,
+  initiative: 0,
 };
 
 const baseMob: Entity = {
@@ -220,6 +223,8 @@ export const ratPrefab: Entity = {
   mass: 0.8,
   material: Material.Flesh,
   vitalFluid: Fluids.Blood,
+  speed: 200,
+  initiative: 1,
 };
 
 export const lavaGolemPrefab: Entity = {
@@ -447,6 +452,7 @@ export const ogrePrefab: Entity = {
   },
   mass: 20,
   material: Material.Flesh,
+  speed: 60,
 };
 
 export const skeletonPrefab: Entity = {

@@ -220,4 +220,6 @@ export const handleInventoryModeInput = ({
     }
     return true;
   }
+
+  return true;
 };

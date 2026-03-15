@@ -20,7 +20,7 @@ import {
   transferFluid,
   weightedRandom,
 } from "./utils";
-import { GameState, getState, setState, State } from "../ecs/gameState";
+import { getState, setState, State } from "../ecs/gameState";
 import { setupTestGameWorld } from "../ecs/systems/test-utils";
 import { Disposition, EntityKind, Fluids } from "../ecs/enums";
 import { Entity, Fluid, FluidContainer } from "../ecs/engine";
@@ -68,16 +68,6 @@ describe("addLog", () => {
     addLog("bar");
     expect(getState().log[getState().log.length - 1]).toBe("bar");
   });
-
-  test("does not log during simulation turns", () => {
-    setState((state: State) => {
-      state.gameState = GameState.SIM;
-      state.simulationTurnsLeft = 5;
-    });
-
-    addLog("hidden");
-    expect(getState().log).toHaveLength(0);
-  });
 });
 
 describe("presentation helpers", () => {
@@ -95,7 +85,9 @@ describe("presentation helpers", () => {
   });
 
   test("returns undefined when entity string path is missing", () => {
-    const entity = makeEntity({ appearance: { tint: 0x00ff00 } as Entity["appearance"] });
+    const entity = makeEntity({
+      appearance: { tint: 0x00ff00 } as Entity["appearance"],
+    });
     expect(colorEntity(entity, "name")).toBeUndefined();
   });
 
@@ -150,8 +142,16 @@ describe("state and basic math helpers", () => {
   });
 
   test("checks if entity is wielding", () => {
-    expect(isWielding(makeEntity({ weaponSlot: { name: "w", slots: 1, contents: ["w1"] } }))).toBe(true);
-    expect(isWielding(makeEntity({ weaponSlot: { name: "w", slots: 1, contents: [] } }))).toBe(false);
+    expect(
+      isWielding(
+        makeEntity({ weaponSlot: { name: "w", slots: 1, contents: ["w1"] } }),
+      ),
+    ).toBe(true);
+    expect(
+      isWielding(
+        makeEntity({ weaponSlot: { name: "w", slots: 1, contents: [] } }),
+      ),
+    ).toBe(false);
   });
 });
 
@@ -226,8 +226,12 @@ describe("color and fluid math", () => {
     const containerFluid = container.fluids.water;
     const sourceFluid = makeFluid(Fluids.Water, 5);
 
-    expect(transferFluid(container, containerFluid, sourceFluid, [Fluids.Oil], [])).toBe(false);
-    expect(transferFluid(container, containerFluid, sourceFluid, [], [Fluids.Water])).toBe(false);
+    expect(
+      transferFluid(container, containerFluid, sourceFluid, [Fluids.Oil], []),
+    ).toBe(false);
+    expect(
+      transferFluid(container, containerFluid, sourceFluid, [], [Fluids.Water]),
+    ).toBe(false);
   });
 
   test("transferFluid uses rate when possible", () => {
@@ -238,7 +242,14 @@ describe("color and fluid math", () => {
     };
     const sourceFluid = makeFluid(Fluids.Water, 8);
 
-    const ok = transferFluid(container, container.fluids.water, sourceFluid, [], [], 3);
+    const ok = transferFluid(
+      container,
+      container.fluids.water,
+      sourceFluid,
+      [],
+      [],
+      3,
+    );
     expect(ok).toBe(true);
     expect(container.fluids.water.volume).toBe(5);
     expect(sourceFluid.volume).toBe(5);
@@ -251,7 +262,9 @@ describe("color and fluid math", () => {
       fluids: { oil: makeFluid(Fluids.Oil, 2) },
     };
     const sourceAll = makeFluid(Fluids.Oil, 4);
-    expect(transferFluid(containerAll, containerAll.fluids.oil, sourceAll, [], [])).toBe(true);
+    expect(
+      transferFluid(containerAll, containerAll.fluids.oil, sourceAll, [], []),
+    ).toBe(true);
     expect(containerAll.fluids.oil.volume).toBe(6);
     expect(sourceAll.volume).toBe(0);
 
@@ -261,7 +274,15 @@ describe("color and fluid math", () => {
       fluids: { blood: makeFluid(Fluids.Blood, 4) },
     };
     const sourcePartial = makeFluid(Fluids.Blood, 4);
-    expect(transferFluid(containerPartial, containerPartial.fluids.blood, sourcePartial, [], [])).toBe(true);
+    expect(
+      transferFluid(
+        containerPartial,
+        containerPartial.fluids.blood,
+        sourcePartial,
+        [],
+        [],
+      ),
+    ).toBe(true);
     expect(containerPartial.fluids.blood.volume).toBe(5);
     expect(sourcePartial.volume).toBe(3);
   });

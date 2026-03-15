@@ -4,15 +4,10 @@ import { TileSet } from "../enums";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
-export const renderMapFluid = ({ views, world, queries }: RendererContext) => {
+export const renderMapFluid = ({ views, world }: RendererContext) => {
   const view = views.mapFluid;
   if (view) {
     view.clearView();
-
-    const [player] = queries.pcQuery;
-    if (player.excludeFromSim) {
-      return;
-    }
 
     const fluidContainerQuery = world.with("fluidContainer", "position");
 

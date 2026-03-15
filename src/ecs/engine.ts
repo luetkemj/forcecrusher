@@ -23,6 +23,8 @@ import { saveGameData as dbSave, loadGameData as dbLoad } from "./saveStore";
 import { handleUserInput } from "./inputHandlers/KeyMap";
 import { addLog, addToEAPMap, updatePosition } from "../lib/utils";
 
+export const ACTION_COST = 100;
+
 export interface IGameWorld {
   world: World<Entity>;
   registry: Map<string, Entity>;
@@ -214,6 +216,7 @@ export type Entity = {
   };
   effectImmunities?: Array<EffectType>;
   effects?: Array<Effect>;
+  energy?: number;
   entityKind?: EntityKind;
   fluidContainer?: FluidContainer;
   vitalFluid?: Fluids;
@@ -249,6 +252,7 @@ export type Entity = {
   immunities?: Array<DamageType>;
   indestructible?: true;
   inFov?: true;
+  initiative?: number;
   intelligence?: number;
   interactDirection?: Pos;
   kickable?: {
@@ -314,13 +318,13 @@ export type Entity = {
     spellName?: SpellName;
   };
   name: string;
-  excludeFromSim?: true;
   pc?: true;
   position?: Pos;
   renderFluidColor?: true;
   resistances?: Array<DamageType>;
   revealed?: true;
   sound?: { strength: number };
+  speed?: number;
   spellbound?: {
     dispel?: DispelName;
     turnNumber: number;

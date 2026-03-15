@@ -1,3 +1,4 @@
+import { createAccumulateEnergySystem } from "../systems/accumulateEnergySystem";
 import { createActiveEffectsSystem } from "../systems/activeEffects.system";
 import { createAiSystem } from "../systems/ai.system";
 import { createAttackSystem } from "../systems/attack.system";
@@ -24,7 +25,6 @@ import { createOpenSystem } from "../systems/open.system";
 import { createPerceptionSystem } from "./perception.system";
 import { createPickUpSystem } from "../systems/pickUp.system";
 import { createRenderSystem } from "../systems/render.system";
-import { createSimulationSystem } from "../systems/simulation.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createThrowSystem } from "../systems/throw.system";
 import { createTryCastSpellSystem } from "../systems/tryCastSpell.system";
@@ -37,6 +37,7 @@ import { gameWorld } from "../engine";
 import { GameState } from "../gameState";
 import { styleDuration } from "./debug-utils";
 
+const accumulateEnergySystem = createAccumulateEnergySystem(gameWorld);
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
 const aiSystem = createAiSystem(gameWorld);
 const attackSystem = createAttackSystem(gameWorld);
@@ -64,7 +65,6 @@ const openSystem = createOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
 const pickUpSystem = createPickUpSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
-const simulationSystem = createSimulationSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const throwSystem = createThrowSystem(gameWorld);
 const tryCastSpellSystem = createTryCastSpellSystem(gameWorld);
@@ -75,6 +75,7 @@ const uncastSpellSystem = createUncastSpellSystem(gameWorld);
 const wetSystem = createWetSystem(gameWorld);
 
 export const systems = {
+  accumulateEnergy: accumulateEnergySystem,
   activeEffects: activeEffectsSystem,
   ai: aiSystem,
   attack: attackSystem,
@@ -101,7 +102,6 @@ export const systems = {
   perception: perceptionSystem,
   pickUp: pickUpSystem,
   render: renderSystem,
-  simulation: simulationSystem,
   sound: soundSystem,
   throw: throwSystem,
   tryCastSpell: tryCastSpellSystem,
@@ -169,52 +169,20 @@ export const runPipeline = (pipeline: SystemPipeline, label = "") => {
     }
   }
 };
-
-export const playerTurnPipeline: SystemPipeline = {
-  preInput: [systems.activeEffects],
-  input: [systems.userInput],
-  main: [
-    systems.pickUp,
-    systems.tryFill,
-    systems.tryCastSpell,
-    systems.movement,
-    systems.open,
-    systems.attack,
-    systems.knockback,
-    systems.damage,
-    systems.morgue,
-    systems.drop,
-  ],
-  postMain: [systems.fov, systems.mutable, systems.mixTints, systems.destroy],
-  render: [systems.render],
-};
-
-export const worldTurnPipeline: SystemPipeline = {
+export const tickPipeline: SystemPipeline = {
   preInput: [
-    systems.simulation,
-    systems.tryCastSpell,
+    systems.accumulateEnergy,
     systems.uncastSpellSystem,
     systems.fluid,
     systems.wet,
     systems.fire,
     systems.desiccate,
     systems.activeEffects,
-    systems.morgue,
     systems.odor,
     systems.sound,
   ],
-  input: [systems.perception, systems.memory, systems.ai],
-  main: [
-    systems.pickUp,
-    systems.tryFill,
-    systems.movement,
-    systems.open,
-    systems.attack,
-    systems.knockback,
-    systems.damage,
-    systems.morgue,
-    systems.drop,
-  ],
+  input: [],
+  main: [systems.damage, systems.morgue],
   postMain: [
     systems.fov,
     systems.calculateFlammability,
@@ -222,14 +190,28 @@ export const worldTurnPipeline: SystemPipeline = {
     systems.mixTints,
     systems.destroy,
   ],
-  render: [systems.render],
+  render: [],
+};
+
+export const actorTurnPipeline: SystemPipeline = {
+  preInput: [systems.activeEffects],
+  input: [systems.userInput, systems.perception, systems.memory, systems.ai],
+  main: [
+    systems.pickUp,
+    systems.tryFill,
+    systems.tryCastSpell,
+    systems.movement,
+    systems.open,
+    systems.attack,
+    systems.knockback,
+    systems.damage,
+    systems.drop,
+  ],
+  postMain: [],
+  render: [],
 };
 
 export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
-  [GameState.SIM]: {
-    ...worldTurnPipeline,
-  },
-
   [GameState.SCREEN_TITLE]: {
     preInput: [],
     input: [systems.userInput],

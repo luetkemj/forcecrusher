@@ -18,6 +18,7 @@ describe("movement.system", () => {
       position: { x: 1, y: 1 },
       tryMove: { x: 2, y: 1 },
       entityKind: EntityKind.Undead,
+      energy: 100,
     };
     blocker = {
       id: "blocker",

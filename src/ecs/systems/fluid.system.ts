@@ -17,8 +17,7 @@ const MAX_EQUALIZE_RATE = 0.49;
 
 export const createFluidSystem = ({ world, registry }: IGameWorld) => {
   const fluidContainerQuery = world
-    .with("fluidContainer", "position")
-    .without("excludeFromSim");
+    .with("fluidContainer", "position");
 
   return function fluidSystem() {
     // ---------------------------------------------

@@ -4,8 +4,7 @@ import { mixHexWeighted } from "../../lib/utils";
 
 export const createMixTintsSystem = ({ world }: IGameWorld) => {
   const renderFluidColor = world
-    .with("renderFluidColor", "appearance")
-    .without("excludeFromSim");
+    .with("renderFluidColor", "appearance");
 
   return function mixTintsSystem() {
     for (const actor of renderFluidColor) {

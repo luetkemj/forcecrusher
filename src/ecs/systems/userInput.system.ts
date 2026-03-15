@@ -1,6 +1,6 @@
 import { IGameWorld, ChangeZoneDirections, Entity } from "../engine";
 import { GameState, State, getState, setState } from "../gameState";
-import { addLog } from "../../lib/utils";
+import { addLog, getCurrentActor } from "../../lib/utils";
 
 import { handleGameModeInput } from "../inputHandlers/gameMode";
 import { handleGameOverModeInput } from "../inputHandlers/gameOverMode";
@@ -55,6 +55,9 @@ export const createUserInputSystem = ({
     const { userInput, gameState } = getState();
     const state = getState();
 
+    const currentActor = getCurrentActor();
+    if (currentActor && currentActor.id !== getState().playerId) return;
+
     if (!userInput) return;
 
     const { key } = userInput;
@@ -82,7 +85,6 @@ export const createUserInputSystem = ({
       [GameState.CAST_SPELL]: handleCastSpellModeInput,
       [GameState.GAME]: handleGameModeInput,
       [GameState.GAME_OVER]: handleGameOverModeInput,
-      [GameState.SIM]: () => false,
       [GameState.INSPECT]: handleInspectModeInput,
       [GameState.INTERACT]: handleInteractModeInput,
       [GameState.INTERACT_ACTION]: handleInteractActionModeInput,

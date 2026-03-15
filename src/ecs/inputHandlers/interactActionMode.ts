@@ -1,5 +1,5 @@
 import { InputContext } from "../systems/userInput.system";
-import { GameState, State, Turn } from "../gameState";
+import { GameState, State } from "../gameState";
 import { Keys } from "./KeyMap";
 
 export const handleInteractActionModeInput = ({
@@ -36,7 +36,6 @@ export const handleInteractActionModeInput = ({
       state.interaction = {};
       state.interactTargets = [];
       state.gameState = GameState.GAME;
-      state.turn = Turn.WORLD;
     });
   };
 

@@ -7,7 +7,7 @@ import { map, reduce, round } from "lodash";
 const flammableFluidTypes = [Fluids.Lava, Fluids.Oil];
 
 export const createWetSystem = ({ world, registry }: IGameWorld) => {
-  const wetQuery = world.with("wet", "flammable").without("excludeFromSim");
+  const wetQuery = world.with("wet", "flammable");
 
   return function wetSystem() {
     for (const actor of wetQuery) {
