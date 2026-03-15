@@ -15,20 +15,23 @@ import { State, getState, setState } from "../gameState";
 export const createPerceptionSystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
   const aiQuery = world.with("ai");
-  const opaqueQuery = world
-    .with("opaque", "position");
-  const renderableQuery = world
-    .with("appearance", "position");
-  const noseQuery = world
-    .with("nose", "position", "ai");
-  const earsQuery = world
-    .with("ears", "position", "ai");
+  const opaqueQuery = world.with("opaque", "position");
+  const renderableQuery = world.with("appearance", "position");
+  const noseQuery = world.with("nose", "position", "ai");
+  const earsQuery = world.with("ears", "position", "ai");
 
   return function perceptionSystem() {
+    const { currentActorId } = getState();
     setState((state: State) => (state.visionMap = []));
-    const player = registry.get(getState().playerId);
+    const { playerId } = getState();
+    const player = registry.get(playerId);
+
+    const currentActorIsPlayer = playerId === currentActorId;
 
     for (const actor of aiQuery) {
+      // or run for actor whose turn it is
+      if (actor.id !== currentActorId) continue;
+
       // NOTE: VISION
       if (actor.vision && actor.position) {
         actor.vision.visible = [];
@@ -55,7 +58,8 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
 
     // NOTE: OLFACTORY
     const odorMap = getState().odorMap;
-    if (player && player.position) {
+    // only run for player if current actor is the player
+    if (currentActorIsPlayer && player && player.position) {
       // get player position
       const posId = toPosId(player.position);
       // find smells at position
@@ -67,6 +71,9 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
     }
 
     for (const actor of noseQuery) {
+      // or run for actor whose turn it is
+      if (actor.id !== currentActorId) continue;
+
       // get smells in immediate vicinity - story in memory
       const { position } = actor;
       const neighbors = getNeighbors(
@@ -82,7 +89,8 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
 
     // NOTE: AUDITORY
     const soundMap = getState().soundMap;
-    if (player && player.position) {
+    // only run for player if current actor is the player
+    if (currentActorIsPlayer && player && player.position) {
       // get player position
       const posId = toPosId(player.position);
       // find smells at position
@@ -94,6 +102,9 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
     }
 
     for (const actor of earsQuery) {
+      // or run for actor whose turn it is
+      if (actor.id !== currentActorId) continue;
+
       // get smells in immediate vicinity - story in memory
       const { position } = actor;
       const neighbors = getNeighbors(

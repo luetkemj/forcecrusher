@@ -11,7 +11,12 @@ export const createMemorySystem = (gameWorld: IGameWorld) => {
   const memoryQuery = world.with("memory").without("dead");
 
   return function memorySystem() {
+    const { currentActorId } = getState();
+
     for (const actor of earsQuery) {
+      // or run for actor whose turn it is
+      if (actor.id !== currentActorId) continue;
+
       const sounds = new Map();
 
       actor.ears.detected.forEach((sound) => {
@@ -44,6 +49,9 @@ export const createMemorySystem = (gameWorld: IGameWorld) => {
     }
 
     for (const actor of noseQuery) {
+      // or run for actor whose turn it is
+      if (actor.id !== currentActorId) continue;
+
       const smells = new Map();
 
       actor.nose.detected.forEach((smell) => {
@@ -75,6 +83,9 @@ export const createMemorySystem = (gameWorld: IGameWorld) => {
     }
 
     for (const actor of visionQuery) {
+      // or run for actor whose turn it is
+      if (actor.id !== currentActorId) continue;
+
       // check things we see to decide if we should remember them
       for (const id of actor.vision.visible) {
         const target = registry.get(id);
