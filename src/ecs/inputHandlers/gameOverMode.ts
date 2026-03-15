@@ -12,5 +12,7 @@ export const handleGameOverModeInput = async ({
 
       return true;
     }
+
+    return true;
   }
 };
