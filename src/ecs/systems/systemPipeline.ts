@@ -187,6 +187,7 @@ export const tickPipeline: SystemPipeline = {
     systems.calculateFlammability,
     systems.mutable,
     systems.mixTints,
+    systems.morgue,
     systems.destroy,
     systems.fov,
   ],
@@ -208,7 +209,7 @@ export const actorTurnPipeline: SystemPipeline = {
     systems.drop,
     systems.throw,
   ],
-  postMain: [],
+  postMain: [systems.morgue, systems.destroy, systems.fov],
   render: [],
 };
 
@@ -273,7 +274,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     preInput: [],
     input: [systems.userInput],
     main: [systems.activeEffects, systems.drop, systems.tryRead],
-    postMain: [systems.fov, systems.destroy],
+    postMain: [systems.destroy, systems.fov],
     render: [systems.render],
   },
 
@@ -281,7 +282,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     preInput: [],
     input: [systems.userInput],
     main: [systems.interact],
-    postMain: [systems.fov, systems.destroy],
+    postMain: [systems.destroy, systems.fov],
     render: [systems.render],
   },
 
