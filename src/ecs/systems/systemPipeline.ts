@@ -19,7 +19,7 @@ import { createKnockbackSystem } from "../systems/knockback.system";
 import { createMemorySystem } from "./memory.system";
 import { createMixTintsSystem } from "./mixTints.system";
 import { createMorgueSystem } from "../systems/morgue.system";
-import { createMovementSystem } from "../systems/movement.system";
+import { createTryMoveSystem } from "../systems/tryMove.system";
 import { createOdorSystem } from "../systems/odor.system";
 import { createOpenSystem } from "../systems/open.system";
 import { createPerceptionSystem } from "./perception.system";
@@ -59,7 +59,7 @@ const knockbackSystem = createKnockbackSystem(gameWorld);
 const memorySystem = createMemorySystem(gameWorld);
 const mixTintsSystem = createMixTintsSystem(gameWorld);
 const morgueSystem = createMorgueSystem(gameWorld);
-const movementSystem = createMovementSystem(gameWorld);
+const tryMoveSystem = createTryMoveSystem(gameWorld);
 const odorSystem = createOdorSystem(gameWorld);
 const openSystem = createOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
@@ -95,7 +95,7 @@ export const systems = {
   memory: memorySystem,
   mixTints: mixTintsSystem,
   morgue: morgueSystem,
-  movement: movementSystem,
+  movement: tryMoveSystem,
   mutable: mutableSystem,
   odor: odorSystem,
   open: openSystem,
