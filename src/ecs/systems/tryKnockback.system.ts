@@ -5,13 +5,13 @@ import { Pos, getDirection, line, moveInDirection } from "../../lib/grid";
 import { isSamePosition } from "../../lib/utils";
 import { rangeAttack } from "../../lib/combat";
 
-export const createKnockbackSystem = ({ world, registry }: IGameWorld) => {
-  const knockbackQuery = world.with("knockback");
+export const createTryKnockbackSystem = ({ world, registry }: IGameWorld) => {
+  const tryKnockbackQuery = world.with("tryKnockback");
   const blockingQuery = world.with("blocking", "position");
 
-  return function knockbackSystem() {
-    for (const target of knockbackQuery) {
-      const { actorId, distance } = target.knockback;
+  return function tryKnockbackSystem() {
+    for (const target of tryKnockbackQuery) {
+      const { actorId, distance } = target.tryKnockback;
       const actor = registry.get(actorId);
       if (!actor) return;
 
@@ -65,7 +65,7 @@ export const createKnockbackSystem = ({ world, registry }: IGameWorld) => {
         }
       }
 
-      world.removeComponent(target, "knockback");
+      world.removeComponent(target, "tryKnockback");
     }
   };
 };

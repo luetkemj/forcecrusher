@@ -15,7 +15,7 @@ import { createFluidSystem } from "../systems/fluid.system";
 import { createMutableSystem } from "./mutable.system";
 import { createInteractSystem } from "../systems/interact.system";
 import { createTryKickSystem } from "../systems/tryKick.system";
-import { createKnockbackSystem } from "../systems/knockback.system";
+import { createTryKnockbackSystem } from "../systems/tryKnockback.system";
 import { createMemorySystem } from "./memory.system";
 import { createMixTintsSystem } from "./mixTints.system";
 import { createMorgueSystem } from "../systems/morgue.system";
@@ -55,7 +55,7 @@ const fluidSystem = createFluidSystem(gameWorld);
 const mutableSystem = createMutableSystem(gameWorld);
 const interactSystem = createInteractSystem(gameWorld);
 const tryKickSystem = createTryKickSystem(gameWorld);
-const knockbackSystem = createKnockbackSystem(gameWorld);
+const tryKnockbackSystem = createTryKnockbackSystem(gameWorld);
 const memorySystem = createMemorySystem(gameWorld);
 const mixTintsSystem = createMixTintsSystem(gameWorld);
 const morgueSystem = createMorgueSystem(gameWorld);
@@ -91,7 +91,7 @@ export const systems = {
   fov: fovSystem,
   interact: interactSystem,
   tryKick: tryKickSystem,
-  knockback: knockbackSystem,
+  tryKnockback: tryKnockbackSystem,
   memory: memorySystem,
   mixTints: mixTintsSystem,
   morgue: morgueSystem,
@@ -204,7 +204,7 @@ export const actorTurnPipeline: SystemPipeline = {
     systems.tryOpen,
     systems.tryClose,
     systems.tryAttack,
-    systems.knockback,
+    systems.tryKnockback,
     systems.tryKick,
     systems.tryDrop,
     systems.tryThrow,

@@ -44,7 +44,7 @@ export const createTryAttackSystem = ({ world, registry }: IGameWorld) => {
       }
 
       if (attack.knockbackDistance) {
-        world.addComponent(target, "knockback", {
+        world.addComponent(target, "tryKnockback", {
           actorId: actor.id,
           targetId: target.id,
           distance: attack.knockbackDistance,
