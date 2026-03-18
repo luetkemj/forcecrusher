@@ -2,7 +2,7 @@ import { describe, test, expect, beforeEach, vi } from "vitest";
 import type { Entity, IGameWorld } from "../engine";
 import { AttackType, DamageType } from "../enums";
 import { setupTestGameWorld } from "./test-utils";
-import { createAttackSystem } from "./attack.system";
+import { createTryAttackSystem } from "./tryAttack.system";
 
 // Mock DiceRoll for deterministic results
 vi.mock("@dice-roller/rpg-dice-roller", () => ({
@@ -11,7 +11,7 @@ vi.mock("@dice-roller/rpg-dice-roller", () => ({
   }),
 }));
 
-describe("attack.system", () => {
+describe("tryAttack.system", () => {
   let gameWorld: IGameWorld;
   let attacker: Entity;
   let armedAttacker: Entity;
@@ -91,7 +91,7 @@ describe("attack.system", () => {
     gameWorld.world.addComponent(attacker, "tryAttack", {
       targetId: target.id,
     });
-    createAttackSystem(gameWorld)();
+    createTryAttackSystem(gameWorld)();
     expect(target.damages?.length).toBeGreaterThan(0);
     const damage = target.damages?.[0];
     expect(damage?.attacker).toBe(attacker.id);
@@ -106,7 +106,7 @@ describe("attack.system", () => {
     gameWorld.world.addComponent(armedAttacker, "tryAttack", {
       targetId: target.id,
     });
-    createAttackSystem(gameWorld)();
+    createTryAttackSystem(gameWorld)();
     expect(target.damages?.length).toBeGreaterThan(0);
     const damage = target.damages?.[0];
     expect(damage?.attacker).toBe(armedAttacker.id);
@@ -121,7 +121,7 @@ describe("attack.system", () => {
     gameWorld.world.addComponent(attacker, "tryAttack", {
       targetId: target.id,
     });
-    createAttackSystem(gameWorld)();
+    createTryAttackSystem(gameWorld)();
     // Debug: log damages if test fails
     if (!target.damages || target.damages.length === 0) {
       // eslint-disable-next-line no-console
@@ -140,7 +140,7 @@ describe("attack.system", () => {
     gameWorld.world.addComponent(attacker, "tryAttack", {
       targetId: target.id,
     });
-    createAttackSystem(gameWorld)();
+    createTryAttackSystem(gameWorld)();
     expect(target.damages?.length).toBe(0);
   });
 });

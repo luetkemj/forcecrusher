@@ -1,32 +1,32 @@
 import { createAccumulateEnergySystem } from "../systems/accumulateEnergySystem";
 import { createActiveEffectsSystem } from "../systems/activeEffects.system";
 import { createAiSystem } from "../systems/ai.system";
-import { createAttackSystem } from "../systems/attack.system";
+import { createTryAttackSystem } from "../systems/tryAttack.system";
 import { createCalculateFlammabilitySystem } from "../systems/calculateFlammability.system";
-import { createCloseSystem } from "../systems/close.system";
+import { createTryCloseSystem } from "../systems/tryClose.system";
 import { createCursorSystem } from "../systems/cursor.system";
 import { createDamageSystem } from "../systems/damage.system";
 import { createDesiccateSystem } from "../systems/desiccate.system";
 import { createDestroySystem } from "./destroy.system";
-import { createDropSystem } from "../systems/drop.system";
+import { createTryDropSystem } from "../systems/tryDrop.system";
 import { createFovSystem } from "../systems/fov.system";
 import { createFireSystem } from "../systems/fire.system";
 import { createFluidSystem } from "../systems/fluid.system";
 import { createMutableSystem } from "./mutable.system";
 import { createInteractSystem } from "../systems/interact.system";
-import { createKickSystem } from "../systems/kick.system";
-import { createKnockbackSystem } from "../systems/knockback.system";
+import { createTryKickSystem } from "../systems/tryKick.system";
+import { createTryKnockbackSystem } from "../systems/tryKnockback.system";
 import { createMemorySystem } from "./memory.system";
 import { createMixTintsSystem } from "./mixTints.system";
 import { createMorgueSystem } from "../systems/morgue.system";
-import { createMovementSystem } from "../systems/movement.system";
+import { createTryMoveSystem } from "../systems/tryMove.system";
 import { createOdorSystem } from "../systems/odor.system";
-import { createOpenSystem } from "../systems/open.system";
+import { createTryOpenSystem } from "../systems/tryOpen.system";
 import { createPerceptionSystem } from "./perception.system";
-import { createPickUpSystem } from "../systems/pickUp.system";
+import { createTryPickUpSystem } from "../systems/tryPickUp.system";
 import { createRenderSystem } from "../systems/render.system";
 import { createSoundSystem } from "../systems/sound.system";
-import { createThrowSystem } from "../systems/throw.system";
+import { createTryThrowSystem } from "../systems/tryThrow.system";
 import { createTryCastSpellSystem } from "../systems/tryCastSpell.system";
 import { createTryFillSystem } from "../systems/tryFill.system";
 import { createTryReadSystem } from "../systems/tryRead.system";
@@ -40,33 +40,33 @@ import { styleDuration } from "./debug-utils";
 const accumulateEnergySystem = createAccumulateEnergySystem(gameWorld);
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
 const aiSystem = createAiSystem(gameWorld);
-const attackSystem = createAttackSystem(gameWorld);
+const tryAttackSystem = createTryAttackSystem(gameWorld);
 const calculateFlammabilitySystem =
   createCalculateFlammabilitySystem(gameWorld);
-const closeSystem = createCloseSystem(gameWorld);
+const tryCloseSystem = createTryCloseSystem(gameWorld);
 const cursorSystem = createCursorSystem(gameWorld);
 const damageSystem = createDamageSystem(gameWorld);
 const desiccateSystem = createDesiccateSystem(gameWorld);
 const destroySystem = createDestroySystem(gameWorld);
-const dropSystem = createDropSystem(gameWorld);
+const tryDropSystem = createTryDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
 const fireSystem = createFireSystem(gameWorld);
 const fluidSystem = createFluidSystem(gameWorld);
 const mutableSystem = createMutableSystem(gameWorld);
 const interactSystem = createInteractSystem(gameWorld);
-const kickSystem = createKickSystem(gameWorld);
-const knockbackSystem = createKnockbackSystem(gameWorld);
+const tryKickSystem = createTryKickSystem(gameWorld);
+const tryKnockbackSystem = createTryKnockbackSystem(gameWorld);
 const memorySystem = createMemorySystem(gameWorld);
 const mixTintsSystem = createMixTintsSystem(gameWorld);
 const morgueSystem = createMorgueSystem(gameWorld);
-const movementSystem = createMovementSystem(gameWorld);
+const tryMoveSystem = createTryMoveSystem(gameWorld);
 const odorSystem = createOdorSystem(gameWorld);
-const openSystem = createOpenSystem(gameWorld);
+const tryOpenSystem = createTryOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
-const pickUpSystem = createPickUpSystem(gameWorld);
+const tryPickUpSystem = createTryPickUpSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
-const throwSystem = createThrowSystem(gameWorld);
+const tryThrowSystem = createTryThrowSystem(gameWorld);
 const tryCastSpellSystem = createTryCastSpellSystem(gameWorld);
 const tryFillSystem = createTryFillSystem(gameWorld);
 const tryReadSystem = createTryReadSystem(gameWorld);
@@ -78,35 +78,35 @@ export const systems = {
   accumulateEnergy: accumulateEnergySystem,
   activeEffects: activeEffectsSystem,
   ai: aiSystem,
-  attack: attackSystem,
   calculateFlammability: calculateFlammabilitySystem,
-  close: closeSystem,
   cursor: cursorSystem,
   damage: damageSystem,
   desiccate: desiccateSystem,
   destroy: destroySystem,
-  drop: dropSystem,
   fire: fireSystem,
   fluid: fluidSystem,
   fov: fovSystem,
   interact: interactSystem,
-  kick: kickSystem,
-  knockback: knockbackSystem,
   memory: memorySystem,
   mixTints: mixTintsSystem,
   morgue: morgueSystem,
-  movement: movementSystem,
   mutable: mutableSystem,
   odor: odorSystem,
-  open: openSystem,
   perception: perceptionSystem,
-  pickUp: pickUpSystem,
   render: renderSystem,
   sound: soundSystem,
-  throw: throwSystem,
+  tryAttack: tryAttackSystem,
   tryCastSpell: tryCastSpellSystem,
+  tryClose: tryCloseSystem,
+  tryDrop: tryDropSystem,
   tryFill: tryFillSystem,
+  tryKick: tryKickSystem,
+  tryKnockback: tryKnockbackSystem,
+  tryMove: tryMoveSystem,
+  tryOpen: tryOpenSystem,
+  tryPickUp: tryPickUpSystem,
   tryRead: tryReadSystem,
+  tryThrow: tryThrowSystem,
   userInput: userInputSystem,
   uncastSpellSystem: uncastSpellSystem,
   wet: wetSystem,
@@ -197,20 +197,19 @@ export const actorTurnPipeline: SystemPipeline = {
   preInput: [systems.activeEffects],
   input: [systems.userInput, systems.perception, systems.memory, systems.ai],
   main: [
-    systems.pickUp,
+    systems.tryPickUp,
     systems.tryFill,
     systems.tryCastSpell,
-    systems.movement,
-    systems.open,
-    systems.close,
-    systems.attack,
-    systems.knockback,
-    systems.kick,
-    systems.damage,
-    systems.drop,
-    systems.throw,
+    systems.tryMove,
+    systems.tryOpen,
+    systems.tryClose,
+    systems.tryAttack,
+    systems.tryKnockback,
+    systems.tryKick,
+    systems.tryDrop,
+    systems.tryThrow,
   ],
-  postMain: [systems.morgue, systems.destroy, systems.fov],
+  postMain: [systems.damage, systems.morgue, systems.destroy, systems.fov],
   render: [],
 };
 
@@ -274,7 +273,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
   [GameState.INVENTORY]: {
     preInput: [],
     input: [systems.userInput],
-    main: [systems.activeEffects, systems.drop, systems.tryRead],
+    main: [systems.activeEffects, systems.tryDrop, systems.tryRead],
     postMain: [systems.destroy, systems.fov],
     render: [systems.render],
   },

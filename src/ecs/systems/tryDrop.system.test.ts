@@ -1,11 +1,11 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import type { Entity, IGameWorld } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
-import { createDropSystem } from "./drop.system";
+import { createTryDropSystem } from "./tryDrop.system";
 import { getState } from "../gameState";
 import { circle, toPosId } from "../../lib/grid";
 
-describe("drop.system", () => {
+describe("tryDrop.system", () => {
   let gameWorld: IGameWorld;
   let dropper: Entity;
   let item: Entity;
@@ -34,7 +34,7 @@ describe("drop.system", () => {
 
   test("drops item at or near dropper's position and removes from inventory", () => {
     addTryDrop();
-    createDropSystem(gameWorld)();
+    createTryDropSystem(gameWorld)();
     if (!dropper.position) return;
     const dropZone = circle(dropper.position, 2).posIds;
     expect(dropZone.includes(toPosId(dropper.position))).toBeTruthy();
@@ -48,7 +48,7 @@ describe("drop.system", () => {
   test("does nothing if dropper has no position", () => {
     dropper.position = undefined;
     addTryDrop();
-    createDropSystem(gameWorld)();
+    createTryDropSystem(gameWorld)();
     expect(item.position).toBeUndefined();
     expect(dropper.container?.contents.includes(item.id)).toBe(true);
   });
@@ -56,7 +56,7 @@ describe("drop.system", () => {
   test("does nothing if item not in dropper's inventory", () => {
     if (dropper.container) dropper.container.contents = [];
     addTryDrop();
-    createDropSystem(gameWorld)();
+    createTryDropSystem(gameWorld)();
     expect(item.position).toBeUndefined();
     expect(item.tryDrop).toBeUndefined();
   });
@@ -64,7 +64,7 @@ describe("drop.system", () => {
   test("does nothing if dropper not found", () => {
     addTryDrop();
     if (item.tryDrop) item.tryDrop.dropperId = "notfound";
-    createDropSystem(gameWorld)();
+    createTryDropSystem(gameWorld)();
     expect(item.position).toBeUndefined();
     expect(item.tryDrop).toBeUndefined();
   });

@@ -264,7 +264,7 @@ export type Entity = {
     maxDamageOnKick?: number; // damage the kicker takes (optional)
     noiseLevel?: number; // 0 = silent, 10 = alerts everything
   };
-  knockback?: {
+  tryKnockback?: {
     actorId: EntityId;
     targetId: EntityId;
     distance: number;

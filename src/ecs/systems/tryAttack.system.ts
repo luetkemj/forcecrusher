@@ -8,14 +8,14 @@ import { sample } from "lodash";
 import { DiceRoll } from "@dice-roller/rpg-dice-roller";
 import { AttackType } from "../enums";
 
-export const createAttackSystem = ({ world, registry }: IGameWorld) => {
+export const createTryAttackSystem = ({ world, registry }: IGameWorld) => {
   const attackQuery = world.with("tryAttack");
 
   const cleanUp = (actor: Entity) => {
     world.removeComponent(actor, "tryAttack");
   };
 
-  return function attackSystem() {
+  return function tryAttackSystem() {
     for (const actor of attackQuery) {
       const target = registry.get(actor.tryAttack.targetId);
       const attack = actor.tryAttack.attack || getAttack(actor, registry);
@@ -44,7 +44,7 @@ export const createAttackSystem = ({ world, registry }: IGameWorld) => {
       }
 
       if (attack.knockbackDistance) {
-        world.addComponent(target, "knockback", {
+        world.addComponent(target, "tryKnockback", {
           actorId: actor.id,
           targetId: target.id,
           distance: attack.knockbackDistance,

@@ -1,11 +1,11 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import type { Entity, IGameWorld } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
-import { createMovementSystem } from "./movement.system";
+import { createTryMoveSystem } from "./tryMove.system";
 import { getState } from "../gameState";
 import { EntityKind } from "../enums";
 
-describe("movement.system", () => {
+describe("tryMove.system", () => {
   let gameWorld: IGameWorld;
   let mover: Entity;
   let blocker: Entity;
@@ -34,13 +34,13 @@ describe("movement.system", () => {
   test("moves entity to new position if not blocked", () => {
     // Remove blocker from the blocking position
     blocker.position = { x: 3, y: 3 };
-    createMovementSystem(gameWorld)();
+    createTryMoveSystem(gameWorld)();
     expect(mover.position).toEqual({ x: 2, y: 1 });
     expect(mover.tryMove).toBeUndefined();
   });
 
   test("does not move entity if blocked", () => {
-    createMovementSystem(gameWorld)();
+    createTryMoveSystem(gameWorld)();
     expect(mover.position).toEqual({ x: 1, y: 1 });
     expect(mover.tryMove).toBeUndefined();
   });
@@ -48,7 +48,7 @@ describe("movement.system", () => {
   test("initiates attack if blocked by entity with health", () => {
     blocker.health = { max: 10, current: 10 };
     blocker.entityKind = EntityKind.Beast;
-    createMovementSystem(gameWorld)();
+    createTryMoveSystem(gameWorld)();
     expect(mover.tryMove).toBeUndefined();
     expect(mover.tryAttack?.targetId).toEqual(blocker.id);
   });
@@ -56,7 +56,7 @@ describe("movement.system", () => {
   test("logs message if player is blocked by non-attackable entity", () => {
     mover.pc = true;
     // Blocker has no health, so should log a message
-    createMovementSystem(gameWorld)();
+    createTryMoveSystem(gameWorld)();
     const { log } = getState();
     expect(log[log.length - 1]).toBe("Mover blocked by Blocker");
   });

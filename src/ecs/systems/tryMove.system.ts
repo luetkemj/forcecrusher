@@ -7,13 +7,13 @@ import {
 } from "../../lib/utils";
 import { ACTION_COST, IGameWorld } from "../engine";
 
-export const createMovementSystem = ({ world, registry }: IGameWorld) => {
+export const createTryMoveSystem = ({ world, registry }: IGameWorld) => {
   const moveableQuery = world
     .with("position", "tryMove", "energy");
   const blockingQuery = world
     .with("blocking", "position");
 
-  return function movementSystem() {
+  return function tryMoveSystem() {
     for (const actor of moveableQuery) {
       const { tryMove } = actor;
 
