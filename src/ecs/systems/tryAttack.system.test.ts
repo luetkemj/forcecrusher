@@ -11,7 +11,7 @@ vi.mock("@dice-roller/rpg-dice-roller", () => ({
   }),
 }));
 
-describe("attack.system", () => {
+describe("tryAttack.system", () => {
   let gameWorld: IGameWorld;
   let attacker: Entity;
   let armedAttacker: Entity;

@@ -1,7 +1,7 @@
 import { createAccumulateEnergySystem } from "../systems/accumulateEnergySystem";
 import { createActiveEffectsSystem } from "../systems/activeEffects.system";
 import { createAiSystem } from "../systems/ai.system";
-import { createAttackSystem } from "../systems/attack.system";
+import { createTryAttackSystem } from "../systems/tryAttack.system";
 import { createCalculateFlammabilitySystem } from "../systems/calculateFlammability.system";
 import { createCloseSystem } from "../systems/close.system";
 import { createCursorSystem } from "../systems/cursor.system";
@@ -40,7 +40,7 @@ import { styleDuration } from "./debug-utils";
 const accumulateEnergySystem = createAccumulateEnergySystem(gameWorld);
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
 const aiSystem = createAiSystem(gameWorld);
-const attackSystem = createAttackSystem(gameWorld);
+const tryAttackSystem = createTryAttackSystem(gameWorld);
 const calculateFlammabilitySystem =
   createCalculateFlammabilitySystem(gameWorld);
 const closeSystem = createCloseSystem(gameWorld);
@@ -78,7 +78,7 @@ export const systems = {
   accumulateEnergy: accumulateEnergySystem,
   activeEffects: activeEffectsSystem,
   ai: aiSystem,
-  attack: attackSystem,
+  attack: tryAttackSystem,
   calculateFlammability: calculateFlammabilitySystem,
   close: closeSystem,
   cursor: cursorSystem,
