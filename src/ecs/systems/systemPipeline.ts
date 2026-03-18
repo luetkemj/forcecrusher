@@ -14,7 +14,7 @@ import { createFireSystem } from "../systems/fire.system";
 import { createFluidSystem } from "../systems/fluid.system";
 import { createMutableSystem } from "./mutable.system";
 import { createInteractSystem } from "../systems/interact.system";
-import { createKickSystem } from "../systems/kick.system";
+import { createTryKickSystem } from "../systems/tryKick.system";
 import { createKnockbackSystem } from "../systems/knockback.system";
 import { createMemorySystem } from "./memory.system";
 import { createMixTintsSystem } from "./mixTints.system";
@@ -54,7 +54,7 @@ const fireSystem = createFireSystem(gameWorld);
 const fluidSystem = createFluidSystem(gameWorld);
 const mutableSystem = createMutableSystem(gameWorld);
 const interactSystem = createInteractSystem(gameWorld);
-const kickSystem = createKickSystem(gameWorld);
+const tryKickSystem = createTryKickSystem(gameWorld);
 const knockbackSystem = createKnockbackSystem(gameWorld);
 const memorySystem = createMemorySystem(gameWorld);
 const mixTintsSystem = createMixTintsSystem(gameWorld);
@@ -90,7 +90,7 @@ export const systems = {
   fluid: fluidSystem,
   fov: fovSystem,
   interact: interactSystem,
-  kick: kickSystem,
+  kick: tryKickSystem,
   knockback: knockbackSystem,
   memory: memorySystem,
   mixTints: mixTintsSystem,
