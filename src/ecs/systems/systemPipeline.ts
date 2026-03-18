@@ -23,7 +23,7 @@ import { createTryMoveSystem } from "../systems/tryMove.system";
 import { createOdorSystem } from "../systems/odor.system";
 import { createOpenSystem } from "../systems/open.system";
 import { createPerceptionSystem } from "./perception.system";
-import { createPickUpSystem } from "../systems/pickUp.system";
+import { createTryPickUpSystem } from "../systems/tryPickUp.system";
 import { createRenderSystem } from "../systems/render.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createThrowSystem } from "../systems/throw.system";
@@ -63,7 +63,7 @@ const tryMoveSystem = createTryMoveSystem(gameWorld);
 const odorSystem = createOdorSystem(gameWorld);
 const openSystem = createOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
-const pickUpSystem = createPickUpSystem(gameWorld);
+const tryPickUpSystem = createTryPickUpSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const throwSystem = createThrowSystem(gameWorld);
@@ -100,7 +100,7 @@ export const systems = {
   odor: odorSystem,
   open: openSystem,
   perception: perceptionSystem,
-  pickUp: pickUpSystem,
+  pickUp: tryPickUpSystem,
   render: renderSystem,
   sound: soundSystem,
   throw: throwSystem,
