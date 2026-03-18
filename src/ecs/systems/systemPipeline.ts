@@ -3,7 +3,7 @@ import { createActiveEffectsSystem } from "../systems/activeEffects.system";
 import { createAiSystem } from "../systems/ai.system";
 import { createTryAttackSystem } from "../systems/tryAttack.system";
 import { createCalculateFlammabilitySystem } from "../systems/calculateFlammability.system";
-import { createCloseSystem } from "../systems/close.system";
+import { createTryCloseSystem } from "../systems/tryClose.system";
 import { createCursorSystem } from "../systems/cursor.system";
 import { createDamageSystem } from "../systems/damage.system";
 import { createDesiccateSystem } from "../systems/desiccate.system";
@@ -43,7 +43,7 @@ const aiSystem = createAiSystem(gameWorld);
 const tryAttackSystem = createTryAttackSystem(gameWorld);
 const calculateFlammabilitySystem =
   createCalculateFlammabilitySystem(gameWorld);
-const closeSystem = createCloseSystem(gameWorld);
+const tryCloseSystem = createTryCloseSystem(gameWorld);
 const cursorSystem = createCursorSystem(gameWorld);
 const damageSystem = createDamageSystem(gameWorld);
 const desiccateSystem = createDesiccateSystem(gameWorld);
@@ -80,7 +80,7 @@ export const systems = {
   ai: aiSystem,
   attack: tryAttackSystem,
   calculateFlammability: calculateFlammabilitySystem,
-  close: closeSystem,
+  close: tryCloseSystem,
   cursor: cursorSystem,
   damage: damageSystem,
   desiccate: desiccateSystem,
