@@ -5,12 +5,12 @@ import { Pos, getDirection, line, moveInDirection } from "../../lib/grid";
 import { isSamePosition } from "../../lib/utils";
 import { rangeAttack } from "../../lib/combat";
 
-export const createTryKnockbackSystem = ({ world, registry }: IGameWorld) => {
-  const tryKnockbackQuery = world.with("tryKnockback");
+export const createResolveKnockbackSystem = ({ world, registry }: IGameWorld) => {
+  const resolveKnockbackQuery = world.with("tryKnockback");
   const blockingQuery = world.with("blocking", "position");
 
-  return function tryKnockbackSystem() {
-    for (const target of tryKnockbackQuery) {
+  return function resolveKnockbackSystem() {
+    for (const target of resolveKnockbackQuery) {
       const { actorId, distance } = target.tryKnockback;
       const actor = registry.get(actorId);
       if (!actor) return;

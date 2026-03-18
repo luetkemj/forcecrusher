@@ -9,11 +9,11 @@ import { IGameWorld } from "../engine";
 import { ReadableType, SpellCastType } from "../enums";
 import { GameState, setState, type State } from "../gameState";
 
-export const createTryReadSystem = ({ world, registry }: IGameWorld) => {
-  const tryReadQuery = world.with("tryRead");
+export const createResolveReadSystem = ({ world, registry }: IGameWorld) => {
+  const resolveReadQuery = world.with("tryRead");
 
-  return function tryReadSystem() {
-    for (const actor of tryReadQuery) {
+  return function resolveReadSystem() {
+    for (const actor of resolveReadQuery) {
       if (!actor.readable) {
         logFrozenEntity(actor);
         console.log(`${actor} is not readable`);
