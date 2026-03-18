@@ -230,7 +230,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     render: [systems.render],
   },
 
-  [GameState.SCREEN_BEASTIARY]: {
+  [GameState.SCREEN_BESTIARY]: {
     preInput: [],
     input: [systems.userInput],
     main: [],

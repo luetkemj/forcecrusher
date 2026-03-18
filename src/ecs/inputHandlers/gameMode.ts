@@ -75,9 +75,9 @@ export const handleGameModeInput = async ({
       return true;
     }
 
-    if (key === Keys.BEASTIARY) {
+    if (key === Keys.BESTIARY) {
       setState(
-        (state: State) => (state.gameState = GameState.SCREEN_BEASTIARY),
+        (state: State) => (state.gameState = GameState.SCREEN_BESTIARY),
       );
 
       return true;
