@@ -206,11 +206,10 @@ export const actorTurnPipeline: SystemPipeline = {
     systems.tryAttack,
     systems.knockback,
     systems.tryKick,
-    systems.damage,
     systems.tryDrop,
     systems.tryThrow,
   ],
-  postMain: [systems.morgue, systems.destroy, systems.fov],
+  postMain: [systems.damage, systems.morgue, systems.destroy, systems.fov],
   render: [],
 };
 
