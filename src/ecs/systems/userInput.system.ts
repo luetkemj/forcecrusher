@@ -56,7 +56,12 @@ export const createUserInputSystem = ({
     const state = getState();
 
     const currentActor = getCurrentActor();
-    if (currentActor && currentActor.id !== getState().playerId) return;
+    if (
+      gameState === GameState.GAME &&
+      currentActor &&
+      currentActor.id !== getState().playerId
+    )
+      return;
 
     if (!userInput) return;
 
