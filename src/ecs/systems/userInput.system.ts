@@ -52,11 +52,16 @@ export const createUserInputSystem = ({
   const layer400Query = world.with("layer400", "position");
 
   return async function userInputSystem() {
-    const { userInput, gameState } = getState();
     const state = getState();
+    const { userInput, gameState, playerId } = state;
 
     const currentActor = getCurrentActor();
-    if (currentActor && currentActor.id !== getState().playerId) return;
+    if (
+      gameState === GameState.GAME &&
+      currentActor &&
+      currentActor.id !== playerId
+    )
+      return;
 
     if (!userInput) return;
 
