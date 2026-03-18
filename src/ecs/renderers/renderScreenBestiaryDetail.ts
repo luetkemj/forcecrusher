@@ -6,12 +6,12 @@ import { RendererContext } from "../systems/render.system";
 import { Entity } from "../engine";
 import { bestiary } from "../../actors";
 
-export const renderScreenBeastiaryDetail = ({ views }: RendererContext) => {
-  const { activeIndex } = getState().screenBeastiary;
+export const renderScreenBestiaryDetail = ({ views }: RendererContext) => {
+  const { activeIndex } = getState().screenBestiary;
   const prefab = bestiary[activeIndex];
 
-  const view = views.screenBeastiaryDetail;
-  if (getState().gameState === GameState.SCREEN_BEASTIARY) {
+  const view = views.screenBestiaryDetail;
+  if (getState().gameState === GameState.SCREEN_BESTIARY) {
     const rows = [
       [{ string: "" }],
       [{ string: "" }],

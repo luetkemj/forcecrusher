@@ -30,8 +30,8 @@ export type ViewId =
   | "makerModeLeft"
   | "makerModeTop"
   | "saving"
-  | "screenBeastiary"
-  | "screenBeastiaryDetail"
+  | "screenBestiary"
+  | "screenBestiaryDetail"
   | "screenUnderlay"
   | "screenVictory"
   | "screenTitle"
@@ -408,7 +408,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     name: "screenUnderlay",
   },
 
-  screenBeastiary: {
+  screenBestiary: {
     kind: "ui",
     width: 25,
     height: 44,
@@ -419,10 +419,10 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0xffffff],
     alphas: [1],
     visible: false,
-    name: "screenBeastiary",
+    name: "screenBestiary",
   },
 
-  screenBeastiaryDetail: {
+  screenBestiaryDetail: {
     kind: "ui",
     width: 75,
     height: 44,
@@ -433,7 +433,7 @@ export const viewConfigs: Record<ViewId, ViewConfig> = {
     tints: [0xffffff],
     alphas: [1],
     visible: false,
-    name: "screenBeastiaryDetail",
+    name: "screenBestiaryDetail",
   },
 
   screenTitle: {

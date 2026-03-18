@@ -24,7 +24,7 @@ export const enum GameState {
   MAKER_MODE_PREFAB_SELECT = "MAKER_MODE_PREFAB_SELECT",
   SAVING = "SAVING",
   LOADING = "LOADING",
-  SCREEN_BEASTIARY = "SCREEN_BEASTIARY",
+  SCREEN_BESTIARY = "SCREEN_BESTIARY",
   SCREEN_TITLE = "SCREEN_TITLE",
   SCREEN_VICTORY = "SCREEN_VICTORY",
 }
@@ -55,8 +55,8 @@ export type Views = {
   saving?: UIPanelView;
   spellbook?: UIPanelView;
   loading?: UIPanelView;
-  screenBeastiary?: UIPanelView;
-  screenBeastiaryDetail?: UIPanelView;
+  screenBestiary?: UIPanelView;
+  screenBestiaryDetail?: UIPanelView;
   screenUnderlay?: MapView;
   screenVictory?: UIPanelView;
   screenTitle?: UIPanelView;
@@ -102,7 +102,7 @@ export type State = {
 
   readyQueue?: EntityId[];
   currentActorId?: EntityId | undefined;
-  screenBeastiary: { activeIndex: number };
+  screenBestiary: { activeIndex: number };
   spellAoe: PosId[];
   spellbookActiveIndex: number;
   spellName: SpellName | null;
@@ -148,7 +148,7 @@ const state: State = {
   odorMap: new Map(),
   soundMap: new Map(),
   visionMap: [],
-  screenBeastiary: {
+  screenBestiary: {
     activeIndex: 0,
   },
   senses: {

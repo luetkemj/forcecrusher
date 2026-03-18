@@ -5,10 +5,10 @@ import { TileSet } from "../enums";
 import { GameState, getState } from "../gameState";
 import { RendererContext } from "../systems/render.system";
 
-export const renderScreenBeastiary = ({ views }: RendererContext) => {
-  const view = views.screenBeastiary;
-  const { activeIndex } = getState().screenBeastiary;
-  if (getState().gameState === GameState.SCREEN_BEASTIARY) {
+export const renderScreenBestiary = ({ views }: RendererContext) => {
+  const view = views.screenBestiary;
+  const { activeIndex } = getState().screenBestiary;
+  if (getState().gameState === GameState.SCREEN_BESTIARY) {
     const rows = [
       [
         {
