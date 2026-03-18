@@ -268,6 +268,7 @@ export const lavaGolemPrefab: Entity = {
     },
   },
   vitalFluid: Fluids.Lava,
+  speed: 50,
 };
 
 export const livingSpongePrefab: Entity = {
@@ -313,6 +314,7 @@ export const livingSpongePrefab: Entity = {
     outflow: true,
   },
   renderFluidColor: true,
+  speed: 100,
 };
 
 export const goblinPrefab: Entity = {
@@ -365,6 +367,7 @@ export const goblinPrefab: Entity = {
   mass: 6,
   material: Material.Flesh,
   vitalFluid: Fluids.Blood,
+  speed: 125,
 };
 
 export const owlbearPrefab: Entity = {
@@ -405,6 +408,7 @@ export const owlbearPrefab: Entity = {
   damages: [],
   mass: 18,
   material: Material.Flesh,
+  speed: 100,
 };
 
 export const ogrePrefab: Entity = {
@@ -500,6 +504,7 @@ export const skeletonPrefab: Entity = {
   },
   mass: 6,
   material: Material.Bone,
+  speed: 100,
 };
 
 // spellBooks

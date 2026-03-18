@@ -69,4 +69,6 @@ export const handleCastSpellModeInput = ({
     });
     return true;
   }
+
+  return true;
 };

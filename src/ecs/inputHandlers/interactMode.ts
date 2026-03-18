@@ -28,4 +28,6 @@ export const handleInteractModeInput = ({
       return true;
     }
   }
+
+  return true;
 };
