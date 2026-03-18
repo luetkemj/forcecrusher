@@ -8,7 +8,7 @@ import { createCursorSystem } from "../systems/cursor.system";
 import { createDamageSystem } from "../systems/damage.system";
 import { createDesiccateSystem } from "../systems/desiccate.system";
 import { createDestroySystem } from "./destroy.system";
-import { createDropSystem } from "../systems/drop.system";
+import { createTryDropSystem } from "../systems/tryDrop.system";
 import { createFovSystem } from "../systems/fov.system";
 import { createFireSystem } from "../systems/fire.system";
 import { createFluidSystem } from "../systems/fluid.system";
@@ -48,7 +48,7 @@ const cursorSystem = createCursorSystem(gameWorld);
 const damageSystem = createDamageSystem(gameWorld);
 const desiccateSystem = createDesiccateSystem(gameWorld);
 const destroySystem = createDestroySystem(gameWorld);
-const dropSystem = createDropSystem(gameWorld);
+const tryDropSystem = createTryDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
 const fireSystem = createFireSystem(gameWorld);
 const fluidSystem = createFluidSystem(gameWorld);
@@ -85,7 +85,7 @@ export const systems = {
   damage: damageSystem,
   desiccate: desiccateSystem,
   destroy: destroySystem,
-  drop: dropSystem,
+  drop: tryDropSystem,
   fire: fireSystem,
   fluid: fluidSystem,
   fov: fovSystem,
