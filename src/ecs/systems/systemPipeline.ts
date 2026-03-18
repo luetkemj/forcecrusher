@@ -21,7 +21,7 @@ import { createMixTintsSystem } from "./mixTints.system";
 import { createMorgueSystem } from "../systems/morgue.system";
 import { createTryMoveSystem } from "../systems/tryMove.system";
 import { createOdorSystem } from "../systems/odor.system";
-import { createOpenSystem } from "../systems/open.system";
+import { createTryOpenSystem } from "../systems/tryOpen.system";
 import { createPerceptionSystem } from "./perception.system";
 import { createTryPickUpSystem } from "../systems/tryPickUp.system";
 import { createRenderSystem } from "../systems/render.system";
@@ -61,7 +61,7 @@ const mixTintsSystem = createMixTintsSystem(gameWorld);
 const morgueSystem = createMorgueSystem(gameWorld);
 const tryMoveSystem = createTryMoveSystem(gameWorld);
 const odorSystem = createOdorSystem(gameWorld);
-const openSystem = createOpenSystem(gameWorld);
+const tryOpenSystem = createTryOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
 const tryPickUpSystem = createTryPickUpSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
@@ -98,7 +98,7 @@ export const systems = {
   tryMove: tryMoveSystem,
   mutable: mutableSystem,
   odor: odorSystem,
-  open: openSystem,
+  tryOpen: tryOpenSystem,
   perception: perceptionSystem,
   tryPickUp: tryPickUpSystem,
   render: renderSystem,
@@ -201,7 +201,7 @@ export const actorTurnPipeline: SystemPipeline = {
     systems.tryFill,
     systems.tryCastSpell,
     systems.tryMove,
-    systems.open,
+    systems.tryOpen,
     systems.tryClose,
     systems.tryAttack,
     systems.knockback,
