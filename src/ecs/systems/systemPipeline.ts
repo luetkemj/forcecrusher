@@ -26,7 +26,7 @@ import { createPerceptionSystem } from "./perception.system";
 import { createTryPickUpSystem } from "../systems/tryPickUp.system";
 import { createRenderSystem } from "../systems/render.system";
 import { createSoundSystem } from "../systems/sound.system";
-import { createThrowSystem } from "../systems/throw.system";
+import { createTryThrowSystem } from "../systems/tryThrow.system";
 import { createTryCastSpellSystem } from "../systems/tryCastSpell.system";
 import { createTryFillSystem } from "../systems/tryFill.system";
 import { createTryReadSystem } from "../systems/tryRead.system";
@@ -66,7 +66,7 @@ const perceptionSystem = createPerceptionSystem(gameWorld);
 const tryPickUpSystem = createTryPickUpSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
-const throwSystem = createThrowSystem(gameWorld);
+const tryThrowSystem = createTryThrowSystem(gameWorld);
 const tryCastSpellSystem = createTryCastSpellSystem(gameWorld);
 const tryFillSystem = createTryFillSystem(gameWorld);
 const tryReadSystem = createTryReadSystem(gameWorld);
@@ -103,7 +103,7 @@ export const systems = {
   pickUp: tryPickUpSystem,
   render: renderSystem,
   sound: soundSystem,
-  throw: throwSystem,
+  throw: tryThrowSystem,
   tryCastSpell: tryCastSpellSystem,
   tryFill: tryFillSystem,
   tryRead: tryReadSystem,
