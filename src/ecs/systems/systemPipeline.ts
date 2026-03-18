@@ -266,7 +266,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
   [GameState.TARGET]: {
     preInput: [],
     input: [systems.userInput],
-    main: [systems.cursor, systems.throw],
+    main: [systems.cursor],
     postMain: [],
     render: [systems.render],
   },
