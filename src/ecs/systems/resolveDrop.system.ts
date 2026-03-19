@@ -8,13 +8,13 @@ import {
 import { circle, toPos, toPosId } from "../../lib/grid";
 import { IGameWorld } from "../engine";
 
-export const createTryDropSystem = ({ world, registry }: IGameWorld) => {
-  const tryDropQuery = world.with("tryDrop");
+export const createResolveDropSystem = ({ world, registry }: IGameWorld) => {
+  const resolveDropQuery = world.with("tryDrop");
   const pickUpQuery = world.with("position", "pickUp");
   const blockingQuery = world.with("position", "blocking");
 
-  return function tryDropSystem() {
-    for (const entity of tryDropQuery) {
+  return function resolveDropSystem() {
+    for (const entity of resolveDropQuery) {
       // get dropper entity
       const dropperId = entity.tryDrop.dropperId;
 

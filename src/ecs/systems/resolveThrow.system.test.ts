@@ -1,11 +1,11 @@
 import { describe, test, expect, beforeEach, afterEach } from "vitest";
 import type { Entity, IGameWorld } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
-import { createTryThrowSystem } from "./tryThrow.system";
+import { createResolveThrowSystem } from "./resolveThrow.system";
 import { setState, type State } from "../gameState";
 import type { Pos } from "../../lib/grid";
 
-describe("tryThrow.system", () => {
+describe("resolveThrow.system", () => {
   let gameWorld: IGameWorld;
   let thrower: Entity;
   let item: Entity;
@@ -38,7 +38,7 @@ describe("tryThrow.system", () => {
 
   test("does not throw if thrower not found", () => {
     addTryThrow("notfound");
-    createTryThrowSystem(gameWorld)();
+    createResolveThrowSystem(gameWorld)();
     expect(item.position).toEqual({ x: 1, y: 1 });
     expect(item.tryThrow).toBeUndefined();
   });
@@ -49,7 +49,7 @@ describe("tryThrow.system", () => {
       (state: State) => (state.cursor = [thrower.position as Pos, targetPos]),
     );
     addTryThrow();
-    createTryThrowSystem(gameWorld)();
+    createResolveThrowSystem(gameWorld)();
     expect(item.position).toEqual(targetPos);
     expect(item.tryThrow).toBeUndefined();
   });
@@ -68,7 +68,7 @@ describe("tryThrow.system", () => {
       (state: State) => (state.cursor = [thrower.position as Pos, targetPos]),
     );
     addTryThrow();
-    createTryThrowSystem(gameWorld)();
+    createResolveThrowSystem(gameWorld)();
     expect(item.position).toEqual({ x: 2, y: 1 });
     expect(item.tryThrow).toBeUndefined();
   });

@@ -1,11 +1,11 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import type { Entity, IGameWorld } from "../engine";
 import { setupTestGameWorld } from "./test-utils";
-import { createTryDropSystem } from "./tryDrop.system";
+import { createResolveDropSystem } from "./resolveDrop.system";
 import { getState } from "../gameState";
 import { circle, toPosId } from "../../lib/grid";
 
-describe("tryDrop.system", () => {
+describe("resolveDrop.system", () => {
   let gameWorld: IGameWorld;
   let dropper: Entity;
   let item: Entity;
@@ -34,7 +34,7 @@ describe("tryDrop.system", () => {
 
   test("drops item at or near dropper's position and removes from inventory", () => {
     addTryDrop();
-    createTryDropSystem(gameWorld)();
+    createResolveDropSystem(gameWorld)();
     if (!dropper.position) return;
     const dropZone = circle(dropper.position, 2).posIds;
     expect(dropZone.includes(toPosId(dropper.position))).toBeTruthy();
@@ -48,7 +48,7 @@ describe("tryDrop.system", () => {
   test("does nothing if dropper has no position", () => {
     dropper.position = undefined;
     addTryDrop();
-    createTryDropSystem(gameWorld)();
+    createResolveDropSystem(gameWorld)();
     expect(item.position).toBeUndefined();
     expect(dropper.container?.contents.includes(item.id)).toBe(true);
   });
@@ -56,7 +56,7 @@ describe("tryDrop.system", () => {
   test("does nothing if item not in dropper's inventory", () => {
     if (dropper.container) dropper.container.contents = [];
     addTryDrop();
-    createTryDropSystem(gameWorld)();
+    createResolveDropSystem(gameWorld)();
     expect(item.position).toBeUndefined();
     expect(item.tryDrop).toBeUndefined();
   });
@@ -64,7 +64,7 @@ describe("tryDrop.system", () => {
   test("does nothing if dropper not found", () => {
     addTryDrop();
     if (item.tryDrop) item.tryDrop.dropperId = "notfound";
-    createTryDropSystem(gameWorld)();
+    createResolveDropSystem(gameWorld)();
     expect(item.position).toBeUndefined();
     expect(item.tryDrop).toBeUndefined();
   });

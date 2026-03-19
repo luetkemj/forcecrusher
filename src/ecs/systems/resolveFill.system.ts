@@ -1,12 +1,12 @@
 import { getTotalVolume, transferFluid } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
-export const createTryFillSystem = ({ world, registry }: IGameWorld) => {
-  const tryFillQuery = world
+export const createResolveFillSystem = ({ world, registry }: IGameWorld) => {
+  const resolveFillQuery = world
     .with("fluidContainer", "tryFill");
 
-  return function tryFillSystem() {
-    for (const actor of tryFillQuery) {
+  return function resolveFillSystem() {
+    for (const actor of resolveFillQuery) {
       const source = registry.get(actor.tryFill.targetId);
       const container = actor;
 

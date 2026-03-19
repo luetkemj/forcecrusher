@@ -172,6 +172,10 @@ function simulationFrame() {
     runActorTurn(actorId);
     shouldRender = true;
 
+    if (getState().gameState !== GameState.GAME) {
+      break;
+    }
+
     if (isPlayer) playerActedThisFrame = true;
   }
 

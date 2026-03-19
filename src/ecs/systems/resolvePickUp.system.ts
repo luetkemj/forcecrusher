@@ -7,11 +7,11 @@ import {
 } from "../../lib/utils";
 import { IGameWorld } from "../engine";
 
-export const createTryPickUpSystem = ({ world, registry }: IGameWorld) => {
+export const createResolvePickUpSystem = ({ world, registry }: IGameWorld) => {
   const pcQuery = world.with("pc");
   const pickUpQuery = world.with("tryPickUp");
 
-  return function tryPickUpSystem() {
+  return function resolvePickUpSystem() {
     const [player] = pcQuery;
 
     for (const entity of pickUpQuery) {

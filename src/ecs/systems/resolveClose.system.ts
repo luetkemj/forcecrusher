@@ -3,11 +3,11 @@ import { IGameWorld, type Entity } from "../engine";
 import { OpenState } from "../enums";
 import { chars } from "../../actors/graphics";
 
-export const createTryCloseSystem = ({ world }: IGameWorld) => {
-  const tryCloseQuery = world.with("tryClose");
+export const createResolveCloseSystem = ({ world }: IGameWorld) => {
+  const resolveCloseQuery = world.with("tryClose");
 
-  return function tryCloseSystem() {
-    for (const actor of tryCloseQuery) {
+  return function resolveCloseSystem() {
+    for (const actor of resolveCloseQuery) {
       const target = actor.tryClose;
 
       if (target.openable?.state === OpenState.Open) {

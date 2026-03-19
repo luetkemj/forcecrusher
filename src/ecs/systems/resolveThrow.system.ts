@@ -10,12 +10,12 @@ import { IGameWorld, Entity } from "../engine";
 import { line, Pos } from "../../lib/grid";
 import { rangeAttack } from "../../lib/combat";
 
-export const createTryThrowSystem = ({ world, registry }: IGameWorld) => {
-  const tryThrowQuery = world.with("tryThrow");
+export const createResolveThrowSystem = ({ world, registry }: IGameWorld) => {
+  const resolveThrowQuery = world.with("tryThrow");
   const blockingQuery = world.with("blocking", "position");
 
-  return function tryThrowSystem() {
-    for (const entity of tryThrowQuery) {
+  return function resolveThrowSystem() {
+    for (const entity of resolveThrowQuery) {
       // get thrower entity
       const { throwerId } = entity.tryThrow;
       const thrownId = entity.id;
