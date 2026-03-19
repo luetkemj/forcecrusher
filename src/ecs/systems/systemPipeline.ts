@@ -40,36 +40,36 @@ import { styleDuration } from "./debug-utils";
 const accumulateEnergySystem = createAccumulateEnergySystem(gameWorld);
 const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
 const aiSystem = createAiSystem(gameWorld);
-const tryAttackSystem = createTryAttackSystem(gameWorld);
 const calculateFlammabilitySystem =
   createCalculateFlammabilitySystem(gameWorld);
-const resolveCloseSystem = createResolveCloseSystem(gameWorld);
 const cursorSystem = createCursorSystem(gameWorld);
 const damageSystem = createDamageSystem(gameWorld);
 const desiccateSystem = createDesiccateSystem(gameWorld);
 const destroySystem = createDestroySystem(gameWorld);
-const resolveDropSystem = createResolveDropSystem(gameWorld);
 const fovSystem = createFovSystem(gameWorld);
 const fireSystem = createFireSystem(gameWorld);
 const fluidSystem = createFluidSystem(gameWorld);
 const mutableSystem = createMutableSystem(gameWorld);
 const interactSystem = createInteractSystem(gameWorld);
-const tryKickSystem = createTryKickSystem(gameWorld);
-const resolveKnockbackSystem = createResolveKnockbackSystem(gameWorld);
 const memorySystem = createMemorySystem(gameWorld);
 const mixTintsSystem = createMixTintsSystem(gameWorld);
 const morgueSystem = createMorgueSystem(gameWorld);
-const tryMoveSystem = createTryMoveSystem(gameWorld);
 const odorSystem = createOdorSystem(gameWorld);
-const resolveOpenSystem = createResolveOpenSystem(gameWorld);
 const perceptionSystem = createPerceptionSystem(gameWorld);
-const resolvePickUpSystem = createResolvePickUpSystem(gameWorld);
 const renderSystem = createRenderSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
+const resolveCloseSystem = createResolveCloseSystem(gameWorld);
+const resolveDropSystem = createResolveDropSystem(gameWorld);
+const resolveKnockbackSystem = createResolveKnockbackSystem(gameWorld);
+const resolveOpenSystem = createResolveOpenSystem(gameWorld);
+const resolvePickUpSystem = createResolvePickUpSystem(gameWorld);
 const resolveThrowSystem = createResolveThrowSystem(gameWorld);
-const tryCastSpellSystem = createTryCastSpellSystem(gameWorld);
 const resolveFillSystem = createResolveFillSystem(gameWorld);
 const resolveReadSystem = createResolveReadSystem(gameWorld);
+const tryAttackSystem = createTryAttackSystem(gameWorld);
+const tryKickSystem = createTryKickSystem(gameWorld);
+const tryMoveSystem = createTryMoveSystem(gameWorld);
+const tryCastSpellSystem = createTryCastSpellSystem(gameWorld);
 const userInputSystem = createUserInputSystem(gameWorld);
 const uncastSpellSystem = createUncastSpellSystem(gameWorld);
 const wetSystem = createWetSystem(gameWorld);
@@ -95,18 +95,18 @@ export const systems = {
   perception: perceptionSystem,
   render: renderSystem,
   sound: soundSystem,
-  tryAttack: tryAttackSystem,
-  tryCastSpell: tryCastSpellSystem,
   resolveClose: resolveCloseSystem,
   resolveDrop: resolveDropSystem,
   resolveFill: resolveFillSystem,
-  tryKick: tryKickSystem,
   resolveKnockback: resolveKnockbackSystem,
-  tryMove: tryMoveSystem,
   resolveOpen: resolveOpenSystem,
   resolvePickUp: resolvePickUpSystem,
   resolveRead: resolveReadSystem,
   resolveThrow: resolveThrowSystem,
+  tryAttack: tryAttackSystem,
+  tryCastSpell: tryCastSpellSystem,
+  tryKick: tryKickSystem,
+  tryMove: tryMoveSystem,
   userInput: userInputSystem,
   uncastSpellSystem: uncastSpellSystem,
   wet: wetSystem,
@@ -197,17 +197,17 @@ export const actorTurnPipeline: SystemPipeline = {
   preInput: [systems.activeEffects],
   input: [systems.userInput, systems.perception, systems.memory, systems.ai],
   main: [
-    systems.resolvePickUp,
-    systems.resolveFill,
     systems.tryCastSpell,
     systems.tryMove,
+    systems.tryAttack,
+    systems.tryKick,
+    systems.resolveKnockback,
+    systems.resolveThrow,
+    systems.resolvePickUp,
+    systems.resolveFill,
     systems.resolveOpen,
     systems.resolveClose,
-    systems.tryAttack,
-    systems.resolveKnockback,
-    systems.tryKick,
     systems.resolveDrop,
-    systems.resolveThrow,
   ],
   postMain: [systems.damage, systems.morgue, systems.destroy, systems.fov],
   render: [],
@@ -281,8 +281,16 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
   [GameState.INTERACT]: {
     preInput: [],
     input: [systems.userInput],
-    main: [systems.interact],
-    postMain: [],
+    main: [
+      systems.interact,
+      systems.tryAttack,
+      systems.tryKick,
+      systems.resolvePickUp,
+      systems.resolveFill,
+      systems.resolveOpen,
+      systems.resolveClose,
+    ],
+    postMain: [systems.damage, systems.morgue, systems.destroy, systems.fov],
     render: [systems.render],
   },
 
