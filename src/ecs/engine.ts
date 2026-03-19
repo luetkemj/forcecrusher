@@ -36,13 +36,22 @@ export interface IGameWorld {
   loadGameData(): Promise<void>;
 }
 
+type Effectable = {
+  max: number;
+  min: number;
+  current: number;
+};
+
 // components with a max, current shape such that they are effectable
 type Effectables = {
   health?: Entity["health"];
+  speed?: Entity["speed"];
 };
 
 type Effect = {
   delta: number;
+  ignoreMax?: true;
+  ignoreMin?: true;
   component: keyof Effectables;
 };
 
@@ -244,10 +253,7 @@ export type Entity = {
   mutateTo?: {
     name: string;
   };
-  health?: {
-    max: number;
-    current: number;
-  };
+  health?: Effectable;
   id: EntityId;
   immunities?: Array<DamageType>;
   indestructible?: true;
@@ -324,7 +330,7 @@ export type Entity = {
   resistances?: Array<DamageType>;
   revealed?: true;
   sound?: { strength: number };
-  speed?: number;
+  speed?: Effectable;
   spellbound?: {
     dispel?: DispelName;
     turnNumber: number;

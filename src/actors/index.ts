@@ -29,6 +29,7 @@ import {
   owlbearPrefab,
   chainmailArmor,
   paddedArmor,
+  hastePotionPrefab,
 } from "./prefabs";
 import { updatePosition } from "../lib/utils";
 import { Material } from "../ecs/enums";
@@ -48,6 +49,7 @@ export const prefabs = {
   skeleton: skeletonPrefab,
 
   // NOTE: Potions
+  hastePotion: hastePotionPrefab,
   healthPotion: healthPotionPrefab,
   bottleEmpty: bottlePrefab,
 

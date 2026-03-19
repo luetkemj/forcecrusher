@@ -88,7 +88,7 @@ const baseTile: Entity = {
 
 const baseBeing: Entity = {
   ...baseRenderable,
-  health: { max: 1, current: 1 },
+  health: { max: 1, current: 1, min: 0 },
   living: true,
   blocking: true,
   pathThrough: true,
@@ -108,7 +108,7 @@ const baseBeing: Entity = {
   odor: {
     strength: 10,
   },
-  speed: 100,
+  speed: { max: 100, current: 100, min: 0 },
   energy: 0,
   initiative: 0,
 };
@@ -146,7 +146,7 @@ export const playerPrefab: Entity = {
     tileSet: TileSet.Kenny,
   },
   coinPurse: { value: 0 },
-  health: { max: 30, current: 30 },
+  health: { max: 30, current: 30, min: 0 },
   legendable: true,
   name: "player",
   pc: true,
@@ -199,7 +199,7 @@ export const ratPrefab: Entity = {
   vision: { range: 3, visible: [] },
   description:
     "A filthy, disease-ridden rodent with glowing eyes and a hungry squeak.",
-  health: { max: 5, current: 5 },
+  health: { max: 5, current: 5, min: 0 },
   baseArmorClass: 10,
   strength: 2,
   dexterity: 11,
@@ -223,7 +223,7 @@ export const ratPrefab: Entity = {
   mass: 0.8,
   material: Material.Flesh,
   vitalFluid: Fluids.Blood,
-  speed: 200,
+  speed: { max: 200, current: 200, min: 0 },
   initiative: 1,
 };
 
@@ -240,7 +240,7 @@ export const lavaGolemPrefab: Entity = {
   nose: { sensitivity: 0, detected: [] },
   vision: { range: 5, visible: [] },
   description: "A humanoid mass of lava, animated by forgotten magic.",
-  health: { max: 15, current: 15 },
+  health: { max: 15, current: 15, min: 0 },
   baseArmorClass: 10,
   strength: 10,
   dexterity: 14,
@@ -268,7 +268,7 @@ export const lavaGolemPrefab: Entity = {
     },
   },
   vitalFluid: Fluids.Lava,
-  speed: 50,
+  speed: { max: 50, current: 50, min: 0 },
 };
 
 export const livingSpongePrefab: Entity = {
@@ -284,7 +284,7 @@ export const livingSpongePrefab: Entity = {
   nose: { sensitivity: 0, detected: [] },
   vision: { range: 5, visible: [] },
   description: "A living sponge with an unquenchable thirst",
-  health: { max: 10, current: 10 },
+  health: { max: 10, current: 10, min: 0 },
   baseArmorClass: 10,
   strength: 10,
   dexterity: 14,
@@ -314,7 +314,7 @@ export const livingSpongePrefab: Entity = {
     outflow: true,
   },
   renderFluidColor: true,
-  speed: 100,
+  speed: { max: 100, current: 100, min: 0 },
 };
 
 export const goblinPrefab: Entity = {
@@ -330,7 +330,7 @@ export const goblinPrefab: Entity = {
   nose: { sensitivity: 3, detected: [] },
   vision: { range: 5, visible: [] },
   description: "Snarling spittin little brutes. Dumb as rocks.",
-  health: { max: 15, current: 15 },
+  health: { max: 15, current: 15, min: 0 },
   baseArmorClass: 10,
   strength: 10,
   dexterity: 14,
@@ -367,7 +367,7 @@ export const goblinPrefab: Entity = {
   mass: 6,
   material: Material.Flesh,
   vitalFluid: Fluids.Blood,
-  speed: 125,
+  speed: { max: 125, current: 125, min: 0 },
 };
 
 export const owlbearPrefab: Entity = {
@@ -383,7 +383,7 @@ export const owlbearPrefab: Entity = {
   nose: { sensitivity: 0, detected: [] },
   vision: { range: 20, visible: [] },
   description: "Bird? Beast? All killing machine.",
-  health: { max: 35, current: 35 },
+  health: { max: 35, current: 35, min: 0 },
   baseArmorClass: 10,
   strength: 18,
   dexterity: 10,
@@ -408,7 +408,7 @@ export const owlbearPrefab: Entity = {
   damages: [],
   mass: 18,
   material: Material.Flesh,
-  speed: 100,
+  speed: { max: 100, current: 100, min: 0 },
 };
 
 export const ogrePrefab: Entity = {
@@ -424,7 +424,7 @@ export const ogrePrefab: Entity = {
   nose: { sensitivity: 5, detected: [] },
   vision: { range: 5, visible: [] },
   description: "A hulking mass of meat. Angry meat.",
-  health: { max: 30, current: 30 },
+  health: { max: 30, current: 30, min: 0 },
   baseArmorClass: 10,
   strength: 10,
   dexterity: 14,
@@ -456,7 +456,7 @@ export const ogrePrefab: Entity = {
   },
   mass: 20,
   material: Material.Flesh,
-  speed: 60,
+  speed: { max: 60, current: 60, min: 0 },
 };
 
 export const skeletonPrefab: Entity = {
@@ -472,7 +472,7 @@ export const skeletonPrefab: Entity = {
   nose: { sensitivity: 5, detected: [] },
   description:
     "A brittle warrior from another age, still fighting long after death forgot it.",
-  health: { max: 10, current: 10 },
+  health: { max: 10, current: 10, min: 0 },
   baseArmorClass: 10,
   strength: 10,
   dexterity: 14,
@@ -504,7 +504,7 @@ export const skeletonPrefab: Entity = {
   },
   mass: 6,
   material: Material.Bone,
-  speed: 100,
+  speed: { max: 100, current: 100, min: 0 },
 };
 
 // spellBooks
@@ -552,6 +552,22 @@ export const healthPotionPrefab: Entity = {
   description: "A syrupy red liquid in a small glass vile",
   readable: { type: ReadableType.Text, message: "Drink me" },
   effects: [{ component: "health", delta: 10 }],
+  mass: 0.8,
+  material: Material.Glass,
+};
+
+export const hastePotionPrefab: Entity = {
+  ...baseItem,
+  appearance: {
+    char: chars.potion,
+    tint: colors.potion,
+    tileSet: TileSet.Kenny,
+  },
+  consumable: true,
+  name: "Haste Potion",
+  description: "A syrupy yellow liquid in a small glass vile",
+  readable: { type: ReadableType.Text, message: "Drink me" },
+  effects: [{ component: "speed", delta: 100, ignoreMax: true }],
   mass: 0.8,
   material: Material.Glass,
 };
@@ -840,6 +856,7 @@ export const doorPrefab: Entity = {
   health: {
     max: 25,
     current: 25,
+    min: 0,
   },
   vulnerabilities: [DamageType.Bludgeoning, DamageType.Force],
   resistances: [DamageType.Piercing],
@@ -941,7 +958,7 @@ export const grassPrefab: Entity = {
     tint: colors.ash,
     tileSet: TileSet.Kenny,
   },
-  health: { max: 10, current: 10 },
+  health: { max: 10, current: 10, min: 0 },
   damages: [],
   living: true,
   immunities: [DamageType.Fire],
