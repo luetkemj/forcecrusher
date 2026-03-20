@@ -13,7 +13,7 @@ describe("activeEffects.system", () => {
       id: "1",
       name: "Orc",
       version: 1,
-      health: { max: 10, current: 5 },
+      health: { base: 10, max: 10, min: 0, current: 5 },
       activeEffects: [],
     };
     gameWorld.world.add(entity);

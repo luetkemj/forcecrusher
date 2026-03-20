@@ -36,10 +36,11 @@ export interface IGameWorld {
   loadGameData(): Promise<void>;
 }
 
-type Effectable = {
+export type Effectable = {
+  base: number;
+  current: number;
   max: number;
   min: number;
-  current: number;
 };
 
 // components with a max, current shape such that they are effectable
@@ -53,6 +54,56 @@ type Effect = {
   ignoreMax?: true;
   ignoreMin?: true;
   component: keyof Effectables;
+};
+
+// not sure I need this
+enum Source {
+  Item = "item",
+  Spell = "spell",
+  Ability = "ability",
+  Environment = "environment",
+}
+
+export enum EffectApplyKind {
+  DeltaCurrent = "deltaCurrent",
+  DeltaBase = "deltaBase",
+  DeltaMax = "deltaMax",
+}
+
+enum EffectMode {
+  Instant = "instant",
+  Timed = "timed",
+}
+
+enum EffectStackPolicy {
+  Additive = "additive",
+  RefeshDuration = "refreshDuration",
+  StrongestOnly = "strongestOnly",
+}
+
+export type EffectTimed = {
+  source: Source;
+  component: keyof Effectables;
+  applyKind: EffectApplyKind;
+  delta: number;
+  mode: EffectMode.Timed;
+  durationTurns: number;
+  appliedTurn: number;
+  expiresAtTurn: number;
+  stackPolicy: EffectStackPolicy;
+  ignoreMin?: boolean;
+  ignoreMax?: boolean;
+  resetToBaseOnExpire?: boolean;
+};
+
+export type EffectInstant = {
+  source: Source;
+  component: keyof Effectables;
+  applyKind: EffectApplyKind;
+  delta: number;
+  mode: EffectMode.Instant;
+  ignoreMin?: boolean;
+  ignoreMax?: boolean;
 };
 
 export type Attack = {
@@ -225,6 +276,10 @@ export type Entity = {
   };
   effectImmunities?: Array<EffectType>;
   effects?: Array<Effect>;
+
+  effectsPendingInstants?: EffectInstant[];
+  effectsActiveTimed?: EffectTimed[];
+
   energy?: number;
   entityKind?: EntityKind;
   fluidContainer?: FluidContainer;
