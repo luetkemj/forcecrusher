@@ -27,6 +27,7 @@ import { createResolvePickUpSystem } from "../systems/resolvePickUp.system";
 import { createRenderSystem } from "../systems/render.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createResolveThrowSystem } from "../systems/resolveThrow.system";
+import { createResolveEffectsPendingInstantsSystem } from "./resolveEffectsPendingInstants.system";
 import { createTryCastSpellSystem } from "../systems/tryCastSpell.system";
 import { createResolveFillSystem } from "../systems/resolveFill.system";
 import { createResolveReadSystem } from "../systems/resolveRead.system";
@@ -60,6 +61,8 @@ const renderSystem = createRenderSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const resolveCloseSystem = createResolveCloseSystem(gameWorld);
 const resolveDropSystem = createResolveDropSystem(gameWorld);
+const resolveEffectsPendingInstantsSystem =
+  createResolveEffectsPendingInstantsSystem(gameWorld);
 const resolveKnockbackSystem = createResolveKnockbackSystem(gameWorld);
 const resolveOpenSystem = createResolveOpenSystem(gameWorld);
 const resolvePickUpSystem = createResolvePickUpSystem(gameWorld);
@@ -95,6 +98,7 @@ export const systems = {
   perception: perceptionSystem,
   render: renderSystem,
   sound: soundSystem,
+  resolveEffectsPendingInstants: resolveEffectsPendingInstantsSystem,
   resolveClose: resolveCloseSystem,
   resolveDrop: resolveDropSystem,
   resolveFill: resolveFillSystem,
@@ -177,7 +181,6 @@ export const tickPipeline: SystemPipeline = {
     systems.wet,
     systems.fire,
     systems.desiccate,
-    systems.activeEffects,
     systems.odor,
     systems.sound,
   ],
@@ -194,7 +197,7 @@ export const tickPipeline: SystemPipeline = {
 };
 
 export const actorTurnPipeline: SystemPipeline = {
-  preInput: [systems.activeEffects],
+  preInput: [systems.resolveEffectsPendingInstants],
   input: [systems.userInput, systems.perception, systems.memory, systems.ai],
   main: [
     systems.tryCastSpell,
@@ -273,7 +276,11 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
   [GameState.INVENTORY]: {
     preInput: [],
     input: [systems.userInput],
-    main: [systems.activeEffects, systems.resolveDrop, systems.resolveRead],
+    main: [
+      systems.resolveEffectsPendingInstants,
+      systems.resolveDrop,
+      systems.resolveRead,
+    ],
     postMain: [systems.destroy, systems.fov],
     render: [systems.render],
   },
