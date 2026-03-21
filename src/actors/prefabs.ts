@@ -5,10 +5,13 @@ import {
   WeaponClass,
   OpenState,
   EffectType,
+  EffectApplyKind,
+  EffectMode,
   EntityKind,
   Material,
   Fluids,
   ReadableType,
+  Source,
   TileSet,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
@@ -165,6 +168,8 @@ export const playerPrefab: Entity = {
   wisdom: 14,
   charisma: 10,
   activeEffects: [],
+  effectsActiveTimed: [],
+  effectsPendingInstants: [],
   weaponSlot: {
     name: "Weapon",
     contents: [],
@@ -551,7 +556,15 @@ export const healthPotionPrefab: Entity = {
   name: "Health Potion",
   description: "A syrupy red liquid in a small glass vile",
   readable: { type: ReadableType.Text, message: "Drink me" },
-  effects: [{ component: "health", delta: 10 }],
+  effects: [
+    {
+      source: Source.Item,
+      component: "health",
+      applyKind: EffectApplyKind.DeltaCurrent,
+      delta: 10,
+      mode: EffectMode.Instant,
+    },
+  ],
   mass: 0.8,
   material: Material.Glass,
 };

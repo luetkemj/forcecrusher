@@ -3,6 +3,7 @@ import { GameState, State } from "../gameState";
 import { logFrozenEntity, wield, wear, unWield, unWear } from "../../lib/utils";
 import { remove, isUndefined } from "lodash";
 import { Keys } from "./KeyMap";
+import { EffectMode } from "../enums";
 
 export const handleInventoryModeInput = ({
   key,
@@ -77,7 +78,17 @@ export const handleInventoryModeInput = ({
       }
 
       if (consumable.effects) {
-        player.activeEffects!.push(...consumable.effects);
+        for (const effect of consumable.effects) {
+          if (
+            effect.mode === EffectMode.Instant &&
+            player.effectsPendingInstants
+          ) {
+            player.effectsPendingInstants.push(effect);
+          }
+          if (effect.mode === EffectMode.Timed && player.effectsActiveTimed) {
+            player.effectsActiveTimed.push(effect);
+          }
+        }
       }
 
       // remove consumable from inventory

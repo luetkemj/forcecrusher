@@ -3,6 +3,9 @@ import {
   AttackType,
   DamageType,
   DispelName,
+  EffectApplyKind,
+  EffectMode,
+  EffectStackPolicy,
   EffectType,
   EntityKind,
   Fluids,
@@ -10,6 +13,7 @@ import {
   OpenState,
   ReadableType,
   Sense,
+  Source,
   SpellName,
   SpellShape,
   TileSet,
@@ -55,31 +59,6 @@ type Effect = {
   ignoreMin?: true;
   component: keyof Effectables;
 };
-
-// not sure I need this
-enum Source {
-  Item = "item",
-  Spell = "spell",
-  Ability = "ability",
-  Environment = "environment",
-}
-
-export enum EffectApplyKind {
-  DeltaCurrent = "deltaCurrent",
-  DeltaBase = "deltaBase",
-  DeltaMax = "deltaMax",
-}
-
-enum EffectMode {
-  Instant = "instant",
-  Timed = "timed",
-}
-
-enum EffectStackPolicy {
-  Additive = "additive",
-  RefeshDuration = "refreshDuration",
-  StrongestOnly = "strongestOnly",
-}
 
 export type EffectTimed = {
   source: Source;
@@ -275,7 +254,7 @@ export type Entity = {
     detected: Array<DetectedSound>;
   };
   effectImmunities?: Array<EffectType>;
-  effects?: Array<Effect>;
+  effects?: Array<EffectTimed | EffectInstant>;
 
   effectsPendingInstants?: EffectInstant[];
   effectsActiveTimed?: EffectTimed[];
