@@ -2,21 +2,19 @@ import { EffectTimed, Effectable, IGameWorld } from "../engine";
 import { EffectStackPolicy } from "../enums";
 import { getState } from "../gameState";
 
-export const createResolveEffectsActiveTimedSystem = ({
-  world,
-}: IGameWorld) => {
-  const effectsActiveTimedQuery = world.with("effectsActiveTimed");
+export const createResolveEffectsTimedSystem = ({ world }: IGameWorld) => {
+  const effectsTimedQuery = world.with("effectsTimed");
 
-  return function resolveEffectsActiveTimedSystem() {
+  return function resolveEffectsTimedSystem() {
     const { currentActorId } = getState();
 
-    for (const actor of effectsActiveTimedQuery) {
+    for (const actor of effectsTimedQuery) {
       // only run for the actor whose turn it is
       if (actor.id !== currentActorId) continue;
 
-      const { effectsActiveTimed } = actor;
+      const { effectsTimed } = actor;
 
-      for (const effect of effectsActiveTimed) {
+      for (const effect of effectsTimed) {
         // get the component
         const component = actor[effect.component];
         if (!component) continue;
@@ -32,7 +30,7 @@ export const createResolveEffectsActiveTimedSystem = ({
           }
 
           // remove effect
-          effectsActiveTimed.splice(0, effectsActiveTimed.length);
+          effectsTimed.splice(0, effectsTimed.length);
         } else if (hasBeenApplied(effect)) {
           if (effect.stackPolicy === EffectStackPolicy.Additive) {
             applyEffect(component, effect);

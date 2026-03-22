@@ -168,9 +168,10 @@ export const playerPrefab: Entity = {
   intelligence: 8,
   wisdom: 14,
   charisma: 10,
-  activeEffects: [],
-  effectsActiveTimed: [],
-  effectsPendingInstants: [],
+  activeEffects: [], // TODO: REMOVE
+  effectsToProcess: [],
+  effectsTimed: [],
+  effectsInstants: [],
   weaponSlot: {
     name: "Weapon",
     contents: [],

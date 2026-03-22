@@ -1,9 +1,8 @@
 import { InputContext } from "../systems/userInput.system";
-import { GameState, State, getState } from "../gameState";
+import { GameState, State } from "../gameState";
 import { logFrozenEntity, wield, wear, unWield, unWear } from "../../lib/utils";
 import { remove, isUndefined } from "lodash";
 import { Keys } from "./KeyMap";
-import { EffectMode } from "../enums";
 
 export const handleInventoryModeInput = ({
   key,
@@ -78,17 +77,9 @@ export const handleInventoryModeInput = ({
       }
 
       if (consumable.effects) {
-        for (const effect of consumable.effects) {
-          if (
-            effect.mode === EffectMode.Instant &&
-            player.effectsPendingInstants
-          ) {
-            player.effectsPendingInstants.push(effect);
-          }
-          if (effect.mode === EffectMode.Timed && player.effectsActiveTimed) {
-            // set effect timers
-            effect.appliedTurn = getState().turnNumber;
-            player.effectsActiveTimed.push(effect);
+        if (player.effectsToProcess) {
+          for (const effect of consumable.effects) {
+            player.effectsToProcess.push(effect);
           }
         }
       }

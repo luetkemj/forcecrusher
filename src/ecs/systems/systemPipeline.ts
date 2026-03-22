@@ -27,8 +27,9 @@ import { createResolvePickUpSystem } from "../systems/resolvePickUp.system";
 import { createRenderSystem } from "../systems/render.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createResolveThrowSystem } from "../systems/resolveThrow.system";
-import { createResolveEffectsPendingInstantsSystem } from "./resolveEffectsPendingInstants.system";
-import { createResolveEffectsActiveTimedSystem } from "./resolveEffectsActiveTimed.system";
+import { createResolveEffectsInstantsSystem } from "./resolveEffectsInstants.system";
+import { createResolveEffectsTimedSystem } from "./resolveEffectsTimed.system";
+import { createProcessNewEffectsSystem } from "./processNewEffects.system";
 import { createTryCastSpellSystem } from "../systems/tryCastSpell.system";
 import { createResolveFillSystem } from "../systems/resolveFill.system";
 import { createResolveReadSystem } from "../systems/resolveRead.system";
@@ -62,10 +63,10 @@ const renderSystem = createRenderSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const resolveCloseSystem = createResolveCloseSystem(gameWorld);
 const resolveDropSystem = createResolveDropSystem(gameWorld);
-const resolveEffectsPendingInstantsSystem =
-  createResolveEffectsPendingInstantsSystem(gameWorld);
-const resolveEffectsActiveTimed =
-  createResolveEffectsActiveTimedSystem(gameWorld);
+const resolveEffectsInstantsSystem =
+  createResolveEffectsInstantsSystem(gameWorld);
+const resolveEffectsTimedSystem = createResolveEffectsTimedSystem(gameWorld);
+const processNewEffectsSystem = createProcessNewEffectsSystem(gameWorld);
 const resolveKnockbackSystem = createResolveKnockbackSystem(gameWorld);
 const resolveOpenSystem = createResolveOpenSystem(gameWorld);
 const resolvePickUpSystem = createResolvePickUpSystem(gameWorld);
@@ -101,8 +102,9 @@ export const systems = {
   perception: perceptionSystem,
   render: renderSystem,
   sound: soundSystem,
-  resolveEffectsPendingInstants: resolveEffectsPendingInstantsSystem,
-  resolveEffectsActiveTimed: resolveEffectsActiveTimed,
+  resolveEffectsInstants: resolveEffectsInstantsSystem,
+  resolveEffectsTimed: resolveEffectsTimedSystem,
+  processNewEffects: processNewEffectsSystem,
   resolveClose: resolveCloseSystem,
   resolveDrop: resolveDropSystem,
   resolveFill: resolveFillSystem,
@@ -202,8 +204,9 @@ export const tickPipeline: SystemPipeline = {
 
 export const actorTurnPipeline: SystemPipeline = {
   preInput: [
-    systems.resolveEffectsPendingInstants,
-    systems.resolveEffectsActiveTimed,
+    systems.processNewEffects,
+    systems.resolveEffectsInstants,
+    systems.resolveEffectsTimed,
   ],
   input: [systems.userInput, systems.perception, systems.memory, systems.ai],
   main: [
@@ -284,7 +287,8 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
     preInput: [],
     input: [systems.userInput],
     main: [
-      systems.resolveEffectsPendingInstants,
+      systems.processNewEffects,
+      systems.resolveEffectsInstants,
       systems.resolveDrop,
       systems.resolveRead,
     ],

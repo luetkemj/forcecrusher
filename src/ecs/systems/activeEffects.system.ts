@@ -1,3 +1,4 @@
+// TODO: Remove this system
 import { IGameWorld } from "../engine";
 
 export const createActiveEffectsSystem = ({ world }: IGameWorld) => {

@@ -1,20 +1,18 @@
 import { EffectInstant, Effectable, IGameWorld } from "../engine";
 import { getState } from "../gameState";
 
-export const createResolveEffectsPendingInstantsSystem = ({
-  world,
-}: IGameWorld) => {
-  const effectsPendingInstantsQuery = world.with("effectsPendingInstants");
+export const createResolveEffectsInstantsSystem = ({ world }: IGameWorld) => {
+  const effectsInstantsQuery = world.with("effectsInstants");
 
   return function resolveEffectsPendingInstantsSystem() {
     const { currentActorId } = getState();
 
-    for (const actor of effectsPendingInstantsQuery) {
+    for (const actor of effectsInstantsQuery) {
       // only run for the actor whose turn it is
       if (actor.id !== currentActorId) continue;
-      const { effectsPendingInstants } = actor;
+      const { effectsInstants } = actor;
 
-      for (const effect of effectsPendingInstants) {
+      for (const effect of effectsInstants) {
         const component = actor[effect.component];
         if (!component) continue;
 
@@ -32,7 +30,7 @@ export const createResolveEffectsPendingInstantsSystem = ({
         }
       }
 
-      effectsPendingInstants.splice(0, effectsPendingInstants.length);
+      effectsInstants.splice(0, effectsInstants.length);
     }
   };
 };

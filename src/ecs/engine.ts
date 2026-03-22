@@ -256,8 +256,9 @@ export type Entity = {
   effectImmunities?: Array<EffectType>;
   effects?: Array<EffectTimed | EffectInstant>;
 
-  effectsPendingInstants?: EffectInstant[];
-  effectsActiveTimed?: EffectTimed[];
+  effectsToProcess?: Array<EffectTimed | EffectInstant>;
+  effectsInstants?: EffectInstant[];
+  effectsTimed?: EffectTimed[];
 
   energy?: number;
   entityKind?: EntityKind;
