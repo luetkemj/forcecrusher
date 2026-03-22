@@ -13,6 +13,7 @@ import {
   ReadableType,
   Source,
   TileSet,
+  EffectStackPolicy,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -580,7 +581,20 @@ export const hastePotionPrefab: Entity = {
   name: "Haste Potion",
   description: "A syrupy yellow liquid in a small glass vile",
   readable: { type: ReadableType.Text, message: "Drink me" },
-  effects: [{ component: "speed", delta: 100, ignoreMax: true }],
+  effects: [
+    {
+      source: Source.Item,
+      component: "speed",
+      applyKind: EffectApplyKind.DeltaCurrent,
+      delta: 100,
+      mode: EffectMode.Timed,
+      durationTurns: 5,
+      appliedTurn: 0,
+      ignoreMax: true,
+      resetToBaseOnExpire: true,
+      stackPolicy: EffectStackPolicy.RefeshDuration,
+    },
+  ],
   mass: 0.8,
   material: Material.Glass,
 };

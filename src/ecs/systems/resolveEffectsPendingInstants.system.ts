@@ -9,9 +9,8 @@ export const createResolveEffectsPendingInstantsSystem = ({
   return function resolveEffectsPendingInstantsSystem() {
     const { currentActorId } = getState();
 
-    // this should be scoped to current actor
     for (const actor of effectsPendingInstantsQuery) {
-      // only run AI for the actor whose turn it is
+      // only run for the actor whose turn it is
       if (actor.id !== currentActorId) continue;
       const { effectsPendingInstants } = actor;
 

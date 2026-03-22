@@ -68,7 +68,7 @@ export type EffectTimed = {
   mode: EffectMode.Timed;
   durationTurns: number;
   appliedTurn: number;
-  expiresAtTurn: number;
+  // expiresAtTurn: number;
   stackPolicy: EffectStackPolicy;
   ignoreMin?: boolean;
   ignoreMax?: boolean;

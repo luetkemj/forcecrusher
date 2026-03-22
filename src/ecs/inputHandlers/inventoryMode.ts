@@ -1,5 +1,5 @@
 import { InputContext } from "../systems/userInput.system";
-import { GameState, State } from "../gameState";
+import { GameState, State, getState } from "../gameState";
 import { logFrozenEntity, wield, wear, unWield, unWear } from "../../lib/utils";
 import { remove, isUndefined } from "lodash";
 import { Keys } from "./KeyMap";
@@ -86,6 +86,8 @@ export const handleInventoryModeInput = ({
             player.effectsPendingInstants.push(effect);
           }
           if (effect.mode === EffectMode.Timed && player.effectsActiveTimed) {
+            // set effect timers
+            effect.appliedTurn = getState().turnNumber;
             player.effectsActiveTimed.push(effect);
           }
         }
