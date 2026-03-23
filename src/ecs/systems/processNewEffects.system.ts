@@ -6,18 +6,24 @@ export const createProcessNewEffectsSystem = ({ world }: IGameWorld) => {
   const effectsQuery = world.with("effectsToProcess");
 
   return function processNewEffectsSystem() {
-    const { currentActorId } = getState();
+    const { currentActorId, turnNumber } = getState();
 
     for (const actor of effectsQuery) {
       // only run for the actor whose turn it is
       if (actor.id !== currentActorId) continue;
       const { effectsToProcess } = actor;
 
-      for (const effect of effectsToProcess) {
+      while (effectsToProcess.length > 0) {
+        const effect = effectsToProcess.shift();
+        if (!effect) continue;
+
+        // process effect
         if (effect.mode === EffectMode.Instant) {
           if (!actor.effectsInstants) continue;
 
           actor.effectsInstants.push(effect);
+
+          continue;
         }
 
         if (effect.mode === EffectMode.Timed) {
@@ -33,17 +39,15 @@ export const createProcessNewEffectsSystem = ({ world }: IGameWorld) => {
             }
 
             if (effect.stackPolicy === EffectStackPolicy.RefeshDuration) {
-              existingEffect.appliedTurn = getState().turnNumber;
+              existingEffect.appliedTurn = turnNumber;
             }
           } else {
-            effect.appliedTurn = getState().turnNumber;
-            if (actor.effectsTimed) {
-              actor.effectsTimed.push(effect);
-            }
+            effect.appliedTurn = turnNumber;
+            actor.effectsTimed.push(effect);
           }
-        }
 
-        effectsToProcess.splice(0, effectsToProcess.length);
+          continue;
+        }
       }
     }
   };
