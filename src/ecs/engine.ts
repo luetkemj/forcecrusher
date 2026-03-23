@@ -201,7 +201,6 @@ export interface Appearance {
 export type EntityId = string;
 
 export type Entity = {
-  activeEffects?: Array<Effect>;
   ai?: true;
   appearance?: Appearance;
   appearanceCorpse?: Appearance;

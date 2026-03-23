@@ -1,4 +1,4 @@
-import { EffectInstant, Effectable, IGameWorld } from "../engine";
+import { IGameWorld } from "../engine";
 import { EffectMode, EffectStackPolicy } from "../enums";
 import { getState } from "../gameState";
 
@@ -45,23 +45,6 @@ export const createProcessNewEffectsSystem = ({ world }: IGameWorld) => {
 
         effectsToProcess.splice(0, effectsToProcess.length);
       }
-
-      // if instant - push effect to instants array
-      // if timed - check stack policy and resolve accordingly
-      // delete effect from effects component
-      //
-      //
-      // if (
-      //   effect.mode === EffectMode.Instant &&
-      //   player.effectsPendingInstants
-      // ) {
-      //   player.effectsPendingInstants.push(effect);
-      // }
-      // if (effect.mode === EffectMode.Timed && player.effectsActiveTimed) {
-      //   // set effect timers
-      //   effect.appliedTurn = getState().turnNumber;
-      //   player.effectsActiveTimed.push(effect);
-      // }
     }
   };
 };

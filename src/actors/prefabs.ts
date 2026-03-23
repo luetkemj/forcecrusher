@@ -169,7 +169,6 @@ export const playerPrefab: Entity = {
   intelligence: 8,
   wisdom: 14,
   charisma: 10,
-  activeEffects: [], // TODO: REMOVE
   effectsToProcess: [],
   effectsTimed: [],
   effectsInstants: [],
