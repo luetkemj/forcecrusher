@@ -69,6 +69,7 @@ export type EffectTimed = {
   ignoreMin?: boolean;
   ignoreMax?: boolean;
   resetToBaseOnExpire?: boolean;
+  hasBeenApplied?: boolean;
 };
 
 export type EffectInstant = {

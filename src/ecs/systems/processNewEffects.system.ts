@@ -35,6 +35,7 @@ export const createProcessNewEffectsSystem = ({ world }: IGameWorld) => {
 
           if (existingEffect) {
             if (effect.stackPolicy === EffectStackPolicy.Additive) {
+              effect.appliedTurn = turnNumber;
               actor.effectsTimed.push(effect);
             }
 

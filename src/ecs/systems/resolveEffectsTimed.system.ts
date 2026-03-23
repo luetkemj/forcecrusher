@@ -27,7 +27,7 @@ export const createResolveEffectsTimedSystem = ({ world }: IGameWorld) => {
           }
 
           continue;
-        } else if (hasBeenApplied(effect)) {
+        } else if (effect.hasBeenApplied) {
           if (effect.application === EffectApplication.PerTurn) {
             applyEffect(component, effect);
           }
@@ -45,10 +45,6 @@ function hasExpired(effect: EffectTimed): boolean {
   return getState().turnNumber > effect.appliedTurn + effect.durationTurns;
 }
 
-function hasBeenApplied(effect: EffectTimed): boolean {
-  return getState().turnNumber > effect.appliedTurn + 1;
-}
-
 function applyEffect(component: Effectable, effect: EffectTimed) {
   // resolve the effect
   if (effect.applyKind === "deltaCurrent") {
@@ -62,6 +58,8 @@ function applyEffect(component: Effectable, effect: EffectTimed) {
   if (effect.applyKind === "deltaMax") {
     component.max = getResolvedValue(component, effect);
   }
+
+  effect.hasBeenApplied = true;
 }
 
 function getResolvedValue(component: Effectable, effect: EffectTimed) {
@@ -85,7 +83,9 @@ function getResolvedValue(component: Effectable, effect: EffectTimed) {
     next = Math.max(component.min, next);
   }
 
-  if (!ignoreMax) {
+  // When applying deltaMax, don't clamp against the old component.max,
+  // otherwise positive deltas can never increase the max.
+  if (!ignoreMax && applyKind !== "deltaMax") {
     next = Math.min(component.max, next);
   }
 
