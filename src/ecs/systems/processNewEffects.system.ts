@@ -1,5 +1,5 @@
 import { EffectInstant, Effectable, IGameWorld } from "../engine";
-import { EffectMode } from "../enums";
+import { EffectMode, EffectStackPolicy } from "../enums";
 import { getState } from "../gameState";
 
 export const createProcessNewEffectsSystem = ({ world }: IGameWorld) => {
@@ -15,20 +15,31 @@ export const createProcessNewEffectsSystem = ({ world }: IGameWorld) => {
 
       for (const effect of effectsToProcess) {
         if (effect.mode === EffectMode.Instant) {
-          if (actor.effectsInstants) {
-            // TODO: check if one already exists and then check the stack policy
-            //
-            actor.effectsInstants.push(effect);
-          }
+          if (!actor.effectsInstants) continue;
+
+          actor.effectsInstants.push(effect);
         }
 
         if (effect.mode === EffectMode.Timed) {
-          // TODO: check if one already exists and then check the stack policy
-          //
-          // check if there is an existing active effect
-          effect.appliedTurn = getState().turnNumber;
-          if (actor.effectsTimed) {
-            actor.effectsTimed.push(effect);
+          if (!actor.effectsTimed) continue;
+
+          const existingEffect = actor.effectsTimed.find(
+            (e) => e.id === effect.id,
+          );
+
+          if (existingEffect) {
+            if (effect.stackPolicy === EffectStackPolicy.Additive) {
+              actor.effectsTimed.push(effect);
+            }
+
+            if (effect.stackPolicy === EffectStackPolicy.RefeshDuration) {
+              existingEffect.appliedTurn = getState().turnNumber;
+            }
+          } else {
+            effect.appliedTurn = getState().turnNumber;
+            if (actor.effectsTimed) {
+              actor.effectsTimed.push(effect);
+            }
           }
         }
 

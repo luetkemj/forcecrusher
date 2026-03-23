@@ -14,6 +14,7 @@ import {
   Source,
   TileSet,
   EffectStackPolicy,
+  EffectId,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -562,6 +563,7 @@ export const healthPotionPrefab: Entity = {
     {
       source: Source.Item,
       component: "health",
+      id: EffectId.HealthPotion,
       applyKind: EffectApplyKind.DeltaCurrent,
       delta: 10,
       mode: EffectMode.Instant,
@@ -589,6 +591,7 @@ export const hastePotionPrefab: Entity = {
       applyKind: EffectApplyKind.DeltaCurrent,
       delta: 100,
       mode: EffectMode.Timed,
+      id: EffectId.HastePotion,
       durationTurns: 5,
       appliedTurn: 0,
       ignoreMax: true,

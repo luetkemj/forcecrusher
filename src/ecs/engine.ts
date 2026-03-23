@@ -4,6 +4,7 @@ import {
   DamageType,
   DispelName,
   EffectApplyKind,
+  EffectId,
   EffectMode,
   EffectStackPolicy,
   EffectType,
@@ -62,13 +63,13 @@ type Effect = {
 
 export type EffectTimed = {
   source: Source;
+  id: EffectId;
   component: keyof Effectables;
   applyKind: EffectApplyKind;
   delta: number;
   mode: EffectMode.Timed;
   durationTurns: number;
   appliedTurn: number;
-  // expiresAtTurn: number;
   stackPolicy: EffectStackPolicy;
   ignoreMin?: boolean;
   ignoreMax?: boolean;
@@ -77,6 +78,7 @@ export type EffectTimed = {
 
 export type EffectInstant = {
   source: Source;
+  id: EffectId;
   component: keyof Effectables;
   applyKind: EffectApplyKind;
   delta: number;

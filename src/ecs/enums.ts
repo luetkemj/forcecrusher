@@ -160,6 +160,11 @@ export enum EffectApplyKind {
   DeltaMax = "deltaMax",
 }
 
+export enum EffectId {
+  HealthPotion = "healthPotion",
+  HastePotion = "hastePotion",
+}
+
 export enum EffectMode {
   Instant = "instant",
   Timed = "timed",
@@ -168,5 +173,4 @@ export enum EffectMode {
 export enum EffectStackPolicy {
   Additive = "additive",
   RefeshDuration = "refreshDuration",
-  StrongestOnly = "strongestOnly",
 }
