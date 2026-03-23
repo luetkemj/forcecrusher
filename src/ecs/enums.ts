@@ -146,3 +146,36 @@ export enum TileSet {
   Kenny = "kenny",
   Tile = "tile",
 }
+
+export enum Source {
+  Item = "item",
+  Spell = "spell",
+  Ability = "ability",
+  Environment = "environment",
+}
+
+export enum EffectApplyKind {
+  DeltaCurrent = "deltaCurrent",
+  DeltaBase = "deltaBase",
+  DeltaMax = "deltaMax",
+}
+
+export enum EffectId {
+  HealthPotion = "healthPotion",
+  HastePotion = "hastePotion",
+}
+
+export enum EffectMode {
+  Instant = "instant",
+  Timed = "timed",
+}
+
+export enum EffectApplication {
+  OnApply = "onApply",
+  PerTurn = "perTurn",
+}
+
+export enum EffectStackPolicy {
+  Additive = "additive",
+  RefreshDuration = "refreshDuration",
+}

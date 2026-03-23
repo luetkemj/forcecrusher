@@ -5,7 +5,7 @@ export const createAccumulateEnergySystem = ({ world }: IGameWorld) => {
 
   return function accumulateEnergySystem() {
     for (const entity of actorsQuery) {
-      entity.energy += entity.speed;
+      entity.energy += entity.speed.current;
     }
   };
 };

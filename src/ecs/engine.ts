@@ -3,6 +3,11 @@ import {
   AttackType,
   DamageType,
   DispelName,
+  EffectApplication,
+  EffectApplyKind,
+  EffectId,
+  EffectMode,
+  EffectStackPolicy,
   EffectType,
   EntityKind,
   Fluids,
@@ -10,6 +15,7 @@ import {
   OpenState,
   ReadableType,
   Sense,
+  Source,
   SpellName,
   SpellShape,
   TileSet,
@@ -36,14 +42,45 @@ export interface IGameWorld {
   loadGameData(): Promise<void>;
 }
 
+export type Effectable = {
+  base: number;
+  current: number;
+  max: number;
+  min: number;
+};
+
 // components with a max, current shape such that they are effectable
 type Effectables = {
   health?: Entity["health"];
+  speed?: Entity["speed"];
 };
 
-type Effect = {
-  delta: number;
+export type EffectTimed = {
+  source: Source;
+  id: EffectId;
   component: keyof Effectables;
+  applyKind: EffectApplyKind;
+  delta: number;
+  mode: EffectMode.Timed;
+  durationTurns: number;
+  appliedTurn: number;
+  stackPolicy: EffectStackPolicy;
+  application: EffectApplication;
+  ignoreMin?: boolean;
+  ignoreMax?: boolean;
+  resetToBaseOnExpire?: boolean;
+  hasBeenApplied?: boolean;
+};
+
+export type EffectInstant = {
+  source: Source;
+  id: EffectId;
+  component: keyof Effectables;
+  applyKind: EffectApplyKind;
+  delta: number;
+  mode: EffectMode.Instant;
+  ignoreMin?: boolean;
+  ignoreMax?: boolean;
 };
 
 export type Attack = {
@@ -160,7 +197,6 @@ export interface Appearance {
 export type EntityId = string;
 
 export type Entity = {
-  activeEffects?: Array<Effect>;
   ai?: true;
   appearance?: Appearance;
   appearanceCorpse?: Appearance;
@@ -215,7 +251,12 @@ export type Entity = {
     detected: Array<DetectedSound>;
   };
   effectImmunities?: Array<EffectType>;
-  effects?: Array<Effect>;
+  effects?: Array<EffectTimed | EffectInstant>;
+
+  effectsToProcess?: Array<EffectTimed | EffectInstant>;
+  effectsInstants?: EffectInstant[];
+  effectsTimed?: EffectTimed[];
+
   energy?: number;
   entityKind?: EntityKind;
   fluidContainer?: FluidContainer;
@@ -244,10 +285,7 @@ export type Entity = {
   mutateTo?: {
     name: string;
   };
-  health?: {
-    max: number;
-    current: number;
-  };
+  health?: Effectable;
   id: EntityId;
   immunities?: Array<DamageType>;
   indestructible?: true;
@@ -324,7 +362,7 @@ export type Entity = {
   resistances?: Array<DamageType>;
   revealed?: true;
   sound?: { strength: number };
-  speed?: number;
+  speed?: Effectable;
   spellbound?: {
     dispel?: DispelName;
     turnNumber: number;

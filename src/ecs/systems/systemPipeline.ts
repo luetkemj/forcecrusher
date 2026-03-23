@@ -1,5 +1,4 @@
 import { createAccumulateEnergySystem } from "../systems/accumulateEnergySystem";
-import { createActiveEffectsSystem } from "../systems/activeEffects.system";
 import { createAiSystem } from "../systems/ai.system";
 import { createTryAttackSystem } from "../systems/tryAttack.system";
 import { createCalculateFlammabilitySystem } from "../systems/calculateFlammability.system";
@@ -27,6 +26,9 @@ import { createResolvePickUpSystem } from "../systems/resolvePickUp.system";
 import { createRenderSystem } from "../systems/render.system";
 import { createSoundSystem } from "../systems/sound.system";
 import { createResolveThrowSystem } from "../systems/resolveThrow.system";
+import { createResolveEffectsInstantsSystem } from "./resolveEffectsInstants.system";
+import { createResolveEffectsTimedSystem } from "./resolveEffectsTimed.system";
+import { createProcessNewEffectsSystem } from "./processNewEffects.system";
 import { createTryCastSpellSystem } from "../systems/tryCastSpell.system";
 import { createResolveFillSystem } from "../systems/resolveFill.system";
 import { createResolveReadSystem } from "../systems/resolveRead.system";
@@ -38,7 +40,6 @@ import { GameState } from "../gameState";
 import { styleDuration } from "./debug-utils";
 
 const accumulateEnergySystem = createAccumulateEnergySystem(gameWorld);
-const activeEffectsSystem = createActiveEffectsSystem(gameWorld);
 const aiSystem = createAiSystem(gameWorld);
 const calculateFlammabilitySystem =
   createCalculateFlammabilitySystem(gameWorld);
@@ -60,6 +61,10 @@ const renderSystem = createRenderSystem(gameWorld);
 const soundSystem = createSoundSystem(gameWorld);
 const resolveCloseSystem = createResolveCloseSystem(gameWorld);
 const resolveDropSystem = createResolveDropSystem(gameWorld);
+const resolveEffectsInstantsSystem =
+  createResolveEffectsInstantsSystem(gameWorld);
+const resolveEffectsTimedSystem = createResolveEffectsTimedSystem(gameWorld);
+const processNewEffectsSystem = createProcessNewEffectsSystem(gameWorld);
 const resolveKnockbackSystem = createResolveKnockbackSystem(gameWorld);
 const resolveOpenSystem = createResolveOpenSystem(gameWorld);
 const resolvePickUpSystem = createResolvePickUpSystem(gameWorld);
@@ -76,7 +81,6 @@ const wetSystem = createWetSystem(gameWorld);
 
 export const systems = {
   accumulateEnergy: accumulateEnergySystem,
-  activeEffects: activeEffectsSystem,
   ai: aiSystem,
   calculateFlammability: calculateFlammabilitySystem,
   cursor: cursorSystem,
@@ -95,6 +99,9 @@ export const systems = {
   perception: perceptionSystem,
   render: renderSystem,
   sound: soundSystem,
+  resolveEffectsInstants: resolveEffectsInstantsSystem,
+  resolveEffectsTimed: resolveEffectsTimedSystem,
+  processNewEffects: processNewEffectsSystem,
   resolveClose: resolveCloseSystem,
   resolveDrop: resolveDropSystem,
   resolveFill: resolveFillSystem,
@@ -177,7 +184,6 @@ export const tickPipeline: SystemPipeline = {
     systems.wet,
     systems.fire,
     systems.desiccate,
-    systems.activeEffects,
     systems.odor,
     systems.sound,
   ],
@@ -194,7 +200,11 @@ export const tickPipeline: SystemPipeline = {
 };
 
 export const actorTurnPipeline: SystemPipeline = {
-  preInput: [systems.activeEffects],
+  preInput: [
+    systems.processNewEffects,
+    systems.resolveEffectsInstants,
+    systems.resolveEffectsTimed,
+  ],
   input: [systems.userInput, systems.perception, systems.memory, systems.ai],
   main: [
     systems.tryCastSpell,
@@ -273,7 +283,14 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
   [GameState.INVENTORY]: {
     preInput: [],
     input: [systems.userInput],
-    main: [systems.activeEffects, systems.resolveDrop, systems.resolveRead],
+    main: [
+      systems.processNewEffects,
+      systems.resolveEffectsInstants,
+      // NOTE: this will run over and over again - need to check last application turn v current turn and only apply if needed. Else perTurn applications will be applied over and over again.
+      // systems.resolveEffectsTimed,
+      systems.resolveDrop,
+      systems.resolveRead,
+    ],
     postMain: [systems.destroy, systems.fov],
     render: [systems.render],
   },

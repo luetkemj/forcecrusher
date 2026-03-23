@@ -152,6 +152,8 @@ function simulationFrame() {
   if (queue.length === 0) {
     runPipeline(tickPipeline, "Tick");
     runPipeline({ render: [systems.render] }, "Render");
+    // TODO: don't process a turn after exiting inventry and other menus
+    setState((state: State) => state.turnNumber++);
     return;
   }
 

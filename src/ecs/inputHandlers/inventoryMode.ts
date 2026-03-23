@@ -77,7 +77,11 @@ export const handleInventoryModeInput = ({
       }
 
       if (consumable.effects) {
-        player.activeEffects!.push(...consumable.effects);
+        if (player.effectsToProcess) {
+          for (const effect of consumable.effects) {
+            player.effectsToProcess.push(effect);
+          }
+        }
       }
 
       // remove consumable from inventory
