@@ -1,5 +1,5 @@
 import { EffectTimed, Effectable, IGameWorld } from "../engine";
-import { EffectStackPolicy } from "../enums";
+import { EffectApplication } from "../enums";
 import { getState } from "../gameState";
 
 export const createResolveEffectsTimedSystem = ({ world }: IGameWorld) => {
@@ -18,9 +18,6 @@ export const createResolveEffectsTimedSystem = ({ world }: IGameWorld) => {
         // get the component
         const component = actor[effect.component];
         if (!component) continue;
-        // need an id that is used to check if a hast potion has already been consumed
-        // ids are more like names - they are unique to the effect kind but not unique to the world
-        // need to check at consumption if an existing effect already exists and then adjust that one instead of adding stacks (unless they stack)
 
         // if duration has expired
         if (hasExpired(effect)) {
@@ -29,16 +26,17 @@ export const createResolveEffectsTimedSystem = ({ world }: IGameWorld) => {
             component.current = component.base;
           }
 
-          // remove effect
-          effectsTimed.splice(0, effectsTimed.length);
+          continue;
         } else if (hasBeenApplied(effect)) {
-          if (effect.stackPolicy === EffectStackPolicy.Additive) {
+          if (effect.application === EffectApplication.PerTurn) {
             applyEffect(component, effect);
           }
         } else {
           applyEffect(component, effect);
         }
       }
+
+      actor.effectsTimed = effectsTimed.filter((effect) => !hasExpired(effect));
     }
   };
 };

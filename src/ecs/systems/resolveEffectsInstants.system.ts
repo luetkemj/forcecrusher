@@ -30,7 +30,7 @@ export const createResolveEffectsInstantsSystem = ({ world }: IGameWorld) => {
         }
       }
 
-      effectsInstants.splice(0, effectsInstants.length);
+      effectsInstants.length = 0;
     }
   };
 };
@@ -56,7 +56,9 @@ function getResolvedValue(component: Effectable, effect: EffectInstant) {
     next = Math.max(component.min, next);
   }
 
-  if (!ignoreMax) {
+  // When applying deltaMax, we're updating component.max itself,
+  // so don't clamp against the old component.max value.
+  if (!ignoreMax && applyKind !== "deltaMax") {
     next = Math.min(component.max, next);
   }
 

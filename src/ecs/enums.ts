@@ -170,7 +170,12 @@ export enum EffectMode {
   Timed = "timed",
 }
 
+export enum EffectApplication {
+  OnApply = "onApply",
+  PerTurn = "perTurn",
+}
+
 export enum EffectStackPolicy {
   Additive = "additive",
-  RefeshDuration = "refreshDuration",
+  RefreshDuration = "refreshDuration",
 }

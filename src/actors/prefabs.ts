@@ -15,6 +15,7 @@ import {
   TileSet,
   EffectStackPolicy,
   EffectId,
+  EffectApplication,
 } from "../ecs/enums";
 import { colors, chars } from "./graphics";
 
@@ -595,7 +596,8 @@ export const hastePotionPrefab: Entity = {
       appliedTurn: 0,
       ignoreMax: true,
       resetToBaseOnExpire: true,
-      stackPolicy: EffectStackPolicy.RefeshDuration,
+      stackPolicy: EffectStackPolicy.RefreshDuration,
+      application: EffectApplication.OnApply,
     },
   ],
   mass: 0.8,

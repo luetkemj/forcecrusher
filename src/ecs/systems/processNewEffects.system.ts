@@ -38,7 +38,7 @@ export const createProcessNewEffectsSystem = ({ world }: IGameWorld) => {
               actor.effectsTimed.push(effect);
             }
 
-            if (effect.stackPolicy === EffectStackPolicy.RefeshDuration) {
+            if (effect.stackPolicy === EffectStackPolicy.RefreshDuration) {
               existingEffect.appliedTurn = turnNumber;
             }
           } else {

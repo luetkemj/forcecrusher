@@ -3,6 +3,7 @@ import {
   AttackType,
   DamageType,
   DispelName,
+  EffectApplication,
   EffectApplyKind,
   EffectId,
   EffectMode,
@@ -64,6 +65,7 @@ export type EffectTimed = {
   durationTurns: number;
   appliedTurn: number;
   stackPolicy: EffectStackPolicy;
+  application: EffectApplication;
   ignoreMin?: boolean;
   ignoreMax?: boolean;
   resetToBaseOnExpire?: boolean;
