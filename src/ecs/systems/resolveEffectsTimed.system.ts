@@ -22,6 +22,8 @@ export const createResolveEffectsTimedSystem = ({ world }: IGameWorld) => {
         // if duration has expired
         if (hasExpired(effect)) {
           // reset to base if needed
+          // TODO: this can overwrite other existing effects
+          // need to reset the affects of current effect rather than just reset to base
           if (effect.resetToBaseOnExpire) {
             component.current = component.base;
           }
@@ -42,7 +44,7 @@ export const createResolveEffectsTimedSystem = ({ world }: IGameWorld) => {
 };
 
 function hasExpired(effect: EffectTimed): boolean {
-  return getState().turnNumber > effect.appliedTurn + effect.durationTurns;
+  return getState().turnNumber >= effect.appliedTurn + effect.durationTurns;
 }
 
 function applyEffect(component: Effectable, effect: EffectTimed) {

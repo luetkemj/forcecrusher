@@ -14,7 +14,7 @@ export const createProcessNewEffectsSystem = ({ world }: IGameWorld) => {
       const { effectsToProcess } = actor;
 
       while (effectsToProcess.length > 0) {
-        const effect = effectsToProcess.shift();
+        const effect = effectsToProcess.pop();
         if (!effect) continue;
 
         // process effect
