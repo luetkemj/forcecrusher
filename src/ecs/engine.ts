@@ -54,13 +54,6 @@ type Effectables = {
   speed?: Entity["speed"];
 };
 
-type Effect = {
-  delta: number;
-  ignoreMax?: true;
-  ignoreMin?: true;
-  component: keyof Effectables;
-};
-
 export type EffectTimed = {
   source: Source;
   id: EffectId;

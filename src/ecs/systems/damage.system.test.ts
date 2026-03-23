@@ -32,7 +32,7 @@ describe("damage.system", () => {
       id: "target",
       name: "Target",
       version: 1,
-      health: { max: 10, current: 10 },
+      health: { max: 10, current: 10, base: 10, min: 0 },
       damages: [],
     };
     gameWorld.world.add(attacker);

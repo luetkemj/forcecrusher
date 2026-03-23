@@ -71,7 +71,7 @@ describe("tryAttack.system", () => {
       id: "target",
       name: "Target",
       version: 1,
-      health: { max: 10, current: 10 },
+      health: { max: 10, current: 10, min: 0, base: 10 },
       damages: [],
       armorClass: 10,
       ai: true,

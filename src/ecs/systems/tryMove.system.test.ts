@@ -46,7 +46,7 @@ describe("tryMove.system", () => {
   });
 
   test("initiates attack if blocked by entity with health", () => {
-    blocker.health = { max: 10, current: 10 };
+    blocker.health = { max: 10, current: 10, base: 10, min: 0 };
     blocker.entityKind = EntityKind.Beast;
     createTryMoveSystem(gameWorld)();
     expect(mover.tryMove).toBeUndefined();
