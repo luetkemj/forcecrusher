@@ -16,7 +16,6 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
   const { world, registry } = gameWorld;
   const aiQuery = world.with("ai");
   const opaqueQuery = world.with("opaque", "position");
-  const renderableQuery = world.with("appearance", "position");
   const noseQuery = world.with("nose", "position", "ai");
   const earsQuery = world.with("ears", "position", "ai");
 
