@@ -2,7 +2,6 @@ import type { IGameWorld, Memory } from "../engine";
 import { aStar, wanderToward } from "../../lib/pathfinding";
 import { getDirection, randomNeighbor } from "../../lib/grid";
 import { getDisposition } from "../../lib/utils";
-import { sortBy } from "lodash";
 import { DamageType } from "../enums";
 import { getState } from "../gameState";
 
@@ -73,35 +72,28 @@ export const createAiSystem = ({ world, registry }: IGameWorld) => {
       // wander
 
       if (memories.sentients.length && !hasTarget) {
-        // for each sentient, check dispositions.If allied, go towards and create a pack. If friendly, ignore or protect if it's fighting. If neutral, ignore. If unfriendly, attack if it's being attacked, if hostile, attack.
-        // sort dispositions, find the strongest in one way or other, do that thing.
-        const foundDispositions: Array<{ id: string; disposition: number }> =
-          [];
+        // for each sentient, check dispositions. If allied, go towards and create a pack. If friendly, ignore or protect if it's fighting. If neutral, ignore. If unfriendly, attack if it's being attacked, if hostile, attack.
+        // Find the target with the lowest (most hostile) disposition
+        let bestDisposition = Infinity;
+        let bestMemory: Memory | undefined;
 
         memories.sentients.forEach((memory) => {
           const candidate = registry.get(memory.id);
           if (!candidate) return;
 
           if (actor.entityKind && candidate.entityKind) {
-            foundDispositions.push({
-              id: candidate.id,
-              disposition: getDisposition(actor, candidate),
-            });
+            const disposition = getDisposition(actor, candidate);
+            if (disposition < bestDisposition) {
+              bestDisposition = disposition;
+              bestMemory = memory;
+            }
           }
         });
 
-        const sortedDispositions = sortBy(foundDispositions, "disposition");
-
-        if (sortedDispositions.length) {
-          const candidateId = sortedDispositions[0].id;
-          const selectedTarget = memories.sentients.find(
-            (memory) => memory.id === candidateId,
-          );
-          if (selectedTarget) {
-            // target.position = selectedTarget?.position;
-            target = { ...selectedTarget };
-            hasTarget = true;
-          }
+        if (bestMemory) {
+          // target.position = bestMemory?.position;
+          target = { ...bestMemory };
+          hasTarget = true;
         }
       }
 
