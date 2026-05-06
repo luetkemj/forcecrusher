@@ -1,7 +1,7 @@
 import { compact, flatMap } from "lodash";
 import createFOV from "../../lib/fov";
 import { getNeighbors, toPosId } from "../../lib/grid";
-import { addSenseLog } from "../../lib/utils";
+import { addSenseLog, getEAP } from "../../lib/utils";
 import { Constants } from "../../pcgn/constants";
 import {
   DetectedOdor,
@@ -48,9 +48,17 @@ export const createPerceptionSystem = (gameWorld: IGameWorld) => {
           state.visionMap.push({ fov: FOV.fov, canSeePc: false }),
         );
 
-        for (const target of renderableQuery) {
-          if (FOV.fov.has(toPosId(target.position))) {
-            actor.vision?.visible.push(target.id);
+        // Optimization: Only iterate entities in FOV cells using EAP
+        // instead of checking all renderable entities
+        for (const posId of FOV.fov) {
+          const eIds = getEAP(posId);
+          if (eIds) {
+            for (const eId of eIds) {
+              const target = registry.get(eId);
+              if (target?.appearance) {
+                actor.vision.visible.push(target.id);
+              }
+            }
           }
         }
       }
