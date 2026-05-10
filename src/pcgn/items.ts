@@ -18,6 +18,10 @@ export const spawnHastePotion = (position: Pos) => {
   spawn("hastePotion", { position });
 };
 
+export const spawnPoisonPotion = (position: Pos) => {
+  spawn("poisonPotion", { position });
+};
+
 export const spawnBottle = (position: Pos) => {
   spawn("bottleEmpty", { position });
 };

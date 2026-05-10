@@ -577,7 +577,7 @@ export const hastePotionPrefab: Entity = {
   ...baseItem,
   appearance: {
     char: chars.potion,
-    tint: colors.potion,
+    tint: colors.potionHaste,
     tileSet: TileSet.Kenny,
   },
   consumable: true,
@@ -598,6 +598,38 @@ export const hastePotionPrefab: Entity = {
       resetToBaseOnExpire: true,
       stackPolicy: EffectStackPolicy.RefreshDuration,
       application: EffectApplication.OnApply,
+    },
+  ],
+  mass: 0.8,
+  material: Material.Glass,
+};
+
+export const poisonPotionPrefab: Entity = {
+  ...baseItem,
+  appearance: {
+    char: chars.potion,
+    tint: colors.mobGoblin,
+    tileSet: TileSet.Kenny,
+  },
+  consumable: true,
+  name: "Poison Potion",
+  description: "A thin green liquid in a small glass vile",
+  readable: { type: ReadableType.Text, message: "Drink me" },
+  effects: [
+    {
+      source: Source.Item,
+      component: "speed",
+      applyKind: EffectApplyKind.DeltaCurrent,
+      delta: 1,
+      mode: EffectMode.Timed,
+      id: EffectId.PoisonPotion,
+      durationTurns: 5,
+      appliedTurn: 0,
+      ignoreMax: true,
+      resetToBaseOnExpire: true,
+      stackPolicy: EffectStackPolicy.RefreshDuration,
+      application: EffectApplication.PerTurn,
+      damageType: DamageType.Poison,
     },
   ],
   mass: 0.8,
