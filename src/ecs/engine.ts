@@ -59,17 +59,19 @@ export type EffectTimed = {
   source: Source;
   id: EffectId;
   component: keyof Effectables;
-  applyKind: EffectApplyKind;
+  applyKind?: EffectApplyKind;
   delta: number;
   mode: EffectMode.Timed;
   durationTurns: number;
   appliedTurn: number;
+  lastResolvedTurn?: number;
   stackPolicy: EffectStackPolicy;
   application: EffectApplication;
   ignoreMin?: boolean;
   ignoreMax?: boolean;
   resetToBaseOnExpire?: boolean;
   hasBeenApplied?: boolean;
+  damageType?: DamageType;
 };
 
 export type EffectInstant = {
