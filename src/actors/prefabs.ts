@@ -552,7 +552,7 @@ export const healthPotionPrefab: Entity = {
   ...baseItem,
   appearance: {
     char: chars.potion,
-    tint: colors.potion,
+    tint: colors.potionHealth,
     tileSet: TileSet.Kenny,
   },
   consumable: true,
@@ -608,7 +608,7 @@ export const poisonPotionPrefab: Entity = {
   ...baseItem,
   appearance: {
     char: chars.potion,
-    tint: colors.mobGoblin,
+    tint: colors.potionPoison,
     tileSet: TileSet.Kenny,
   },
   consumable: true,
