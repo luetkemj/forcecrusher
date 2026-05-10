@@ -1,4 +1,4 @@
-import { EffectTimed, Effectable, IGameWorld } from "../engine";
+import { Damage, EffectTimed, Effectable, Entity, IGameWorld } from "../engine";
 import { EffectApplication } from "../enums";
 import { getState } from "../gameState";
 
@@ -19,6 +19,14 @@ export const createResolveEffectsTimedSystem = ({ world }: IGameWorld) => {
         const component = actor[effect.component];
         if (!component) continue;
 
+        // if already resolved this tick
+        if (
+          effect.lastResolvedTurn &&
+          effect.lastResolvedTurn === getState().turnNumber
+        ) {
+          continue;
+        }
+
         // if duration has expired
         if (hasExpired(effect)) {
           // reset to base if needed
@@ -31,10 +39,10 @@ export const createResolveEffectsTimedSystem = ({ world }: IGameWorld) => {
           continue;
         } else if (effect.hasBeenApplied) {
           if (effect.application === EffectApplication.PerTurn) {
-            applyEffect(component, effect);
+            applyEffect(actor, component, effect);
           }
         } else {
-          applyEffect(component, effect);
+          applyEffect(actor, component, effect);
         }
       }
 
@@ -47,7 +55,29 @@ function hasExpired(effect: EffectTimed): boolean {
   return getState().turnNumber >= effect.appliedTurn + effect.durationTurns;
 }
 
-function applyEffect(component: Effectable, effect: EffectTimed) {
+function applyEffect(
+  actor: Entity,
+  component: Effectable,
+  effect: EffectTimed,
+) {
+  if (effect.damageType) {
+    const damage: Damage = {
+      target: actor.id,
+      damageAmounts: [
+        {
+          type: effect.damageType,
+          amount: Math.max(0, Math.abs(effect.delta)),
+          mod: 0,
+        },
+      ],
+    };
+
+    if (actor.damages) {
+      actor.damages.push(damage);
+      console.log(damage);
+    }
+  }
+
   // resolve the effect
   if (effect.applyKind === "deltaCurrent") {
     component.current = getResolvedValue(component, effect);
@@ -61,6 +91,7 @@ function applyEffect(component: Effectable, effect: EffectTimed) {
     component.max = getResolvedValue(component, effect);
   }
 
+  effect.lastResolvedTurn = getState().turnNumber;
   effect.hasBeenApplied = true;
 }
 

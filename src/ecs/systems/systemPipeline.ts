@@ -288,10 +288,9 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
       systems.resolveRead,
       systems.processNewEffects,
       systems.resolveEffectsInstants,
-      // NOTE: this will run over and over again - need to check last application turn v current turn and only apply if needed. Else perTurn applications will be applied over and over again.
-      // systems.resolveEffectsTimed,
+      systems.resolveEffectsTimed,
     ],
-    postMain: [systems.destroy, systems.fov],
+    postMain: [systems.damage, systems.destroy, systems.fov],
     render: [systems.render],
   },
 
