@@ -325,7 +325,7 @@ describe("random selection and scaling", () => {
 describe("joinWithOxfordComma", () => {
   test("joins three items with commas and 'and'", () => {
     expect(joinWithOxfordComma(["poison", "fire", "radiant"])).toBe(
-      "poison, fire and radiant",
+      "poison, fire, and radiant",
     );
   });
 
