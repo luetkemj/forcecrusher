@@ -91,7 +91,11 @@ export enum colors {
   // these should also be a material (oil and lava already are)
   "water" = 0x0e87cc,
   "blood" = 0x780606,
-
   "fire" = 0xfac000,
   "ash" = 0x666666,
+
+  // potions
+  "potionHealth" = 0x780606,
+  "potionHaste" = 0xffbc00,
+  "potionPoison" = 0xf1e9d2,
 }

@@ -1,13 +1,16 @@
 import { Entity, IGameWorld } from "../engine";
 import { setState, State, GameState } from "../gameState";
-import { addLog, colorTag, writeToLeaderboard } from "../../lib/utils";
+import {
+  addLog,
+  colorTag,
+  writeToLeaderboard,
+  joinWithOxfordComma,
+} from "../../lib/utils";
 import { capitalize } from "lodash";
 import { AttackType } from "../enums";
 
 export const createMorgueSystem = ({ world, registry }: IGameWorld) => {
-  const livingQuery = world
-    .with("health")
-    .without("dead", "destroyed");
+  const livingQuery = world.with("health").without("dead", "destroyed");
 
   return function morgueSystem() {
     for (const entity of livingQuery) {
@@ -135,7 +138,16 @@ const getPCCauseOfDeath = (entity: Entity, registry: Map<string, Entity>) => {
   } else if (target) {
   }
 
-  console.log(entity.cod);
+  if (!cod) {
+    // just called it by damage types
+    cod += "Killed by ";
+
+    const damageTypes = entity.cod.damageAmounts.map((dmg) => dmg.type);
+
+    cod += joinWithOxfordComma(damageTypes);
+
+    cod += ".";
+  }
 
   return cod.trim();
 };

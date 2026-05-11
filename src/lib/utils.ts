@@ -587,6 +587,17 @@ export function getTier(depth: number, chunkSize: number = 3) {
   return Math.floor(depth / chunkSize);
 }
 
+/**
+ * Joins an array of strings with commas and an "and" before the last item.
+ * Returns empty string for empty array, original string for single item.
+ */
+export function joinWithOxfordComma(items: string[]): string {
+  if (items.length === 0) return "";
+  if (items.length === 1) return items[0];
+  if (items.length === 2) return items.join(" and ");
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+}
+
 export type WeightedSpawn = {
   spawn: Function;
   cost: number;

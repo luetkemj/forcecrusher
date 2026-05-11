@@ -1,5 +1,10 @@
 import { random } from "lodash";
-import { addLog, colorEntity, getWearing } from "../../lib/utils";
+import {
+  addLog,
+  colorEntity,
+  getWearing,
+  joinWithOxfordComma,
+} from "../../lib/utils";
 import { Entity, IGameWorld } from "../engine";
 import { AttackType, DamageType } from "../enums";
 
@@ -138,6 +143,13 @@ export const createDamageSystem = ({ world, registry }: IGameWorld) => {
                 logParts.push(`with ${colorEntity(weapon)}${colorTag}`);
               }
             }
+          }
+
+          // raw damage from a potion
+          else if (!attacker && !instigator && !responder) {
+            logParts.push(
+              `Damaged by ${joinWithOxfordComma(damage.damageAmounts.map((dmg) => dmg.type))}`,
+            );
           }
 
           if (target.dead || target.destroyed) {

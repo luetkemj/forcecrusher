@@ -163,6 +163,7 @@ export enum EffectApplyKind {
 export enum EffectId {
   HealthPotion = "healthPotion",
   HastePotion = "hastePotion",
+  PoisonPotion = "poisonPotion",
 }
 
 export enum EffectMode {

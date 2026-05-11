@@ -30,6 +30,7 @@ import {
   chainmailArmor,
   paddedArmor,
   hastePotionPrefab,
+  poisonPotionPrefab,
 } from "./prefabs";
 import { updatePosition } from "../lib/utils";
 import { Material } from "../ecs/enums";
@@ -51,6 +52,7 @@ export const prefabs = {
   // NOTE: Potions
   hastePotion: hastePotionPrefab,
   healthPotion: healthPotionPrefab,
+  poisonPotion: poisonPotionPrefab,
   bottleEmpty: bottlePrefab,
 
   // NOTE: Items

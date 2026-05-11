@@ -15,6 +15,7 @@ import {
   getTotalVolume,
   isSamePosition,
   isWielding,
+  joinWithOxfordComma,
   mixHexWeighted,
   outOfBounds,
   transferFluid,
@@ -318,5 +319,31 @@ describe("random selection and scaling", () => {
     expect(getTier(0)).toBe(0);
     expect(getTier(5)).toBe(1);
     expect(getTier(8, 4)).toBe(2);
+  });
+});
+
+describe("joinWithOxfordComma", () => {
+  test("joins three items with commas and 'and'", () => {
+    expect(joinWithOxfordComma(["poison", "fire", "radiant"])).toBe(
+      "poison, fire, and radiant",
+    );
+  });
+
+  test("joins two items with 'and'", () => {
+    expect(joinWithOxfordComma(["poison", "fire"])).toBe("poison and fire");
+  });
+
+  test("returns single item as-is", () => {
+    expect(joinWithOxfordComma(["poison"])).toBe("poison");
+  });
+
+  test("returns empty string for empty array", () => {
+    expect(joinWithOxfordComma([])).toBe("");
+  });
+
+  test("handles items with spaces", () => {
+    expect(joinWithOxfordComma(["physical damage", "status effects"])).toBe(
+      "physical damage and status effects",
+    );
   });
 });
