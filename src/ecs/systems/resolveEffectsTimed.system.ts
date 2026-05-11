@@ -21,7 +21,7 @@ export const createResolveEffectsTimedSystem = ({ world }: IGameWorld) => {
 
         // if already resolved this tick
         if (
-          effect.lastResolvedTurn &&
+          effect.lastResolvedTurn !== undefined &&
           effect.lastResolvedTurn === getState().turnNumber
         ) {
           continue;
