@@ -74,7 +74,6 @@ function applyEffect(
 
     if (actor.damages) {
       actor.damages.push(damage);
-      console.log(damage);
     }
   }
 

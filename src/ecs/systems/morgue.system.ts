@@ -138,9 +138,6 @@ const getPCCauseOfDeath = (entity: Entity, registry: Map<string, Entity>) => {
   } else if (target) {
   }
 
-  console.log(entity.cod);
-
-  console.log(cod);
   if (!cod) {
     // just called it by damage types
     cod += "Killed by ";
