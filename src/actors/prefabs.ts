@@ -557,7 +557,7 @@ export const healthPotionPrefab: Entity = {
   },
   consumable: true,
   name: "Health Potion",
-  description: "A syrupy red liquid in a small glass vile",
+  description: "A syrupy red liquid in a small glass vial",
   readable: { type: ReadableType.Text, message: "Drink me" },
   effects: [
     {
@@ -582,7 +582,7 @@ export const hastePotionPrefab: Entity = {
   },
   consumable: true,
   name: "Haste Potion",
-  description: "A syrupy yellow liquid in a small glass vile",
+  description: "A syrupy yellow liquid in a small glass vial",
   readable: { type: ReadableType.Text, message: "Drink me" },
   effects: [
     {
@@ -613,14 +613,14 @@ export const poisonPotionPrefab: Entity = {
   },
   consumable: true,
   name: "Poison Potion",
-  description: "A thin green liquid in a small glass vile",
+  description: "A thin green liquid in a small glass vial",
   readable: { type: ReadableType.Text, message: "Drink me" },
   effects: [
     {
       source: Source.Item,
       component: "speed",
       applyKind: EffectApplyKind.DeltaCurrent,
-      delta: 1,
+      delta: 100,
       mode: EffectMode.Timed,
       id: EffectId.PoisonPotion,
       durationTurns: 5,
