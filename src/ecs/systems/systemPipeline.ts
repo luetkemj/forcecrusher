@@ -290,7 +290,7 @@ export const gameStatePipelines: Partial<Record<GameState, SystemPipeline>> = {
       systems.resolveEffectsInstants,
       systems.resolveEffectsTimed,
     ],
-    postMain: [systems.damage, systems.destroy, systems.fov],
+    postMain: [systems.damage, systems.destroy, systems.morgue, systems.fov],
     render: [systems.render],
   },
 
