@@ -1,6 +1,13 @@
 import { InputContext } from "../systems/userInput.system";
 import { GameState, State } from "../gameState";
-import { logFrozenEntity, wield, wear, unWield, unWear } from "../../lib/utils";
+import {
+  logFrozenEntity,
+  wield,
+  wear,
+  unWield,
+  unWear,
+  canAct,
+} from "../../lib/utils";
 import { remove, isUndefined } from "lodash";
 import { Keys } from "./KeyMap";
 
@@ -13,7 +20,7 @@ export const handleInventoryModeInput = ({
   setState,
   addLog,
 }: InputContext) => {
-  if (key === Keys.INVENTORY || key === Keys.CANCEL) {
+  if (key === Keys.INVENTORY || key === Keys.CANCEL || !canAct(player)) {
     setState((state: State) => (state.gameState = GameState.GAME));
     return true;
   }

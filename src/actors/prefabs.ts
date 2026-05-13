@@ -636,6 +636,37 @@ export const poisonPotionPrefab: Entity = {
   material: Material.Glass,
 };
 
+export const paralyzePotionPrefab: Entity = {
+  ...baseItem,
+  appearance: {
+    char: chars.potion,
+    tint: colors.potionParalyze,
+    tileSet: TileSet.Kenny,
+  },
+  consumable: true,
+  name: "Paralyze Potion",
+  description: "A thin pink liquid in a small glass vial",
+  readable: { type: ReadableType.Text, message: "Drink me" },
+  effects: [
+    {
+      source: Source.Item,
+      component: "speed",
+      applyKind: EffectApplyKind.DeltaCurrent,
+      delta: 0,
+      mode: EffectMode.Timed,
+      id: EffectId.ParalyzePotion,
+      durationTurns: 5,
+      appliedTurn: 0,
+      ignoreMax: true,
+      resetToBaseOnExpire: true,
+      stackPolicy: EffectStackPolicy.RefreshDuration,
+      application: EffectApplication.PerTurn,
+    },
+  ],
+  mass: 0.8,
+  material: Material.Glass,
+};
+
 export const bottlePrefab: Entity = {
   ...baseItem,
   appearance: {
