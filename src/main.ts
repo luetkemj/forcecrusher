@@ -5,7 +5,7 @@ import { toPosId } from "./lib/grid";
 import { getFrozenEntity } from "./lib/utils";
 import { generateDungeon } from "./pcgn/dungeon";
 import { spawnPlayer } from "./pcgn/player";
-import { ACTION_COST, gameWorld, IGameWorld } from "./ecs/engine";
+import { Entity, ACTION_COST, gameWorld, IGameWorld } from "./ecs/engine";
 import { type State, GameState, getState, setState } from "./ecs/gameState";
 import { createViews, ViewId } from "./views/views";
 import {
@@ -16,7 +16,7 @@ import {
   systems,
 } from "./ecs/systems/systemPipeline";
 import { handleUserInput } from "./ecs/inputHandlers/KeyMap";
-import { TileSet } from "./ecs/enums";
+import { EffectId, TileSet } from "./ecs/enums";
 
 // for debugging
 declare global {
@@ -136,11 +136,11 @@ function buildReadyQueue(): string[] {
 function runActorTurn(actorId: string) {
   setState((state: State) => (state.currentActorId = actorId));
 
+  const actor = gameWorld.registry.get(actorId);
+
   runPipeline(actorTurnPipeline, "ActorTurn");
 
   // spend energy AFTER action
-  const actor = gameWorld.registry.get(actorId);
-
   if (actor && !isUndefined(actor.energy)) {
     actor.energy -= ACTION_COST;
   }
