@@ -5,7 +5,7 @@ import { toPosId } from "./lib/grid";
 import { getFrozenEntity } from "./lib/utils";
 import { generateDungeon } from "./pcgn/dungeon";
 import { spawnPlayer } from "./pcgn/player";
-import { Entity, ACTION_COST, gameWorld, IGameWorld } from "./ecs/engine";
+import { ACTION_COST, gameWorld, IGameWorld } from "./ecs/engine";
 import { type State, GameState, getState, setState } from "./ecs/gameState";
 import { createViews, ViewId } from "./views/views";
 import {
@@ -16,7 +16,7 @@ import {
   systems,
 } from "./ecs/systems/systemPipeline";
 import { handleUserInput } from "./ecs/inputHandlers/KeyMap";
-import { EffectId, TileSet } from "./ecs/enums";
+import { TileSet } from "./ecs/enums";
 
 // for debugging
 declare global {
