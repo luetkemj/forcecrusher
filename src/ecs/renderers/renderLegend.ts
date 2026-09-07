@@ -26,6 +26,30 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
       const entityTint = entity.appearance.tint;
       const entityName = entity.name;
 
+      // if paralyzed
+      const paralyzedEffect = entity.effectsTimed?.find(
+        (effect) => effect.id === "paralyzePotion",
+      );
+      if (paralyzedEffect) {
+        rows.push([
+          {
+            tokens: [
+              {
+                type: TokenType.Text,
+                value: `${paralyzedEffect.turnsLeft}`,
+                tint: colors.potionParalyze,
+              },
+              {
+                type: TokenType.Text,
+                value: ` PARALYZED`,
+                tint: colors.potionParalyze,
+                parseTags: true,
+              },
+            ],
+          },
+        ]);
+      }
+
       if (entity.onFire) {
         rows.push([
           {

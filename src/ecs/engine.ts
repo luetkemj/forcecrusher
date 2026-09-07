@@ -65,6 +65,7 @@ export type EffectTimed = {
   durationTurns: number;
   appliedTurn: number;
   lastResolvedTurn?: number;
+  turnsLeft: number;
   stackPolicy: EffectStackPolicy;
   application: EffectApplication;
   ignoreMin?: boolean;
