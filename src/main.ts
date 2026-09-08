@@ -136,11 +136,11 @@ function buildReadyQueue(): string[] {
 function runActorTurn(actorId: string) {
   setState((state: State) => (state.currentActorId = actorId));
 
+  const actor = gameWorld.registry.get(actorId);
+
   runPipeline(actorTurnPipeline, "ActorTurn");
 
   // spend energy AFTER action
-  const actor = gameWorld.registry.get(actorId);
-
   if (actor && !isUndefined(actor.energy)) {
     actor.energy -= ACTION_COST;
   }

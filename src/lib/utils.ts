@@ -6,7 +6,7 @@ import {
   FluidContainer,
   gameWorld,
 } from "../ecs/engine";
-import { Disposition, EntityKind, Fluids } from "../ecs/enums";
+import { Disposition, EffectId, EntityKind, Fluids } from "../ecs/enums";
 import { getState, setState, State } from "../ecs/gameState";
 import { calcAverageDamage } from "./combat";
 import { Pos, PosId, getNeighbors, toPosId } from "./grid";
@@ -19,6 +19,7 @@ import {
   sample,
   sortBy,
   shuffle,
+  isUndefined,
 } from "lodash";
 import {
   LeaderboardEntry,
@@ -616,4 +617,19 @@ export function getCurrentActor() {
   const { currentActorId } = getState();
 
   return gameWorld.registry.get(currentActorId || "");
+}
+
+export function canAct(actor: Entity) {
+  if (actor && !isUndefined(actor.energy)) {
+    if (actor.effectsTimed) {
+      const activeEffectIds = actor.effectsTimed.map((effect) => effect.id);
+
+      // if paralyzed skip actor turn
+      if (activeEffectIds.includes(EffectId.ParalyzePotion)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }

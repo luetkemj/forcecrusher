@@ -1,6 +1,7 @@
 import { toPosId } from "../../lib/grid";
 import {
   addLog,
+  canAct,
   getDisposition,
   getEAP,
   updatePosition,
@@ -8,16 +9,14 @@ import {
 import { ACTION_COST, IGameWorld } from "../engine";
 
 export const createTryMoveSystem = ({ world, registry }: IGameWorld) => {
-  const moveableQuery = world
-    .with("position", "tryMove", "energy");
-  const blockingQuery = world
-    .with("blocking", "position");
+  const moveableQuery = world.with("position", "tryMove", "energy");
+  const blockingQuery = world.with("blocking", "position");
 
   return function tryMoveSystem() {
     for (const actor of moveableQuery) {
       const { tryMove } = actor;
 
-      if (actor.energy < ACTION_COST) continue;
+      if (actor.energy < ACTION_COST || !canAct(actor)) continue;
 
       let blocked = false;
 

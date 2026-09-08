@@ -30,6 +30,7 @@ import {
   chainmailArmor,
   paddedArmor,
   hastePotionPrefab,
+  paralyzePotionPrefab,
   poisonPotionPrefab,
 } from "./prefabs";
 import { updatePosition } from "../lib/utils";
@@ -52,6 +53,7 @@ export const prefabs = {
   // NOTE: Potions
   hastePotion: hastePotionPrefab,
   healthPotion: healthPotionPrefab,
+  paralyzePotion: paralyzePotionPrefab,
   poisonPotion: poisonPotionPrefab,
   bottleEmpty: bottlePrefab,
 

@@ -97,5 +97,6 @@ export enum colors {
   // potions
   "potionHealth" = 0x780606,
   "potionHaste" = 0xffbc00,
-  "potionPoison" = 0xf1e9d2,
+  "potionParalyze" = 0xd65a77,
+  "potionPoison" = 0xa1df50,
 }

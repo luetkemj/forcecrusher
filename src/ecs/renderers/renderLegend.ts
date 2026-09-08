@@ -26,6 +26,63 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
       const entityTint = entity.appearance.tint;
       const entityName = entity.name;
 
+      // if paralyzed
+      const paralyzedEffect = entity.effectsTimed?.find(
+        (effect) => effect.id === "paralyzePotion",
+      );
+      if (paralyzedEffect) {
+        rows.push([
+          {
+            tokens: [
+              {
+                type: TokenType.Text,
+                value: `PARALYZED`,
+                tint: colors.potionParalyze,
+                parseTags: true,
+              },
+            ],
+          },
+        ]);
+      }
+
+      // if poisoned
+      const poisonedEffect = entity.effectsTimed?.find(
+        (effect) => effect.id === "poisonPotion",
+      );
+      if (poisonedEffect) {
+        rows.push([
+          {
+            tokens: [
+              {
+                type: TokenType.Text,
+                value: `POISONED`,
+                tint: colors.potionPoison,
+                parseTags: true,
+              },
+            ],
+          },
+        ]);
+      }
+
+      // if hasted
+      const hastedEffect = entity.effectsTimed?.find(
+        (effect) => effect.id === "hastePotion",
+      );
+      if (hastedEffect) {
+        rows.push([
+          {
+            tokens: [
+              {
+                type: TokenType.Text,
+                value: `HASTED`,
+                tint: colors.potionHaste,
+                parseTags: true,
+              },
+            ],
+          },
+        ]);
+      }
+
       if (entity.onFire) {
         rows.push([
           {

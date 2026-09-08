@@ -91,6 +91,10 @@ function applyEffect(
   }
 
   effect.lastResolvedTurn = getState().turnNumber;
+
+  effect.turnsLeft =
+    effect.durationTurns - (effect.lastResolvedTurn - effect.appliedTurn);
+
   effect.hasBeenApplied = true;
 }
 

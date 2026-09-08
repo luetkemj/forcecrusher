@@ -4,7 +4,7 @@ import { toPosId, isAtSamePosition, toZone, toZoneId } from "../../lib/grid";
 import { isMoveKey, getDirectionFromKey, Keys } from "./KeyMap";
 import { ChangeZoneDirections } from "../engine";
 import { isUndefined } from "lodash";
-import { writeToLeaderboard } from "../../lib/utils";
+import { canAct, writeToLeaderboard } from "../../lib/utils";
 
 export const handleGameModeInput = async ({
   key,
@@ -76,9 +76,7 @@ export const handleGameModeInput = async ({
     }
 
     if (key === Keys.BESTIARY) {
-      setState(
-        (state: State) => (state.gameState = GameState.SCREEN_BESTIARY),
-      );
+      setState((state: State) => (state.gameState = GameState.SCREEN_BESTIARY));
 
       return true;
     }
@@ -94,6 +92,10 @@ export const handleGameModeInput = async ({
 
     // stairs needs to be it's own system
     if (key === Keys.STAIRS_DOWN) {
+      if (!canAct(player)) {
+        return true;
+      }
+
       if (!player.position) return;
       const [stairsDownEntity] = stairsDownQuery;
       if (!stairsDownEntity) return true;
@@ -110,6 +112,10 @@ export const handleGameModeInput = async ({
     }
 
     if (key === Keys.STAIRS_UP) {
+      if (!canAct(player)) {
+        return true;
+      }
+
       if (!player.position) return;
       const [stairsUpEntity] = stairsUpQuery;
       if (!stairsUpEntity) return true;
@@ -151,6 +157,10 @@ export const handleGameModeInput = async ({
     }
 
     if (key === Keys.CAST) {
+      if (!canAct(player)) {
+        return true;
+      }
+
       setState((state: State) => {
         state.gameState = GameState.SPELLBOOK;
         const pos = player.position;
@@ -162,6 +172,10 @@ export const handleGameModeInput = async ({
     }
 
     if (key === Keys.INVENTORY) {
+      if (!canAct(player)) {
+        return true;
+      }
+
       setState((state: State) => (state.gameState = GameState.INVENTORY));
       setState((state: State) => (state.inventoryActiveIndex = 0));
 
@@ -169,6 +183,10 @@ export const handleGameModeInput = async ({
     }
 
     if (key === Keys.INSPECT) {
+      if (!canAct(player)) {
+        return true;
+      }
+
       setState((state: State) => (state.gameState = GameState.INSPECT));
       const pos = player.position;
       if (pos) {
@@ -196,6 +214,10 @@ export const handleGameModeInput = async ({
     }
 
     if (key === Keys.INTERACT) {
+      if (!canAct(player)) {
+        return true;
+      }
+
       setState((state: State) => {
         state.gameState = GameState.INTERACT;
       });
@@ -204,6 +226,10 @@ export const handleGameModeInput = async ({
     }
 
     if (isMoveKey(key)) {
+      if (!canAct(player)) {
+        return true;
+      }
+
       const dir = getDirectionFromKey(key);
       if (dir && player?.position) {
         const newPos = {
@@ -217,6 +243,10 @@ export const handleGameModeInput = async ({
 
     // does this really have to go here?
     if (key === Keys.PICK_UP) {
+      if (!canAct(player)) {
+        return true;
+      }
+
       // check if player is standing on a pickup
       // if standing on a pickup - try to pick it up
       let noPickUps = true;
