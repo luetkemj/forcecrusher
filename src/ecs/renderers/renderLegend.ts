@@ -36,13 +36,27 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
             tokens: [
               {
                 type: TokenType.Text,
-                value: `${paralyzedEffect.turnsLeft}`,
-                tint: colors.potionParalyze,
-              },
-              {
-                type: TokenType.Text,
                 value: `PARALYZED`,
                 tint: colors.potionParalyze,
+                parseTags: true,
+              },
+            ],
+          },
+        ]);
+      }
+
+      // if poisoned
+      const poisonedEffect = entity.effectsTimed?.find(
+        (effect) => effect.id === "poisonPotion",
+      );
+      if (poisonedEffect) {
+        rows.push([
+          {
+            tokens: [
+              {
+                type: TokenType.Text,
+                value: `POISONED`,
+                tint: colors.potionPoison,
                 parseTags: true,
               },
             ],
@@ -55,7 +69,6 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
         (effect) => effect.id === "hastePotion",
       );
       if (hastedEffect) {
-        console.log(hastedEffect);
         rows.push([
           {
             tokens: [
