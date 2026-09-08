@@ -8,7 +8,14 @@ export const spawnPlayer = (position: Pos) => {
 
   calcAverageDamage(player);
 
-  times(10, () =>
+  times(5, () =>
+    spawn("hastePotion", {
+      position,
+      tryPickUp: { pickerId: player.id },
+    }),
+  );
+
+  times(5, () =>
     spawn("paralyzePotion", {
       position,
       tryPickUp: { pickerId: player.id },

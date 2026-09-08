@@ -41,8 +41,28 @@ export const renderLegend = ({ views, queries }: RendererContext) => {
               },
               {
                 type: TokenType.Text,
-                value: ` PARALYZED`,
+                value: `PARALYZED`,
                 tint: colors.potionParalyze,
+                parseTags: true,
+              },
+            ],
+          },
+        ]);
+      }
+
+      // if hasted
+      const hastedEffect = entity.effectsTimed?.find(
+        (effect) => effect.id === "hastePotion",
+      );
+      if (hastedEffect) {
+        console.log(hastedEffect);
+        rows.push([
+          {
+            tokens: [
+              {
+                type: TokenType.Text,
+                value: `HASTED`,
+                tint: colors.potionHaste,
                 parseTags: true,
               },
             ],
